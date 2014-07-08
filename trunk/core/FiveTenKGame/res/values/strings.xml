@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FiveTenKGame</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="new_game_str">新建游戏</string>
+	<string name="join_game_str">加入游戏</string>
+	<string name="setting_str">设置</string>
+	<string name="help_str">帮助</string>
+	<string name="join_str">加入</string>
+</resources>

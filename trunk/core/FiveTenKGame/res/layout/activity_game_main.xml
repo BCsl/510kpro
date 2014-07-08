@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}" >
+    
+	<Button
+	    android:id="@+id/main_new_game_id"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:minWidth="200dp"
+		android:layout_centerHorizontal="true"
+	    android:layout_marginTop="46dp"
+	    android:text="@string/new_game_str" />
+	
+	<Button
+	    android:id="@+id/main_joid_game_id"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:minWidth="200dp"
+	    android:layout_below="@id/main_new_game_id"
+	    android:layout_centerHorizontal="true"
+	    android:text="@string/join_game_str" />
+
+	<Button
+	    android:id="@+id/main_help_id"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:minWidth="200dp"
+		android:layout_centerHorizontal="true"
+		android:layout_below="@id/main_joid_game_id"
+	    android:text="@string/help_str" />
+	
+	<Button
+	    android:id="@+id/main_setting_id"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:minWidth="200dp"
+	    android:layout_below="@id/main_help_id"
+	    android:layout_centerHorizontal="true"
+	    android:text="@string/setting_str" />
+
+</RelativeLayout>
