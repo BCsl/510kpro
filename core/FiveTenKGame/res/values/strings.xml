@@ -10,4 +10,6 @@
 	<string name="join_str">加入</string>
 	<string name="waiting_str">等待游戏</string>
 	<string name="ready_player_str">当前游戏人数：</string>
+	<string name="input_server_ip_hint">输入服务器地址</string>
+	<string name="confirm_str">确定</string>
 </resources>

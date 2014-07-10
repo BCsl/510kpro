@@ -4,6 +4,8 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
@@ -14,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         <activity
-            android:name="my.example.fivetenkgame.GameMainActivity"
+            android:name="com.uc.fivetenkgame.GameMainActivity"
             android:label="@string/app_name" 
             android:screenOrientation="landscape">
             <intent-filter>
@@ -23,11 +25,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
-            android:name="my.example.fivetenkgame.WaitingGameActivity"
+            android:name="com.uc.fivetenkgame.WaitingGameActivity"
             android:label="@string/waiting_str"
             android:theme="@android:style/Theme.Dialog"
             android:screenOrientation="landscape">
+        </activity>
+        
+        <activity
+            android:name="com.uc.fivetenkgame.GameViewActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        </activity>
+        
+        <activity
+            android:name="com.uc.fivetenkgame.InputServerIPActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Dialog">
         </activity>
     </application>
 
