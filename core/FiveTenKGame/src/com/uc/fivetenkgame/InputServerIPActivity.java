@@ -27,7 +27,6 @@ public class InputServerIPActivity extends Activity {
 
 	private OnClickListener mClickListener = new OnClickListener(){
 
-		@Override
 		public void onClick(View v) {
 			if( v == mOKButton ){
 				Intent intent = getIntent();
