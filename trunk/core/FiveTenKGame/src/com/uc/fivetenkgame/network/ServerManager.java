@@ -48,13 +48,11 @@ public class ServerManager implements NetworkManager{
 		}
 	}
 	
-	@Override
 	public void sendMessage(String msg) {
 		mFirstPlayer.sendMessage(msg);
 		mSecondPlayer.sendMessage(msg);
 	}
 
-	@Override
 	public void receiveMessage(String msg) {
 		
 		
