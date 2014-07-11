@@ -5,6 +5,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/**
+ * 服务器TCP网络发送接收数据线程类
+ * @author liuzd
+ *
+ */
 public class TCPServer extends Thread {
 	
 	private Socket mServerSocket;
@@ -54,6 +59,7 @@ public class TCPServer extends Thread {
 	public void sendMessage(String msg){
 		try {
 			mOutputStream.write(msg.getBytes());
+			mOutputStream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
