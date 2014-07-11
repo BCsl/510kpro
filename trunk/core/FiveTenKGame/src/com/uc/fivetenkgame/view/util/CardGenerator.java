@@ -35,7 +35,7 @@ public class CardGenerator {
 			suffix=String.valueOf(cardNO);
 		res=prefix+suffix;
 		
-		Log.i("card resource name:", res);
+//		Log.i("card resource name:", res);
 		return res.trim();
 	}
 
