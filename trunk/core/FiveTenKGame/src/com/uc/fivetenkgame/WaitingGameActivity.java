@@ -1,7 +1,7 @@
 package com.uc.fivetenkgame;
 
+import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.ServerManager;
-import com.uc.fivetenkgame.network.TCPClient;
 
 import my.example.fivetenkgame.R;
 import android.app.Activity;
@@ -29,8 +29,7 @@ public class WaitingGameActivity extends Activity {
 			Toast.makeText(this, "server", Toast.LENGTH_SHORT).show();
 			new Thread(){
 				public void run(){
-					ServerManager serverMgr = ServerManager.getInstance();
-					serverMgr.startListen();
+					ServerManager.getInstance().startListen();
 				}
 			}.start();
 		}
@@ -40,8 +39,8 @@ public class WaitingGameActivity extends Activity {
 			
 			new Thread(){
 				public void run(){
-					TCPClient.getInstance().initNetwork(ipAddr);
-					TCPClient.getInstance().sendMessage("hello");
+					ClientManager.getInstance().initNetwork(ipAddr);
+					ClientManager.getInstance().sendMessage("hello");
 				}
 			}.start();
 

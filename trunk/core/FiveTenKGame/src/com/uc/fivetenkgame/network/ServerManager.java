@@ -3,8 +3,16 @@ package com.uc.fivetenkgame.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
-public class ServerManager implements NetworkManager{
+import com.uc.fivetenkgame.view.entity.Card;
+
+/**
+ * 服务器网络管理类
+ * @author liuzd
+ *
+ */
+public class ServerManager implements NetworkInterface{
 	
 	private static final int SERVER_PORT = 8888;
 	
@@ -33,15 +41,15 @@ public class ServerManager implements NetworkManager{
 	public void startListen(){
 		
 		try {
+			Socket socket = mServerSocket.accept();
+			mFirstPlayer = new TCPServer();
+			mFirstPlayer.initNetwork(socket);
+			mFirstPlayer.sendMessage("1#2");
 			
-				Socket socket = mServerSocket.accept();
-				mFirstPlayer = new TCPServer();
-				mFirstPlayer.initNetwork(socket);
-				
-				socket = mServerSocket.accept();
-				mSecondPlayer = new TCPServer();
-				mSecondPlayer.initNetwork(socket);
-				
+			socket = mServerSocket.accept();
+			mSecondPlayer = new TCPServer();
+			mSecondPlayer.initNetwork(socket);
+			mSecondPlayer.sendMessage("1#3");
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -58,4 +66,10 @@ public class ServerManager implements NetworkManager{
 		
 	}
 
+	@Override
+	public void playCards(List<Card> playCards) {
+		
+	}
+
+	
 }
