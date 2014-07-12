@@ -70,14 +70,15 @@ public final class R {
         public static final int ic_launcher=0x7f020038;
     }
     public static final class id {
+        public static final int ip_addr_text_ID=0x7f060006;
         public static final int main_help_id=0x7f060002;
         public static final int main_joid_game_id=0x7f060001;
         public static final int main_new_game_id=0x7f060000;
         public static final int main_setting_id=0x7f060003;
         public static final int ok_button_ID=0x7f060005;
-        public static final int ready_player_text_ID=0x7f060007;
+        public static final int ready_player_text_ID=0x7f060008;
         public static final int server_ip_text_ID=0x7f060004;
-        public static final int waiting_progressBar_ID=0x7f060006;
+        public static final int waiting_progressBar_ID=0x7f060007;
     }
     public static final class layout {
         public static final int activity_game_main=0x7f030000;
@@ -92,9 +93,11 @@ public final class R {
         public static final int input_server_ip_hint=0x7f040009;
         public static final int join_game_str=0x7f040003;
         public static final int join_str=0x7f040006;
+        public static final int my_ip_addr_str=0x7f04000c;
         public static final int new_game_str=0x7f040002;
         public static final int ready_player_str=0x7f040008;
         public static final int setting_str=0x7f040004;
+        public static final int start_game_str=0x7f04000b;
         public static final int waiting_str=0x7f040007;
     }
     public static final class style {

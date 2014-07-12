@@ -1,8 +1,5 @@
 package com.uc.fivetenkgame.network;
 
-import java.util.List;
-
-import com.uc.fivetenkgame.view.entity.Card;
 
 /**
  * 客户端网络管理类
@@ -10,41 +7,23 @@ import com.uc.fivetenkgame.view.entity.Card;
  * @author liuzd
  *
  */
-public class ClientManager implements NetworkInterface{
+public class ClientManager extends NetworkManager{
 
 	private TCPClient mTCPToServer;
-	
-	public static ClientManager gInstance;
-	public static ClientManager getInstance(){
-		if( null == gInstance){
-			gInstance = new ClientManager();
-		}
-		
-		return gInstance;
-	}
-	
-	private ClientManager(){
-		mTCPToServer = new TCPClient();
+
+	public ClientManager(){
+		mTCPToServer = new TCPClient(this);
 	}
 	
 	public void initNetwork(String addr){
-		mTCPToServer.initNetwork(this, addr);
+		mTCPToServer.initNetwork(addr, NETWORK_PORT);
+		mTCPToServer.start();
 	}
 	
 	
 	@Override
 	public void sendMessage(String msg) {
 		mTCPToServer.sendMessage(msg);
-	}
-
-	@Override
-	public void receiveMessage(String msg) {
-		
-	}
-
-	@Override
-	public void playCards(List<Card> playCards) {
-		
 	}
 
 	
