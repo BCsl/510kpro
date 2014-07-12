@@ -12,28 +12,13 @@ import java.net.Socket;
  */
 public class TCPServer extends Thread {
 	
+	private ServerManager mServerManager;
 	private Socket mServerSocket;
 	private OutputStream mOutputStream;
 	private InputStream mInputStream;
 	private byte[] mBuffer;
 	
-	/*
-	public static TCPServer gInstance;
-	public static TCPServer getInstance(){
-		if( null == gInstance ){
-			gInstance = new TCPServer();
-		}
-		
-		return gInstance;
-	}
-	
-	
-	private TCPServer(){
-		
-	}
-	*/
-	
-	public void initNetwork(Socket aSocket){
+	public TCPServer(ServerManager parent, Socket aSocket){
 		mServerSocket = aSocket;
 		try {
 			mInputStream = mServerSocket.getInputStream();
@@ -44,13 +29,17 @@ public class TCPServer extends Thread {
 		}
 		
 		mBuffer = new byte[1024];
+		mServerManager = parent;
 	}
-
+	
 	@Override
 	public void run() {
+		
 		try {
 			mInputStream.read(mBuffer);
 			System.out.println(mBuffer.toString());
+			mServerManager.receiveMessage(new String(mBuffer));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

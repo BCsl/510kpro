@@ -3,36 +3,24 @@ package com.uc.fivetenkgame.network;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 
-import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.network.util.Common;
 
 /**
  * 服务器网络管理类
  * @author liuzd
  *
  */
-public class ServerManager implements NetworkInterface{
-	
-	private static final int SERVER_PORT = 8888;
-	
+public class ServerManager extends NetworkManager{
+		
 	private ServerSocket mServerSocket;
 	
 	private TCPServer mFirstPlayer;
 	private TCPServer mSecondPlayer;
 	
-	public static ServerManager gInstance;
-	public static ServerManager getInstance(){
-		if( null == gInstance ){
-			gInstance = new ServerManager();
-		}
-		
-		return gInstance;
-	}
-	
-	private ServerManager(){
+	public ServerManager(){
 		try {
-			mServerSocket = new ServerSocket(SERVER_PORT);
+			mServerSocket = new ServerSocket(NETWORK_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -41,15 +29,19 @@ public class ServerManager implements NetworkInterface{
 	public void startListen(){
 		
 		try {
+			//接收第一个玩家链接
 			Socket socket = mServerSocket.accept();
-			mFirstPlayer = new TCPServer();
-			mFirstPlayer.initNetwork(socket);
-			mFirstPlayer.sendMessage("1#2");
+			mFirstPlayer = new TCPServer(this, socket);
+			mFirstPlayer.sendMessage(Common.PLAYER_ACCEPTED + Common.PLAYER1_NUM);
+			mFirstPlayer.start();
+			receiveMessage(Common.PLAYER_ACCEPTED);
 			
+			//接收第二个玩家链接
 			socket = mServerSocket.accept();
-			mSecondPlayer = new TCPServer();
-			mSecondPlayer.initNetwork(socket);
-			mSecondPlayer.sendMessage("1#3");
+			mSecondPlayer = new TCPServer(this, socket);
+			mSecondPlayer.sendMessage(Common.PLAYER_ACCEPTED + Common.PLAYER2_NUM);
+			mSecondPlayer.start();
+			receiveMessage(Common.PLAYER_ACCEPTED);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -61,15 +53,4 @@ public class ServerManager implements NetworkInterface{
 		mSecondPlayer.sendMessage(msg);
 	}
 
-	public void receiveMessage(String msg) {
-		
-		
-	}
-
-	@Override
-	public void playCards(List<Card> playCards) {
-		
-	}
-
-	
 }

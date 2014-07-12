@@ -12,4 +12,6 @@
 	<string name="ready_player_str">当前游戏人数：</string>
 	<string name="input_server_ip_hint">输入服务器地址</string>
 	<string name="confirm_str">确定</string>
+	<string name="start_game_str">开始游戏</string>
+	<string name="my_ip_addr_str">我的ip地址：</string>
 </resources>

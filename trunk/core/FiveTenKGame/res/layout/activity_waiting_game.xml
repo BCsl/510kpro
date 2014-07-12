@@ -1,15 +1,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
 
+    <TextView 
+        android:id="@+id/ip_addr_text_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/my_ip_addr_str"
+        />
     <ProgressBar
         android:id="@+id/waiting_progressBar_ID"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ip_addr_text_ID"
+        />
     <TextView 
         android:id="@+id/ready_player_text_ID"
         android:layout_width="wrap_content"

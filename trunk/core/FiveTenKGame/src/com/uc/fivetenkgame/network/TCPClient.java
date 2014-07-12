@@ -3,7 +3,6 @@ package com.uc.fivetenkgame.network;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 
 /**
@@ -13,8 +12,6 @@ import java.net.Socket;
  */
 public class TCPClient extends Thread {
 	
-	private static final int CLIENT_PORT = 8888;
-	
 	private ClientManager mClientManager;
 	private Socket mClientSocket;
 	private OutputStream mOutputStream;
@@ -22,31 +19,21 @@ public class TCPClient extends Thread {
 	private byte[] mBuffer;
 	
 	
-	/*public static TCPClient gInstance;
-	public static TCPClient getInstance(){
-		if( null == gInstance ){
-			gInstance = new TCPClient();
-		}
-		
-		return gInstance;
-	};
-	
-	private TCPClient(){
+	public TCPClient(ClientManager parent){
 		mBuffer = new byte[1024];
-	}*/
+		mClientManager = parent;
+	}
 	
-	public void initNetwork(ClientManager parent, String addr){
+	public void initNetwork(String addr, int port){
 		//note : client not null
 		try {
-			mClientSocket = new Socket(addr, CLIENT_PORT);
+			mClientSocket = new Socket(addr, port);
 			mOutputStream = mClientSocket.getOutputStream();
 			mInputStream = mClientSocket.getInputStream();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		mBuffer = new byte[1024];
-		mClientManager = parent;
 	}
 
 	@Override
