@@ -35,20 +35,36 @@ public class TCPServer extends Thread {
 	@Override
 	public void run() {
 		
-		try {
-			mInputStream.read(mBuffer);
-			System.out.println(mBuffer.toString());
-			mServerManager.receiveMessage(new String(mBuffer));
-			
-		} catch (IOException e) {
-			e.printStackTrace();
+		while( true ){
+			try {
+				mInputStream.read(mBuffer);
+				System.out.println(mBuffer.toString());
+				mServerManager.receiveMessage(new String(mBuffer));
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
 		}
+
 	}
 	
 	public void sendMessage(String msg){
 		try {
 			mOutputStream.write(msg.getBytes());
 			mOutputStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void release(){
+		
+		mBuffer = null;
+		
+		try {
+			mOutputStream.close();
+			mInputStream.close();
+			mServerSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
