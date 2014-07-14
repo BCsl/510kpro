@@ -54,7 +54,6 @@ public abstract class Player {
 	
 	protected OnReceiveMessageListener mReceiveMessage = new OnReceiveMessageListener() {
 
-		@Override
 		public void reveiveMessage(String msg) {
 			handleMessage(msg);
 		}

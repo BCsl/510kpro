@@ -9,18 +9,22 @@ import android.graphics.Rect;
  * 下午5:09:21 2014-7-9
  */
 public class Card {
-	int x=0;      							//横坐标
-	int y=0;	  							//纵坐标
-	int width;    							//宽度
-	int height;   							//高度
-	String cardId;							//图片 
-	String name; 							//Card的名称
-	boolean rear=true;						//是否是背面
-	boolean clicked=false;					//是否被点击
+	private int x=0;      							//横坐标
+	private int y=0;	  							//纵坐标
+	private int width;    							//宽度
+	private int height;   							//高度
+	private 	String cardId;							//图片 
+	private boolean clicked=false;					//是否被点击
 	public Card(int width,int height,String cardId){
 		this.width=width;
 		this.height=height;
 		this.cardId=cardId;
+	}
+	public boolean isClicked(){
+		return clicked;
+	}
+	public void setClick(boolean flag){
+			clicked=flag;
 	}
 	public String getCardId() {
 		return cardId;
@@ -33,8 +37,17 @@ public class Card {
 		this.x=x;
 		this.y=y;
 	}
-	public void setName(String name){
-		this.name=name;
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
 	}
 	public Rect getSRC(){
 		return new Rect(0,0,width,height);
