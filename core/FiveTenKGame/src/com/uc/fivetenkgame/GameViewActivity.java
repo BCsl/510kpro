@@ -1,5 +1,6 @@
 package com.uc.fivetenkgame;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
@@ -10,6 +11,7 @@ import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.player.ServerPlayer;
 import com.uc.fivetenkgame.view.GameView;
 import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.util.EventListener;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -45,7 +47,14 @@ public class GameViewActivity extends Activity {
 		
 		// Ëø¶¨ºáÆÁ
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		final GameView view =new GameView(getApplicationContext(), null,3,3);
+		final GameView view =new GameView(getApplicationContext(),3,3,new EventListener() {
+			
+			@Override
+			public boolean handCard(List<Card> handList) {
+				// TODO Auto-generated method stub
+				return true;
+			}
+		});
 		setContentView(view);
 		new LoopThread(view).start();
 		

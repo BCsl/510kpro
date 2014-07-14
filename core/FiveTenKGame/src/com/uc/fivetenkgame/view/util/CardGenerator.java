@@ -34,8 +34,6 @@ public class CardGenerator {
 		else
 			suffix=String.valueOf(cardNO);
 		res=prefix+suffix;
-		
-//		Log.i("card resource name:", res);
 		return res.trim();
 	}
 
