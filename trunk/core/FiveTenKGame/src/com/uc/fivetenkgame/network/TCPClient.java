@@ -18,7 +18,6 @@ public class TCPClient extends Thread {
 	private InputStream mInputStream;
 	private byte[] mBuffer;
 	
-	
 	public TCPClient(ClientManager parent){
 		mBuffer = new byte[1024];
 		mClientManager = parent;
@@ -38,12 +37,13 @@ public class TCPClient extends Thread {
 
 	@Override
 	public void run() {
-		
-		try {
-			mInputStream.read(mBuffer);
-			mClientManager.receiveMessage(new String(mBuffer));
-		} catch (IOException e) {
-			e.printStackTrace();
+		while( true ){
+			try {
+				mInputStream.read(mBuffer);
+				mClientManager.receiveMessage(new String(mBuffer));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -52,6 +52,19 @@ public class TCPClient extends Thread {
 		try {
 			mOutputStream.write(msg.getBytes());
 			mOutputStream.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void release(){
+		
+		mBuffer = null;
+		
+		try {
+			mOutputStream.close();
+			mInputStream.close();
+			mClientSocket.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
