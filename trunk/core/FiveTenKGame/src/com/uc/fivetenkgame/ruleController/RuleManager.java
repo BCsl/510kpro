@@ -1,5 +1,10 @@
 package com.uc.fivetenkgame.ruleController;
 
+/**
+ * 规则管理器 
+ * @author fuyx
+ *
+ */
 public class RuleManager {
 	private Rule mRule;
 	
