@@ -6,7 +6,14 @@ import java.util.List;
 import java.util.Vector;
 
 import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.util.CardGenerator;
 
+/**
+ * 
+ * 基本规则类
+ * @author fuyx
+ *
+ */
 public class BasicRule implements Rule {
 	/**  
 	 * @return 0 if cardList1 is illegal, 1 if it is legal
@@ -218,13 +225,15 @@ public class BasicRule implements Rule {
 
 	// 返回值
 	public static int getValue(Card card) {
-		int i = Integer.parseInt(card.getCardId().substring(3, card.getCardId().length()));
+		
+		int i = Integer.parseInt(CardGenerator.cardResourceName(card.getCardId()).substring(
+				3, card.getCardId().length()));
 		return i;
 	}
 
 	// 返回花色
 	public static int getColor(Card card) {
-		return Integer.parseInt(card.getCardId().substring(1, 2));
+		return Integer.parseInt(CardGenerator.cardResourceName(card.getCardId()).substring(1, 2));
 	}
 
 	// 得到最大相同数
