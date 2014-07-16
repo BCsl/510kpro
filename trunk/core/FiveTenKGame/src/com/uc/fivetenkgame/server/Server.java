@@ -45,7 +45,7 @@ public class Server implements ServerContext{
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		
 		mClientNum = 0;
-		mState = new InitState();
+		mState = new InitState(this);
 	}
 	
 	protected OnReceiveMessageListener mReceiveMessage = new OnReceiveMessageListener() {

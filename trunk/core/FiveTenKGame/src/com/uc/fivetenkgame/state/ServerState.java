@@ -4,7 +4,7 @@ import com.uc.fivetenkgame.server.ServerContext;
 
 public class ServerState implements State{
 
-	private ServerContext mServerContext;
+	protected ServerContext mServerContext;
 	
 	@Override
 	public void handle(String msg) {
