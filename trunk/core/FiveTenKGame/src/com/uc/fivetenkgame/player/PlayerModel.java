@@ -15,6 +15,7 @@ public class PlayerModel {
 	
 	private ArrayList<Card> mCardList;
 	private int mScore;
+	private int mPlayerNumber;
 	
 	public PlayerModel(){
 		mCardList = new ArrayList<Card>();
@@ -31,5 +32,13 @@ public class PlayerModel {
 	
 	public int getRemainCardsNum(){
 		return mCardList.size();
+	}
+	
+	public void setPlayerNumber(int number){
+		mPlayerNumber = number;
+	}
+	
+	public int getPlayerNumber(){
+		return mPlayerNumber;
 	}
 }

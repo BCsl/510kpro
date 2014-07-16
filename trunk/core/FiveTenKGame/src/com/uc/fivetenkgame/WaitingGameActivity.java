@@ -58,6 +58,13 @@ public class WaitingGameActivity extends Activity {
 					ServerPlayer.getInstance().startListen();
 				}
 			}.start();
+			
+			new Thread(){
+				public void run(){
+					ClientPlayer.getInstance().setHandler(mHandler);
+					ClientPlayer.getInstance().initNetwork("127.0.0.1");
+				}
+			}.start();
 		}
 		else{
 			final String ipAddr = intent.getStringExtra("IP");
