@@ -53,6 +53,7 @@ public class GameViewActivity extends Activity {
 		
 		
 	}
+	
 	public class LoopThread extends Thread{
 		GameView view;
 		LoopThread(GameView view ){
@@ -78,4 +79,10 @@ public class GameViewActivity extends Activity {
 		}
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		//
+	}
 }
