@@ -190,7 +190,7 @@ public class ThreePersonGameDrawer implements IDrawer {
 	 * @param num
 	 * @param baseX
 	 */
-	public void drawCardsBackgroundBaseOnX(Context con, Canvas canvas, int num,
+	private void drawCardsBackgroundBaseOnX(Context con, Canvas canvas, int num,
 			int baseX) {
 		if (num == 0)
 			return;
@@ -204,7 +204,8 @@ public class ThreePersonGameDrawer implements IDrawer {
 				/ 3 * factor;
 		// Log.e(TAG,"baseSpace:"+baseSpace+";int baseSpace"+(int)baseSpace);
 		for (int i = 0; i < num; i++) {
-			Card card = new Card(CARD_WIDTH, CARD_HEIGHT, "0");
+			Card card = new Card("0");
+			card.setSize(CARD_WIDTH, CARD_HEIGHT);
 			card.setLocation(baseX, (int) (i * baseSpace + heightBase));
 			ApplicationInfo appInfo = con.getApplicationInfo();
 			int id = con.getResources().getIdentifier(
@@ -226,7 +227,7 @@ public class ThreePersonGameDrawer implements IDrawer {
 	 * @param num
 	 * @param cardList
 	 */
-	public void drawCardsBaseOnX(Context con, Canvas canvas, int baseX,
+	private  void drawCardsBaseOnX(Context con, Canvas canvas, int baseX,
 			List<Card> cardList) {
 		if (cardList == null || cardList.size() == 0)
 			return;
@@ -238,6 +239,7 @@ public class ThreePersonGameDrawer implements IDrawer {
 		// Log.e(TAG, "baseX"+baseX+";heightBase"+heightBase);
 		for (int i = 0; i < num; i++) {
 			Card card = cardList.get(i);
+			card.setSize(CARD_WIDTH, CARD_HEIGHT);
 			card.setLocation(baseX, i * baseSpace + baseHeight);
 			ApplicationInfo appInfo = con.getApplicationInfo();
 			int id = con.getResources().getIdentifier(
@@ -259,6 +261,7 @@ public class ThreePersonGameDrawer implements IDrawer {
 		int card_intent = CARD_HEIGHT / 2;
 		for (int i = 0; i < size; i++) {
 			Card card = cardList.get(i);
+			card.setSize(CARD_WIDTH, CARD_HEIGHT);
 			if (!card.isClicked())
 				card.setLocation(baseX + i * CARD_WIDTH * 3 / 4, height);	//没有被点击的卡牌高度设为height
 			else
@@ -291,6 +294,7 @@ public class ThreePersonGameDrawer implements IDrawer {
 		int rightXEgal = SCREEN_WIDTH - 4 * CARD_WIDTH;
 		for (int i = 0; i < mainOutList.size(); i++) {
 			Card card = mainOutList.get(i);
+			card.setSize(CARD_WIDTH, CARD_HEIGHT);
 			card.setLocation(baseWidth + i * CARD_WIDTH * 1 / 3, mainBaseY);
 			ApplicationInfo appInfo = con.getApplicationInfo();
 			int id = con.getResources().getIdentifier(

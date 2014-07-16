@@ -15,10 +15,12 @@ public class Card {
 	private int height;   							//高度
 	private 	String cardId;							//图片 
 	private boolean clicked=false;					//是否被点击
-	public Card(int width,int height,String cardId){
+	public Card(String cardId){
+		this.cardId=cardId;
+	}
+	public void setSize(int width,int height){
 		this.width=width;
 		this.height=height;
-		this.cardId=cardId;
 	}
 	public boolean isClicked(){
 		return clicked;

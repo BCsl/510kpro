@@ -34,7 +34,9 @@ public abstract class EventListener {
 	 */
 	public void handleTouchEvent(MotionEvent event, GameView view,
 			List<Card> cardList) {
-	
+		//只接受按下事件
+		if(event.getAction()!=MotionEvent.ACTION_UP)
+			return ;
 		float rawX = event.getRawX();
 		float rawY = event.getRawY();
 		// Log.e(TAG, "x" + rawX + ";y" + rawY);
@@ -68,7 +70,7 @@ public abstract class EventListener {
 			Log.e(TAG, "出牌：" + handList.toString());
 			if(handCard(handList)){
 				//出牌成功
-				view.setPlayersOutList(-1, new ArrayList<Card>(handList));
+				view.getViewControler().setPlayersOutList(-1, new ArrayList<Card>(handList));
 				cardList.removeAll(handList);
 //				view.setMyTurn(false);
 				handList.clear();
