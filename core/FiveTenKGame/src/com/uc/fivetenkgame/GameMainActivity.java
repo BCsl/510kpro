@@ -29,7 +29,6 @@ public class GameMainActivity extends Activity {
 	
 	private OnClickListener mClickListener = new OnClickListener() {
 		
-		@Override
 		public void onClick(View v) {
 			
 			if( v == mNewGameButton ){

@@ -3,7 +3,7 @@ package com.uc.fivetenkgame.view.util;
 import android.util.Log;
 
 /**
- * 
+ * 把手牌的序号转换为对应的资源名
  * @author chensl@ucweb.com
  *
  * 下午5:09:27 2014-7-9

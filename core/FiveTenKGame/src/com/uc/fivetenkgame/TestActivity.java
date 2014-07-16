@@ -1,26 +1,21 @@
 package com.uc.fivetenkgame;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
-
-import my.example.fivetenkgame.R;
-
 import com.uc.fivetenkgame.view.GameView;
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
+import com.uc.fivetenkgame.view.util.IViewControler;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 public class TestActivity extends Activity{
+	private String TAG="TestActivity";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,11 +26,15 @@ public class TestActivity extends Activity{
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// Ëø¶¨ºáÆÁ
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		final GameView view =new GameView(getApplicationContext(),3,3,new EventListener() {
+		final GameView view =new GameView(getApplicationContext(),3,3);
+		view.setEventListener(new EventListener() {
 			
 			@Override
 			public boolean handCard(List<Card> handList) {
-				return true;
+					if(handList==null)
+						return true;
+					Log.e(TAG, handList.toString());
+					return true;
 			}
 		});
 		setContentView(view);
@@ -51,13 +50,16 @@ public class TestActivity extends Activity{
 		@Override
 		public void run() {
 			int i=0;
+			IViewControler viewControler=view.getViewControler();
 			while(i<1){
 				Vector<Card> cardList = new Vector<Card>();
-				Bitmap t=BitmapFactory.decodeResource(getResources(),R.drawable.cardbg1);
 				Random random =new Random();
 				for(int j=1;j<18;j++)
-					cardList.add(new Card(t.getWidth(), t.getHeight(), String.valueOf(random.nextInt(18))));
-				view.handCards(cardList);
+					cardList.add(new Card(String.valueOf(random.nextInt(18))));
+				viewControler.setCards(cardList);
+				
+//				viewControler.setCardNumber(cardNumber);
+				
 				i++;
 				try {
 					Thread.sleep(2000);
@@ -67,5 +69,6 @@ public class TestActivity extends Activity{
 			}
 		}
 	}
+	
 
 }

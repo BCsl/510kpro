@@ -47,14 +47,7 @@ public class GameViewActivity extends Activity {
 		
 		// Ëø¶¨ºáÆÁ
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		final GameView view =new GameView(getApplicationContext(),3,3,new EventListener() {
-			
-			@Override
-			public boolean handCard(List<Card> handList) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
+		final GameView view =new GameView(getApplicationContext(),3,3);
 		setContentView(view);
 		new LoopThread(view).start();
 		
@@ -73,8 +66,8 @@ public class GameViewActivity extends Activity {
 				Bitmap t=BitmapFactory.decodeResource(getResources(),R.drawable.cardbg1);
 				Random random =new Random();
 				for(int j=1;j<random.nextInt(18);j++)
-					cardList.add(new Card(t.getWidth(), t.getHeight(), String.valueOf(random.nextInt(18))));
-				view.handCards(cardList);
+					cardList.add(new Card(String.valueOf(random.nextInt(18))));
+				view.getViewControler().setCards(cardList);
 				i++;
 				try {
 					Thread.sleep(2000);
