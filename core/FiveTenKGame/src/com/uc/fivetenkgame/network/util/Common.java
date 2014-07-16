@@ -2,16 +2,16 @@ package com.uc.fivetenkgame.network.util;
 
 /**
  * 公共类，一些常用数据定义
- * 
- * @author liuzd
  *
  */
 public class Common {
 
 	//玩家序号
-	public static final int SERVER_NUM	= 1;
-	public static final int PLAYER1_NUM = 2;
-	public static final int PLAYER2_NUM = 3;
+	public static final int PLAYER1_NUM = 1;
+	public static final int PLAYER2_NUM = 2;
+	public static final int PLAYER3_NUM	= 3;
+	//总玩家人数
+	public static final int TOTAL_PLAYER_NUM = 3;
 	
 	//网络消息头标号定义
 	public static final String PLAYER_ACCEPTED = "1#";
@@ -31,4 +31,10 @@ public class Common {
 	//handler消息处理编号
 	public static final int UPDATE_WAITING_PLAYER_NUM = 1;
 	public static final int START_GAME = 2;
+	
+	//服务器状态改变内部消息
+	public static final String SERVER_LISTENING = "1@";
+	public static final String GAME_START = "2@";
+	public static final String GAME_END = "3@";
+	
 }

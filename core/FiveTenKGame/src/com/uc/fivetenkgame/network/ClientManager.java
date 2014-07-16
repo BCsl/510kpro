@@ -17,7 +17,6 @@ public class ClientManager extends NetworkManager{
 	
 	public void initNetwork(String addr){
 		mTCPToServer.initNetwork(addr, NETWORK_PORT);
-		mTCPToServer.start();
 	}
 	
 	
