@@ -26,7 +26,7 @@ public class TestActivity extends Activity{
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// Ëø¶¨ºáÆÁ
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		final GameView view =new GameView(getApplicationContext(),3,3);
+		final GameView view =new GameView(getApplicationContext(),3);
 		view.setEventListener(new EventListener() {
 			
 			@Override
@@ -51,15 +51,18 @@ public class TestActivity extends Activity{
 		public void run() {
 			int i=0;
 			IViewControler viewControler=view.getViewControler();
-			while(i<1){
+			while(i<10){
 				Vector<Card> cardList = new Vector<Card>();
+				Vector<Integer> cardNumber=new Vector<Integer>();
 				Random random =new Random();
+				cardNumber.add(random.nextInt(18));
+				cardNumber.add(random.nextInt(18));
+				cardNumber.add(random.nextInt(18));
 				for(int j=1;j<18;j++)
 					cardList.add(new Card(String.valueOf(random.nextInt(18))));
 				viewControler.setCards(cardList);
-				
-//				viewControler.setCardNumber(cardNumber);
-				
+				viewControler.setCardNumber(cardNumber);
+				viewControler.setGameScore(random.nextInt(100));
 				i++;
 				try {
 					Thread.sleep(2000);

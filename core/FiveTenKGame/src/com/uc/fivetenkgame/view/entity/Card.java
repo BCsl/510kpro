@@ -1,6 +1,6 @@
+
 package com.uc.fivetenkgame.view.entity;
 
-import android.graphics.Bitmap;
 import android.graphics.Rect;
 /**
  * 
