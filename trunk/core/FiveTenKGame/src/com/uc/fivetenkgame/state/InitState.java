@@ -1,20 +1,30 @@
 package com.uc.fivetenkgame.state;
 
-import com.uc.fivetenkgame.network.util.Common;
-import com.uc.fivetenkgame.server.ServerContext;
+import com.uc.fivetenkgame.player.Player;
+import com.uc.fivetenkgame.player.PlayerContext;
 
-public class InitState extends ServerState {
+import android.util.Log;
 
-	public InitState(ServerContext context){
-		mServerContext = context;
+/**
+ * ³õÊ¼×´Ì¬Àà
+ * @author fuyx
+ *
+ */
+public class InitState implements State{
+	String TAG = "InitState";
+	private Player mPlayer;
+	private String mAddr;
+	
+	public  InitState(Player player, String addr) {
+		mPlayer = player;
+		mAddr = addr;
 	}
 	
 	@Override
-	public void handle(String msg) {
-		
-		if( msg.startsWith(Common.SERVER_LISTENING) ){
-			mServerContext.setState(new ListeningState(mServerContext));
-		}
+	public void handle() {
+		mPlayer.initNetwork(mAddr);
+		Log.i(TAG, "");
+		mPlayer.setState(new ConnectState(mPlayer));
 	}
-	
+
 }
