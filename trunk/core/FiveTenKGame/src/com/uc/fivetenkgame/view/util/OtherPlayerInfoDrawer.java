@@ -17,7 +17,7 @@ import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
 
-/**
+/**画其他玩家信息类（垂直方向上的布局）
  * @author chensl@ucweb.com
  *
  * 下午6:42:47 2014-7-16
