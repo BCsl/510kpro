@@ -22,8 +22,8 @@ import com.uc.fivetenkgame.view.util.IViewControler;
  * @author fuyx
  *
  */
-public class Player implements PlayerContext{
-	
+public class Player{
+	protected boolean isGameOver = false;
 	private Rule mRule;
 	private State mState;
 	//private OnReceiveMessageListener mReceiveMessage;
@@ -48,15 +48,28 @@ public class Player implements PlayerContext{
 	
 	public void startPlay(String addr){
 		setState(new InitState(gInstance, addr));
-		while(true){
-			mState.handle();
-		}
 	}
 	
 	private IViewControler viewController;
 	
+	//设置规则
+	public void setRule(Rule rule){
+		mRule = rule;
+	}
+	
+	//设置界面接口
+	public void setIViewControler(IViewControler viewcontroler){
+		viewController = viewcontroler;
+	}
+	
+	//启动网络模块
+	public void initNetwork(String addr){
+		((ClientManager)mNetworkManager).initNetwork(addr);
+	}
+	
 	public static Player gInstance;//唯一的Player实例
 	
+	//返回一个唯一的player实例
 	public static  Player getInstance(){
 		if( null == gInstance ){
 			gInstance = new Player();
@@ -69,18 +82,17 @@ public class Player implements PlayerContext{
 		mHandler = handler;
 	}
 	
+	public void setFormerCardList(List<Card> cardList){
+		formerCardList = cardList;
+	}
+	
 	public void setState(State state) {
 		mState = state;
 		mState.handle();
 	}
 	
-	public void setRule(Rule rule){
-		mRule = rule;
-	}
-	
 	private Player(){
 		mNetworkManager = ClientManager.getInstance();
-		
 	}
 	
 	public IViewControler getIViewControler(){
@@ -93,10 +105,6 @@ public class Player implements PlayerContext{
 	
 	public PlayerModel getPlayerModel(){
 		return mPlayerModel;
-	}
-	
-	public void initNetwork(String addr){
-		((ClientManager)mNetworkManager).initNetwork(addr);
 	}
 	
 	public void setPlayerCards(String cards){
