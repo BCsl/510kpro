@@ -20,7 +20,6 @@ public abstract class NetworkManager {
 		mReceiveMessageListener.reveiveMessage(msg);
 	}
 	
-	
 	public void setOnReceiveMessage(OnReceiveMessageListener onReceiveMessage) {
 		mReceiveMessageListener = onReceiveMessage;
 	}

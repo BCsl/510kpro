@@ -41,7 +41,7 @@ public class Server implements ServerContext{
 	}
 	
 	private Server(){
-		mNetworkManager = new ServerManager();
+		mNetworkManager = ServerManager.getInstance();
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		
 		mClientNum = 0;
@@ -57,30 +57,12 @@ public class Server implements ServerContext{
 	};
 	
 	public void handleMessage(String msg) {
-/*		
-		//玩家链接成功
-		if( msg.startsWith(Common.PLAYER_ACCEPTED) ){
-			++mClientNum;
-			
-			if( mClientNum == 1 ){
-				//更新等待界面人数
-				mHandler.obtainMessage(Common.UPDATE_WAITING_PLAYER_NUM, 2).sendToTarget();
-			}
-			else if( mClientNum == 2 ){
-				//够玩家人数，开始游戏
-				mHandler.obtainMessage(Common.START_GAME).sendToTarget();
-				mNetworkManager.sendMessage(Common.BEGIN_GAME);
-			}
-		}
-*/
 		mState.handle(msg);
-		
 	}
 	
 
 	public void startListen(){
 		mState.handle(Common.SERVER_LISTENING);
-		
 		((ServerManager)mNetworkManager).startListen();
 	}
 
@@ -130,7 +112,6 @@ public class Server implements ServerContext{
 
 	@Override
 	public void setCurrentPlayerNumber(int CurrentPlayerNumber) {
-		// TODO Auto-generated method stub
 		mCurrentPlayer=CurrentPlayerNumber;
 	}
 	
