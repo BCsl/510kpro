@@ -9,6 +9,7 @@ import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkManager;
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.ruleController.Rule;
+import com.uc.fivetenkgame.state.InitState;
 import com.uc.fivetenkgame.state.PlayerState;
 import com.uc.fivetenkgame.state.State;
 import com.uc.fivetenkgame.view.entity.Card;
@@ -44,6 +45,13 @@ public class Player implements PlayerContext{
 				return false;
 		}
 	};
+	
+	public void startPlay(String addr){
+		setState(new InitState(gInstance, addr));
+		while(true){
+			mState.handle();
+		}
+	}
 	
 	private IViewControler viewController;
 	
