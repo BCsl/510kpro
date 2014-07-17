@@ -32,11 +32,11 @@ public abstract class EventListener {
 	 * @param view
 	 *            被處理的View
 	 */
-	public final  void handleTouchEvent(MotionEvent event, GameView view,
+	public final void handleTouchEvent(MotionEvent event, GameView view,
 			List<Card> cardList) {
-		//只接受按下事件
-//		if(event.getAction()!=MotionEvent.ACTION_UP)
-//			return ;
+		// 只接受按下事件
+		// if(event.getAction()!=MotionEvent.ACTION_UP)
+		// return ;
 		float rawX = event.getRawX();
 		float rawY = event.getRawY();
 		// Log.e(TAG, "x" + rawX + ";y" + rawY);
@@ -47,36 +47,36 @@ public abstract class EventListener {
 		int CARD_INTENT = CARD_HEIGHT / 2;
 		Card card = getCard(SCREEN_HEIGHT, CARD_WIDTH, CARD_HEIGHT,
 				CARD_INTENT, rawX, rawY, cardList);
-		//卡牌被点击
+		// 卡牌被点击
 		if (card != null) {
-		Log.e(TAG, "被点击：" + card.getCardId());
+			Log.e(TAG, "被点击：" + card.getCardId());
 			if (card.isClicked()) {
 				card.setClick(false);
 				handList.remove(card);
-			} 
-			else {
+			} else {
 				card.setClick(true);
 				handList.add(card);
 			}
-			return ;
+			return;
 		}
 		Log.e(TAG, "test");
 		int leftButtonBaseX = SCREEN_WIDTH / 2 - 2 * CARD_WIDTH;
 		int rightButtonBaseX = SCREEN_WIDTH / 2 + 2 * CARD_WIDTH;
-		//出牌按钮被点击
+		// 出牌按钮被点击
 		if (view.isMyTurn()
 				&& buttonClick(leftButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
-						rawX, rawY) && handList.size()>=0) {
+						rawX, rawY) && handList.size() >= 0) {
 			Log.e(TAG, "出牌：" + handList.toString());
-			if(handCard(handList)){
-				//出牌成功
-				view.getViewControler().setPlayersOutList(-1, new ArrayList<Card>(handList));
+			if (handCard(handList)) {
+				// 出牌成功
+				view.getViewControler().setPlayersOutList(-1,
+						new ArrayList<Card>(handList));
 				cardList.removeAll(handList);
-//				view.setMyTurn(false);
+				// view.setMyTurn(false);
 				handList.clear();
-			}
-			else
-				Toast.makeText(view.getContext(), "请按规则出牌喔",Toast.LENGTH_SHORT ).show();
+			} else
+				Toast.makeText(view.getContext(), "请按规则出牌喔", Toast.LENGTH_SHORT)
+						.show();
 			return;
 		}
 		if (view.isMyTurn()
@@ -88,7 +88,7 @@ public abstract class EventListener {
 			}
 			handList.clear();
 			handCard(null);
-//			view.setMyTurn(false);
+			// view.setMyTurn(false);
 			return;
 		}
 
@@ -152,11 +152,13 @@ public abstract class EventListener {
 		return null;
 	}
 
-	/**	出牌操作(需要进行规则的判断)
+	/**
+	 * 出牌操作(需要进行规则的判断)
 	 * 
-	 * @param handList	准备出的牌    handList为空，则为放弃操作。
+	 * @param handList
+	 *            准备出的牌 handList为空，则为放弃操作。
 	 * 
-	 * @return	出牌成功返回false
+	 * @return 出牌成功返回false
 	 */
 	public abstract boolean handCard(List<Card> handList);
 

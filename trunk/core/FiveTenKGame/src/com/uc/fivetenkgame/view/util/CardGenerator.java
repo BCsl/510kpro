@@ -13,9 +13,7 @@ import android.graphics.BitmapFactory;
  */
 public class CardGenerator {
 	public static String cardResourceName(String cardId) {
-		String res;
-		String prefix = null;
-		String suffix;
+		StringBuilder prefix = new StringBuilder();
 		int cardNO = Integer.valueOf(cardId.trim());
 		if (cardNO == 0)
 			return "cardbg1";
@@ -26,16 +24,16 @@ public class CardGenerator {
 
 		switch (cardNO / 14) {
 		case 0:
-			prefix = "a2_";
+			prefix.append("a2_");
 			break;
 		case 1:
-			prefix = "a1_";
+			prefix.append("a1_");
 			break;
 		case 2:
-			prefix = "a3_";
+			prefix.append("a3_");
 			break;
 		case 3:
-			prefix = "a4_";
+			prefix.append("a4_");
 			break;
 		default:
 			new IllegalArgumentException(cardNO + "is not defined!");
@@ -43,11 +41,10 @@ public class CardGenerator {
 		}
 		cardNO %= 13;
 		if (cardNO < 3)
-			suffix = String.valueOf(cardNO + 13);
+			prefix.append(String.valueOf(cardNO + 13));
 		else
-			suffix = String.valueOf(cardNO);
-		res = prefix + suffix;
-		return res.trim();
+			prefix.append(String.valueOf(cardNO));
+		return prefix.toString().trim();
 	}
 
 	public static Bitmap getBitmap(Context con, String resourceName) {

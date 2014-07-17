@@ -68,4 +68,9 @@ public interface IViewControler {
 	 *            是否可以出牌信号
 	 */
 	public void setMyTurn(boolean flag);
+	/**
+	 * 设置事件回调器
+	 * @param eventListener
+	 */
+	public void setEventListener(EventListener eventListener) ;
 }
