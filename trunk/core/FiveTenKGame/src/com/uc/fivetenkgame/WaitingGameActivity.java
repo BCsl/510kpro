@@ -1,8 +1,6 @@
 package com.uc.fivetenkgame;
 
 import com.uc.fivetenkgame.network.util.Common;
-import com.uc.fivetenkgame.player.ClientPlayer;
-import com.uc.fivetenkgame.player.ServerPlayer;
 
 import my.example.fivetenkgame.R;
 import android.annotation.SuppressLint;
@@ -54,15 +52,15 @@ public class WaitingGameActivity extends Activity {
 			mReadyPlayer.setText(getResources().getString(R.string.ready_player_str) + "1»À");
 			new Thread(){
 				public void run(){
-					ServerPlayer.getInstance().setHandler(mHandler);
-					ServerPlayer.getInstance().startListen();
+					//ServerPlayer.getInstance().setHandler(mHandler);
+					//ServerPlayer.getInstance().startListen();
 				}
 			}.start();
 			
 			new Thread(){
 				public void run(){
-					ClientPlayer.getInstance().setHandler(mHandler);
-					ClientPlayer.getInstance().initNetwork("127.0.0.1");
+					//ClientPlayer.getInstance().setHandler(mHandler);
+					//ClientPlayer.getInstance().initNetwork("127.0.0.1");
 				}
 			}.start();
 		}
@@ -71,8 +69,8 @@ public class WaitingGameActivity extends Activity {
 			
 			new Thread(){
 				public void run(){
-					ClientPlayer.getInstance().setHandler(mHandler);
-					ClientPlayer.getInstance().initNetwork(ipAddr);
+					//ClientPlayer.getInstance().setHandler(mHandler);
+					//ClientPlayer.getInstance().initNetwork(ipAddr);
 				}
 			}.start();
 
