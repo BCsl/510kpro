@@ -10,7 +10,6 @@ package com.uc.fivetenkgame.view;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Vector;
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
@@ -33,6 +32,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /**
+ * 游戏界面类
+ * 
  * @author chensl@ucweb.com
  * 
  *         上午11:28:20 2014-7-9
@@ -103,6 +104,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		public void setMyTurn(boolean flag) {
 			isMyTrun = flag;
 		}
+
+		@Override
+		public void setEventListener(EventListener listener) {
+			eventListener = listener;
+		}
 	}
 
 	private void init() {
@@ -125,21 +131,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		isMyTrun = true;
 		gameScore = 0;
 		cardNumber = new Vector<Integer>();
-		 cardNumber.add(0);
-		 cardNumber.add(0);
-		 cardNumber.add(0);
+		cardNumber.add(0);
+		cardNumber.add(0);
+		cardNumber.add(0);
 
 		scroeList = new Vector<Integer>();
-		 scroeList.add(0);
-		 scroeList.add(0);
-		 scroeList.add(0);
+		scroeList.add(0);
+		scroeList.add(0);
+		scroeList.add(0);
 
 		cardList = new Vector<Card>();
 		outList = new HashMap<Integer, List<Card>>();
-	}
 
-	public void setEventListener(EventListener eventListener) {
-		this.eventListener = eventListener;
 	}
 
 	public IViewControler getViewControler() {

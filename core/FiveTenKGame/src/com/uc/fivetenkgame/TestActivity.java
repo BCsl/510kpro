@@ -27,16 +27,6 @@ public class TestActivity extends Activity{
 		// Ëø¶¨ºáÆÁ
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		final GameView view =new GameView(getApplicationContext(),3);
-		view.setEventListener(new EventListener() {
-			
-			@Override
-			public boolean handCard(List<Card> handList) {
-					if(handList==null)
-						return true;
-					Log.e(TAG, handList.toString());
-					return true;
-			}
-		});
 		setContentView(view);
 		new LoopThread(view).start();
 		
@@ -51,6 +41,17 @@ public class TestActivity extends Activity{
 		public void run() {
 			int i=0;
 			IViewControler viewControler=view.getViewControler();
+			viewControler.setEventListener(new EventListener() {
+			
+			@Override
+			public boolean handCard(List<Card> handList) {
+					if(handList==null)
+						return true;
+					Log.e(TAG, handList.toString());
+					return true;
+					}
+			}
+			);
 			while(i<10){
 				Vector<Card> cardList = new Vector<Card>();
 				Vector<Integer> cardNumber=new Vector<Integer>();
@@ -63,6 +64,7 @@ public class TestActivity extends Activity{
 				viewControler.setCards(cardList);
 				viewControler.setCardNumber(cardNumber);
 				viewControler.setGameScore(random.nextInt(100));
+				viewControler.setMyTurn(random.nextBoolean());
 				i++;
 				try {
 					Thread.sleep(2000);
