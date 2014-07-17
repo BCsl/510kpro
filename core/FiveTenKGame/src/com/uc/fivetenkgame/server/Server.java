@@ -9,8 +9,8 @@ import com.uc.fivetenkgame.network.ServerManager;
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.player.PlayerModel;
-import com.uc.fivetenkgame.state.InitState;
-import com.uc.fivetenkgame.state.ServerState;
+import com.uc.fivetenkgame.state.serverstate.InitState;
+import com.uc.fivetenkgame.state.serverstate.ServerState;
 
 /**
  * ·þÎñÆ÷Àà
@@ -23,13 +23,12 @@ import com.uc.fivetenkgame.state.ServerState;
 public class Server implements ServerContext{
 	
 	private ArrayList<PlayerModel> mPlayerModels;
-	private int []mPlayerScores;
 	private int mRoundScore;
 	private int mClientNum;
 	
 	private NetworkManager mNetworkManager;
-	private Handler mHandler;
 	private ServerState mState;
+	private Handler mHandler;
 	
 	public static Server gInstance;
 	public static Server getInstance(){
@@ -92,5 +91,23 @@ public class Server implements ServerContext{
 		mState = state;
 	}
 	
+	public Handler getHandler(){
+		return mHandler;
+	}
+
+	@Override
+	public int getClientNum() {
+		return mClientNum;
+	}
+
+	@Override
+	public void setClientNum(int num) {
+		mClientNum = num;
+	}
+
+	@Override
+	public void setPlayerModel(ArrayList<PlayerModel> playerModelList) {
+		mPlayerModels = playerModelList;
+	}
 	
 }

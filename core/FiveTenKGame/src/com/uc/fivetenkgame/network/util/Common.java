@@ -30,4 +30,12 @@ public class Common {
 	//handler消息处理编号
 	public static final int UPDATE_WAITING_PLAYER_NUM = 1;
 	public static final int START_GAME = 2;
+	
+	
+	//服务器状态改变内部消息
+	public static final String SERVER_LISTENING = "1@";
+	public static final String GAME_START = "2@";
+	public static final String GAME_END = "3@";
+	//总玩家人数
+	public static final int TOTAL_PLAYER_NUM = 3;
 }
