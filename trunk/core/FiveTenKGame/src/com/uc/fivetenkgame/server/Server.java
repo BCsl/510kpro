@@ -25,6 +25,7 @@ public class Server implements ServerContext{
 	private ArrayList<PlayerModel> mPlayerModels;
 	private int mRoundScore;
 	private int mClientNum;
+	private int mCurrentPlayer;
 	
 	private NetworkManager mNetworkManager;
 	private ServerState mState;
@@ -108,6 +109,16 @@ public class Server implements ServerContext{
 	@Override
 	public void setPlayerModel(ArrayList<PlayerModel> playerModelList) {
 		mPlayerModels = playerModelList;
+	}
+
+	@Override
+	public ArrayList<PlayerModel> getPlayerModel() {
+		return mPlayerModels;
+	}
+
+	@Override
+	public int getCurrentPlayerNumber() {
+		return mCurrentPlayer;
 	}
 	
 }
