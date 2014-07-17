@@ -22,7 +22,8 @@ public class WaitForMsgState implements State{
 	public OnReceiveMessageListener mReceiveMessage = new OnReceiveMessageListener() {
 		public void reveiveMessage(String msg) {
 			//得到出牌信息
-			if( msg.startsWith(Common.YOUR_TURN) ){
+			if( (msg.startsWith(Common.YOUR_TURN)) && 
+					(Integer.parseInt(msg.substring(2)) == mPlayer.getPlayerModel().getPlayerNumber()) ){
 				mPlayer.setState(new SelectCardState());
 				Log.i(TAG, msg);
 			}
