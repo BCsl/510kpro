@@ -32,11 +32,11 @@ public abstract class EventListener {
 	 * @param view
 	 *            被處理的View
 	 */
-	public void handleTouchEvent(MotionEvent event, GameView view,
+	public final  void handleTouchEvent(MotionEvent event, GameView view,
 			List<Card> cardList) {
 		//只接受按下事件
-		if(event.getAction()!=MotionEvent.ACTION_UP)
-			return ;
+//		if(event.getAction()!=MotionEvent.ACTION_UP)
+//			return ;
 		float rawX = event.getRawX();
 		float rawY = event.getRawY();
 		// Log.e(TAG, "x" + rawX + ";y" + rawY);

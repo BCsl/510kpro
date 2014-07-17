@@ -7,27 +7,26 @@
  */
 package com.uc.fivetenkgame.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
-
 import com.uc.fivetenkgame.view.entity.Card;
-import com.uc.fivetenkgame.view.util.DrawerFactory;
 import com.uc.fivetenkgame.view.util.EventListener;
-import com.uc.fivetenkgame.view.util.IDrawer;
 import com.uc.fivetenkgame.view.util.IViewControler;
+import com.uc.fivetenkgame.view.util.MainPlayerInfoDrawer;
+import com.uc.fivetenkgame.view.util.OtherPlayerInfoDrawer;
 
 import my.example.fivetenkgame.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -48,9 +47,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private Thread drawThread;
 	private boolean start;
 	private List<Card> cardList; // 玩家自己拥有的牌
-	private int playerNO;
-	private int playersCount; // 遊戲參與玩家總數
-	private IDrawer drawer;
+	private int playerId, right_player_id = -1, left_player_id = -1;
 	private boolean isMyTrun;
 	private int gameScore;
 	private List<Integer> cardNumber;
@@ -58,13 +55,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private Map<Integer, List<Card>> outList;
 	private EventListener eventListener;
 	private IViewControler viewControler;
-	private boolean repaint;
+	private MainPlayerInfoDrawer mainPlayerDrawer;
+	private OtherPlayerInfoDrawer leftPlayerDrawer, rightPlayerDrawer;
+	private float BUTTON_BASE_HEIGHT, SCORE_TEXT_LENGTH, PLAYER_TEXT_LENGTH;
+	private float TEXT_SIZE, TEXT_SIZE_SMALL, TEXT_SIZE_BIG;
+	private float MAIN_CARDS__BASEY, MAIN_OUT_CARDS_BASEY;
+	private float LEFT_CARDS_BASEX, RIGHT_CARDS_BASEX, LEFT_OUTCARDS_BASEX,
+			RIGHT_OUTCARDS_BASEX;
 
-	public GameView(Context context, int playersCount, int playerNO) {
+	public GameView(Context context, int playerId) {
 		super(context);
 		this.context = context;
-		this.playersCount = playersCount;
-		this.playerNO = playerNO;
+		this.playerId = playerId;
 		holder = this.getHolder();
 		holder.addCallback(this); // 设置Surface生命周期回调
 		init();
@@ -88,7 +90,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		public void setPlayersOutList(int number, List<Card> list) {
 			if (number == -1) // 设置的是当前Player
-				outList.put(playerNO - 1, list);
+				outList.put(playerId - 1, list);
 			else
 				outList.put(number - 1, list);
 		}
@@ -104,20 +106,33 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	private void init() {
-		viewControler =new ViewControler();
-		Random random = new Random();
+		switch (playerId) {
+		case 1:
+			right_player_id = 2;
+			left_player_id = 3;
+			break;
+		case 2:
+			right_player_id = 3;
+			left_player_id = 1;
+			break;
+		case 3:
+			right_player_id = 1;
+			left_player_id = 2;
+			break;
+		}
+		viewControler = new ViewControler();
 		start = true;
-		isMyTrun = false;
-		gameScore = random.nextInt(100);
+		isMyTrun = true;
+		gameScore = 0;
 		cardNumber = new Vector<Integer>();
-//		cardNumber.add(random.nextInt(18));
-//		cardNumber.add(random.nextInt(18));
-//		cardNumber.add(random.nextInt(18));
+		 cardNumber.add(0);
+		 cardNumber.add(0);
+		 cardNumber.add(0);
 
 		scroeList = new Vector<Integer>();
-//		scroeList.add(random.nextInt(100));
-//		scroeList.add(random.nextInt(100));
-//		scroeList.add(random.nextInt(100));
+		 scroeList.add(0);
+		 scroeList.add(0);
+		 scroeList.add(0);
 
 		cardList = new Vector<Card>();
 		outList = new HashMap<Integer, List<Card>>();
@@ -126,7 +141,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	public void setEventListener(EventListener eventListener) {
 		this.eventListener = eventListener;
 	}
-	public IViewControler getViewControler(){
+
+	public IViewControler getViewControler() {
 		return viewControler;
 	}
 
@@ -141,6 +157,32 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 				R.drawable.cardbg1);
 		cardSizeHolder.height = temp.getHeight();
 		cardSizeHolder.width = temp.getWidth();
+
+		mainPlayerDrawer = new MainPlayerInfoDrawer(context, screenHolder,
+				cardSizeHolder);
+		leftPlayerDrawer = new OtherPlayerInfoDrawer(context, screenHolder,
+				cardSizeHolder);
+		rightPlayerDrawer = new OtherPlayerInfoDrawer(context, screenHolder,
+				cardSizeHolder);
+
+		BUTTON_BASE_HEIGHT = (float) screenHolder.height - cardSizeHolder.width
+				* 3;
+		TEXT_SIZE = cardSizeHolder.width * 2 / 3;
+		TEXT_SIZE_SMALL = cardSizeHolder.width * 1 / 2;
+		TEXT_SIZE_BIG = cardSizeHolder.width * 3 / 4;
+		Paint paint = new Paint();
+		paint.setTextSize(TEXT_SIZE);
+		PLAYER_TEXT_LENGTH = paint.measureText("玩家11");
+		paint.setTextSize(TEXT_SIZE_SMALL);
+		SCORE_TEXT_LENGTH = paint.measureText("分数:000");
+		MAIN_CARDS__BASEY = (float) screenHolder.height - cardSizeHolder.width
+				* 2 / 3 - cardSizeHolder.height;
+		MAIN_OUT_CARDS_BASEY = (float) screenHolder.height
+				- cardSizeHolder.height - cardSizeHolder.width * 3;
+		LEFT_OUTCARDS_BASEX = 3 * cardSizeHolder.width;
+		RIGHT_OUTCARDS_BASEX = screenHolder.width - 4 * cardSizeHolder.width;
+		LEFT_CARDS_BASEX = cardSizeHolder.width;
+		RIGHT_CARDS_BASEX = screenHolder.width - 2 * cardSizeHolder.width;
 		Log.i(TAG, screenHolder.toString());
 		Log.i(TAG, cardSizeHolder.toString());
 		temp.recycle();
@@ -151,8 +193,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		Log.i(TAG, " surfaceCreated");
 		initBeforeCreateView();
 		// 开始绘图进程
-		drawer = DrawerFactory.getDrawer(playersCount, screenHolder,
-				cardSizeHolder);
 		if (drawThread == null) {
 			drawThread = new Thread(this);
 			drawThread.start();
@@ -190,15 +230,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		synchronized (holder) {
 			try {
 				canvas = holder.lockCanvas();
+				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+				paint.setStyle(Style.FILL);
 				drawBackground(canvas);
-				if (isMyTrun)
-					drawer.drawButton(canvas);
-				drawer.drawGameScore(canvas, gameScore);
-				drawer.drawPlayers(canvas, playerNO);
-				drawer.drawCards(canvas, cardList, context);
-				drawer.drawCardNumber(canvas, cardNumber, playerNO, context);
-				drawer.drawPlayersScore(canvas, scroeList, playerNO);
-				drawer.drawOutList(context, canvas, outList, playerNO);
+				drawMainPlayer(canvas, paint);
+				drawLeftPlayer(canvas, paint);
+				drawRightPlayer(canvas, paint);
+				drawGameScore(canvas, paint);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -207,7 +245,55 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			}
 		}
 
-	};
+	}
+
+	private void drawGameScore(Canvas canvas, Paint paint) {
+		paint.setTextSize(TEXT_SIZE_BIG);
+		paint.setColor(Color.rgb(255, 184, 15));
+		canvas.drawText("本轮分数：" + gameScore, screenHolder.width / 2 - 3
+				* TEXT_SIZE_BIG, TEXT_SIZE_BIG, paint);
+	}
+
+	private void drawRightPlayer(Canvas canvas, Paint paint) {
+		rightPlayerDrawer.initCanvas(canvas);
+		rightPlayerDrawer.drawPlayer(right_player_id, paint, screenHolder.width
+				- PLAYER_TEXT_LENGTH, TEXT_SIZE);
+		rightPlayerDrawer.drawScore(scroeList.get(right_player_id - 1), paint,
+				screenHolder.width - SCORE_TEXT_LENGTH - 20, 2 * TEXT_SIZE);
+		rightPlayerDrawer.drawCardsNumber(cardNumber.get(right_player_id - 1),
+				paint, screenHolder.width - PLAYER_TEXT_LENGTH
+						- SCORE_TEXT_LENGTH - 20, TEXT_SIZE, RIGHT_CARDS_BASEX);
+		rightPlayerDrawer.drawOutList(outList.get(right_player_id - 1),
+				RIGHT_OUTCARDS_BASEX);
+	}
+
+	private void drawLeftPlayer(Canvas canvas, Paint paint) {
+		leftPlayerDrawer.initCanvas(canvas);
+		leftPlayerDrawer.drawPlayer(left_player_id, paint, 10, TEXT_SIZE);
+		leftPlayerDrawer.drawScore(scroeList.get(left_player_id - 1), paint,
+				10, 2 * TEXT_SIZE);
+		leftPlayerDrawer.drawCardsNumber(cardNumber.get(left_player_id - 1),
+				paint, PLAYER_TEXT_LENGTH + 10, TEXT_SIZE, LEFT_CARDS_BASEX);
+		leftPlayerDrawer.drawOutList(outList.get(left_player_id - 1),
+				LEFT_OUTCARDS_BASEX);
+	}
+
+	private void drawMainPlayer(Canvas canvas, Paint paint) {
+		mainPlayerDrawer.initCanvas(canvas);
+		if (isMyTrun)
+			mainPlayerDrawer.drawButton(paint, BUTTON_BASE_HEIGHT);
+		mainPlayerDrawer.drawPlayer(playerId, paint, 10.0f,
+				(float) screenHolder.height - 10);
+		mainPlayerDrawer.drawCardsNumber(cardNumber.get(playerId - 1), paint,
+				PLAYER_TEXT_LENGTH + TEXT_SIZE_SMALL, screenHolder.height - 10);
+		mainPlayerDrawer.drawScore(scroeList.get(playerId - 1), paint,
+				screenHolder.width - 2 * SCORE_TEXT_LENGTH,
+				screenHolder.height - 10);
+		mainPlayerDrawer.drawCards(cardList, MAIN_CARDS__BASEY,
+				cardSizeHolder.height / 2);
+		mainPlayerDrawer.drawOutList(outList.get(playerId - 1),
+				MAIN_OUT_CARDS_BASEY);
+	}
 
 	// 画背景
 	private void drawBackground(Canvas canvas) {
@@ -215,7 +301,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		Rect src = new Rect(0, 0, bg.getWidth() * 3 / 4, bg.getHeight() * 2 / 3);
 		Rect dst = new Rect(0, 0, screenHolder.width, screenHolder.height);
 		canvas.drawBitmap(bg, src, dst, null);
-
 	};
 
 	public void run() {
@@ -238,6 +323,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		if (eventListener == null)
 			throw new IllegalArgumentException(
 					"EventListener should not be null!!!");
+		Log.e(TAG, " onTouchEvent2");
 		eventListener.handleTouchEvent(event, this, cardList);
 		return super.onTouchEvent(event);
 	}
@@ -245,6 +331,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	public class ScreenSizeHolder {
 		public int width;
 		public int height;
+
 		@Override
 		public String toString() {
 			return "ScreenWidth=" + width + ",ScreenHeight=" + height;
@@ -254,6 +341,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	public class CardSizeHolder {
 		public int width;
 		public int height;
+
 		@Override
 		public String toString() {
 			return "CardWidth=" + width + ",CardHeight=" + height;
