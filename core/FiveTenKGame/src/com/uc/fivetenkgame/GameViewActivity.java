@@ -6,9 +6,7 @@ import java.util.Vector;
 
 import my.example.fivetenkgame.R;
 
-import com.uc.fivetenkgame.player.ClientPlayer;
 import com.uc.fivetenkgame.player.Player;
-import com.uc.fivetenkgame.player.ServerPlayer;
 import com.uc.fivetenkgame.view.GameView;
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
@@ -39,10 +37,10 @@ public class GameViewActivity extends Activity {
 		Intent intent = getIntent();
 		boolean isServer = intent.getBooleanExtra("isServer", false);
 		if( isServer ){
-			mPlayer = ServerPlayer.getInstance();
+//			mPlayer = ServerPlayer.getInstance();
 		}
 		else{
-			mPlayer = ClientPlayer.getInstance();
+//			mPlayer = ClientPlayer.getInstance();
 		}
 		
 		// Ëø¶¨ºáÆÁ
