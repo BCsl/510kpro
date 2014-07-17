@@ -36,7 +36,7 @@ public abstract class AbsDrawer {
 	 * 
 	 * @param canvas
 	 */
-	public void initCanvas(Canvas canvas){
+	public final void initCanvas(Canvas canvas){
 		this.canvas=canvas;
 	}
 	/**
