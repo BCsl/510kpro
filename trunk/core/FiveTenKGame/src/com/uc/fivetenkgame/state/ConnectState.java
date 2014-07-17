@@ -7,8 +7,10 @@ import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.player.Player;
 
 public class ConnectState implements State{
-	String TAG = "ConnectState";
-	Player mPlayer;
+	private String TAG = "ConnectState";
+	private Player mPlayer;
+	private int mPlayerNumber = -1;
+	private int playerNumber = 0;
 	
 	public ConnectState(Player player) {
 		mPlayer = player;
@@ -22,12 +24,19 @@ public class ConnectState implements State{
 		public void reveiveMessage(String msg) {
 			//连接成功
 			if( msg.startsWith(Common.PLAYER_ACCEPTED) ){
-				mPlayer.getPlayerModel().setPlayerNumber(Integer.parseInt(msg.substring(2,msg.length())));
-				mPlayer.setState(new WaitForStartState(mPlayer));
+				//未设置玩家号
+				if( mPlayerNumber == -1 ){
+					mPlayerNumber = Integer.parseInt(msg.substring(2));
+					mPlayer.getPlayerModel().setPlayerNumber(mPlayerNumber);
+				}
+				playerNumber++;
+				if( playerNumber == 3 ){
+					mPlayer.setState(new WaitForStartState(mPlayer));
+				}
 				Log.i(TAG, msg);
-			}
-			//连接失败
-			if( msg.startsWith(Common.PLAYER_REFUSED) ){
+			}else if( msg.startsWith(Common.PLAYER_REFUSED) &&
+					mPlayerNumber == -1 ){
+				//连接失败
 				mPlayer.setState(new EndState());
 				Log.i(TAG, msg);
 			}
