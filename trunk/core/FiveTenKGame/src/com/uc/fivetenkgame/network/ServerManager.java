@@ -1,8 +1,10 @@
 package com.uc.fivetenkgame.network;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import com.uc.fivetenkgame.network.util.Common;
 
@@ -12,45 +14,66 @@ import com.uc.fivetenkgame.network.util.Common;
  *
  */
 public class ServerManager extends NetworkManager{
-		
+	
 	private ServerSocket mServerSocket;
+	private ArrayList<TCPServer> mClientPlayers;
+	private ArrayList<String> mPlayerIPs;
 	
-	private TCPServer mFirstPlayer;
-	private TCPServer mSecondPlayer;
+	private static ServerManager gInstance;
+	public static ServerManager getInstance(){
+		if( null == gInstance ){
+			gInstance = new ServerManager();
+		}
+		
+		return gInstance;
+	}
 	
-	public ServerManager(){
+	private ServerManager(){
 		try {
 			mServerSocket = new ServerSocket(NETWORK_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		mClientPlayers = new ArrayList<TCPServer>();
+		mPlayerIPs = new ArrayList<String>();
 	}
 	
 	public void startListen(){
 		
-		try {
-			//接收第一个玩家链接
-			Socket socket = mServerSocket.accept();
-			mFirstPlayer = new TCPServer(this, socket);
-			mFirstPlayer.sendMessage(Common.PLAYER_ACCEPTED + Common.PLAYER1_NUM);
-			mFirstPlayer.start();
-			receiveMessage(Common.PLAYER_ACCEPTED);
+		new Thread(){
 			
-			//接收第二个玩家链接
-			socket = mServerSocket.accept();
-			mSecondPlayer = new TCPServer(this, socket);
-			mSecondPlayer.sendMessage(Common.PLAYER_ACCEPTED + Common.PLAYER2_NUM);
-			mSecondPlayer.start();
-			receiveMessage(Common.PLAYER_ACCEPTED);
+			@Override
+			public void run(){
+				try {
+					//接收玩家链接
+					for( int i = 1; i <= Common.TOTAL_PLAYER_NUM; ++i ){
+						Socket socket = mServerSocket.accept();
+						TCPServer player = new TCPServer(ServerManager.this, socket);
+						player.sendMessage(Common.PLAYER_ACCEPTED + i);
+						mClientPlayers.add(player);
+						
+						InetAddress ip = socket.getInetAddress();
+						mPlayerIPs.add(ip.toString());
+						receiveMessage(Common.PLAYER_ACCEPTED);
+					}
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}				
+			}
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		}.start();
+		
 	}
 	
+	/**
+	 * 发送消息给所有玩家
+	 * 
+	 */
 	public void sendMessage(String msg) {
-		mFirstPlayer.sendMessage(msg);
-		mSecondPlayer.sendMessage(msg);
+		for( TCPServer player : mClientPlayers ){
+			player.sendMessage(msg);
+		}
 	}
-
 }

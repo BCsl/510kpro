@@ -10,7 +10,7 @@ import java.net.Socket;
  * @author liuzd
  *
  */
-public class TCPClient extends Thread {
+public class TCPClient{
 	
 	private ClientManager mClientManager;
 	private Socket mClientSocket;
@@ -33,21 +33,28 @@ public class TCPClient extends Thread {
 			e.printStackTrace();
 		}
 		
+		mThread.start();
 	}
 
-	@Override
-	public void run() {
-		while( true ){
-			try {
-				mInputStream.read(mBuffer);
-				mClientManager.receiveMessage(new String(mBuffer));
-			} catch (IOException e) {
-				e.printStackTrace();
+	/**
+	 * 接收网络消息的线程
+	 * 
+	 */
+	private Thread mThread = new Thread(){
+		@Override
+		public void run() {
+			while( true ){
+				try {
+					
+					int len = mInputStream.read(mBuffer);
+					mClientManager.receiveMessage(new String(mBuffer, 0, len));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		}
-		
-	}
-	
+		}		
+	};
+
 	public void sendMessage(String msg){
 		try {
 			mOutputStream.write(msg.getBytes());

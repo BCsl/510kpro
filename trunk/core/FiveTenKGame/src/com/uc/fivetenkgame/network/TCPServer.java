@@ -10,7 +10,7 @@ import java.net.Socket;
  * @author liuzd
  *
  */
-public class TCPServer extends Thread {
+public class TCPServer {
 	
 	private ServerManager mServerManager;
 	private Socket mServerSocket;
@@ -30,23 +30,27 @@ public class TCPServer extends Thread {
 		
 		mBuffer = new byte[1024];
 		mServerManager = parent;
+		mThread.start();
 	}
 	
-	@Override
-	public void run() {
-		
-		while( true ){
-			try {
-				mInputStream.read(mBuffer);
-				System.out.println(mBuffer.toString());
-				mServerManager.receiveMessage(new String(mBuffer));
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
-		}
+	private Thread mThread = new Thread(){
+		@Override
+		public void run() {
+			
+			while( true ){
+				try {
+					int len = mInputStream.read(mBuffer);
+					System.out.println(mBuffer.toString());
+					mServerManager.receiveMessage(new String(mBuffer, 0, len));
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}			
+			}
+	
+		}		
+	};
 
-	}
 	
 	public void sendMessage(String msg){
 		try {
