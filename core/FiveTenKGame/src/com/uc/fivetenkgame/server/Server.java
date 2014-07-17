@@ -45,6 +45,7 @@ public class Server implements ServerContext{
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		
 		mClientNum = 0;
+		mRoundScore=0;
 		mState = new InitState(this);
 	}
 	
@@ -111,14 +112,26 @@ public class Server implements ServerContext{
 		mPlayerModels = playerModelList;
 	}
 
-	@Override
 	public ArrayList<PlayerModel> getPlayerModel() {
 		return mPlayerModels;
 	}
 
-	@Override
 	public int getCurrentPlayerNumber() {
 		return mCurrentPlayer;
+	}
+
+	public int getRoundScore() {
+		return mRoundScore;
+	}
+
+	public void setRoundScore(int mRoundScore) {
+		this.mRoundScore = mRoundScore;
+	}
+
+	@Override
+	public void setCurrentPlayerNumber(int CurrentPlayerNumber) {
+		// TODO Auto-generated method stub
+		mCurrentPlayer=CurrentPlayerNumber;
 	}
 	
 }

@@ -17,4 +17,7 @@ public interface ServerContext {
 	public void setPlayerModel(ArrayList<PlayerModel> playerModelList);
 	public ArrayList<PlayerModel> getPlayerModel();
 	public int getCurrentPlayerNumber();
+	public void setCurrentPlayerNumber(int CurrentPlayerNumber) ;
+	public int getRoundScore() ;
+	public void setRoundScore(int mRoundScore) ;
 }
