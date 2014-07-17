@@ -15,4 +15,6 @@ public interface ServerContext {
 	public void setClientNum(int num);
 	public int getClientNum();
 	public void setPlayerModel(ArrayList<PlayerModel> playerModelList);
+	public ArrayList<PlayerModel> getPlayerModel();
+	public int getCurrentPlayerNumber();
 }
