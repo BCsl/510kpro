@@ -1,5 +1,11 @@
 package com.uc.fivetenkgame.network.util;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import com.uc.fivetenkgame.view.entity.Card;
+
 /**
  * 公共类，一些常用数据定义
  * 
@@ -37,4 +43,23 @@ public class Common {
 	public static final String GAME_END = "3@";
 	// 总玩家人数
 	public static final int TOTAL_PLAYER_NUM = 3;
+	
+	public static void setOrder(List<Card> list){
+		Collections.sort(list, new Comparator<Card>() {
+			@Override
+			public int compare(Card o1, Card o2) {
+				int a1 = (Integer.valueOf(o1.getCardId()) - 1 ) / 13; // 花色
+				int a2 = (Integer.valueOf(o2.getCardId()) - 1 ) / 13;
+				
+				int b1 = (Integer.valueOf(o1.getCardId()) - 1 ) % 13;// 数值
+				int b2 = (Integer.valueOf(o2.getCardId()) - 1 ) % 13;
+
+				if (b2 - b1 == 0)
+					return a2 - a1;
+				else {
+					return b2 - b1;
+				}
+			}
+		});
+	}
 }
