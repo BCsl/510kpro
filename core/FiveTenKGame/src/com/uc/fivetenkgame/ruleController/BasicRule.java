@@ -1,12 +1,13 @@
 package com.uc.fivetenkgame.ruleController;
 
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
 import com.uc.fivetenkgame.view.entity.Card;
-import com.uc.fivetenkgame.view.util.CardGenerator;
+
 
 /**
  * 
@@ -225,15 +226,15 @@ public class BasicRule implements Rule {
 
 	// 返回值
 	public static int getValue(Card card) {
-		
-		int i = Integer.parseInt(CardGenerator.cardResourceName(card.getCardId()).substring(
-				3, card.getCardId().length()));
+		String cardName = BasicRule.cardResourceName(card.getCardId());
+		int i = Integer.parseInt( cardName.substring(
+				3, cardName.length()) );
 		return i;
 	}
 
 	// 返回花色
 	public static int getColor(Card card) {
-		return Integer.parseInt(CardGenerator.cardResourceName(card.getCardId()).substring(1, 2));
+		return Integer.parseInt((BasicRule.cardResourceName(card.getCardId())).substring(1, 2));
 	}
 
 	// 得到最大相同数
@@ -319,6 +320,42 @@ public class BasicRule implements Rule {
 	class Card_index {
 		List a[] = new Vector[4];// 单张
 	}
+	
+	public static String cardResourceName(String cardId) {
+		StringBuilder prefix = new StringBuilder();
+		int cardNO = Integer.valueOf(cardId.trim());
+		if (cardNO == 0)
+			return "cardbg1";
+		if (cardNO == 53)
+			return "a5_16";
+		if (cardNO == 54)
+			return "a5_17";
+
+		switch (cardNO / 14) {
+		case 0:
+			prefix.append("a2_");
+			break;
+		case 1:
+			prefix.append("a1_");
+			break;
+		case 2:
+			prefix.append("a3_");
+			break;
+		case 3:
+			prefix.append("a4_");
+			break;
+		default:
+			new IllegalArgumentException(cardNO + "is not defined!");
+			break;
+		}
+		cardNO %= 13;
+		if (cardNO < 3)
+			prefix.append(String.valueOf(cardNO + 13));
+		else
+			prefix.append(String.valueOf(cardNO));
+		return prefix.toString().trim();
+	}
+
 	
 	public enum CardType {
 		c1,//单牌。
