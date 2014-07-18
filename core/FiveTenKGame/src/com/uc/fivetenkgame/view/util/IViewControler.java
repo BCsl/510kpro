@@ -51,7 +51,7 @@ public interface IViewControler {
 	 * @param list
 	 *            玩家出的牌
 	 */
-	public void setPlayersOutList(int number, List<Card> list);
+	public void setPlayersOutList(int playId, List<Card> list);
 
 	/**
 	 * 设置玩家手牌
@@ -73,4 +73,12 @@ public interface IViewControler {
 	 * @param eventListener
 	 */
 	public void setEventListener(EventListener eventListener) ;
+	/**
+	 * 游戏结束操作
+	 */
+	public void gameOver(int playId);
+	/**
+	 * 出牌没按照规则
+	 */
+	public void handCardFailed();
 }

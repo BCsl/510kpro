@@ -35,8 +35,11 @@ public class WaitingState extends ServerState {
 			updateRoundScore(cardList);
 			updatePlayerModle(cardList);
 			sendToOtherPlayer(msg.substring(2));
-			if (gameIsOver())
-				mServerContext.setState(new GameEndState(mServerContext));
+			if (gameIsOver()){
+				GameEndState state=new GameEndState(mServerContext);
+				mServerContext.setState(state);
+				state.handle(Common.GAME_END);
+			}
 			else
 				nextPlayer();
 			giveUpTimes = 0;

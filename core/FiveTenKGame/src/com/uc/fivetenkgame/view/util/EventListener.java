@@ -59,7 +59,6 @@ public abstract class EventListener {
 			}
 			return;
 		}
-		Log.e(TAG, "test");
 		int leftButtonBaseX = SCREEN_WIDTH / 2 - 2 * CARD_WIDTH;
 		int rightButtonBaseX = SCREEN_WIDTH / 2 + 2 * CARD_WIDTH;
 		// 出牌按钮被点击
@@ -74,9 +73,7 @@ public abstract class EventListener {
 				cardList.removeAll(handList);
 				// view.setMyTurn(false);
 				handList.clear();
-			} else
-				Toast.makeText(view.getContext(), "请按规则出牌喔", Toast.LENGTH_SHORT)
-						.show();
+			} 
 			return;
 		}
 		if (view.isMyTurn()
