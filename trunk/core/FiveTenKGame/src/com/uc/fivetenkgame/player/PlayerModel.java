@@ -8,14 +8,14 @@ import com.uc.fivetenkgame.view.entity.Card;
 /**
  * player数据模型
  * 
- * @author liuzd, fuyx
+ * @author fuyx
  *
  */
 
 public class PlayerModel {
 	
-	private ArrayList<Card> mCardList;
-	private int mScore;
+	private ArrayList<Card> mCardList;//玩家手牌
+	private int mScore;//玩家分数
 	private int mPlayerNumber;//玩家序号
 	
 	public PlayerModel(){
