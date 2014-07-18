@@ -3,12 +3,9 @@ package com.uc.fivetenkgame.view.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
-
 import com.uc.fivetenkgame.view.GameView;
 import com.uc.fivetenkgame.view.entity.Card;
 

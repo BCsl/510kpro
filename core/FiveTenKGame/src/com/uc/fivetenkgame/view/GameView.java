@@ -11,14 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import com.uc.fivetenkgame.view.entity.Card;
-import com.uc.fivetenkgame.view.util.EventListener;
-import com.uc.fivetenkgame.view.util.IViewControler;
-import com.uc.fivetenkgame.view.util.MainPlayerInfoDrawer;
-import com.uc.fivetenkgame.view.util.OtherPlayerInfoDrawer;
 
 import my.example.fivetenkgame.R;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -30,6 +27,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.util.EventListener;
+import com.uc.fivetenkgame.view.util.IViewControler;
+import com.uc.fivetenkgame.view.util.MainPlayerInfoDrawer;
+import com.uc.fivetenkgame.view.util.OtherPlayerInfoDrawer;
 
 /**
  * 游戏界面类
@@ -109,23 +114,38 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		public void setEventListener(EventListener listener) {
 			eventListener = listener;
 		}
+
+		@Override
+		public void gameOver(int playId) {
+			new AlertDialog.Builder(context)
+					.setTitle("游戏结束")
+					.setMessage(playId + "胜利")
+					.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// 退出操作
+								}
+							});
+		}
+
+		@Override
+		public void handCardFailed() {
+			Toast.makeText(context, "请按规则出牌喔", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void roundOver() {
+			for(Map.Entry<Integer, List<Card>> temp:outList.entrySet())
+					temp.getValue().clear();
+				
+		}
 	}
 
 	private void init() {
-		switch (playerId) {
-		case 1:
-			right_player_id = 2;
-			left_player_id = 3;
-			break;
-		case 2:
-			right_player_id = 3;
-			left_player_id = 1;
-			break;
-		case 3:
-			right_player_id = 1;
-			left_player_id = 2;
-			break;
-		}
+		initPlayersId(playerId);
+
 		viewControler = new ViewControler();
 		start = true;
 		isMyTrun = true;
@@ -143,6 +163,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		cardList = new Vector<Card>();
 		outList = new HashMap<Integer, List<Card>>();
 
+	}
+
+	private void initPlayersId(int playerId2) {
+		switch (playerId) {
+		case 1:
+			right_player_id = 2;
+			left_player_id = 3;
+			break;
+		case 2:
+			right_player_id = 3;
+			left_player_id = 1;
+			break;
+		case 3:
+			right_player_id = 1;
+			left_player_id = 2;
+			break;
+		}
 	}
 
 	public IViewControler getViewControler() {
