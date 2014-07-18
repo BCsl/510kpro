@@ -39,6 +39,9 @@ public class ServerManager extends NetworkManager{
 		mPlayerIPs = new ArrayList<String>();
 	}
 	
+	/**
+	 * 服务器开始监听网络端口
+	 */
 	public void startListen(){
 		
 		new Thread(){
@@ -75,5 +78,10 @@ public class ServerManager extends NetworkManager{
 		for( TCPServer player : mClientPlayers ){
 			player.sendMessage(msg);
 		}
+	}
+
+	@Override
+	public void initNetwork(String addr) {
+		startListen();
 	}
 }
