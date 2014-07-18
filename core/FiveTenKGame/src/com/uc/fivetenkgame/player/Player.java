@@ -2,18 +2,17 @@ package com.uc.fivetenkgame.player;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.os.Handler;
+
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
-import com.uc.fivetenkgame.network.NetworkManager;
-import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.ruleController.Rule;
 import com.uc.fivetenkgame.state.State;
+import com.uc.fivetenkgame.state.playerstate.InitState;
 import com.uc.fivetenkgame.state.playerstate.PlayerState;
-import com.uc.fivetenkgame.state.playerstate.WaitForMsgState;
-import com.uc.fivetenkgame.state.serverstate.InitState;
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
 import com.uc.fivetenkgame.view.util.IViewControler;
@@ -57,9 +56,14 @@ public class Player implements PlayerContext {
 	};
 
 	public void startPlay(String addr) {
-		// setState(new InitState(gInstance, addr));
+		setState(new InitState(gInstance));
+		handle(addr);
 	}
-
+	
+	public void setViewControler(IViewControler viewControler){
+		viewController=viewControler;
+	}
+		
 	// …Ë÷√πÊ‘Ú
 	private void setRule(Rule rule) {
 		mRule = rule;
@@ -84,14 +88,24 @@ public class Player implements PlayerContext {
 	public void setHandler(Handler handler) {
 		mHandler = handler;
 	}
-
+	
+	public Handler getHandler(){
+		return mHandler;
+	}
+	
 	public void setState(PlayerState state) {
 		mState = state;
 		// mState.handle();
 	}
 
-	private Player() {
+	public Player() {
 		mNetworkManager = ClientManager.getInstance();
+		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
+		mPlayerModel = new PlayerModel();
+		
+		//mPlayerModel.setCardList(null);
+		//mPlayerModel.setPlayerNumber(-1);
+		//mPlayerModel.setScore(0);
 	}
 
 	public void setInitPlayerCards(String cards) {

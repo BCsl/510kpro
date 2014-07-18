@@ -1,7 +1,5 @@
 package com.uc.fivetenkgame;
 
-import com.uc.fivetenkgame.network.util.Common;
-
 import my.example.fivetenkgame.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,12 +9,23 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class WaitingGameActivity extends Activity {
+import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.player.Player;
+import com.uc.fivetenkgame.server.Server;
+import com.uc.fivetenkgame.view.GameView;
+import com.uc.fivetenkgame.view.util.IViewControler;
 
+public class WaitingGameActivity extends Activity {
+	private String TAG = "WaitingGameActivity";
+	private Player mPlayer;
+	private Server mServer;
+	private GameView mGameView;
+	
 	private TextView mIpAddress;
 	private TextView mReadyPlayer;
 	private boolean isServer;
@@ -24,6 +33,8 @@ public class WaitingGameActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mPlayer = Player.getInstance();
+		
 		setContentView(R.layout.activity_waiting_game);
 
 		//设置不黑屏
@@ -49,7 +60,12 @@ public class WaitingGameActivity extends Activity {
 		
 		//根据是否是服务器，执行不同的操作
 		if( isServer ){
-			mReadyPlayer.setText(getResources().getString(R.string.ready_player_str) + "1人");
+			//mReadyPlayer.setText(getResources().getString(R.string.ready_player_str) + "1人");
+			Log.i(TAG, strIp);
+			mServer = Server.getInstance();
+			mServer.startListen();
+			mPlayer.startPlay("127.0.0.1");
+			/*
 			new Thread(){
 				public void run(){
 					//ServerPlayer.getInstance().setHandler(mHandler);
@@ -63,17 +79,19 @@ public class WaitingGameActivity extends Activity {
 					//ClientPlayer.getInstance().initNetwork("127.0.0.1");
 				}
 			}.start();
+			*/
 		}
 		else{
 			final String ipAddr = intent.getStringExtra("IP");
-			
+			mPlayer.startPlay(ipAddr);
+			/*
 			new Thread(){
 				public void run(){
 					//ClientPlayer.getInstance().setHandler(mHandler);
 					//ClientPlayer.getInstance().initNetwork(ipAddr);
 				}
 			}.start();
-
+			*/
 		}
 	}
 

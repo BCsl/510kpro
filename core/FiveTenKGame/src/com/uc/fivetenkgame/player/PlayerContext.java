@@ -1,5 +1,7 @@
 package com.uc.fivetenkgame.player;
 
+import android.os.Handler;
+
 import com.uc.fivetenkgame.state.playerstate.PlayerState;
 
 /**
@@ -76,4 +78,8 @@ public interface PlayerContext {
 	 * @param playerId Ó®¼ÒºÅ
 	 */
 	void gameOver(int playerId);
+	
+	void setHandler(Handler handler);
+	
+	public Handler getHandler();
 }

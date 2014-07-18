@@ -33,7 +33,7 @@ public class GameMainActivity extends Activity {
 			
 			if( v == mNewGameButton ){
 				Intent intent = new Intent();
-
+				
 				intent.putExtra("isServer", true);
 				intent.setClass(GameMainActivity.this, WaitingGameActivity.class);
 				startActivity(intent);
@@ -43,7 +43,7 @@ public class GameMainActivity extends Activity {
 				intent.setClass(GameMainActivity.this, InputServerIPActivity.class);
 				startActivityForResult(intent, REQUEST_SERVER_IP);
 			}
-		
+			
 		}
 	};
 

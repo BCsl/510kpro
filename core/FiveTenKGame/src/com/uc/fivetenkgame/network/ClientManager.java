@@ -24,8 +24,10 @@ public class ClientManager extends NetworkManager{
 		mTCPToServer = new TCPClient(this);
 	}
 	
-	public void initNetwork(String addr){
+	public void initNetwork(final String addr){
+		
 		mTCPToServer.initNetwork(addr, NETWORK_PORT);
+
 	}
 	
 	@Override
