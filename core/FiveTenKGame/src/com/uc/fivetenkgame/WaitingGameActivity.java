@@ -57,12 +57,13 @@ public class WaitingGameActivity extends Activity {
 		
 		Intent intent = getIntent();
 		isServer = intent.getBooleanExtra("isServer", false);
-		
+		mPlayer.setHandler(mHandler);
 		//根据是否是服务器，执行不同的操作
 		if( isServer ){
 			//mReadyPlayer.setText(getResources().getString(R.string.ready_player_str) + "1人");
 			Log.i(TAG, strIp);
 			mServer = Server.getInstance();
+			mServer.setHandler(mHandler);
 			mServer.startListen();
 			mPlayer.startPlay("127.0.0.1");
 			/*

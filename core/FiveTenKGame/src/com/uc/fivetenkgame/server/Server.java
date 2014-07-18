@@ -75,6 +75,10 @@ public class Server implements ServerContext{
 		mState = state;
 	}
 	
+	public void setHandler(Handler handler){
+		mHandler = handler;
+	}
+	
 	public Handler getHandler(){
 		return mHandler;
 	}
