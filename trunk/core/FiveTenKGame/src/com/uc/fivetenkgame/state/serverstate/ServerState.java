@@ -16,10 +16,4 @@ public class ServerState implements State{
 		
 	}
 
-	
-	public void handle() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
