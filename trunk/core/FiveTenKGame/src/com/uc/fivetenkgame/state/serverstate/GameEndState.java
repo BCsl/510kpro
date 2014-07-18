@@ -19,12 +19,12 @@ public class GameEndState extends ServerState {
 	}
 
 	private int winnerId() {
-		int id = -1;
-		for (int i = 0; i < mServerContext.getClientNum() - 1; i++) {
-			id = mServerContext.getPlayerModel().get(i).getScore() > mServerContext
-					.getPlayerModel().get(i + 1).getScore() ? mServerContext
-					.getPlayerModel().get(i).getPlayerNumber() : mServerContext
-					.getPlayerModel().get(i + 1).getPlayerNumber();
+		int id = 0;
+		for (int i = 1; i < mServerContext.getClientNum() ; i++) {
+			id = mServerContext.getPlayerModel().get(id).getScore() > mServerContext
+					.getPlayerModel().get(i ).getScore() ? mServerContext
+					.getPlayerModel().get(id).getPlayerNumber() : mServerContext
+					.getPlayerModel().get(i).getPlayerNumber();
 		}
 		return id;
 	}
