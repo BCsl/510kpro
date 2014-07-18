@@ -9,7 +9,7 @@ import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
  * @author liuzd
  *
  */
-public abstract class NetworkManager {
+public abstract class NetworkManager implements NetworkInterface{
 
 	public static final int NETWORK_PORT = 8888;
 	protected OnReceiveMessageListener mReceiveMessageListener;
