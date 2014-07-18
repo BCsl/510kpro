@@ -7,6 +7,7 @@ import java.util.Vector;
 import my.example.fivetenkgame.R;
 
 import com.uc.fivetenkgame.player.Player;
+import com.uc.fivetenkgame.server.Server;
 import com.uc.fivetenkgame.view.GameView;
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
@@ -21,8 +22,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class GameViewActivity extends Activity {
-
-	private Player mPlayer;
+	//private GameView mGameView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,19 +39,20 @@ public class GameViewActivity extends Activity {
 		if( isServer ){
 //			mPlayer = ServerPlayer.getInstance();
 		}
-		else{
-//			mPlayer = ClientPlayer.getInstance();
-		}
 		
 		// Ëø¶¨ºáÆÁ
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		final GameView view =new GameView(getApplicationContext(),3);
+		final GameView view =new GameView(getApplicationContext(),Player.getInstance().getPlayerNumber());
+		Player.getInstance().setViewControler(view.getViewControler());
 		setContentView(view);
-		new LoopThread(view).start();
+		
+		//mPlayer = Player.getInstance();
+		//mPlayer.setIViewControler(view);
+		//new LoopThread(view).start();
 		
 		
 	}
-	
+	/*
 	public class LoopThread extends Thread{
 		GameView view;
 		LoopThread(GameView view ){
@@ -76,7 +77,7 @@ public class GameViewActivity extends Activity {
 			}
 		}
 	}
-
+	 */
 	@Override
 	protected void onStop() {
 		super.onStop();

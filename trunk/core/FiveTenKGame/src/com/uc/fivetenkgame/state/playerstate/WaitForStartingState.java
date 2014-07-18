@@ -26,9 +26,16 @@ public class WaitForStartingState extends PlayerState {
 		}else if(msg.startsWith(Common.BEGIN_GAME)){
 			String playerNumber = msg.substring(Common.BEGIN_GAME.length(),msg.indexOf(','));//原信息为：标志头+玩家序号,牌号,牌号....
 			if(mPlayerContext.getPlayerNumber()==Integer.parseInt(playerNumber)){//是自己的手牌,跳转到下一个状态waitForMsg
+				mPlayerContext.getHandler().obtainMessage(Common.START_GAME).sendToTarget();
+				mPlayerContext.setInitPlayerCards(msg.substring(4, msg.length()));
 				mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
 				mPlayerContext.handle(null);
 			}
+		}else if(msg.startsWith(Common.PLAYER_NUMBER_UPDATE)){
+			int playerNumber = Integer.valueOf(msg.substring(2));
+				mPlayerContext.getHandler().obtainMessage(
+						Common.UPDATE_WAITING_PLAYER_NUM, playerNumber).sendToTarget();
+			
 		}
 	}
 

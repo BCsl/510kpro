@@ -23,16 +23,31 @@ public class TCPClient{
 		mClientManager = parent;
 	}
 	
-	public void initNetwork(String addr, int port){
-		//note : client not null
-		try {
-			mClientSocket = new Socket(addr, port);
-			mOutputStream = mClientSocket.getOutputStream();
-			mInputStream = mClientSocket.getInputStream();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+	public void initNetwork(final String addr, final int port){
+
+		mThread = new Thread(){
+			@Override
+			public void run() {
+				//note : client not null
+				try {
+					mClientSocket = new Socket(addr, port);
+					mOutputStream = mClientSocket.getOutputStream();
+					mInputStream = mClientSocket.getInputStream();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				while( true ){
+					try {
+						
+						int len = mInputStream.read(mBuffer);
+						mClientManager.receiveMessage(new String(mBuffer, 0, len));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}		
+		};
 		mThread.start();
 	}
 
@@ -40,9 +55,18 @@ public class TCPClient{
 	 * 接收网络消息的线程
 	 * 
 	 */
-	private Thread mThread = new Thread(){
+	private Thread mThread;/* = new Thread(){
 		@Override
 		public void run() {
+			//note : client not null
+			try {
+				mClientSocket = new Socket(addr, port);
+				mOutputStream = mClientSocket.getOutputStream();
+				mInputStream = mClientSocket.getInputStream();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 			while( true ){
 				try {
 					
@@ -53,7 +77,7 @@ public class TCPClient{
 				}
 			}
 		}		
-	};
+	};*/
 
 	public void sendMessage(String msg){
 		try {
