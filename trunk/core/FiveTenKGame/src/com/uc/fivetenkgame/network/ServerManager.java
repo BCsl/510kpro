@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import android.util.Log;
+
 import com.uc.fivetenkgame.network.util.Common;
 
 /**
@@ -14,6 +16,8 @@ import com.uc.fivetenkgame.network.util.Common;
  *
  */
 public class ServerManager extends NetworkManager{
+	
+	private static String LOG_SERVER_TAG = "servermgr : ";
 	
 	private ServerSocket mServerSocket;
 	private ArrayList<TCPServer> mClientPlayers;
@@ -52,8 +56,10 @@ public class ServerManager extends NetworkManager{
 					//接收玩家链接
 					for( int i = 1; i <= Common.TOTAL_PLAYER_NUM; ++i ){
 						Socket socket = mServerSocket.accept();
+						Log.i(LOG_SERVER_TAG, "accept player :" + i);
 						TCPServer player = new TCPServer(ServerManager.this, socket);
 						player.sendMessage(Common.PLAYER_ACCEPTED + i);
+						Thread.sleep(20);
 						mClientPlayers.add(player);
 						
 						InetAddress ip = socket.getInetAddress();
@@ -62,6 +68,8 @@ public class ServerManager extends NetworkManager{
 					}
 					
 				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}				
 			}
@@ -75,13 +83,30 @@ public class ServerManager extends NetworkManager{
 	 * 
 	 */
 	public void sendMessage(String msg) {
+		Log.i(LOG_SERVER_TAG, "send :" + msg);
 		for( TCPServer player : mClientPlayers ){
 			player.sendMessage(msg);
 		}
 	}
 
+	/**
+	 * 发消息给特定编号的玩家
+	 * 
+	 * @param msg         要发送的消息
+	 * @param playerNum   玩家编号
+	 */
+	public void sendMessage(String msg, int playerNum){
+		Log.i(LOG_SERVER_TAG, "send to "+ playerNum + " :" + msg);
+		mClientPlayers.get(playerNum-1).sendMessage(msg);
+	}
+	
 	@Override
 	public void initNetwork(String addr) {
 		startListen();
 	}
+	
+	public void removePlayer(TCPServer player){
+		mClientPlayers.remove(player);
+	}
+	
 }

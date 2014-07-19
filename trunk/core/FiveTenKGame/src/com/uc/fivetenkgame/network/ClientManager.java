@@ -25,14 +25,21 @@ public class ClientManager extends NetworkManager{
 	}
 	
 	public void initNetwork(final String addr){
-		
-		mTCPToServer.initNetwork(addr, NETWORK_PORT);
-
+		new Thread(){
+			public void run(){
+				mTCPToServer.initNetwork(addr, NETWORK_PORT);
+			}
+		}.start();
 	}
 	
 	@Override
 	public void sendMessage(String msg) {
 		mTCPToServer.sendMessage(msg);
+	}
+
+	@Override
+	public void sendMessage(String msg, int num) {
+		
 	}
 
 	

@@ -20,13 +20,15 @@ public class ListeningState extends ServerState {
 			if( clientNum < Common.TOTAL_PLAYER_NUM ){
 				//更新等待界面人数
 				//mServerContext.getHandler().obtainMessage(Common.UPDATE_WAITING_PLAYER_NUM, clientNum).sendToTarget();
-				mServerContext.getNetworkManager().sendMessage(Common.PLAYER_NUMBER_UPDATE+clientNum);
+				mServerContext.getNetworkManager().sendMessage(Common.PLAYER_NUMBER_UPDATE + clientNum);
 			}
 			else if( clientNum == Common.TOTAL_PLAYER_NUM ){
 				//够玩家人数，开始游戏
 				//mServerContext.getHandler().obtainMessage(Common.START_GAME).sendToTarget();
-				mServerContext.getNetworkManager().sendMessage(Common.BEGIN_GAME);
+				//mServerContext.getNetworkManager().sendMessage(Common.BEGIN_GAME);
+				//mServerContext.getNetworkManager().sendMessage(Common.PLAYER_NUMBER_UPDATE + clientNum);
 				mServerContext.setState(new GameStartState(mServerContext));
+				mServerContext.handleMessage(null);
 			}
 			
 			

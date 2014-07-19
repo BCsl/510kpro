@@ -9,6 +9,7 @@ import android.os.Handler;
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
 import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
+import com.uc.fivetenkgame.ruleController.BasicRule;
 import com.uc.fivetenkgame.ruleController.Rule;
 import com.uc.fivetenkgame.state.State;
 import com.uc.fivetenkgame.state.playerstate.InitState;
@@ -103,6 +104,7 @@ public class Player implements PlayerContext {
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
 		
+		mRule = new BasicRule();
 		//mPlayerModel.setCardList(null);
 		//mPlayerModel.setPlayerNumber(-1);
 		//mPlayerModel.setScore(0);
@@ -115,6 +117,7 @@ public class Player implements PlayerContext {
 			cardList.add(new Card(tCard[i]));
 		}
 		mPlayerModel.setCardList(cardList);
+		
 	}
 
 	/**
@@ -215,4 +218,21 @@ public class Player implements PlayerContext {
 		viewController.gameOver(playerId);
 	}
 
+	public void setEventListener(){
+		viewController.setEventListener(mEventListener);
+	}
+	
+	/**
+	 * 初始化游戏界面
+	 * 
+	 */
+	public void initView(){
+		viewController.setCards(mPlayerModel.getCardList());
+		//剩余牌数
+		List<Integer> leftCardsNum = new ArrayList<Integer>();
+		leftCardsNum.add(new Integer(18));
+		leftCardsNum.add(new Integer(18));
+		leftCardsNum.add(new Integer(18));
+		viewController.setCardNumber(leftCardsNum);
+	}
 }

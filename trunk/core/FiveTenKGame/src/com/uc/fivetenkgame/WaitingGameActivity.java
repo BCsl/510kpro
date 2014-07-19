@@ -33,7 +33,6 @@ public class WaitingGameActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mPlayer = Player.getInstance();
 		
 		setContentView(R.layout.activity_waiting_game);
 
@@ -55,9 +54,11 @@ public class WaitingGameActivity extends Activity {
 							+ ((ip >> 16) & 0xFF) + "." + ((ip >> 24) & 0xFF); 
 		mIpAddress.setText(mIpAddress.getText() + strIp);
 		
+		mPlayer = Player.getInstance();
+		mPlayer.setHandler(mHandler);
+		
 		Intent intent = getIntent();
 		isServer = intent.getBooleanExtra("isServer", false);
-		mPlayer.setHandler(mHandler);
 		//根据是否是服务器，执行不同的操作
 		if( isServer ){
 			//mReadyPlayer.setText(getResources().getString(R.string.ready_player_str) + "1人");
@@ -104,6 +105,7 @@ public class WaitingGameActivity extends Activity {
 			switch( msg.what ){
 			case Common.UPDATE_WAITING_PLAYER_NUM:
 				Integer num = (Integer)(msg.obj);
+				//Toast.makeText(WaitingGameActivity.this, num+"==", Toast.LENGTH_SHORT).show();
 				mReadyPlayer.setText(getResources().getString(R.string.ready_player_str) + num + "人");
 				
 				break;

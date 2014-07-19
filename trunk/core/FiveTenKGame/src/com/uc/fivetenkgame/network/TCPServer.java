@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+
+import com.uc.fivetenkgame.network.util.Common;
 
 /**
  * 服务器TCP网络发送接收数据线程类
@@ -39,11 +42,32 @@ public class TCPServer {
 			
 			while( true ){
 				try {
-					int len = mInputStream.read(mBuffer);
-					System.out.println(mBuffer.toString());
-					mServerManager.receiveMessage(new String(mBuffer, 0, len));
+					if( mInputStream != null  ){
+						int len = mInputStream.read(mBuffer);
+						//读到数据
+						if( len > 1 ){
+							String data = new String(mBuffer, 0, len);
+							//拆分消息
+							String []msg = data.split(Common.MESSAGE_END);
+							for( String m : msg)
+								mServerManager.receiveMessage(m);
+						}
+						//链接中断
+						else if( len < 0 ){
+							release();
+							break;
+						}
+					}
+					else{
+						Thread.sleep(30);
+					}
 					
+				} catch (SocketException e){
+					release();
+					break;
 				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}			
 			}
@@ -53,8 +77,13 @@ public class TCPServer {
 
 	
 	public void sendMessage(String msg){
+		if( mOutputStream == null )
+			return ;
+		
 		try {
-			mOutputStream.write(msg.getBytes());
+			//加上消息尾
+			msg = msg.concat(Common.MESSAGE_END);
+			mOutputStream.write(msg.getBytes(), 0, msg.getBytes().length);
 			mOutputStream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -69,6 +98,10 @@ public class TCPServer {
 			mOutputStream.close();
 			mInputStream.close();
 			mServerSocket.close();
+			
+			mOutputStream = null;
+			mInputStream = null;
+			mServerManager.removePlayer(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

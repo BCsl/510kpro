@@ -44,6 +44,8 @@ public class GameViewActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		final GameView view =new GameView(getApplicationContext(),Player.getInstance().getPlayerNumber());
 		Player.getInstance().setViewControler(view.getViewControler());
+		Player.getInstance().setEventListener();
+		Player.getInstance().initView();
 		setContentView(view);
 		
 		//mPlayer = Player.getInstance();

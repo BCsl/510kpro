@@ -16,6 +16,9 @@ public class WaitForMsgState extends PlayerState{
 	
 	@Override
 	public void handle(String msg) {
+		if( msg == null )
+			return ;
+		
 		//得到出牌信息
 		if( (msg.startsWith(Common.YOUR_TURN)) && 
 				(Integer.parseInt(msg.substring(2)) == mPlayerContext.getPlayerNumber()) ){

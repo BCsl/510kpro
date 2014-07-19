@@ -1,5 +1,7 @@
 package com.uc.fivetenkgame.state.playerstate;
 
+import android.util.Log;
+
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.PlayerContext;
 
@@ -24,11 +26,11 @@ public class ConnectState extends PlayerState {
 		if(msg==null){//有上一状态（initState）跳转过来，暂不处理
 			
 		}else if (msg.startsWith(Common.PLAYER_ACCEPTED)) {// 连接成功，处理msg后跳转到等待开始状态
-			int playerNumber = Integer.parseInt(msg
-					.substring(Common.PLAYER_ACCEPTED.length()));
+			Log.i("=========", msg);
+			
+			int playerNumber = Integer.parseInt(msg.substring(Common.PLAYER_ACCEPTED.length()).trim());
 			mPlayerContext.setPlayerNumber(playerNumber);//设置玩家序号
-			mPlayerContext
-					.setState(new WaitForStartingState(mPlayerContext));
+			mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
 			mPlayerContext.handle(null);
 
 		} else if (msg.startsWith(Common.PLAYER_REFUSED)) {// 连接失败，跳转到退出状态

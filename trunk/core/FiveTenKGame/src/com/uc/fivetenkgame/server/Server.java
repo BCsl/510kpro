@@ -3,6 +3,7 @@ package com.uc.fivetenkgame.server;
 import java.util.ArrayList;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.uc.fivetenkgame.network.NetworkManager;
 import com.uc.fivetenkgame.network.ServerManager;
@@ -57,6 +58,7 @@ public class Server implements ServerContext{
 	};
 	
 	public void handleMessage(String msg) {
+		Log.i("server log", "receive :" + msg);
 		mState.handle(msg);
 	}
 	
