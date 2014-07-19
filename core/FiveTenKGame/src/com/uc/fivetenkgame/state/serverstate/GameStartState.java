@@ -16,15 +16,15 @@ public class GameStartState extends ServerState{
 	public GameStartState(ServerContext context){
 		mServerContext = context;
 		mCards = new Card[TOTAL_CARD_NUM];
-		washCards();
-		dealCards();
-		sendCards();
-		mServerContext.setState(new WaitingState(mServerContext));
 	}
 	
 	@Override
 	public void handle(String msg) {
-		
+		washCards();
+		dealCards();
+		sendCards();
+		setFirstPlayer();
+		mServerContext.setState(new WaitingState(mServerContext));
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class GameStartState extends ServerState{
 		}
 		
 		//产生随机数，交换100次
-		for(int i = 0; i < 100; ++i){
+		for(int i = 0; i < 200; ++i){
 			Random random = new Random();
 			int aPos = random.nextInt(TOTAL_CARD_NUM);
 			int bPos = random.nextInt(TOTAL_CARD_NUM);
@@ -59,7 +59,7 @@ public class GameStartState extends ServerState{
 		}
 		
 		//给各玩家添加洗好的牌
-		for(int i = 0; i < TOTAL_CARD_NUM;){
+		for(int i = 0; i < TOTAL_CARD_NUM; ++i){
 			playerCardList[i % 3].add(mCards[i]);
 		}
 		
@@ -96,8 +96,18 @@ public class GameStartState extends ServerState{
 				sb.append(",");
 			}
 			
-			mServerContext.getNetworkManager().sendMessage(sb.toString());
+			mServerContext.getNetworkManager().sendMessage(sb.toString(), player.getPlayerNumber());
 			
 		}
+	}
+	
+	/**
+	 * 设置第一个出牌的玩家
+	 */
+	private void setFirstPlayer(){
+		Random random = new Random();
+		int num = random.nextInt(Common.TOTAL_PLAYER_NUM) + 1;
+		mServerContext.setCurrentPlayerNumber(num);
+		mServerContext.getNetworkManager().sendMessage(Common.YOUR_TURN + num, num);
 	}
 }

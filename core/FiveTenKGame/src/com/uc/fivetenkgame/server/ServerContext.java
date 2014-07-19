@@ -20,4 +20,5 @@ public interface ServerContext {
 	public void setCurrentPlayerNumber(int CurrentPlayerNumber) ;
 	public int getRoundScore() ;
 	public void setRoundScore(int mRoundScore) ;
+	public void handleMessage(String msg);
 }

@@ -44,6 +44,9 @@ public class Common {
 	// 总玩家人数
 	public static final int TOTAL_PLAYER_NUM = 3;
 	
+	//消息数据尾
+	public static final String MESSAGE_END = "#@";
+	
 	public static void setOrder(List<Card> list){
 		Collections.sort(list, new Comparator<Card>() {
 			@Override
@@ -54,6 +57,13 @@ public class Common {
 				int b1 = (Integer.valueOf(o1.getCardId()) - 1 ) % 13;// 数值
 				int b2 = (Integer.valueOf(o2.getCardId()) - 1 ) % 13;
 
+				//有joker的情况
+				if( a1 == 4 || a2 == 4 ){
+					if( a2 == a1 )
+						return b2 - b1;
+					return a2 - a1;
+				}
+				
 				if (b2 - b1 == 0)
 					return a2 - a1;
 				else {

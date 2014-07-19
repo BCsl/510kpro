@@ -12,6 +12,7 @@ public class ServerState implements State{
 	 * 
 	 * @param msg ×´Ì¬Ìø×ªÌõ¼ş
 	 */
+	@Override
 	public void handle(String msg) {
 		
 	}

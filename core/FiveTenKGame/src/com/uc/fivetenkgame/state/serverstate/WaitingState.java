@@ -159,6 +159,7 @@ public class WaitingState extends ServerState {
 		else
 			nextPlayer = mServerContext.getCurrentPlayerNumber() + 1;
 		
+		Log.i("server log", "waittingState" + nextPlayer);
 		mServerContext.getNetworkManager().sendMessage(
 				Common.YOUR_TURN + nextPlayer);
 		mServerContext.setCurrentPlayerNumber(nextPlayer);
