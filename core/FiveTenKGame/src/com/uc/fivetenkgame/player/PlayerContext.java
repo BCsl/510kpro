@@ -84,4 +84,6 @@ public interface PlayerContext {
 	public Handler getHandler();
 	
 	public void setFirstPlayer();
+	
+	public void setMyTurn(boolean flag);
 }

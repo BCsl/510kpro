@@ -200,7 +200,7 @@ public class Player implements PlayerContext {
 		
 		// …Ë÷√outList
 		List<Card> cardList = new ArrayList<Card>();
-		for (int i = 0, count = remainCards.length; i < count; i++) {
+		for (int i = 0, count = outList.length; i < count; i++) {
 			cardList.add(new Card(outList[i]));
 		}
 		viewController.setPlayersOutList(Integer.parseInt(playerNumber),
@@ -260,5 +260,10 @@ public class Player implements PlayerContext {
 	@Override
 	public void setFirstPlayer() {
 		isFirst = true;
+	}
+
+	@Override
+	public void setMyTurn(boolean flag) {
+		viewController.setMyTurn(flag);
 	}
 }
