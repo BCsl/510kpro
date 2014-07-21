@@ -26,7 +26,7 @@ public class ConnectState extends PlayerState {
 		if(msg==null){//有上一状态（initState）跳转过来，暂不处理
 			
 		}else if (msg.startsWith(Common.PLAYER_ACCEPTED)) {// 连接成功，处理msg后跳转到等待开始状态
-			Log.i("=========", msg);
+			Log.i("连接状态", msg);
 			
 			int playerNumber = Integer.parseInt(msg.substring(2,3).trim());
 			mPlayerContext.setPlayerNumber(playerNumber);//设置玩家序号

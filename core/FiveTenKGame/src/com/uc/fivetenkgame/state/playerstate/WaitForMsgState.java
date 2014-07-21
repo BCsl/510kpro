@@ -19,10 +19,12 @@ public class WaitForMsgState extends PlayerState{
 			return ;
 		
 		//得到出牌信息
-		if( (msg.startsWith(Common.YOUR_TURN)) && 
-				(Integer.parseInt(msg.substring(2,3)) == mPlayerContext.getPlayerNumber()) ){
+		if( (msg.startsWith(Common.YOUR_TURN)) ){
+			mPlayerContext.setMyTurn(true);
 			if(isFirstPlayCard){
-				mPlayerContext.setFirstPlayer();
+				if((Integer.parseInt(msg.substring(2,3)) == mPlayerContext.getPlayerNumber())){
+					mPlayerContext.setFirstPlayer();
+				}
 				isFirstPlayCard = false;
 			}
 			mPlayerContext.setState(new SelectCardsState(mPlayerContext));
