@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
+import android.util.Log;
+
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.view.entity.Card;
 
@@ -22,19 +24,15 @@ public class BasicRule implements Rule {
 	 * @return 0 if cardList1 is illegal, 1 if it is legal
 	 * @param isFirst 是否是第一个出牌玩家
 	 */
-	public int checkCards(List<Card> cardList1, List<Card> cardList2, boolean isFirst) {
-		if(isFirst){
-			if(firstPlayCards(cardList1))
-				return 1;
-			else
-				return 0;
-		}
-		
+	public int checkCards(List<Card> cardList1, List<Card> cardList2) {
 		//BasicRule.setOrder(cardList1);
 		//BasicRule.setOrder(cardList2);
 		
 		CardType cType = this.judgeType(cardList1);
 		CardType cType2 = this.judgeType(cardList2);
+		Log.i("cardList1", cType.toString());
+		Log.i("cardList2", cType2.toString());
+		
 		// 如果张数不同直接过滤
 		if (cType != CardType.c4 && cardList1.size() != cardList2.size())
 			return 0;
@@ -55,10 +53,15 @@ public class BasicRule implements Rule {
 		
 		//510k和纯510K
 		if(cType == CardType.c510K){
-			if(cType2 == CardType.c4)
+			if(cType2 == CardType.c4){
 				return 0;
-			else
+			}else if(cType == CardType.c510K){
+				if( BasicRule.getColor(cardList1.get(0)) < BasicRule.getColor(cardList2.get(0)) ){
+					return 0;
+				}
+			}else{
 				return 1;
+			}	
 		}
 		
 		if(cType == CardType.c510k){
@@ -109,10 +112,10 @@ public class BasicRule implements Rule {
 		return score;
 	}
 	
-	public boolean firstPlayCards(List<Card> cardList){
+	public int firstPlayCards(List<Card> cardList){
 		if(judgeType(cardList) != CardType.c0)
-			return true;
-		return false;
+			return 1;
+		return 0;
 	}
 	
 	// 判断牌型
@@ -149,16 +152,18 @@ public class BasicRule implements Rule {
 							.get(len - 1))))
 				return CardType.c31;
 			if (len == 3
-					&& ((BasicRule.getValue(list.get(0)) == 13 && (BasicRule
+					&& ((BasicRule.getValue(list.get(0)) == 5 && (BasicRule
 							.getValue(list.get(1)) == 10 && (BasicRule
-							.getValue(list.get(2)) == 5))))) {
+							.getValue(list.get(2)) == 13))))) {
 				if ((BasicRule.getValue(list.get(0)) == BasicRule.getValue(list
 						.get(1)))
 						&& (BasicRule.getValue(list.get(2)) == BasicRule
-								.getValue(list.get(1))))
+								.getValue(list.get(1)))){
 					return CardType.c510K;
-				else
+				}
+				else{
 					return CardType.c510k;
+				}
 			}
 
 			return CardType.c0;

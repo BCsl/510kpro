@@ -83,9 +83,8 @@ public interface PlayerContext {
 	
 	public Handler getHandler();
 	
-	public void setFirstPlayer();
-	
 	public boolean doneHandCards();
 	public void setDoneHandCards(boolean flag);
 	public void setMyTurn(boolean flag);
+	public boolean isFirstPlayer();
 	}	
