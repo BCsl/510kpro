@@ -146,7 +146,6 @@ public class WaitingState extends ServerState {
 		List<Card> list = new ArrayList<Card>(str.length );
 		for (int i = 0; i < str.length; i++){
 			list.add(new Card(str[i]));
-			Log.i(TAG,"list add "+str[i]);
 		}
 		return list;
 	}
@@ -157,9 +156,13 @@ public class WaitingState extends ServerState {
 	private void nextPlayer() {
 		int nextPlayer = 0;
 		if(mServerContext.getCurrentPlayerNumber()==3)
-			nextPlayer = 1;
+			nextPlayer=mServerContext.getPlayerModel().get(0).getRemainCardsNum()!=0?1:2;
 		else
-			nextPlayer = mServerContext.getCurrentPlayerNumber() + 1;
+			if(mServerContext.getCurrentPlayerNumber()==1)
+				nextPlayer=mServerContext.getPlayerModel().get(1).getRemainCardsNum()!=0?2:3;
+			else
+				if(mServerContext.getCurrentPlayerNumber()==2)
+					nextPlayer=mServerContext.getPlayerModel().get(2).getRemainCardsNum()!=0?3:1;
 		
 		mServerContext.getNetworkManager().sendMessage(
 				Common.YOUR_TURN + nextPlayer);
