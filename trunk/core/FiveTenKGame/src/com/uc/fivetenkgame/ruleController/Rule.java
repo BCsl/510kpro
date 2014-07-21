@@ -15,7 +15,14 @@ public interface Rule {
 	 * @param cardList1 the cards to be played
 	 * @param cardList2 the cards the former player played
 	 */
-	int checkCards(List<Card> cardList1,List<Card> cardList2, boolean isFirst);
+	int checkCards(List<Card> cardList1,List<Card> cardList2);
+	
+	/**
+	 * 如果是一局中第一个打牌的人，则调用此方法
+	 * @param cardList
+	 * @return 0 if cardList1 is illegal, 1 if it is legal
+	 */
+	int firstPlayCards(List<Card> cardList);
 	
 	/**
 	 * 
