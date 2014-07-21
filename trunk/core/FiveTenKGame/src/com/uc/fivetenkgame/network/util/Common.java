@@ -64,6 +64,12 @@ public class Common {
 					return a2 - a1;
 				}
 				
+				//2,1 ַי¿צ
+				if( b2 < 2 )
+					b2 += 13;
+				if( b1 < 2 )
+					b1 += 13;
+				
 				if (b2 - b1 == 0)
 					return a2 - a1;
 				else {
