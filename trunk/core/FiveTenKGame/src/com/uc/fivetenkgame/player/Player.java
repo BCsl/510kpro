@@ -5,9 +5,11 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
+import android.util.Log;
 
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
+import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.ruleController.BasicRule;
 import com.uc.fivetenkgame.ruleController.Rule;
@@ -26,7 +28,7 @@ import com.uc.fivetenkgame.view.util.IViewControler;
  */
 @SuppressLint("UseValueOf")
 public class Player implements PlayerContext {
-	protected boolean isGameOver = false;
+	protected boolean isFirst = true;
 	private Rule mRule;
 	private State mState;
 	private IViewControler viewController;
@@ -49,13 +51,27 @@ public class Player implements PlayerContext {
 
 		@Override
 		public boolean handCard(List<Card> handList) {
-			if (mRule.checkCards(handList, formerCardList) == 1)
-				return true;
-			else
+			if( formerCardList == null ){
+				Log.i("handCard(Liat<Card>)", "formerCardList = NULL");
 				return false;
+			}
+			else if (mRule.checkCards(handList, formerCardList,isFirstPlay()) == 1){
+				return true;
+			}
+			else{
+				return false;
+			}	
 		}
 	};
 
+	public boolean isFirstPlay(){
+		if( mPlayerModel.getPlayerNumber() == Common.SERVER_NUM ){
+			if( isFirst == true )
+				return true;
+		}
+		return false;
+	}
+	
 	public void startPlay(String addr) {
 		setState(new InitState(gInstance));
 		handle(addr);
@@ -72,7 +88,7 @@ public class Player implements PlayerContext {
 
 	// 启动网络模块
 	public void initNetwork(String addr) {
-		((ClientManager) mNetworkManager).initNetwork(addr);
+		mNetworkManager.initNetwork(addr);
 	}
 
 	public static Player gInstance;// 唯一的Player实例
@@ -178,6 +194,9 @@ public class Player implements PlayerContext {
 	@Override
 	public void playCardsEndAction(String[] outList, String playerNumber,
 			String tableScore, String[] remainCards) {
+		if(outList == null)
+			return;
+		
 		// 设置outList
 		List<Card> cardList = null;
 		for (int i = 0, count = remainCards.length; i < count; i++) {
@@ -185,7 +204,8 @@ public class Player implements PlayerContext {
 		}
 		viewController.setPlayersOutList(Integer.parseInt(playerNumber),
 				cardList);
-		formerCardList = cardList;
+		if(cardList != null)
+			formerCardList = cardList;
 
 		// 设置剩余牌数
 		List<Integer> cardScore = null;
