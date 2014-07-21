@@ -25,27 +25,62 @@ public class WaitForMsgState extends PlayerState{
 				mPlayerContext.setFirstPlayer();
 				isFirstPlayCard = false;
 			}
-			mPlayerContext.setState(new SelectCardState(mPlayerContext));
-			mPlayerContext.handle(null);
+			String cards = mPlayerContext.getCardsToBePlayed(),
+					msgToBeSend = null;
+			if ( cards == null ){
+				msgToBeSend = new String(Common.GIVE_UP);
+			}else{
+				StringBuffer sb = new StringBuffer(Common.PLAY_CARDS);
+				sb.append(cards);
+				msgToBeSend = new String(sb);
+			}
+			mPlayerContext.sendMsg(msgToBeSend);
+			Log.i(TAG, msgToBeSend);
 			Log.i(TAG, msg);
+			return;
 		}
 		//得到其他玩家出牌信息
 		if( msg.startsWith(Common.PLAY_END) ){
-			mPlayerContext.setState(new OthersPlayCardsState(mPlayerContext));
-			mPlayerContext.handle(msg.substring(2, msg.length()));
+			msg=msg.substring(2, msg.length()).trim();
+			String playerNumber = msg.substring(0,1);
+			
+			String str[] = new String( (msg.substring(2,msg.length())) ).split(",");
+			if(str == null)
+				return;
+			
+			String[] outList = new String[str.length-4];
+			for(int i=0, count=str.length-4; i<count; i++){
+				outList[i] = str[i];
+			}
+			
+			String tableScore = new String();
+			tableScore = str[str.length-4];
+			
+			String[] remainCards = new String[3];
+			remainCards[0] = str[str.length-3];
+			remainCards[1] = str[str.length-2];
+			remainCards[2] = str[str.length-1];
+			Log.i(TAG, tableScore+" ？= "+str[str.length-4]);
+			
+			mPlayerContext.playCardsEndAction(outList, playerNumber, tableScore, remainCards);
+			mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
 			Log.i(TAG, msg);
+			return;
 		}	
 		//得到回合结束信息
 		if( msg.startsWith(Common.ROUND_END) ){
-			mPlayerContext.setState(new RoundEndState(mPlayerContext));
-			mPlayerContext.handle(msg.substring(2, msg.length()));
+			msg=msg.substring(2, msg.length()).trim();
+			String[] playerScore = msg.split(",");
+			mPlayerContext.roundEndAction(playerScore);
 			Log.i(TAG, msg);
+			return;
 		}
 		//得到游戏结束信息
 		if( msg.startsWith(Common.GAME_OVER) ){
 			mPlayerContext.setState(new GameOverState(mPlayerContext));
 			mPlayerContext.handle(msg.substring(2,3));
 			Log.i(TAG, msg);
+			return;
 		}	
 	}
 }
