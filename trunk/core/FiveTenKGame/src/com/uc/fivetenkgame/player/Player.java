@@ -141,13 +141,11 @@ public class Player implements PlayerContext {
 	 * @return null, if no card to be played
 	 */
 	public String getCardsToBePlayed() {
-		List<Card> outList = null;
+		List<Card> outList = new ArrayList<Card>();
 		while (!(mEventListener.handCard(outList))) {
 			viewController.handCardFailed();
 		}
-		if (outList == null)
-			return null;
-		StringBuffer sb = null;
+		StringBuffer sb = new StringBuffer();
 		for (int i = 0, count = outList.size(); i < count; i++) {
 			sb.append(outList.get(i).getCardId());
 			sb.append(",");
@@ -184,7 +182,7 @@ public class Player implements PlayerContext {
 	@SuppressLint("UseValueOf")
 	@Override
 	public void roundEndAction(String[] playerScore) {
-		List<Integer> score = null;
+		List<Integer> score = new ArrayList<Integer>();
 		score.add(new Integer(playerScore[0]));
 		score.add(new Integer(playerScore[1]));
 		score.add(new Integer(playerScore[2]));
@@ -198,7 +196,7 @@ public class Player implements PlayerContext {
 			return;
 		
 		// …Ë÷√outList
-		List<Card> cardList = null;
+		List<Card> cardList = new ArrayList<Card>();
 		for (int i = 0, count = remainCards.length; i < count; i++) {
 			cardList.add(new Card(outList[i]));
 		}
@@ -208,7 +206,7 @@ public class Player implements PlayerContext {
 			formerCardList = cardList;
 
 		// …Ë÷√ £”‡≈∆ ˝
-		List<Integer> cardScore = null;
+		List<Integer> cardScore = new ArrayList<Integer>();
 		cardScore.add(Integer.valueOf(remainCards[0]));
 		cardScore.add(Integer.valueOf(remainCards[1]));
 		cardScore.add(Integer.valueOf(remainCards[2]));
