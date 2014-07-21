@@ -5,11 +5,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
-import android.util.Log;
-
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
-import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.ruleController.BasicRule;
 import com.uc.fivetenkgame.ruleController.Rule;
@@ -31,6 +28,7 @@ public class Player implements PlayerContext {
 	protected boolean isFirst = false;
 	private Rule mRule;
 	private State mState;
+	private boolean doneHandCard=false;
 	private IViewControler viewController;
 	private OnReceiveMessageListener mReceiveMessage = new OnReceiveMessageListener() {
 
@@ -50,29 +48,36 @@ public class Player implements PlayerContext {
 	protected EventListener mEventListener = new EventListener() {
 		@Override
 		public boolean handCard(List<Card> handList) {
-			handList = mHandList;
+			
+			mHandList=new ArrayList<Card>();
 			if(handList == null){
+				mHandList=null;
 				if(isFirst){
 					//第一个玩家不能放弃出牌
 					viewController.handCardFailed();
-					return true;
+					return false;
 				}
-				handle(null);
-				return false;
-			}else if(handList.size() == 0){
-				//不能什么牌都不点就出牌
-				viewController.handCardFailed();
+				setDoneHandCards(true);
 				return true;
-			}else if (mRule.checkCards(handList, formerCardList,isFirst) == 1){
-				handle(null);
+			}else if(handList.size() == 0){
+				viewController.handCardFailed();
 				return false;
+			}else if (mRule.checkCards(handList, formerCardList,isFirst) == 1){
+				mHandList.addAll(handList);
+				setDoneHandCards(true);
+				return true;
 			}
 			else{
-				//选牌大不过上家
+				//不能什么牌都不点就出牌
 				viewController.handCardFailed();
-				return true;
-			}	
-		}
+				return false;
+			}
+//			else{
+//				//选牌大不过上家
+//				viewController.handCardFailed();
+//				return true;
+//			}	
+	}
 	};
 	
 	public void startPlay(String addr) {
@@ -81,7 +86,7 @@ public class Player implements PlayerContext {
 	}
 	
 	public void setViewControler(IViewControler viewControler){
-		viewController=viewControler;
+		this.viewController=viewControler;
 	}
 		
 	// 设置规则
@@ -144,12 +149,11 @@ public class Player implements PlayerContext {
 	 * @return null, if no card to be played
 	 */
 	public String getCardsToBePlayed() {
-		List<Card> outList = mHandList;
 		if(mHandList == null)
 			return null;
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0, count = outList.size(); i < count; i++) {
-			sb.append(outList.get(i).getCardId());
+		for (int i = 0, count = mHandList.size(); i < count; i++) {
+			sb.append(mHandList.get(i).getCardId());
 			sb.append(",");
 		}
 		sb.deleteCharAt(sb.length() - 1);
@@ -263,7 +267,20 @@ public class Player implements PlayerContext {
 	}
 
 	@Override
+	public boolean doneHandCards() {
+		return doneHandCard;
+	}
+
+	@Override
+	public void setDoneHandCards(boolean flag) {
+		// TODO Auto-generated method stub
+		doneHandCard=flag;
+	}
+
+	@Override
 	public void setMyTurn(boolean flag) {
+		while(viewController==null){}
 		viewController.setMyTurn(flag);
 	}
-}
+
+	}

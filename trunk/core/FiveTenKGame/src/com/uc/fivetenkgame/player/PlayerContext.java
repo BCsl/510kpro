@@ -85,5 +85,7 @@ public interface PlayerContext {
 	
 	public void setFirstPlayer();
 	
+	public boolean doneHandCards();
+	public void setDoneHandCards(boolean flag);
 	public void setMyTurn(boolean flag);
-}
+	}	

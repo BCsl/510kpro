@@ -70,8 +70,8 @@ public class WaitingState extends ServerState {
 		StringBuilder res = new StringBuilder();
 		res.append(Common.ROUND_END);
 		for (PlayerModel temp : mServerContext.getPlayerModel())
-			res.append(temp.getScore());
-		mServerContext.getNetworkManager().sendMessage(res.toString());
+			res.append(temp.getScore()+",");
+		mServerContext.getNetworkManager().sendMessage(res.deleteCharAt(res.length()-1).toString());
 	}
 
 	/**
@@ -133,7 +133,6 @@ public class WaitingState extends ServerState {
 		res.append(mServerContext.getRoundScore()+",");
 		for (PlayerModel model : mServerContext.getPlayerModel())
 			res.append(model.getRemainCardsNum()+",");
-//		Log.i(TAG, res.toString());
 		mServerContext.getNetworkManager().sendMessage(Common.PLAY_END + res.substring(0,res.length()-1));
 	}
 
