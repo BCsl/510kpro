@@ -24,7 +24,7 @@ public class InitState extends PlayerState {
 	@Override
 	public void handle(String msg) {
 		if(msg==null){//记录日志，此状态下不能为null
-			Log.i("playerInitState", "msg为null");
+			Log.i("开始状态", "msg为null");
 			
 		}else{
 			mPlayerContext.initNetwork(msg);//连接到server

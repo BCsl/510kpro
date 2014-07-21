@@ -23,6 +23,7 @@ public class SelectCardsState extends PlayerState{
 			msgToBeSend = new String(sb);
 		}
 		mPlayerContext.sendMsg(msgToBeSend);
+		mPlayerContext.setMyTurn(false);
 		mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
 		Log.i(TAG, msgToBeSend);
 	}
