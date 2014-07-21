@@ -34,11 +34,12 @@ public class BasicRule implements Rule {
 		Log.i("cardList2", cType2.toString());
 		
 		// 如果张数不同直接过滤
-		if (cType != CardType.c4 && cardList1.size() != cardList2.size())
+		if (cType != CardType.c4 && cType != CardType.c510k && cType != CardType.c510K &&
+				cardList1.size() != cardList2.size())
 			return 0;
 		// 比较我的出牌类型
-		if (cType != CardType.c4 && cType != cType2) {
-
+		if ( cType != CardType.c4 && cType != CardType.c510k && cType != CardType.c510K && 
+		cType != cType2) {
 			return 0;
 		}
 		// 比较出的牌是否要大
@@ -189,7 +190,7 @@ public class BasicRule implements Rule {
 			if ((BasicRule.getColor(list.get(0)) != 5)
 					&& (card_index.numberList[0].size() == len)
 					&& (BasicRule.getValue(list.get(0))
-							- BasicRule.getValue(list.get(len - 1)) == len - 1))
+							- BasicRule.getValue(list.get(len - 1)) == -(len - 1)))
 				return CardType.c123;
 			// 连队
 			if (card_index.numberList[1].size() == len / 2
