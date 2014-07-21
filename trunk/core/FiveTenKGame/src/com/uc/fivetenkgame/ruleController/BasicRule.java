@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
+import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.view.entity.Card;
 
 
@@ -20,7 +21,13 @@ public class BasicRule implements Rule {
 	 * @return 0 if cardList1 is illegal, 1 if it is legal
 	 * 
 	 */
-	public int checkCards(List<Card> cardList1, List<Card> cardList2) {
+	public int checkCards(List<Card> cardList1, List<Card> cardList2, boolean isFirst) {
+		if(isFirst){
+			if(firstPlayCards(cardList1))
+				return 1;
+			else
+				return 0;
+		}
 		BasicRule.setOrder(cardList1);
 		BasicRule.setOrder(cardList2);
 		CardType cType = this.judgeType(cardList1);
@@ -97,7 +104,13 @@ public class BasicRule implements Rule {
 		}
 		return score;
 	}
-
+	
+	public boolean firstPlayCards(List<Card> cardList){
+		if(judgeType(cardList) != CardType.c0)
+			return true;
+		return false;
+	}
+	
 	// 判断牌型
 	private CardType judgeType(List<Card> list) {
 		// 因为之前排序过所以比较好判断
