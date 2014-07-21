@@ -150,7 +150,7 @@ public abstract class EventListener {
 	 * 出牌操作(需要进行规则的判断)
 	 * 
 	 * @param handList
-	 *            准备出的牌 handList为空，则为放弃操作。
+	 *            准备出的牌 handList为NULL，则为放弃操作。
 	 * 
 	 * @return 出牌成功返回false
 	 */

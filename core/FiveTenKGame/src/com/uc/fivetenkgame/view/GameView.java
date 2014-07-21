@@ -27,9 +27,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.ListView;
 import android.widget.Toast;
-
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
 import com.uc.fivetenkgame.view.util.IViewControler;
@@ -148,7 +146,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		viewControler = new ViewControler();
 		start = true;
-		isMyTrun = true;
+		isMyTrun = false;
 		gameScore = 0;
 		cardNumber = new Vector<Integer>();
 		cardNumber.add(0);
