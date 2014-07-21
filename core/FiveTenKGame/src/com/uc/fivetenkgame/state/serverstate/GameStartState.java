@@ -1,6 +1,8 @@
 package com.uc.fivetenkgame.state.serverstate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import com.uc.fivetenkgame.network.util.Common;
@@ -31,21 +33,21 @@ public class GameStartState extends ServerState{
 	 * 随机洗牌
 	 */
 	private void washCards(){
+		List<Card> cardlist = new ArrayList<Card>();
 		
 		for(int i = 0; i < TOTAL_CARD_NUM; ++i ){
 			//牌的ID，1～54
 			mCards[i] = new Card((i+1)+"");
+			cardlist.add(mCards[i]);
+		}
+
+		Collections.shuffle(cardlist);
+		
+		int pos = 0;
+		for(Card card : cardlist){
+			mCards[pos++] = card;
 		}
 		
-		//产生随机数，交换100次
-		for(int i = 0; i < 200; ++i){
-			Random random = new Random();
-			int aPos = random.nextInt(TOTAL_CARD_NUM);
-			int bPos = random.nextInt(TOTAL_CARD_NUM);
-			Card tCard = mCards[aPos];
-			mCards[aPos] = mCards[bPos];
-			mCards[bPos] = tCard;
-		}
 	}
 	
 	/**
