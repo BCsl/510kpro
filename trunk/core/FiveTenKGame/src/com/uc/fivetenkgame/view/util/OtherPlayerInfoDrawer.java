@@ -59,7 +59,7 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 					CardGenerator.cardResourceName(card.getCardId()));
 			canvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
-		temp.recycle();
+//		temp.recycle();
 		
 		
 	}
@@ -85,7 +85,7 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 					CardGenerator.cardResourceName(card.getCardId()));
 			canvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
-		temp.recycle();
+//		temp.recycle();
 		card = null;
 	}
 

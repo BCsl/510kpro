@@ -2,7 +2,12 @@ package com.uc.fivetenkgame.state.serverstate;
 
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.server.ServerContext;
-
+/**
+ * 
+ * @author chensl@ucweb.com
+ *
+ *  обнГ4:59:13 2014-7-17
+ */
 public class GameEndState extends ServerState {
 
 	public GameEndState(ServerContext context) {

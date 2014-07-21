@@ -7,6 +7,8 @@
  */
 package com.uc.fivetenkgame.view;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +68,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private float MAIN_CARDS__BASEY, MAIN_OUT_CARDS_BASEY;
 	private float LEFT_CARDS_BASEX, RIGHT_CARDS_BASEX, LEFT_OUTCARDS_BASEX,
 			RIGHT_OUTCARDS_BASEX;
+	private ArrayList<Bitmap> cardsBitmap;
+	private Bitmap bg;
 
 	public GameView(Context context, int playerId) {
 		super(context);
@@ -138,13 +142,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		public void roundOver() {
 			for(Map.Entry<Integer, List<Card>> temp:outList.entrySet())
 					temp.getValue().clear();
+			gameScore=0;
 				
 		}
 	}
 
 	private void init() {
 		initPlayersId(playerId);
-
+		cardsBitmap=new ArrayList<Bitmap>(55);
 		viewControler = new ViewControler();
 		start = true;
 		isMyTrun = false;
@@ -161,7 +166,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		cardList = new Vector<Card>();
 		outList = new HashMap<Integer, List<Card>>();
-
+		bg= BitmapFactory.decodeResource(getResources(), R.drawable.bg);
 	}
 
 	private void initPlayersId(int playerId2) {
@@ -264,13 +269,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	// ÷ÿªÊ
-	private void doDraw() {
+	private void doDraw(Paint paint) {
 		Canvas canvas = null;
 		synchronized (holder) {
 			try {
 				canvas = holder.lockCanvas();
-				Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-				paint.setStyle(Style.FILL);
+
 				drawBackground(canvas);
 				drawMainPlayer(canvas, paint);
 				drawLeftPlayer(canvas, paint);
@@ -336,16 +340,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	// ª≠±≥æ∞
 	private void drawBackground(Canvas canvas) {
-		Bitmap bg = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
 		Rect src = new Rect(0, 0, bg.getWidth() * 3 / 4, bg.getHeight() * 2 / 3);
 		Rect dst = new Rect(0, 0, screenHolder.width, screenHolder.height);
 		canvas.drawBitmap(bg, src, dst, null);
 	};
 
 	public void run() {
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		paint.setStyle(Style.FILL);
 		while (start) {
-			doDraw();
-			Sleep(50);
+			doDraw(paint);
+			Sleep(33);
 		}
 	}
 
