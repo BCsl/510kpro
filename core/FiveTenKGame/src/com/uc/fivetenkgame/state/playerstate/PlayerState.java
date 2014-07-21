@@ -10,4 +10,9 @@ public abstract class PlayerState implements State{
 	public PlayerState(PlayerContext context){
 		this.mPlayerContext = context;
 	}
+	@Override
+	public String toString() {
+		String name=this.getClass().getName();
+		return "µ±Ç°×´Ì¬£º"+name.substring(name.lastIndexOf("."));
+	}
 }

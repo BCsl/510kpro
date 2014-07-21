@@ -19,17 +19,23 @@ public class WaitForMsgState extends PlayerState{
 			return ;
 		
 		//得到出牌信息
-		if( (msg.startsWith(Common.YOUR_TURN)) ){
-			mPlayerContext.setMyTurn(true);
+		if( msg.startsWith(Common.YOUR_TURN) &&msg.substring(2).equals(String.valueOf(mPlayerContext.getPlayerNumber()))){
 			if(isFirstPlayCard){
 				if((Integer.parseInt(msg.substring(2,3)) == mPlayerContext.getPlayerNumber())){
 					mPlayerContext.setFirstPlayer();
 				}
 				isFirstPlayCard = false;
-			}
-			mPlayerContext.setState(new SelectCardsState(mPlayerContext));
-			Log.i(TAG, msg);
-			return;
+				}
+			mPlayerContext.setMyTurn(true);
+			while(!mPlayerContext.doneHandCards()){}
+			String cards = mPlayerContext.getCardsToBePlayed();
+			Log.i(TAG, "客户端出牌："+cards);
+			if(cards == null)
+				mPlayerContext.sendMsg(Common.GIVE_UP) ;
+				else
+					mPlayerContext.sendMsg(Common.PLAY_CARDS+cards);
+			mPlayerContext.setMyTurn(false);
+			mPlayerContext.setDoneHandCards(false);
 		}
 		//得到其他玩家出牌信息
 		if( msg.startsWith(Common.PLAY_END) ){

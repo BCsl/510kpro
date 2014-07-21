@@ -49,4 +49,5 @@ public class PlayerModel {
 	public void setPlayerNumber(int playerNumber){
 		mPlayerNumber = playerNumber;
 	}
+
 }
