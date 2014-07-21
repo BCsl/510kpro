@@ -139,6 +139,8 @@ public class Player implements PlayerContext {
 	 */
 	public String getCardsToBePlayed() {
 		List<Card> outList = mHandList;
+		if(mHandList == null)
+			return null;
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0, count = outList.size(); i < count; i++) {
 			sb.append(outList.get(i).getCardId());
