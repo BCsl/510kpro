@@ -25,17 +25,7 @@ public class WaitForMsgState extends PlayerState{
 				mPlayerContext.setFirstPlayer();
 				isFirstPlayCard = false;
 			}
-			String cards = mPlayerContext.getCardsToBePlayed(),
-					msgToBeSend = null;
-			if ( cards == null ){
-				msgToBeSend = new String(Common.GIVE_UP);
-			}else{
-				StringBuffer sb = new StringBuffer(Common.PLAY_CARDS);
-				sb.append(cards);
-				msgToBeSend = new String(sb);
-			}
-			mPlayerContext.sendMsg(msgToBeSend);
-			Log.i(TAG, msgToBeSend);
+			mPlayerContext.setState(new SelectCardsState(mPlayerContext));
 			Log.i(TAG, msg);
 			return;
 		}
