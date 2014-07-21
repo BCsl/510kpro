@@ -105,6 +105,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		}
 
 		public void setMyTurn(boolean flag) {
+			Log.i(TAG, "set is myturn:" +flag);
 			isMyTrun = flag;
 		}
 
@@ -358,6 +359,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		if(!isMyTrun)
+			return super.onTouchEvent(event);
 		if (eventListener == null)
 			throw new IllegalArgumentException(
 					"EventListener should not be null!!!");

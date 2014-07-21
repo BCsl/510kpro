@@ -63,7 +63,10 @@ public class Card {
 	}
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
 		return Integer.valueOf(cardId);
+	}
+	@Override
+	public boolean equals(Object o) {
+		return cardId.equals(((Card)o).getCardId());
 	}
 }
