@@ -18,7 +18,7 @@ public class SelectCardState extends PlayerState {
 		super(playerContext);
 	}
 	
-	public void handle(String nullMsg) {
+	public void handle(String nullMsg) {	
 		String cards = mPlayerContext.getCardsToBePlayed(),
 				msgToBeSend = null;
 		if ( cards == null ){

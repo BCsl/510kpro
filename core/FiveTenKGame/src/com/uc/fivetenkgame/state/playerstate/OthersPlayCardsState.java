@@ -24,6 +24,8 @@ public class OthersPlayCardsState extends PlayerState{
 		String playerNumber = msg.substring(0);
 		
 		String str[] = new String( (msg.substring(2,msg.length())) ).split(",");
+		if(str == null)
+			return;
 		
 		String[] outList = null;
 		for(int i=0, count=str.length-4; i<count; i++){
@@ -40,5 +42,6 @@ public class OthersPlayCardsState extends PlayerState{
 		
 		mPlayerContext.playCardsEndAction(outList, playerNumber, tableScore, remainCards);
 		mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
+		
 	}
 }
