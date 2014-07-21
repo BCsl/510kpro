@@ -18,8 +18,9 @@ import com.uc.fivetenkgame.view.entity.Card;
  */
 public class BasicRule implements Rule {
 	/**  
+	 * 实现接口方法，检测所选牌是否合法
 	 * @return 0 if cardList1 is illegal, 1 if it is legal
-	 * 
+	 * @param isFirst 是否是第一个出牌玩家
 	 */
 	public int checkCards(List<Card> cardList1, List<Card> cardList2, boolean isFirst) {
 		if(isFirst){
@@ -28,8 +29,10 @@ public class BasicRule implements Rule {
 			else
 				return 0;
 		}
-		BasicRule.setOrder(cardList1);
-		BasicRule.setOrder(cardList2);
+		
+		//BasicRule.setOrder(cardList1);
+		//BasicRule.setOrder(cardList2);
+		
 		CardType cType = this.judgeType(cardList1);
 		CardType cType2 = this.judgeType(cardList2);
 		// 如果张数不同直接过滤
@@ -50,6 +53,7 @@ public class BasicRule implements Rule {
 			}
 		}
 		
+		//510k和纯510K
 		if(cType == CardType.c510K){
 			if(cType2 == CardType.c4)
 				return 0;
@@ -163,53 +167,53 @@ public class BasicRule implements Rule {
 		if (len >= 5) {// 现在按相同数字最大出现次数
 			Card_index card_index = new Card_index();
 			for (int i = 0; i < 4; i++)
-				card_index.a[i] = new Vector<Integer>();
+				card_index.numberList[i] = new Vector<Integer>();
 			// 求出各种数字出现频率
 			BasicRule.getMax(card_index, list); // a[0,1,2,3]分别表示重复1,2,3,4次的牌
 			// 3带2 -----必含重复3次的牌
-			if (card_index.a[2].size() == 1 && card_index.a[1].size() == 1
+			if (card_index.numberList[2].size() == 1 && card_index.numberList[1].size() == 1
 					&& len == 5)
 				return CardType.c32;
 			// 4带2(单,双)
-			if (card_index.a[3].size() == 1 && len == 6)
+			if (card_index.numberList[3].size() == 1 && len == 6)
 				return CardType.c411;
-			if (card_index.a[3].size() == 1 && card_index.a[1].size() == 2
+			if (card_index.numberList[3].size() == 1 && card_index.numberList[1].size() == 2
 					&& len == 8)
 				return CardType.c422;
 			// 单连,保证不存在王
 			if ((BasicRule.getColor(list.get(0)) != 5)
-					&& (card_index.a[0].size() == len)
+					&& (card_index.numberList[0].size() == len)
 					&& (BasicRule.getValue(list.get(0))
 							- BasicRule.getValue(list.get(len - 1)) == len - 1))
 				return CardType.c123;
 			// 连队
-			if (card_index.a[1].size() == len / 2
+			if (card_index.numberList[1].size() == len / 2
 					&& len % 2 == 0
 					&& len / 2 >= 3
 					&& (BasicRule.getValue(list.get(0))
 							- BasicRule.getValue(list.get(len - 1)) == (len / 2 - 1)))
 				return CardType.c1122;
 			// 飞机
-			if (card_index.a[2].size() == len / 3
+			if (card_index.numberList[2].size() == len / 3
 					&& (len % 3 == 0)
 					&& (BasicRule.getValue(list.get(0))
 							- BasicRule.getValue(list.get(len - 1)) == (len / 3 - 1)))
 				return CardType.c111222;
 			// 飞机带n单,n/2对
-			if (card_index.a[2].size() >= 2
-					&& card_index.a[2].size() == len / 4
-					&& ((Integer) (card_index.a[2].get(len / 4 - 1))
-							- (Integer) (card_index.a[2].get(0)) == len / 4 - 1)
-					&& len == card_index.a[2].size() * 4)
+			if (card_index.numberList[2].size() >= 2
+					&& card_index.numberList[2].size() == len / 4
+					&& ((Integer) (card_index.numberList[2].get(len / 4 - 1))
+							- (Integer) (card_index.numberList[2].get(0)) == len / 4 - 1)
+					&& len == card_index.numberList[2].size() * 4)
 				return CardType.c11122234;
 
 			// 飞机带n双
-			if (card_index.a[2].size() >= 2
-					&& card_index.a[2].size() == len / 5
-					&& card_index.a[2].size() == len / 5
-					&& ((Integer) (card_index.a[2].get(len / 5 - 1))
-							- (Integer) (card_index.a[2].get(0)) == len / 5 - 1)
-					&& len == card_index.a[2].size() * 5)
+			if (card_index.numberList[2].size() >= 2
+					&& card_index.numberList[2].size() == len / 5
+					&& card_index.numberList[2].size() == len / 5
+					&& ((Integer) (card_index.numberList[2].get(len / 5 - 1))
+							- (Integer) (card_index.numberList[2].get(0)) == len / 5 - 1)
+					&& len == card_index.numberList[2].size() * 5)
 				return CardType.c1112223344;
 
 		}
@@ -217,7 +221,8 @@ public class BasicRule implements Rule {
 	}
 
 	// 设定牌的顺序
-	public static void setOrder(List<Card> list) {
+	// 服务器端已设好顺序呢，故暂时没用
+	private static void setOrder(List<Card> list) {
 		Collections.sort(list, new Comparator<Card>() {
 			@Override
 			public int compare(Card o1, Card o2) {
@@ -238,7 +243,7 @@ public class BasicRule implements Rule {
 	}
 
 	// 返回值
-	public static int getValue(Card card) {
+	private static int getValue(Card card) {
 		String cardName = BasicRule.cardResourceName(card.getCardId());
 		int i = Integer.parseInt( cardName.substring(
 				3, cardName.length()) );
@@ -246,12 +251,12 @@ public class BasicRule implements Rule {
 	}
 
 	// 返回花色
-	public static int getColor(Card card) {
+	private static int getColor(Card card) {
 		return Integer.parseInt((BasicRule.cardResourceName(card.getCardId())).substring(1, 2));
 	}
 
 	// 得到最大相同数
-	public static void getMax(Card_index card_index, List<Card> list) {
+	private static void getMax(Card_index card_index, List<Card> list) {
 		int count[] = new int[17];// 1-16各算一种,王算第16种
 		for (int i = 0; i < 17; i++)
 			count[i] = 0;
@@ -264,26 +269,26 @@ public class BasicRule implements Rule {
 		for (int i = 0; i < 17; i++) {
 			switch (count[i]) {
 			case 1:
-				card_index.a[0].add(i + 1);
+				card_index.numberList[0].add(i + 1);
 				break;
 			case 2:
-				card_index.a[1].add(i + 1);
+				card_index.numberList[1].add(i + 1);
 				break;
 			case 3:
-				card_index.a[2].add(i + 1);
+				card_index.numberList[2].add(i + 1);
 				break;
 			case 4:
-				card_index.a[3].add(i + 1);
+				card_index.numberList[3].add(i + 1);
 				break;
 			}
 		}
 	}
 
 	// 按照重复次数排序
-	public static List getOrder2(List<Card> list) {
+	private static List<Card> getOrder2(List<Card> list) {
 		List<Card> list2 = new Vector<Card>(list);
 		List<Card> list3 = new Vector<Card>();
-		List<Integer> list4 = new Vector<Integer>();
+		//List<Integer> list4 = new Vector<Integer>();
 		int len = list2.size();
 		int a[] = new int[20];
 		for (int i = 0; i < 20; i++)
@@ -310,7 +315,8 @@ public class BasicRule implements Rule {
 		return list3;
 	}
 	
-	private int getCardSocre(Card card){
+	//获得某张手牌分数
+	private static int getCardSocre(Card card){
 		int score;
 		int cardNumber = BasicRule.getValue(card);
 		switch(cardNumber){
@@ -330,11 +336,12 @@ public class BasicRule implements Rule {
 	}
 
 	// 判断牌型用的
-	class Card_index {
-		List a[] = new Vector[4];// 单张
+	private class Card_index {
+		//numberList[i]代表i+1张相同的牌
+		List numberList[] = new Vector[4];
 	}
 	
-	public static String cardResourceName(String cardId) {
+	private static String cardResourceName(String cardId) {
 		StringBuilder prefix = new StringBuilder();
 		int cardNO = Integer.valueOf(cardId.trim());
 		if (cardNO == 0)
@@ -370,7 +377,7 @@ public class BasicRule implements Rule {
 	}
 
 	
-	public enum CardType {
+	private static enum CardType {
 		c1,//单牌。
 		c2,//对子。
 		c3,//3不带。

@@ -3,7 +3,6 @@ package com.uc.fivetenkgame.state.playerstate;
 import android.util.Log;
 
 import com.uc.fivetenkgame.network.util.Common;
-import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.player.PlayerContext;
 
 /**

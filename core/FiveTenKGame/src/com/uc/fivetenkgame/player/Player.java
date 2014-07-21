@@ -28,7 +28,7 @@ import com.uc.fivetenkgame.view.util.IViewControler;
  */
 @SuppressLint("UseValueOf")
 public class Player implements PlayerContext {
-	protected boolean isFirst = true;
+	protected boolean isFirst = false;
 	private Rule mRule;
 	private State mState;
 	private IViewControler viewController;
@@ -39,38 +39,35 @@ public class Player implements PlayerContext {
 			mState.handle(msg);
 		}
 	};
-
 	// protected int currentPlayer;
 	private PlayerModel mPlayerModel;
 	private NetworkInterface mNetworkManager;
 	private Handler mHandler;
 	// protected List<Card> currentPlayerOutList;
 	protected List<Card> formerCardList;
+	private List<Card> mHandList = new ArrayList<Card>();
 	// protected int tableScore;
-	private EventListener mEventListener = new EventListener() {
-
+	protected EventListener mEventListener = new EventListener() {
 		@Override
 		public boolean handCard(List<Card> handList) {
-			if( formerCardList == null ){
-				Log.i("handCard(Liat<Card>)", "formerCardList = NULL");
+			handList = mHandList;
+			if(handList == null){
+				if(isFirst){
+					viewController.handCardFailed();
+					return true;
+				}
 				return false;
-			}
-			else if (mRule.checkCards(handList, formerCardList,isFirstPlay()) == 1){
+			}else if(handList.size() == 0){
+				viewController.handCardFailed();
 				return true;
+			}else if (mRule.checkCards(handList, formerCardList,isFirst) == 1){
+				return false;
 			}
 			else{
-				return false;
+				return true;
 			}	
 		}
 	};
-
-	public boolean isFirstPlay(){
-		if( mPlayerModel.getPlayerNumber() == Common.SERVER_NUM ){
-			if( isFirst == true )
-				return true;
-		}
-		return false;
-	}
 	
 	public void startPlay(String addr) {
 		setState(new InitState(gInstance));
@@ -141,10 +138,7 @@ public class Player implements PlayerContext {
 	 * @return null, if no card to be played
 	 */
 	public String getCardsToBePlayed() {
-		List<Card> outList = new ArrayList<Card>();
-		while (!(mEventListener.handCard(outList))) {
-			viewController.handCardFailed();
-		}
+		List<Card> outList = mHandList;
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0, count = outList.size(); i < count; i++) {
 			sb.append(outList.get(i).getCardId());
@@ -187,6 +181,7 @@ public class Player implements PlayerContext {
 		score.add(new Integer(playerScore[1]));
 		score.add(new Integer(playerScore[2]));
 		viewController.setScroeList(score);
+		viewController.roundOver();
 	}
 
 	@Override
@@ -252,5 +247,10 @@ public class Player implements PlayerContext {
 		leftCardsNum.add(new Integer(18));
 		leftCardsNum.add(new Integer(18));
 		viewController.setCardNumber(leftCardsNum);
+	}
+
+	@Override
+	public void setFirstPlayer() {
+		isFirst = true;
 	}
 }

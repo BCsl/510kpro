@@ -1,14 +1,8 @@
 package com.uc.fivetenkgame.state.playerstate;
 
-import java.util.List;
-
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.util.Log;
-
-import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.player.PlayerContext;
-import com.uc.fivetenkgame.view.entity.Card;
 
 public class OthersPlayCardsState extends PlayerState{
 	String TAG = "OthersPlayCardsState";
@@ -18,21 +12,21 @@ public class OthersPlayCardsState extends PlayerState{
 	}
 	
 	@SuppressLint("UseValueOf")
-	@SuppressWarnings("null")
 	@Override
 	public void handle(String msg) {
-		String playerNumber = msg.substring(0);
+		String playerNumber = msg.substring(0,1);
 		
 		String str[] = new String( (msg.substring(2,msg.length())) ).split(",");
 		if(str == null)
 			return;
 		
-		String[] outList = null;
+		String[] outList = new String[str.length-4];
 		for(int i=0, count=str.length-4; i<count; i++){
 			outList[i] = str[i];
 		}
 		
-		String tableScore = str[str.length-4];
+		String tableScore = new String();
+		tableScore = str[str.length-4];
 		
 		String[] remainCards = new String[3];
 		remainCards[0] = str[str.length-3];
