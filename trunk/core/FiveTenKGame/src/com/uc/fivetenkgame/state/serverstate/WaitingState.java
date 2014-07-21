@@ -27,14 +27,15 @@ public class WaitingState extends ServerState {
 
 	@Override
 	public void handle(String msg) {
-		Log.i(TAG, msg);
+//		Log.i(TAG, msg);
 		if (msg.startsWith(Common.PLAY_CARDS)) {
 			// 首先更新当前出牌玩家信息，然后判断游戏是否结束
-			String str[] = msg.substring(2).split(",");
+			Log.i(TAG, "服务器接受玩家出牌："+msg);
+			String str[] = msg.substring(2).trim().split(",");
 			List<Card> cardList = getCardList(str);
 			updateRoundScore(cardList);
 			updatePlayerModle(cardList);
-			sendToOtherPlayer(msg.substring(2));
+			sendToOtherPlayer(msg.substring(2).trim());
 			if (gameIsOver()){
 				GameEndState state=new GameEndState(mServerContext);
 				mServerContext.setState(state);
@@ -116,7 +117,7 @@ public class WaitingState extends ServerState {
 	 * @param cardList
 	 */
 	private void updatePlayerModle(List<Card> cardList) {
-
+		
 		PlayerModel model = mServerContext.getPlayerModel().get(
 				mServerContext.getCurrentPlayerNumber() - 1);
 		model.getCardList().removeAll(cardList);
@@ -127,13 +128,13 @@ public class WaitingState extends ServerState {
 	 */
 	private void sendToOtherPlayer(String substring) {
 		StringBuilder res = new StringBuilder();
-		res.append(Common.PLAY_END);
-		res.append(substring);
-		res.append(mServerContext.getRoundScore());
+		res.append(mServerContext.getCurrentPlayerNumber()+",");
+		res.append(substring+",");
+		res.append(mServerContext.getRoundScore()+",");
 		for (PlayerModel model : mServerContext.getPlayerModel())
-			res.append(model.getRemainCardsNum());
-		Log.i(TAG, res.toString());
-		mServerContext.getNetworkManager().sendMessage(Common.PLAY_END + res);
+			res.append(model.getRemainCardsNum()+",");
+//		Log.i(TAG, res.toString());
+		mServerContext.getNetworkManager().sendMessage(Common.PLAY_END + res.substring(0,res.length()-1));
 	}
 
 	/**
@@ -143,9 +144,11 @@ public class WaitingState extends ServerState {
 	 * @return
 	 */
 	private List<Card> getCardList(String[] str) {
-		List<Card> list = new ArrayList<Card>(str.length - 1);
-		for (int i = 1; i < str.length; i++)
+		List<Card> list = new ArrayList<Card>(str.length );
+		for (int i = 0; i < str.length; i++){
 			list.add(new Card(str[i]));
+			Log.i(TAG,"list add "+str[i]);
+		}
 		return list;
 	}
 
@@ -159,9 +162,14 @@ public class WaitingState extends ServerState {
 		else
 			nextPlayer = mServerContext.getCurrentPlayerNumber() + 1;
 		
-		Log.i("server log", "waittingState" + nextPlayer);
 		mServerContext.getNetworkManager().sendMessage(
 				Common.YOUR_TURN + nextPlayer);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mServerContext.setCurrentPlayerNumber(nextPlayer);
 	}
 

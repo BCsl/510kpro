@@ -61,4 +61,9 @@ public class Card {
 	public String toString() {
 		return "cardId="+cardId+",width="+width+",height="+height+";x="+x+";y="+y;
 	}
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return Integer.valueOf(cardId);
+	}
 }
