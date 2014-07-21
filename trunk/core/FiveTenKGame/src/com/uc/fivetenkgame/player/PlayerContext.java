@@ -83,5 +83,5 @@ public interface PlayerContext {
 	
 	public Handler getHandler();
 	
-	//public boolean isFirstPlay();
+	public void setFirstPlayer();
 }

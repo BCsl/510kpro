@@ -32,7 +32,7 @@ public class WaitForStartingState extends PlayerState {
 				mPlayerContext.handle(null);
 			}
 		}else if(msg.startsWith(Common.PLAYER_NUMBER_UPDATE)){
-			int playerNumber = Integer.parseInt(msg.substring(2).trim());
+			int playerNumber = Integer.parseInt(msg.substring(2,3).trim());
 			
 			mPlayerContext.getHandler().obtainMessage(Common.UPDATE_WAITING_PLAYER_NUM, playerNumber).sendToTarget();
 			

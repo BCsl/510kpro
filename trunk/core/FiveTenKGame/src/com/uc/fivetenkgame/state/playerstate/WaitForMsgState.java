@@ -3,12 +3,11 @@ package com.uc.fivetenkgame.state.playerstate;
 import android.util.Log;
 
 import com.uc.fivetenkgame.network.util.Common;
-import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
-import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.player.PlayerContext;
 
 public class WaitForMsgState extends PlayerState{
 	String TAG = "WaitForMsgState";
+	boolean isFirstPlayCard = true;
 	
 	public WaitForMsgState(PlayerContext player){
 		super(player);
@@ -21,7 +20,11 @@ public class WaitForMsgState extends PlayerState{
 		
 		//得到出牌信息
 		if( (msg.startsWith(Common.YOUR_TURN)) && 
-				(Integer.parseInt(msg.substring(2)) == mPlayerContext.getPlayerNumber()) ){
+				(Integer.parseInt(msg.substring(2,3)) == mPlayerContext.getPlayerNumber()) ){
+			if(isFirstPlayCard){
+				mPlayerContext.setFirstPlayer();
+				isFirstPlayCard = false;
+			}
 			mPlayerContext.setState(new SelectCardState(mPlayerContext));
 			mPlayerContext.handle(null);
 			Log.i(TAG, msg);
@@ -41,7 +44,7 @@ public class WaitForMsgState extends PlayerState{
 		//得到游戏结束信息
 		if( msg.startsWith(Common.GAME_OVER) ){
 			mPlayerContext.setState(new GameOverState(mPlayerContext));
-			mPlayerContext.handle(msg.substring(2));
+			mPlayerContext.handle(msg.substring(2,3));
 			Log.i(TAG, msg);
 		}	
 	}
