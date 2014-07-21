@@ -15,8 +15,10 @@ public interface Rule {
 	 * @param cardList1 the cards to be played
 	 * @param cardList2 the cards the former player played
 	 */
-	int checkCards(List<Card> cardList1,List<Card> cardList2);
+	int checkCards(List<Card> cardList1,List<Card> cardList2, boolean isFirst);
 	//CardType judgeType(List<Card> cardList);
+	
+	//boolean firstPlay();
 	
 	/**
 	 * 
