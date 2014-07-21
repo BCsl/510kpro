@@ -53,17 +53,23 @@ public class Player implements PlayerContext {
 			handList = mHandList;
 			if(handList == null){
 				if(isFirst){
+					//第一个玩家不能放弃出牌
 					viewController.handCardFailed();
 					return true;
 				}
+				handle(null);
 				return false;
 			}else if(handList.size() == 0){
+				//不能什么牌都不点就出牌
 				viewController.handCardFailed();
 				return true;
 			}else if (mRule.checkCards(handList, formerCardList,isFirst) == 1){
+				handle(null);
 				return false;
 			}
 			else{
+				//选牌大不过上家
+				viewController.handCardFailed();
 				return true;
 			}	
 		}
