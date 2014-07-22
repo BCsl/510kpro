@@ -51,7 +51,8 @@ public class WaitForMsgState extends PlayerState {
 //			mPlayerContext.setMyTurn(true);
 //			while (!mPlayerContext.doneHandCards()) {
 //			}
-		} else if (msg.startsWith(Common.PLAY_END)) {
+		}
+		}else if (msg.startsWith(Common.PLAY_END)) {
 			msg = msg.substring(2, msg.length()).trim();
 			String playerNumber = msg.substring(0, 1);
 
@@ -94,6 +95,5 @@ public class WaitForMsgState extends PlayerState {
 			Log.i("GAME_OVER", msg);
 			return;
 		}
-	}
 	}
 	}
