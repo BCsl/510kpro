@@ -3,6 +3,12 @@ package com.uc.fivetenkgame.state.serverstate;
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.server.ServerContext;
 
+/**
+ * ³õÊ¼×´Ì¬
+ * 
+ * @author liuzd
+ *
+ */
 public class InitState extends ServerState {
 
 	public InitState(ServerContext context){

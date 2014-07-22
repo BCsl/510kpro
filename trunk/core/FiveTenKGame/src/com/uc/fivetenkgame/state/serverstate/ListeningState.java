@@ -3,6 +3,12 @@ package com.uc.fivetenkgame.state.serverstate;
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.server.ServerContext;
 
+/**
+ * ·şÎñÆ÷¼àÌı×´Ì¬
+ * 
+ * @author liuzd
+ *
+ */
 public class ListeningState extends ServerState {
 
 	public ListeningState(ServerContext context){
