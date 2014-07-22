@@ -2,32 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context="${packageName}.${activityClass}" >
-
-    <TextView 
-        android:id="@+id/setting_text_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/setting_str"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp" 
-        />
-    <TextView 
-        android:id="@+id/background_music_text_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/background_music_str"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/setting_text_id"
-        android:layout_marginTop="30dp" 
-        />
+    tools:context="${packageName}.${activityClass}" 
+    android:background="@drawable/main_bg">
     <RadioGroup
         android:id="@+id/music_radiogroup_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/background_music_text_id"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="50dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal" >
 
@@ -37,29 +20,58 @@
             android:layout_height="wrap_content"
             android:text="@string/open_str"
             android:paddingRight="30dp" 
-            android:checked="true"/>
+            android:checked="true"
+            android:textColor="@android:color/black"/>
 
         <RadioButton
             android:id="@+id/close_radio_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/close_str" />
+            android:text="@string/close_str"
+            android:textColor="@android:color/black" />
     </RadioGroup>
-    
+
+    <TextView
+        android:id="@+id/background_music_text_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/music_radiogroup_id"
+        android:layout_below="@+id/setting_text_id"
+        android:layout_marginTop="37dp"
+        android:text="@string/background_music_str" 
+        android:textSize="16sp"
+        android:textColor="@android:color/black"/>
+
     <TextView
         android:id="@+id/music_volume_text_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/music_radiogroup_id"
-        android:layout_marginTop="10dp"
-        android:text="@string/music_volume_str" />
-    
+        android:layout_alignLeft="@+id/music_radiogroup_id"
+        android:layout_below="@+id/music_radiogroup_id"
+        android:layout_marginTop="18dp"
+        android:text="@string/music_volume_str"
+        android:textSize="16sp"
+        android:textColor="@android:color/black" />
+
     <SeekBar
         android:id="@+id/music_volume_seekBar_id"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/music_volume_text_id"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
+        android:layout_alignLeft="@+id/music_radiogroup_id"
+        android:layout_below="@+id/music_volume_text_id"
+        android:layout_marginTop="17dp" 
+        android:scrollbarStyle="insideInset" 
+        android:progressDrawable="@android:drawable/progress_horizontal"/>
+
+    <TextView
+        android:id="@+id/setting_text_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="36dp"
+        android:layout_toRightOf="@+id/background_music_text_id"
+        android:text="@string/setting_str"
+        android:textSize="25sp" 
+        android:textColor="@android:color/black"/>
+
 </RelativeLayout>
