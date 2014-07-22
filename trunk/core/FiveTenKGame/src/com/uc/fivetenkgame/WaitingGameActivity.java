@@ -18,6 +18,12 @@ import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.server.Server;
 
+/**
+ * 等待开始游戏界面
+ * 
+ * @author liuzd
+ *
+ */
 public class WaitingGameActivity extends Activity {
 	private String TAG = "WaitingGameActivity";
 	private Player mPlayer;
@@ -58,39 +64,15 @@ public class WaitingGameActivity extends Activity {
 		isServer = intent.getBooleanExtra("isServer", false);
 		//根据是否是服务器，执行不同的操作
 		if( isServer ){
-			//mReadyPlayer.setText(getResources().getString(R.string.ready_player_str) + "1人");
 			Log.i(TAG, strIp);
 			mServer = Server.getInstance();
 			mServer.setHandler(mHandler);
 			mServer.startListen();
 			mPlayer.startPlay("127.0.0.1");
-			/*
-			new Thread(){
-				public void run(){
-					//ServerPlayer.getInstance().setHandler(mHandler);
-					//ServerPlayer.getInstance().startListen();
-				}
-			}.start();
-			
-			new Thread(){
-				public void run(){
-					//ClientPlayer.getInstance().setHandler(mHandler);
-					//ClientPlayer.getInstance().initNetwork("127.0.0.1");
-				}
-			}.start();
-			*/
 		}
 		else{
-			final String ipAddr = intent.getStringExtra("IP");
+			String ipAddr = intent.getStringExtra("IP");
 			mPlayer.startPlay(ipAddr);
-			/*
-			new Thread(){
-				public void run(){
-					//ClientPlayer.getInstance().setHandler(mHandler);
-					//ClientPlayer.getInstance().initNetwork(ipAddr);
-				}
-			}.start();
-			*/
 		}
 	}
 
