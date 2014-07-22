@@ -50,7 +50,7 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 				/ (float) (cardsNumber / 2 * cardSizeHolder.height * 1 / 3);
 		float baseSpace = (float) factor > 1 ? cardSizeHolder.height * 1 / 3
 				: cardSizeHolder.height * 1 / 3 * factor;
-		Card card = new Card("0");
+		Card card = new Card(Card.CARD_BG_ID);
 		card.setSize(cardSizeHolder.width, cardSizeHolder.height);
 		Bitmap temp = null;
 		for (int i = 0; i < cardsNumber; i++) {

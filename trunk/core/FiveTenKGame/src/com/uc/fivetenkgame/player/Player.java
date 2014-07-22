@@ -24,7 +24,7 @@ import com.uc.fivetenkgame.view.util.IViewControler;
  * 玩家类, 修改：player类不再作为抽象类，与clientplayer类合并
  * 
  * @author fuyx
- *
+ * 
  */
 @SuppressLint("UseValueOf")
 public class Player implements PlayerContext {
@@ -46,14 +46,14 @@ public class Player implements PlayerContext {
 	private Handler mHandler;
 	// protected List<Card> currentPlayerOutList;
 	private List<Card> formerCardList;
-	private List<Card> mHandList ;
+	private List<Card> mHandList;
 	// protected int tableScore;
 	private EventListener mEventListener = new EventListener() {
 		@Override
 		public boolean handCard(List<Card> handList) {
 			mHandList = new ArrayList<Card>();
 			if (formerCardList == null) {
-				//第一次出牌
+				// 第一次出牌
 				if (handList == null) {
 					// 第一个玩家不能放弃出牌
 					viewController.handCardFailed();
@@ -62,7 +62,8 @@ public class Player implements PlayerContext {
 					mHandList.addAll(handList);
 					mPlayerModel.getCardList().removeAll(handList);
 					setDoneHandCards(true);
-					Log.i("当前手牌数", String.valueOf(mPlayerModel.getRemainCardsNum()));
+					Log.i("当前手牌数",
+							String.valueOf(mPlayerModel.getRemainCardsNum()));
 					return true;
 				} else {
 					// 不能什么牌都不点就出牌
@@ -74,7 +75,8 @@ public class Player implements PlayerContext {
 				if (handList == null) {
 					mHandList = null;
 					setDoneHandCards(true);
-					Log.i("当前手牌数", String.valueOf(mPlayerModel.getRemainCardsNum()));
+					Log.i("当前手牌数",
+							String.valueOf(mPlayerModel.getRemainCardsNum()));
 					return true;
 				} else if (handList.size() == 0) {
 					viewController.handCardFailed();
@@ -87,7 +89,8 @@ public class Player implements PlayerContext {
 					Common.setOrder(mHandList);
 
 					setDoneHandCards(true);
-					Log.i("当前手牌数", String.valueOf(mPlayerModel.getRemainCardsNum()));
+					Log.i("当前手牌数",
+							String.valueOf(mPlayerModel.getRemainCardsNum()));
 					return true;
 				} else {
 					// 不能什么牌都不点就出牌
@@ -102,11 +105,11 @@ public class Player implements PlayerContext {
 			// }
 		}
 	};
-	
-	public void timeOutAction(){
+
+	public void timeOutAction() {
 		setState(null);
 	}
-	
+
 	public void startPlay(String addr) {
 		setState(new InitState(gInstance));
 		handle(addr);
@@ -192,7 +195,6 @@ public class Player implements PlayerContext {
 		return new String(sb);
 	}
 
-
 	@Override
 	public void sendMsg(String msg) {
 		mNetworkManager.sendMessage(msg);
@@ -206,8 +208,8 @@ public class Player implements PlayerContext {
 		score.add(new Integer(playerScore[1]));
 		score.add(new Integer(playerScore[2]));
 		formerCardList = null;
-		mPlayerModel.setScore(Integer.parseInt(
-				playerScore[mPlayerModel.getPlayerNumber()-1]));
+		mPlayerModel.setScore(Integer.parseInt(playerScore[mPlayerModel
+				.getPlayerNumber() - 1]));
 		viewController.setScroeList(score);
 		viewController.roundOver();
 	}
@@ -256,7 +258,9 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void gameOver(int playerId) {
-		viewController.gameOver(playerId);
+		// viewController.gameOver(playerId);
+		mHandler.obtainMessage(Common.END_GAME, (Integer) playerId)
+				.sendToTarget();
 	}
 
 	public void setEventListener() {
@@ -291,11 +295,11 @@ public class Player implements PlayerContext {
 	@Override
 	public void setMyTurn(boolean flag) {
 		while (viewController == null) {
-//			try {
-//				Thread.sleep(10);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
+			// try {
+			// Thread.sleep(10);
+			// } catch (InterruptedException e) {
+			// e.printStackTrace();
+			// }
 		}
 		viewController.setMyTurn(flag);
 	}
@@ -308,31 +312,36 @@ public class Player implements PlayerContext {
 			return false;
 	}
 
-	
 	@Override
 	public void ReStartGame() {
 	}
 
 	@Override
 	public void setCurrentPlayer(int palyerId) {
-		while (viewController == null) {
+		while (viewController == null)
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
-		}
+
 		viewController.setCurrentPlayer(palyerId);
 	}
 
 	@Override
 	public boolean hasCard() {
-		if(mPlayerModel.getRemainCardsNum() == 0){
+		if (mPlayerModel.getRemainCardsNum() == 0) {
 			return false;
-		}else{
+		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public void playerGiveUp(int playerId) {
+		List<Card> cardList = new ArrayList<Card>();
+		cardList.add(new Card(Card.CARD_PASS_ID));
+		viewController.setPlayersOutList(playerId, cardList);
 	}
 
 }

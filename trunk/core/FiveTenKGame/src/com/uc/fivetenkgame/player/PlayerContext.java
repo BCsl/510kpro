@@ -123,6 +123,11 @@ public interface PlayerContext {
 	 * @param palyerId
 	 */
 	public void setCurrentPlayer(int palyerId);
+	/**
+	 * 处理玩家放弃操作
+	 * @param playerId
+	 */
+	public void playerGiveUp(int playerId);
 	
 	public void timeOutAction();
 }	

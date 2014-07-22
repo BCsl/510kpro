@@ -19,43 +19,80 @@ import com.uc.fivetenkgame.view.entity.Card;
 public class WaitingState extends ServerState {
 	private String TAG = "WaitingState";
 	private int giveUpTimes;
-	private int GIAVE_UP_TIME_LIMITE ;
+	private int GIAVE_UP_TIME_LIMITE;
 
 	public WaitingState(ServerContext context) {
 		mServerContext = context;
 		giveUpTimes = 0;
-		GIAVE_UP_TIME_LIMITE=2;
+		GIAVE_UP_TIME_LIMITE = 2;
 	}
 
 	@Override
 	public void handle(String msg) {
 		if (msg.startsWith(Common.PLAY_CARDS)) {
 			// 首先更新当前出牌玩家信息，然后判断游戏是否结束
-			Log.i(TAG, "服务器接受玩家出牌：" + msg);
 			String str[] = msg.substring(2).trim().split(",");
 			List<Card> cardList = getCardList(str);
 			updateRoundScore(cardList);
 			updatePlayerModle(cardList);
 			sendToOtherPlayer(msg.substring(2).trim());
+			if (isCurrentPlayerHasNoCards())
+					finalRoundOver();
 			if (gameIsOver()) {
 				GameEndState state = new GameEndState(mServerContext);
 				mServerContext.setState(state);
 				state.handle(Common.GAME_END);
 			} else
-				sendToNextPlayer();
+				callNextPlayer();
 			giveUpTimes = 0;
 		} else if (msg.startsWith(Common.GIVE_UP)) {
 			giveUpTimes++;
-			if (giveUpTimes == GIAVE_UP_TIME_LIMITE) {
+			giveUpAction();
+			if (giveUpTimes == GIAVE_UP_TIME_LIMITE)
 				roundOver();
-			}
-			sendToNextPlayer();
+			callNextPlayer();
 		}
 
 	}
 
 	/**
-	 * 本轮结束，统计分数，并转发，本轮分数清零
+	 * 当前玩家把手牌全部出完
+	 * 
+	 * @return
+	 */
+	private boolean isCurrentPlayerHasNoCards() {
+		return mServerContext.getPlayerModel()
+				.get(mServerContext.getCurrentPlayerNumber() - 1)
+				.getRemainCardsNum() == 0;
+	}
+
+	/**
+	 * 当前玩家的最后一轮结束（没牌）,分数应该加到最后出牌的玩家上
+	 */
+	private void finalRoundOver() {
+		PlayerModel player = mServerContext.getPlayerModel().get(
+				mServerContext.getCurrentPlayerNumber() - 1);
+		player.setScore(player.getScore() + mServerContext.getRoundScore());
+		mServerContext.setRoundScore(0);
+		StringBuilder res = new StringBuilder();
+		res.append(Common.ROUND_END);
+		for (PlayerModel temp : mServerContext.getPlayerModel())
+			res.append(temp.getScore() + ",");
+		mServerContext.getNetworkManager().sendMessage(
+				res.deleteCharAt(res.length() - 1).toString());
+
+	}
+
+	/**
+	 * 转发当前玩家放弃出牌操作
+	 */
+	private void giveUpAction() {
+		mServerContext.getNetworkManager().sendMessage(
+				Common.GIVE_UP + mServerContext.getCurrentPlayerNumber());
+	}
+
+	/**
+	 * 普通状态下的本轮结束，统计分数，并转发，本轮分数清零
 	 */
 	private void roundOver() {
 		int nextPlayer = getNextPlayerId();
@@ -69,6 +106,7 @@ public class WaitingState extends ServerState {
 			res.append(temp.getScore() + ",");
 		mServerContext.getNetworkManager().sendMessage(
 				res.deleteCharAt(res.length() - 1).toString());
+
 	}
 
 	/**
@@ -79,19 +117,23 @@ public class WaitingState extends ServerState {
 	private void updateRoundScore(List<Card> cardList) {
 		int add = 0;
 		for (Card temp : cardList) {
-			switch (Integer.valueOf(temp.getCardId()) % 13) {
+			int id = Integer.valueOf(temp.getCardId());
+			if (id == 54 || id == 55)
+				continue;
+			switch (id % 13) {
 			case 5:
-				add = 5;
+				add += 5;
 				break;
 			case 10:
-				add = 10;
-				break;
 			case 0:
-				add = 10;
+				add += 10;
+				break;
+			default:
+				add += 0;
 				break;
 			}
-			mServerContext.setRoundScore(mServerContext.getRoundScore() + add);
 		}
+		mServerContext.setRoundScore(mServerContext.getRoundScore() + add);
 	}
 
 	/**
@@ -100,14 +142,12 @@ public class WaitingState extends ServerState {
 	 * @return
 	 */
 	private boolean gameIsOver() {
-		int i=0;
+		int i = 0;
 		for (PlayerModel temp : mServerContext.getPlayerModel())
-			if (temp.getRemainCardsNum() == 0){
-				Log.i(TAG, "出完牌的玩家数："+(++i));
-				
-				GIAVE_UP_TIME_LIMITE--;
-			}
-		return GIAVE_UP_TIME_LIMITE <= 0 ? true : false;
+			if (temp.getRemainCardsNum() == 0)
+				Log.i(TAG, "出完牌的玩家数：" + (++i));
+		GIAVE_UP_TIME_LIMITE = 2 - i;
+		return i >= 2 ? true : false;
 	}
 
 	/**
@@ -116,7 +156,6 @@ public class WaitingState extends ServerState {
 	 * @param cardList
 	 */
 	private void updatePlayerModle(List<Card> cardList) {
-
 		PlayerModel model = mServerContext.getPlayerModel().get(
 				mServerContext.getCurrentPlayerNumber() - 1);
 		model.getCardList().removeAll(cardList);
@@ -153,7 +192,7 @@ public class WaitingState extends ServerState {
 	/**
 	 * 判断并转发下一个玩家出牌
 	 */
-	private void sendToNextPlayer() {
+	private void callNextPlayer() {
 		int nextPlayer = getNextPlayerId();
 		mServerContext.setCurrentPlayerNumber(nextPlayer);
 		mServerContext.getNetworkManager().sendMessage(
@@ -171,6 +210,7 @@ public class WaitingState extends ServerState {
 		else if (mServerContext.getCurrentPlayerNumber() == 2)
 			nextPlayer = mServerContext.getPlayerModel().get(2)
 					.getRemainCardsNum() != 0 ? 3 : 1;
+		Log.i(TAG, "转发下一个玩家：" + nextPlayer);
 		return nextPlayer;
 	}
 

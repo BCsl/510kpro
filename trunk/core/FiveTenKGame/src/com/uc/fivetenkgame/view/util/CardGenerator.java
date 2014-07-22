@@ -15,7 +15,8 @@ import android.util.Log;
  *         下午5:09:27 2014-7-9
  */
 public class CardGenerator {
-	private static Map<String,Bitmap> CARDS_BITMAP=new HashMap<String, Bitmap>();
+	private static Map<String, Bitmap> CARDS_BITMAP = new HashMap<String, Bitmap>();
+
 	public static String cardResourceName(String cardId) {
 		StringBuilder prefix = new StringBuilder();
 		int cardNO = Integer.valueOf(cardId.trim());
@@ -25,8 +26,9 @@ public class CardGenerator {
 			return "a5_16";
 		if (cardNO == 54)
 			return "a5_17";
-
-		switch ((cardNO-1)/ 13) {
+		if (cardNO == 55)
+			return "cardbg1";
+		switch ((cardNO - 1) / 13) {
 		case 0:
 			prefix.append("a2_");
 			break;
@@ -52,17 +54,15 @@ public class CardGenerator {
 	}
 
 	public static Bitmap getBitmap(Context con, String resourceName) {
-		String TAG="getBitmap";
-		if(CARDS_BITMAP.get(resourceName)==null)
-		{	
-		Log.i(TAG, "resourceName name 不存在！");
-			CARDS_BITMAP.put(resourceName,  BitmapFactory.decodeResource(
-				con.getResources(),
-				con.getResources().getIdentifier(resourceName, "drawable",
-						con.getApplicationInfo().packageName)));
+		String TAG = "getBitmap";
+		if (CARDS_BITMAP.get(resourceName) == null) {
+			Log.i(TAG, resourceName +"不存在！");
+			CARDS_BITMAP.put(resourceName, BitmapFactory.decodeResource(
+					con.getResources(),
+					con.getResources().getIdentifier(resourceName, "drawable",
+							con.getApplicationInfo().packageName)));
 		}
 		return CARDS_BITMAP.get(resourceName);
 	}
-
 
 }
