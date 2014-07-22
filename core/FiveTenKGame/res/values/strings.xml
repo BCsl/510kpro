@@ -28,4 +28,8 @@
 								\n五十K：单张的5、10、K组成的牌型。
 								\n纯五十K：单张的5、10、K组成的牌型，且三张牌的花色相同。
 								\n炸弹：四张点数相同的牌。如6666。</string>
+	<string name="background_music_str">背景音乐</string>
+	<string name="music_volume_str">音量大小</string>
+	<string name="open_str">开</string>
+	<string name="close_str">关</string>
 </resources>
