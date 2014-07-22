@@ -27,7 +27,7 @@ public class CardGenerator {
 		if (cardNO == 54)
 			return "a5_17";
 		if (cardNO == 55)
-			return "cardbg1";
+			return "pass";
 		switch ((cardNO - 1) / 13) {
 		case 0:
 			prefix.append("a2_");
