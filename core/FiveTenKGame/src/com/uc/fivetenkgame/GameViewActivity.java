@@ -54,7 +54,7 @@ public class GameViewActivity extends Activity {
 			case Common.END_GAME:
 				new  AlertDialog.Builder(GameViewActivity.this)
 				.setTitle("游戏结束")
-				.setMessage(msg.obj + "胜利")
+				.setMessage("玩家"+msg.obj + "胜利")
 				.setPositiveButton("确定",
 						new DialogInterface.OnClickListener() {
 							@Override

@@ -4,10 +4,11 @@ import android.util.Log;
 
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.PlayerContext;
+
 /**
  * 
  * @author fuyx ,chensl@ucweb.com
- *
+ * 
  * 
  */
 public class WaitForMsgState extends PlayerState {
@@ -40,19 +41,23 @@ public class WaitForMsgState extends PlayerState {
 				}
 				mPlayerContext.setMyTurn(false);
 				mPlayerContext.setDoneHandCards(false);
-//		if (msg.startsWith(Common.YOUR_TURN)
-//				&& msg.substring(2).equals(
-//						String.valueOf(mPlayerContext.getPlayerNumber()))) {
-//			if(!mPlayerContext.hasCard()){
-//				Log.e("无牌！", msg);
-//				mPlayerContext.sendMsg(Common.GIVE_UP);
-//				return;
-//			}
-//			mPlayerContext.setMyTurn(true);
-//			while (!mPlayerContext.doneHandCards()) {
-//			}
-		}
-		}else if (msg.startsWith(Common.PLAY_END)) {
+				// if (msg.startsWith(Common.YOUR_TURN)
+				// && msg.substring(2).equals(
+				// String.valueOf(mPlayerContext.getPlayerNumber()))) {
+				// if(!mPlayerContext.hasCard()){
+				// Log.e("无牌！", msg);
+				// mPlayerContext.sendMsg(Common.GIVE_UP);
+				// return;
+				// }
+				// mPlayerContext.setMyTurn(true);
+				// while (!mPlayerContext.doneHandCards()) {
+				// }
+			}
+		} else if (msg.startsWith(Common.GIVE_UP)) {
+			msg = msg.substring(2, msg.length()).trim();
+			mPlayerContext.playerGiveUp(Integer.valueOf(msg));
+
+		} else if (msg.startsWith(Common.PLAY_END)) {
 			msg = msg.substring(2, msg.length()).trim();
 			String playerNumber = msg.substring(0, 1);
 
@@ -73,8 +78,6 @@ public class WaitForMsgState extends PlayerState {
 			remainCards[0] = str[str.length - 3];
 			remainCards[1] = str[str.length - 2];
 			remainCards[2] = str[str.length - 1];
-			Log.i(TAG, tableScore + " ？= " + str[str.length - 4]);
-
 			mPlayerContext.playCardsEndAction(outList, playerNumber,
 					tableScore, remainCards);
 			Log.i(TAG, msg);
@@ -91,9 +94,9 @@ public class WaitForMsgState extends PlayerState {
 		// 得到游戏结束信息
 		if (msg.startsWith(Common.GAME_OVER)) {
 			mPlayerContext.setState(new GameOverState(mPlayerContext));
-			mPlayerContext.handle(msg.substring(2, 3));
+			mPlayerContext.handle(msg.substring(2));
 			Log.i("GAME_OVER", msg);
 			return;
 		}
 	}
-	}
+}

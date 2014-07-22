@@ -288,6 +288,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		rightPlayerDrawer.initCanvas(canvas);
 		if(currentPlayerId==right_player_id&&!isMyTrun)
 			rightPlayerDrawer.drawHandCardFlag(RIGHT_CARDS_BASEX-cardSizeHolder.width+10, cardSizeHolder.height);
+		
 		rightPlayerDrawer.drawPlayer(right_player_id, paint, screenHolder.width
 				- PLAYER_TEXT_LENGTH, TEXT_SIZE);
 		rightPlayerDrawer.drawScore(scroeList.get(right_player_id - 1), paint,
