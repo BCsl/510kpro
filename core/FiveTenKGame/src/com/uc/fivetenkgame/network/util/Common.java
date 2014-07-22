@@ -30,7 +30,7 @@ public class Common {
 	public static final String GAME_OVER = "7#";//游戏结束信号：7#+胜利者
 	public static final String PLAYER_NUMBER_UPDATE = "8#";//更新等待玩家人数：8#+等待玩家人数
 	
-	public static final String PLAY_CARDS = "9#";//自己出牌：12#+玩家号+牌的序号 + , +.....	
+	public static final String PLAY_CARDS = "9#";//自己出牌：9#+玩家号+牌的序号 + , +.....	
 	public static final String GIVE_UP = "0#";//自己放弃出牌0#+玩家号
 	
 	// handler消息处理编号

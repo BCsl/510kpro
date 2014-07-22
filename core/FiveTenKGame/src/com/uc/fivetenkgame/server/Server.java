@@ -17,7 +17,7 @@ import com.uc.fivetenkgame.state.serverstate.ServerState;
  * 服务器类
  * 
  * 
- * @author liuzd, fuyx
+ * @author liuzd
  *
  *
  */
@@ -62,10 +62,13 @@ public class Server implements ServerContext{
 		mState.handle(msg);
 	}
 	
-
+	/**
+	 * 服务器开始监听网络，异步
+	 * 
+	 */
 	public void startListen(){
 		mState.handle(Common.SERVER_LISTENING);
-		((ServerManager)mNetworkManager).startListen();
+		mNetworkManager.initNetwork(null);
 	}
 
 	@Override

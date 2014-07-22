@@ -10,6 +10,13 @@ import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.server.ServerContext;
 import com.uc.fivetenkgame.view.entity.Card;
 
+/**
+ * 游戏开始状态
+ * 负责处理洗牌、发牌、确定首先出牌玩家
+ * 
+ * @author liuzd
+ *
+ */
 public class GameStartState extends ServerState{
 
 	private Card []mCards;

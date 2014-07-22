@@ -9,6 +9,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * 客户端输入服务器ip地址的界面，主题为对话框形式
+ * 
+ * @author liuzd
+ *
+ */
 public class InputServerIPActivity extends Activity {
 
 	private EditText mServerIP;
@@ -31,7 +37,7 @@ public class InputServerIPActivity extends Activity {
 			if( v == mOKButton ){
 				Intent intent = getIntent();
 				Bundle bundle = new Bundle();
-				
+				//注：需检查ip输入的正确性
 				bundle.putString("IP", mServerIP.getText().toString());
 				intent.putExtras(bundle);
 				
