@@ -76,7 +76,7 @@ public class WaitForMsgState extends PlayerState {
 		// 得到游戏结束信息
 		if (msg.startsWith(Common.GAME_OVER)) {
 			mPlayerContext.setState(new GameOverState(mPlayerContext));
-			mPlayerContext.handle(msg.substring(2, 3));
+			mPlayerContext.handle(msg.substring(2));
 			Log.i(TAG, msg);
 			return;
 		}

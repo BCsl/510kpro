@@ -19,6 +19,7 @@ import com.uc.fivetenkgame.view.entity.Card;
 public class WaitingState extends ServerState {
 	private String TAG = "WaitingState";
 	private int giveUpTimes;
+	private int GIAVE_UP_TIME_LIMITE=2;
 
 	public WaitingState(ServerContext context) {
 		mServerContext = context;
@@ -27,7 +28,6 @@ public class WaitingState extends ServerState {
 
 	@Override
 	public void handle(String msg) {
-//		Log.i(TAG, msg);
 		if (msg.startsWith(Common.PLAY_CARDS)) {
 			// 首先更新当前出牌玩家信息，然后判断游戏是否结束
 			Log.i(TAG, "服务器接受玩家出牌："+msg);
@@ -46,7 +46,7 @@ public class WaitingState extends ServerState {
 			giveUpTimes = 0;
 		} else if (msg.startsWith(Common.GIVE_UP)) {
 			giveUpTimes++;
-			if (giveUpTimes == 2) {
+			if (giveUpTimes == GIAVE_UP_TIME_LIMITE) {
 				roundOver();
 			}
 			nextPlayer();
@@ -106,8 +106,10 @@ public class WaitingState extends ServerState {
 	private boolean gameIsOver() {
 		int i = 0;
 		for (PlayerModel temp : mServerContext.getPlayerModel())
-			if (temp.getRemainCardsNum() == 0)
+			if (temp.getRemainCardsNum() == 0){
 				i++;
+				GIAVE_UP_TIME_LIMITE--;
+			}
 		return i >= 2 ? true : false;
 	}
 
@@ -169,7 +171,6 @@ public class WaitingState extends ServerState {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		mServerContext.setCurrentPlayerNumber(nextPlayer);

@@ -69,6 +69,9 @@ public final class R {
         public static final int cardbg1=0x7f020037;
         public static final int ic_launcher=0x7f020038;
         public static final int main_bg=0x7f020039;
+        public static final int main_button=0x7f02003a;
+        public static final int main_button_normal=0x7f02003b;
+        public static final int main_button_press=0x7f02003c;
     }
     public static final class id {
         public static final int ip_addr_text_ID=0x7f060006;

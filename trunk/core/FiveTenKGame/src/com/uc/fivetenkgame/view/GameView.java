@@ -7,13 +7,10 @@
  */
 package com.uc.fivetenkgame.view;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import my.example.fivetenkgame.R;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,6 +22,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -68,7 +66,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private float MAIN_CARDS__BASEY, MAIN_OUT_CARDS_BASEY;
 	private float LEFT_CARDS_BASEX, RIGHT_CARDS_BASEX, LEFT_OUTCARDS_BASEX,
 			RIGHT_OUTCARDS_BASEX;
-	private ArrayList<Bitmap> cardsBitmap;
 	private Bitmap bg;
 
 	public GameView(Context context, int playerId) {
@@ -78,6 +75,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		holder = this.getHolder();
 		holder.addCallback(this); // 设置Surface生命周期回调
 		init();
+	
+		
 	}
 
 	private class ViewControler implements IViewControler {
@@ -120,7 +119,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		@Override
 		public void gameOver(int playId) {
-			new AlertDialog.Builder(context)
+			new AlertDialog.Builder(context.getApplicationContext())
 					.setTitle("游戏结束")
 					.setMessage(playId + "胜利")
 					.setPositiveButton("确定",
@@ -130,7 +129,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 										int which) {
 									// 退出操作
 								}
-							});
+							}).show();
 		}
 
 		@Override
@@ -149,7 +148,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void init() {
 		initPlayersId(playerId);
-		cardsBitmap=new ArrayList<Bitmap>(55);
 		viewControler = new ViewControler();
 		start = true;
 		isMyTrun = false;
@@ -163,7 +161,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		scroeList.add(0);
 		scroeList.add(0);
 		scroeList.add(0);
-
 		cardList = new Vector<Card>();
 		outList = new HashMap<Integer, List<Card>>();
 		bg= BitmapFactory.decodeResource(getResources(), R.drawable.bg);
