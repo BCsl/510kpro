@@ -1,5 +1,8 @@
 package com.uc.fivetenkgame;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * 客户端输入服务器ip地址的界面，主题为对话框形式
@@ -35,16 +39,40 @@ public class InputServerIPActivity extends Activity {
 
 		public void onClick(View v) {
 			if( v == mOKButton ){
-				Intent intent = getIntent();
-				Bundle bundle = new Bundle();
-				//注：需检查ip输入的正确性
-				bundle.putString("IP", mServerIP.getText().toString());
-				intent.putExtras(bundle);
-				
-				setResult(RESULT_OK, intent);
-				finish();
+				String ipAddr = mServerIP.getText().toString();
+				if( isIPAddress(ipAddr) ){
+					Intent intent = getIntent();
+					Bundle bundle = new Bundle();
+					bundle.putString("IP", ipAddr);
+					intent.putExtras(bundle);
+					
+					setResult(RESULT_OK, intent);
+					finish();
+				}
+				else{
+					Toast.makeText(InputServerIPActivity.this, 
+							getResources().getString(R.string.ip_input_error_str), 
+							Toast.LENGTH_SHORT).show();
+				}
 			}
 		}
 		
 	};
+	
+	/**
+	 * 检查IP是否有效
+	 * 
+	 * @param ipaddr 输入的IP字符串
+	 * @return   是否有效
+	 */
+	public static boolean isIPAddress(String ipaddr) {
+		boolean flag = false;
+		Pattern pattern = Pattern.compile("\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
+				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
+				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
+				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
+		Matcher m = pattern.matcher(ipaddr);
+		flag = m.matches();
+		return flag;
+		}
 }

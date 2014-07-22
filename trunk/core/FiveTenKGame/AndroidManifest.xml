@@ -46,6 +46,18 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Dialog">
         </activity>
+        
+        <activity
+            android:name="com.uc.fivetenkgame.GameSettingActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        </activity>
+        
+        <activity 
+            android:name="com.uc.fivetenkgame.GameHelpActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        </activity>
     </application>
 
 </manifest>

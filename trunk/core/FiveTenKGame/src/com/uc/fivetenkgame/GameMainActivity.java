@@ -56,7 +56,16 @@ public class GameMainActivity extends Activity {
 				intent.setClass(GameMainActivity.this, InputServerIPActivity.class);
 				startActivityForResult(intent, REQUEST_SERVER_IP);
 			}
-			
+			else if( v == mSettingButton ){
+				Intent intent = new Intent();
+				intent.setClass(GameMainActivity.this, GameSettingActivity.class);
+				startActivity(intent);
+			}
+			else if( v == mHelpButton ){
+				Intent intent = new Intent();
+				intent.setClass(GameMainActivity.this, GameHelpActivity.class);
+				startActivity(intent);
+			}
 		}
 	};
 
