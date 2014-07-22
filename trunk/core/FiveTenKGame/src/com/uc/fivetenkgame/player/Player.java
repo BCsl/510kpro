@@ -102,7 +102,11 @@ public class Player implements PlayerContext {
 			// }
 		}
 	};
-
+	
+	public void timeOutAction(){
+		setState(null);
+	}
+	
 	public void startPlay(String addr) {
 		setState(new InitState(gInstance));
 		handle(addr);

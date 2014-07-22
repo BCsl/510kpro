@@ -123,4 +123,6 @@ public interface PlayerContext {
 	 * @param palyerId
 	 */
 	public void setCurrentPlayer(int palyerId);
+	
+	public void timeOutAction();
 }	

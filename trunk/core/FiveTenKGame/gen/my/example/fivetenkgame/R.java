@@ -74,24 +74,36 @@ public final class R {
         public static final int main_button_press=0x7f02003c;
     }
     public static final class id {
-        public static final int ip_addr_text_ID=0x7f060006;
-        public static final int main_help_id=0x7f060002;
-        public static final int main_joid_game_id=0x7f060001;
-        public static final int main_new_game_id=0x7f060000;
-        public static final int main_setting_id=0x7f060003;
-        public static final int ok_button_ID=0x7f060005;
-        public static final int ready_player_text_ID=0x7f060008;
-        public static final int server_ip_text_ID=0x7f060004;
-        public static final int waiting_progressBar_ID=0x7f060007;
+        public static final int background_music_text_id=0x7f060009;
+        public static final int close_radio_id=0x7f06000b;
+        public static final int help_text_id=0x7f060000;
+        public static final int ip_addr_text_ID=0x7f06000f;
+        public static final int main_help_id=0x7f060004;
+        public static final int main_joid_game_id=0x7f060003;
+        public static final int main_new_game_id=0x7f060002;
+        public static final int main_setting_id=0x7f060005;
+        public static final int music_radiogroup_id=0x7f060008;
+        public static final int music_volume_seekBar_id=0x7f06000e;
+        public static final int music_volume_text_id=0x7f06000d;
+        public static final int ok_button_ID=0x7f060007;
+        public static final int open_radio_id=0x7f06000a;
+        public static final int ready_player_text_ID=0x7f060011;
+        public static final int scrollview_id=0x7f060001;
+        public static final int server_ip_text_ID=0x7f060006;
+        public static final int setting_text_id=0x7f06000c;
+        public static final int waiting_progressBar_ID=0x7f060010;
     }
     public static final class layout {
         public static final int activity_game_help=0x7f030000;
         public static final int activity_game_main=0x7f030001;
         public static final int activity_input_server_ip=0x7f030002;
-        public static final int activity_waiting_game=0x7f030003;
+        public static final int activity_setting=0x7f030003;
+        public static final int activity_waiting_game=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int background_music_str=0x7f04000f;
+        public static final int close_str=0x7f040012;
         public static final int confirm_str=0x7f04000a;
         public static final int hello_world=0x7f040001;
         public static final int help_rule_str=0x7f04000e;
@@ -100,11 +112,14 @@ public final class R {
         public static final int ip_input_error_str=0x7f04000d;
         public static final int join_game_str=0x7f040003;
         public static final int join_str=0x7f040006;
+        public static final int music_volume_str=0x7f040010;
         public static final int my_ip_addr_str=0x7f04000c;
         public static final int new_game_str=0x7f040002;
+        public static final int open_str=0x7f040011;
         public static final int ready_player_str=0x7f040008;
         public static final int setting_str=0x7f040004;
         public static final int start_game_str=0x7f04000b;
+        public static final int time_out_str=0x7f040013;
         public static final int waiting_str=0x7f040007;
     }
     public static final class style {
