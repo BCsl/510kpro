@@ -119,17 +119,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		@Override
 		public void gameOver(int playId) {
-			new AlertDialog.Builder(context.getApplicationContext())
-					.setTitle("游戏结束")
-					.setMessage(playId + "胜利")
-					.setPositiveButton("确定",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// 退出操作
-								}
-							}).show();
+//			new AlertDialog.Builder(context.getApplicationContext())
+//					.setTitle("游戏结束")
+//					.setMessage(playId + "胜利")
+//					.setPositiveButton("确定",
+//							new DialogInterface.OnClickListener() {
+//								@Override
+//								public void onClick(DialogInterface dialog,
+//										int which) {
+//									// 退出操作
+//								}
+//							}).show();
 		}
 
 		@Override
