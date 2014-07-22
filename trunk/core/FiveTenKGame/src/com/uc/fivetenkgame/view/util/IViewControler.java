@@ -85,4 +85,8 @@ public interface IViewControler {
 	 * 回合结束，清理桌面上的卡牌
 	 */
 	public void roundOver();
+	/**
+	 * 设置当前出牌玩家
+	 */
+	public void setCurrentPlayer(int playerId);
 }

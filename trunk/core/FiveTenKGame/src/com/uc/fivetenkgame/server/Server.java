@@ -56,7 +56,6 @@ public class Server implements ServerContext{
 			handleMessage(msg);
 		}
 	};
-	
 	public void handleMessage(String msg) {
 		Log.i("server log", "receive :" + msg);
 		mState.handle(msg);

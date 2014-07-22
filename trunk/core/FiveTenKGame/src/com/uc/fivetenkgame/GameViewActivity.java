@@ -12,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -51,7 +52,7 @@ public class GameViewActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case Common.END_GAME:
-				new AlertDialog.Builder(GameViewActivity.this)
+				new  AlertDialog.Builder(GameViewActivity.this)
 				.setTitle("游戏结束")
 				.setMessage(msg.obj + "胜利")
 				.setPositiveButton("确定",
@@ -66,7 +67,12 @@ public class GameViewActivity extends Activity {
 			}
 		}
 	};
-
+	private String TAG="GameViewActivity";
+	protected void onPause() {
+		Log.i(TAG, "onPause");
+		super.onPause();
+		
+	};
 	@Override
 	protected void onStop() {
 		super.onStop();

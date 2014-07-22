@@ -1,9 +1,7 @@
 package com.uc.fivetenkgame.view.util;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
