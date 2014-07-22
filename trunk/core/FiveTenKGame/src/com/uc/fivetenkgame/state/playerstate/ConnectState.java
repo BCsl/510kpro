@@ -13,7 +13,7 @@ import com.uc.fivetenkgame.player.PlayerContext;
 public class ConnectState extends PlayerState {
 	public ConnectState(PlayerContext context) {
 		super(context);
-		mThread.start();
+		//mThread.start();
 	}
 
 	/**

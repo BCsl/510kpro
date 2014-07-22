@@ -99,6 +99,19 @@ public class WaitingGameActivity extends Activity {
 				startActivity(intent);
 				finish();
 				break;
+			case Common.HOST_FULL:
+				new  AlertDialog.Builder(WaitingGameActivity.this)
+				.setTitle("人数已满")
+				.setMessage("点击确定返回上一页")
+				.setPositiveButton("确定",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+							}
+						}).show();
+				break;
 			case Common.TIME_OUT:
 				if(isServer)
 					break;
