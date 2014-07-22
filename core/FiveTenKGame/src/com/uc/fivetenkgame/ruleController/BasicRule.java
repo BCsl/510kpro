@@ -33,6 +33,8 @@ public class BasicRule implements Rule {
 		Log.i("cardList1", cType.toString());
 		Log.i("cardList2", cType2.toString());
 		
+		if(cType == CardType.c0)
+			return 0;
 		// 如果张数不同直接过滤
 		if (cType != CardType.c4 && cType != CardType.c510k && cType != CardType.c510K &&
 				cardList1.size() != cardList2.size())
@@ -197,13 +199,13 @@ public class BasicRule implements Rule {
 					&& len % 2 == 0
 					&& len / 2 >= 3
 					&& (BasicRule.getValue(list.get(0))
-							- BasicRule.getValue(list.get(len - 1)) == (len / 2 - 1)))
+							- BasicRule.getValue(list.get(len - 1)) == -(len / 2 - 1)))
 				return CardType.c1122;
 			// 飞机
 			if (card_index.numberList[2].size() == len / 3
 					&& (len % 3 == 0)
 					&& (BasicRule.getValue(list.get(0))
-							- BasicRule.getValue(list.get(len - 1)) == (len / 3 - 1)))
+							- BasicRule.getValue(list.get(len - 1)) == -(len / 3 - 1)))
 				return CardType.c111222;
 			// 飞机带n单,n/2对
 			if (card_index.numberList[2].size() >= 2

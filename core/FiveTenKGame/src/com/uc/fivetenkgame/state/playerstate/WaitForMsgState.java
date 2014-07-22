@@ -22,7 +22,8 @@ public class WaitForMsgState extends PlayerState {
 				&& msg.substring(2).equals(
 						String.valueOf(mPlayerContext.getPlayerNumber()))) {
 			if(!mPlayerContext.hasCard()){
-				mPlayerContext.setState(new GameOverState(mPlayerContext));
+				Log.e("无牌！", msg);
+				mPlayerContext.sendMsg(Common.GIVE_UP);
 				return;
 			}
 			mPlayerContext.setMyTurn(true);
@@ -79,13 +80,8 @@ public class WaitForMsgState extends PlayerState {
 		// 得到游戏结束信息
 		if (msg.startsWith(Common.GAME_OVER)) {
 			mPlayerContext.setState(new GameOverState(mPlayerContext));
-<<<<<<< .mine
-			mPlayerContext.handle(msg);
+			mPlayerContext.handle(msg.substring(2, 3));
 			Log.i("GAME_OVER", msg);
-=======
-			mPlayerContext.handle(msg.substring(2));
-			Log.i(TAG, msg);
->>>>>>> .r128
 			return;
 		}
 	}
