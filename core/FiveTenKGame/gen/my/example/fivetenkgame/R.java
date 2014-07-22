@@ -68,6 +68,7 @@ public final class R {
         public static final int bg=0x7f020036;
         public static final int cardbg1=0x7f020037;
         public static final int ic_launcher=0x7f020038;
+        public static final int main_bg=0x7f020039;
     }
     public static final class id {
         public static final int ip_addr_text_ID=0x7f060006;
@@ -81,16 +82,19 @@ public final class R {
         public static final int waiting_progressBar_ID=0x7f060007;
     }
     public static final class layout {
-        public static final int activity_game_main=0x7f030000;
-        public static final int activity_input_server_ip=0x7f030001;
-        public static final int activity_waiting_game=0x7f030002;
+        public static final int activity_game_help=0x7f030000;
+        public static final int activity_game_main=0x7f030001;
+        public static final int activity_input_server_ip=0x7f030002;
+        public static final int activity_waiting_game=0x7f030003;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
         public static final int confirm_str=0x7f04000a;
         public static final int hello_world=0x7f040001;
+        public static final int help_rule_str=0x7f04000e;
         public static final int help_str=0x7f040005;
         public static final int input_server_ip_hint=0x7f040009;
+        public static final int ip_input_error_str=0x7f04000d;
         public static final int join_game_str=0x7f040003;
         public static final int join_str=0x7f040006;
         public static final int my_ip_addr_str=0x7f04000c;
