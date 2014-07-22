@@ -19,7 +19,7 @@ import com.uc.fivetenkgame.view.entity.Card;
 public class WaitingState extends ServerState {
 	private String TAG = "WaitingState";
 	private int giveUpTimes;
-	private int GIAVE_UP_TIME_LIMITE=2;
+	private int GIAVE_UP_TIME_LIMITE = 2;
 
 	public WaitingState(ServerContext context) {
 		mServerContext = context;
@@ -30,26 +30,25 @@ public class WaitingState extends ServerState {
 	public void handle(String msg) {
 		if (msg.startsWith(Common.PLAY_CARDS)) {
 			// 首先更新当前出牌玩家信息，然后判断游戏是否结束
-			Log.i(TAG, "服务器接受玩家出牌："+msg);
+			Log.i(TAG, "服务器接受玩家出牌：" + msg);
 			String str[] = msg.substring(2).trim().split(",");
 			List<Card> cardList = getCardList(str);
 			updateRoundScore(cardList);
 			updatePlayerModle(cardList);
 			sendToOtherPlayer(msg.substring(2).trim());
-			if (gameIsOver()){
-				GameEndState state=new GameEndState(mServerContext);
+			if (gameIsOver()) {
+				GameEndState state = new GameEndState(mServerContext);
 				mServerContext.setState(state);
 				state.handle(Common.GAME_END);
-			}
-			else
-				nextPlayer();
+			} else
+				sendToNextPlayer();
 			giveUpTimes = 0;
 		} else if (msg.startsWith(Common.GIVE_UP)) {
 			giveUpTimes++;
 			if (giveUpTimes == GIAVE_UP_TIME_LIMITE) {
 				roundOver();
 			}
-			nextPlayer();
+			sendToNextPlayer();
 		}
 
 	}
@@ -58,20 +57,17 @@ public class WaitingState extends ServerState {
 	 * 本轮结束，统计分数，并转发，本轮分数清零
 	 */
 	private void roundOver() {
-		int nextPlayer = 0;
-		if(mServerContext.getCurrentPlayerNumber()==3)
-			nextPlayer = 1;
-		else
-			nextPlayer = mServerContext.getCurrentPlayerNumber() + 1;
-		
-		PlayerModel player = mServerContext.getPlayerModel().get(nextPlayer - 1);
+		int nextPlayer = getNextPlayerId();
+		PlayerModel player = mServerContext.getPlayerModel()
+				.get(nextPlayer - 1);
 		player.setScore(player.getScore() + mServerContext.getRoundScore());
 		mServerContext.setRoundScore(0);
 		StringBuilder res = new StringBuilder();
 		res.append(Common.ROUND_END);
 		for (PlayerModel temp : mServerContext.getPlayerModel())
-			res.append(temp.getScore()+",");
-		mServerContext.getNetworkManager().sendMessage(res.deleteCharAt(res.length()-1).toString());
+			res.append(temp.getScore() + ",");
+		mServerContext.getNetworkManager().sendMessage(
+				res.deleteCharAt(res.length() - 1).toString());
 	}
 
 	/**
@@ -90,11 +86,10 @@ public class WaitingState extends ServerState {
 				add = 10;
 				break;
 			case 0:
-				add = 13;
+				add = 10;
 				break;
 			}
-			mServerContext
-					.setRoundScore(mServerContext.getRoundScore() + add);
+			mServerContext.setRoundScore(mServerContext.getRoundScore() + add);
 		}
 	}
 
@@ -104,13 +99,10 @@ public class WaitingState extends ServerState {
 	 * @return
 	 */
 	private boolean gameIsOver() {
-		int i = 0;
 		for (PlayerModel temp : mServerContext.getPlayerModel())
-			if (temp.getRemainCardsNum() == 0){
-				i++;
+			if (temp.getRemainCardsNum() == 0)
 				GIAVE_UP_TIME_LIMITE--;
-			}
-		return i >= 2 ? true : false;
+		return GIAVE_UP_TIME_LIMITE <= 0 ? true : false;
 	}
 
 	/**
@@ -119,7 +111,7 @@ public class WaitingState extends ServerState {
 	 * @param cardList
 	 */
 	private void updatePlayerModle(List<Card> cardList) {
-		
+
 		PlayerModel model = mServerContext.getPlayerModel().get(
 				mServerContext.getCurrentPlayerNumber() - 1);
 		model.getCardList().removeAll(cardList);
@@ -130,12 +122,13 @@ public class WaitingState extends ServerState {
 	 */
 	private void sendToOtherPlayer(String substring) {
 		StringBuilder res = new StringBuilder();
-		res.append(mServerContext.getCurrentPlayerNumber()+",");
-		res.append(substring+",");
-		res.append(mServerContext.getRoundScore()+",");
+		res.append(mServerContext.getCurrentPlayerNumber() + ",");
+		res.append(substring + ",");
+		res.append(mServerContext.getRoundScore() + ",");
 		for (PlayerModel model : mServerContext.getPlayerModel())
-			res.append(model.getRemainCardsNum()+",");
-		mServerContext.getNetworkManager().sendMessage(Common.PLAY_END + res.substring(0,res.length()-1));
+			res.append(model.getRemainCardsNum() + ",");
+		mServerContext.getNetworkManager().sendMessage(
+				Common.PLAY_END + res.substring(0, res.length() - 1));
 	}
 
 	/**
@@ -145,8 +138,8 @@ public class WaitingState extends ServerState {
 	 * @return
 	 */
 	private List<Card> getCardList(String[] str) {
-		List<Card> list = new ArrayList<Card>(str.length );
-		for (int i = 0; i < str.length; i++){
+		List<Card> list = new ArrayList<Card>(str.length);
+		for (int i = 0; i < str.length; i++) {
 			list.add(new Card(str[i]));
 		}
 		return list;
@@ -155,25 +148,25 @@ public class WaitingState extends ServerState {
 	/**
 	 * 判断并转发下一个玩家出牌
 	 */
-	private void nextPlayer() {
-		int nextPlayer = 0;
-		if(mServerContext.getCurrentPlayerNumber()==3)
-			nextPlayer=mServerContext.getPlayerModel().get(0).getRemainCardsNum()!=0?1:2;
-		else
-			if(mServerContext.getCurrentPlayerNumber()==1)
-				nextPlayer=mServerContext.getPlayerModel().get(1).getRemainCardsNum()!=0?2:3;
-			else
-				if(mServerContext.getCurrentPlayerNumber()==2)
-					nextPlayer=mServerContext.getPlayerModel().get(2).getRemainCardsNum()!=0?3:1;
-		
+	private void sendToNextPlayer() {
+		int nextPlayer = getNextPlayerId();
+		mServerContext.setCurrentPlayerNumber(nextPlayer);
 		mServerContext.getNetworkManager().sendMessage(
 				Common.YOUR_TURN + nextPlayer);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		mServerContext.setCurrentPlayerNumber(nextPlayer);
+	}
+
+	private int getNextPlayerId() {
+		int nextPlayer = 0;
+		if (mServerContext.getCurrentPlayerNumber() == 3)
+			nextPlayer = mServerContext.getPlayerModel().get(0)
+					.getRemainCardsNum() != 0 ? 1 : 2;
+		else if (mServerContext.getCurrentPlayerNumber() == 1)
+			nextPlayer = mServerContext.getPlayerModel().get(1)
+					.getRemainCardsNum() != 0 ? 2 : 3;
+		else if (mServerContext.getCurrentPlayerNumber() == 2)
+			nextPlayer = mServerContext.getPlayerModel().get(2)
+					.getRemainCardsNum() != 0 ? 3 : 1;
+		return nextPlayer;
 	}
 
 }

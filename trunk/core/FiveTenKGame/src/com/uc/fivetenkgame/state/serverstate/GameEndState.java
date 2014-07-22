@@ -27,9 +27,7 @@ public class GameEndState extends ServerState {
 		int id = 0;
 		for (int i = 1; i < mServerContext.getClientNum() ; i++) {
 			id = mServerContext.getPlayerModel().get(id).getScore() > mServerContext
-					.getPlayerModel().get(i ).getScore() ? mServerContext
-					.getPlayerModel().get(id).getPlayerNumber() : mServerContext
-					.getPlayerModel().get(i).getPlayerNumber();
+					.getPlayerModel().get(i ).getScore() ? id:i;
 		}
 		return id;
 	}
