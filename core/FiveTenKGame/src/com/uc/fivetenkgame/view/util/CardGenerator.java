@@ -17,7 +17,7 @@ import android.util.Log;
  *         обнГ5:09:27 2014-7-9
  */
 public class CardGenerator {
-	private static Map<String,Bitmap> CARDS_BITMAP=new HashMap<String, Bitmap>();;
+	private static Map<String,Bitmap> CARDS_BITMAP=new HashMap<String, Bitmap>();
 	public static String cardResourceName(String cardId) {
 		StringBuilder prefix = new StringBuilder();
 		int cardNO = Integer.valueOf(cardId.trim());

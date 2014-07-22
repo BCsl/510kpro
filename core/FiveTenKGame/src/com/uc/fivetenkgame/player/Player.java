@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
+import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.ruleController.BasicRule;
 import com.uc.fivetenkgame.ruleController.Rule;
@@ -77,6 +78,7 @@ public class Player implements PlayerContext {
 					return false;
 				} else if (mRule.checkCards(handList, formerCardList) == 1) {
 					mHandList.addAll(handList);
+					Common.setOrder(mHandList);
 					setDoneHandCards(true);
 					return true;
 				} else {
@@ -178,25 +180,6 @@ public class Player implements PlayerContext {
 		return new String(sb);
 	}
 
-	/*
-	 * public void setCurrentPlayerOutList(String[] list){
-	 * currentPlayerOutList.clear(); for(int i=0, count=list.length; i<count;
-	 * i++){ currentPlayerOutList.add(new Card(list[i])); } }
-	 * 
-	 * public List<Card> getCurrentPlayerOutList(){ return currentPlayerOutList;
-	 * }
-	 * 
-	 * public void setTableScore(int score){ tableScore = score; }
-	 * 
-	 * public void setCurrentPlayer(int number){ currentPlayer = number; }
-	 * 
-	 * public int getCurrentPlayer(){ return currentPlayer; }
-	 * 
-	 * public int getTableScore(){ return tableScore; }
-	 * 
-	 * public void setPlayNumber(String playerNumber){
-	 * mPlayerModel.setPlayerNumber(Integer.parseInt(playerNumber)); }
-	 */
 
 	@Override
 	public void sendMsg(String msg) {
