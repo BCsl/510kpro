@@ -146,7 +146,7 @@ public class Player implements PlayerContext {
 		// mState.handle();
 	}
 
-	public Player() {
+	private Player() {
 		mNetworkManager = ClientManager.getInstance();
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
