@@ -295,11 +295,6 @@ public class Player implements PlayerContext {
 	@Override
 	public void setMyTurn(boolean flag) {
 		while (viewController == null) {
-			// try {
-			// Thread.sleep(10);
-			// } catch (InterruptedException e) {
-			// e.printStackTrace();
-			// }
 		}
 		viewController.setMyTurn(flag);
 	}
