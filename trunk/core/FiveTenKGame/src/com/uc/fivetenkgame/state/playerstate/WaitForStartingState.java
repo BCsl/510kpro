@@ -1,5 +1,7 @@
 package com.uc.fivetenkgame.state.playerstate;
 
+import android.util.Log;
+
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.PlayerContext;
 
@@ -28,6 +30,7 @@ public class WaitForStartingState extends PlayerState {
 			if(mPlayerContext.getPlayerNumber()==Integer.parseInt(playerNumber)){//是自己的手牌,跳转到下一个状态waitForMsg
 				mPlayerContext.getHandler().obtainMessage(Common.START_GAME).sendToTarget();
 				mPlayerContext.setInitPlayerCards(msg.substring(4, msg.length()));
+				Log.i("初始手牌：", msg.substring(4, msg.length()));
 				mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
 				mPlayerContext.handle(null);
 			}

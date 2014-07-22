@@ -115,5 +115,7 @@ public interface PlayerContext {
 	 */
 	public boolean isFirstPlayer();
 	
+	public boolean hasCard();
+	
 	public void ReStartGame();
 }	

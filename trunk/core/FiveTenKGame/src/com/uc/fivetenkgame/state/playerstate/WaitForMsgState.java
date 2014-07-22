@@ -21,6 +21,10 @@ public class WaitForMsgState extends PlayerState {
 		if (msg.startsWith(Common.YOUR_TURN)
 				&& msg.substring(2).equals(
 						String.valueOf(mPlayerContext.getPlayerNumber()))) {
+			if(!mPlayerContext.hasCard()){
+				mPlayerContext.setState(new GameOverState(mPlayerContext));
+				return;
+			}
 			mPlayerContext.setMyTurn(true);
 			while (!mPlayerContext.doneHandCards()) {
 			}
@@ -61,7 +65,6 @@ public class WaitForMsgState extends PlayerState {
 
 			mPlayerContext.playCardsEndAction(outList, playerNumber,
 					tableScore, remainCards);
-			mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
 			Log.i(TAG, msg);
 			return;
 		}
@@ -76,8 +79,13 @@ public class WaitForMsgState extends PlayerState {
 		// 得到游戏结束信息
 		if (msg.startsWith(Common.GAME_OVER)) {
 			mPlayerContext.setState(new GameOverState(mPlayerContext));
+<<<<<<< .mine
+			mPlayerContext.handle(msg);
+			Log.i("GAME_OVER", msg);
+=======
 			mPlayerContext.handle(msg.substring(2));
 			Log.i(TAG, msg);
+>>>>>>> .r128
 			return;
 		}
 	}
