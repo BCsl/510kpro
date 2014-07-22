@@ -37,6 +37,9 @@ public class Common {
 	public static final int UPDATE_WAITING_PLAYER_NUM = 1;
 	public static final int START_GAME = 2;
 	public static final int END_GAME = 3;
+	public static final int HOST_FULL = 4;
+	public static final int TIME_OUT = 5;
+	
 	// 服务器状态改变内部消息
 	public static final String SERVER_LISTENING = "1@";
 	public static final String GAME_START = "2@";

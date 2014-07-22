@@ -64,6 +64,28 @@ public class GameViewActivity extends Activity {
 							}
 						}).show();
 				break;
+			case Common.HOST_FULL:
+				new  AlertDialog.Builder(GameViewActivity.this)
+				.setTitle("人数已满")
+				.setMessage("点击确定返回上一页")
+				.setPositiveButton("确定",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {}
+						}).show();
+				break;
+			default:
+				new  AlertDialog.Builder(GameViewActivity.this)
+				.setTitle("连接异常")
+				.setMessage("点击确定返回上一页")
+				.setPositiveButton("确定",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {}
+						}).show();
+				break;
 			}
 		}
 	};

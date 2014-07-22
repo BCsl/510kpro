@@ -3,6 +3,8 @@ package com.uc.fivetenkgame;
 import my.example.fivetenkgame.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -86,7 +88,6 @@ public class WaitingGameActivity extends Activity {
 				Integer num = (Integer)(msg.obj);
 				//Toast.makeText(WaitingGameActivity.this, num+"==", Toast.LENGTH_SHORT).show();
 				mReadyPlayer.setText(getResources().getString(R.string.ready_player_str) + num + "人");
-				
 				break;
 			case Common.START_GAME:
 				Toast.makeText(WaitingGameActivity.this, 
@@ -97,6 +98,19 @@ public class WaitingGameActivity extends Activity {
 				intent.setClass(WaitingGameActivity.this, GameViewActivity.class);
 				startActivity(intent);
 				finish();
+				break;
+			case Common.TIME_OUT:
+				new  AlertDialog.Builder(WaitingGameActivity.this)
+				.setTitle(R.string.time_out_str)
+				.setMessage("点击确定返回")
+				.setPositiveButton("确定",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+							}
+						}).show();
 				break;
 			}
 		}

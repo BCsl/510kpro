@@ -11,9 +11,9 @@ import com.uc.fivetenkgame.player.PlayerContext;
  *
  */
 public class ConnectState extends PlayerState {
-
 	public ConnectState(PlayerContext context) {
 		super(context);
+		mThread.start();
 	}
 
 	/**
@@ -33,11 +33,25 @@ public class ConnectState extends PlayerState {
 			mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
 			mPlayerContext.handle(null);
 
-		} else if (msg.startsWith(Common.PLAYER_REFUSED)) {// 连接失败，跳转到退出状态
-			mPlayerContext.setState(new ExitState(mPlayerContext));
-			mPlayerContext.handle(null);
-
+		} else if (msg.startsWith(Common.PLAYER_REFUSED)) {
+			// 连接失败，跳转到开始界面
+			mPlayerContext.getHandler().obtainMessage(Common.HOST_FULL);
 		}
 	}
-
+	
+	private Thread mThread = new Thread(new Runnable() {
+		
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//Log.i("TimeOut", null);
+			mPlayerContext.getHandler().obtainMessage(Common.TIME_OUT).sendToTarget();;
+			mPlayerContext.timeOutAction();
+		}
+	});
 }
