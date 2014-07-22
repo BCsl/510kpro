@@ -100,6 +100,8 @@ public class WaitingGameActivity extends Activity {
 				finish();
 				break;
 			case Common.TIME_OUT:
+				if(isServer)
+					break;
 				new  AlertDialog.Builder(WaitingGameActivity.this)
 				.setTitle(R.string.time_out_str)
 				.setMessage("点击确定返回")
