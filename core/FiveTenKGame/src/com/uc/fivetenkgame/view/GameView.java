@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import my.example.fivetenkgame.R;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,7 +20,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -67,6 +64,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private float LEFT_CARDS_BASEX, RIGHT_CARDS_BASEX, LEFT_OUTCARDS_BASEX,
 			RIGHT_OUTCARDS_BASEX;
 	private Bitmap bg;
+	private int currentPlayerId;
 
 	public GameView(Context context, int playerId) {
 		super(context);
@@ -108,7 +106,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		}
 
 		public void setMyTurn(boolean flag) {
-			Log.i(TAG, "set is myturn:" +flag);
 			isMyTrun = flag;
 		}
 
@@ -119,17 +116,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		@Override
 		public void gameOver(int playId) {
-//			new AlertDialog.Builder(context.getApplicationContext())
-//					.setTitle("游戏结束")
-//					.setMessage(playId + "胜利")
-//					.setPositiveButton("确定",
-//							new DialogInterface.OnClickListener() {
-//								@Override
-//								public void onClick(DialogInterface dialog,
-//										int which) {
-//									// 退出操作
-//								}
-//							}).show();
 		}
 
 		@Override
@@ -143,6 +129,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 					temp.getValue().clear();
 			gameScore=0;
 				
+		}
+
+		@Override
+		public void setCurrentPlayer(int playerId) {
+			currentPlayerId=playerId;
 		}
 	}
 
@@ -164,6 +155,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		cardList = new Vector<Card>();
 		outList = new HashMap<Integer, List<Card>>();
 		bg= BitmapFactory.decodeResource(getResources(), R.drawable.bg);
+		currentPlayerId=-1;
 	}
 
 	private void initPlayersId(int playerId2) {
@@ -237,7 +229,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		if (drawThread == null) {
 			drawThread = new Thread(this);
 			drawThread.start();
-
 		}
 	}
 
@@ -271,7 +262,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		synchronized (holder) {
 			try {
 				canvas = holder.lockCanvas();
-
 				drawBackground(canvas);
 				drawMainPlayer(canvas, paint);
 				drawLeftPlayer(canvas, paint);
@@ -296,6 +286,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void drawRightPlayer(Canvas canvas, Paint paint) {
 		rightPlayerDrawer.initCanvas(canvas);
+		if(currentPlayerId==right_player_id&&!isMyTrun)
+			rightPlayerDrawer.drawHandCardFlag(RIGHT_CARDS_BASEX-cardSizeHolder.width+10, cardSizeHolder.height);
 		rightPlayerDrawer.drawPlayer(right_player_id, paint, screenHolder.width
 				- PLAYER_TEXT_LENGTH, TEXT_SIZE);
 		rightPlayerDrawer.drawScore(scroeList.get(right_player_id - 1), paint,
@@ -309,6 +301,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void drawLeftPlayer(Canvas canvas, Paint paint) {
 		leftPlayerDrawer.initCanvas(canvas);
+		if(currentPlayerId==left_player_id&&!isMyTrun)
+			leftPlayerDrawer.drawHandCardFlag(LEFT_CARDS_BASEX+cardSizeHolder.width+10, cardSizeHolder.height);
 		leftPlayerDrawer.drawPlayer(left_player_id, paint, 10, TEXT_SIZE);
 		leftPlayerDrawer.drawScore(scroeList.get(left_player_id - 1), paint,
 				10, 2 * TEXT_SIZE);

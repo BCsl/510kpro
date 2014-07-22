@@ -19,11 +19,12 @@ import com.uc.fivetenkgame.view.entity.Card;
 public class WaitingState extends ServerState {
 	private String TAG = "WaitingState";
 	private int giveUpTimes;
-	private int GIAVE_UP_TIME_LIMITE = 2;
+	private int GIAVE_UP_TIME_LIMITE ;
 
 	public WaitingState(ServerContext context) {
 		mServerContext = context;
 		giveUpTimes = 0;
+		GIAVE_UP_TIME_LIMITE=2;
 	}
 
 	@Override
@@ -99,9 +100,13 @@ public class WaitingState extends ServerState {
 	 * @return
 	 */
 	private boolean gameIsOver() {
+		int i=0;
 		for (PlayerModel temp : mServerContext.getPlayerModel())
-			if (temp.getRemainCardsNum() == 0)
+			if (temp.getRemainCardsNum() == 0){
+				Log.i(TAG, "出完牌的玩家数："+(++i));
+				
 				GIAVE_UP_TIME_LIMITE--;
+			}
 		return GIAVE_UP_TIME_LIMITE <= 0 ? true : false;
 	}
 

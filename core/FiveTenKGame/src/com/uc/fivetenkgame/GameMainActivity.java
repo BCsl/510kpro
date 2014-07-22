@@ -11,7 +11,7 @@ import android.widget.Button;
 /**
  * 游戏主界面，界面有四个按钮,点击后分别跳转到相应的界面
  * 
- * @author liuzd
+ * @author liuzd,chensl
  *
  */
 public class GameMainActivity extends Activity {

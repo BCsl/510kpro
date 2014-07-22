@@ -118,4 +118,9 @@ public interface PlayerContext {
 	public boolean hasCard();
 	
 	public void ReStartGame();
+	/**
+	 * 设置当前出牌玩家
+	 * @param palyerId
+	 */
+	public void setCurrentPlayer(int palyerId);
 }	

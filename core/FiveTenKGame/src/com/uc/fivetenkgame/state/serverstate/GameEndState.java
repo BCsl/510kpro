@@ -29,7 +29,7 @@ public class GameEndState extends ServerState {
 			id = mServerContext.getPlayerModel().get(id).getScore() > mServerContext
 					.getPlayerModel().get(i ).getScore() ? id:i;
 		}
-		return id;
+		return id+1;
 	}
 
 }

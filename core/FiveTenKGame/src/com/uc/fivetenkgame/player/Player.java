@@ -304,6 +304,13 @@ public class Player implements PlayerContext {
 	}
 
 	@Override
+	public void setCurrentPlayer(int palyerId) {
+		while (viewController == null) {
+		}
+		viewController.setCurrentPlayer(palyerId);
+	}
+
+	@Override
 	public boolean hasCard() {
 		if(mPlayerModel.getRemainCardsNum() == 0){
 			return false;
