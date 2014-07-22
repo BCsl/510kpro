@@ -60,7 +60,9 @@ public class Player implements PlayerContext {
 					return false;
 				} else if (mRule.firstPlayCards(handList) == 1) {
 					mHandList.addAll(handList);
+					mPlayerModel.getCardList().removeAll(handList);
 					setDoneHandCards(true);
+					Log.i("当前手牌数", String.valueOf(mPlayerModel.getRemainCardsNum()));
 					return true;
 				} else {
 					// 不能什么牌都不点就出牌
@@ -72,14 +74,20 @@ public class Player implements PlayerContext {
 				if (handList == null) {
 					mHandList = null;
 					setDoneHandCards(true);
+					Log.i("当前手牌数", String.valueOf(mPlayerModel.getRemainCardsNum()));
 					return true;
 				} else if (handList.size() == 0) {
 					viewController.handCardFailed();
 					return false;
 				} else if (mRule.checkCards(handList, formerCardList) == 1) {
 					mHandList.addAll(handList);
+
+					mPlayerModel.getCardList().removeAll(handList);
+
 					Common.setOrder(mHandList);
+
 					setDoneHandCards(true);
+					Log.i("当前手牌数", String.valueOf(mPlayerModel.getRemainCardsNum()));
 					return true;
 				} else {
 					// 不能什么牌都不点就出牌
@@ -138,7 +146,7 @@ public class Player implements PlayerContext {
 		// mState.handle();
 	}
 
-	private Player() {
+	public Player() {
 		mNetworkManager = ClientManager.getInstance();
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
@@ -194,6 +202,8 @@ public class Player implements PlayerContext {
 		score.add(new Integer(playerScore[1]));
 		score.add(new Integer(playerScore[2]));
 		formerCardList = null;
+		mPlayerModel.setScore(Integer.parseInt(
+				playerScore[mPlayerModel.getPlayerNumber()-1]));
 		viewController.setScroeList(score);
 		viewController.roundOver();
 	}
@@ -291,6 +301,15 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void ReStartGame() {
+	}
+
+	@Override
+	public boolean hasCard() {
+		if(mPlayerModel.getRemainCardsNum() == 0){
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 }
