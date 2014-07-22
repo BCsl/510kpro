@@ -17,14 +17,11 @@ import android.widget.Toast;
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.server.Server;
-import com.uc.fivetenkgame.view.GameView;
-import com.uc.fivetenkgame.view.util.IViewControler;
 
 public class WaitingGameActivity extends Activity {
 	private String TAG = "WaitingGameActivity";
 	private Player mPlayer;
 	private Server mServer;
-	private GameView mGameView;
 	
 	private TextView mIpAddress;
 	private TextView mReadyPlayer;

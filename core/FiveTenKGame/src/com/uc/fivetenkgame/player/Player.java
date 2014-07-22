@@ -44,10 +44,10 @@ public class Player implements PlayerContext {
 	private NetworkInterface mNetworkManager;
 	private Handler mHandler;
 	// protected List<Card> currentPlayerOutList;
-	protected List<Card> formerCardList;
+	private List<Card> formerCardList;
 	private List<Card> mHandList ;
 	// protected int tableScore;
-	protected EventListener mEventListener = new EventListener() {
+	private EventListener mEventListener = new EventListener() {
 		@Override
 		public boolean handCard(List<Card> handList) {
 			mHandList = new ArrayList<Card>();
@@ -136,12 +136,12 @@ public class Player implements PlayerContext {
 		// mState.handle();
 	}
 
-	public Player() {
+	private Player() {
 		mNetworkManager = ClientManager.getInstance();
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
 
-		mRule = new BasicRule();
+		setRule(new BasicRule());
 		// mPlayerModel.setCardList(null);
 		// mPlayerModel.setPlayerNumber(-1);
 		// mPlayerModel.setScore(0);
@@ -304,6 +304,10 @@ public class Player implements PlayerContext {
 			return true;
 		else
 			return false;
+	}
+
+	@Override
+	public void ReStartGame() {
 	}
 
 }

@@ -79,12 +79,41 @@ public interface PlayerContext {
 	 */
 	void gameOver(int playerId);
 	
+	/**
+	 * 设置handler
+	 * @param handler
+	 */
 	void setHandler(Handler handler);
 	
+	/**
+	 * 得到handler
+	 * @return Player对象的handler
+	 */
 	public Handler getHandler();
 	
+	/**
+	 * 获得doneHandCards的值，判断出牌是否结束
+	 * @return
+	 */
 	public boolean doneHandCards();
+	
+	/**
+	 * 设置doneHandCards
+	 * @param flag
+	 */
 	public void setDoneHandCards(boolean flag);
+	
+	/**
+	 * 设置myTurn
+	 * @param flag
+	 */
 	public void setMyTurn(boolean flag);
+	
+	/**
+	 * 判断该玩家是否是该局第一个出牌的人
+	 * @return
+	 */
 	public boolean isFirstPlayer();
-	}	
+	
+	public void ReStartGame();
+}	

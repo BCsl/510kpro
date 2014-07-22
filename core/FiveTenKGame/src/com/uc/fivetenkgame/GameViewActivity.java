@@ -1,23 +1,15 @@
 package com.uc.fivetenkgame;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Vector;
-
-import my.example.fivetenkgame.R;
-
+import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.Player;
-import com.uc.fivetenkgame.server.Server;
 import com.uc.fivetenkgame.view.GameView;
-import com.uc.fivetenkgame.view.entity.Card;
-import com.uc.fivetenkgame.view.util.EventListener;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -45,6 +37,7 @@ public class GameViewActivity extends Activity {
 		final GameView view =new GameView(getApplicationContext(),Player.getInstance().getPlayerNumber());
 		Player.getInstance().setViewControler(view.getViewControler());
 		Player.getInstance().setEventListener();
+		Player.getInstance().setHandler(mHandler);
 		Player.getInstance().initView();
 		setContentView(view);
 		
@@ -54,6 +47,17 @@ public class GameViewActivity extends Activity {
 		
 		
 	}
+	
+	@SuppressLint("HandlerLeak")
+	private Handler mHandler = new Handler(){
+		public void handleMessage(Message msg){
+			switch( msg.what ){
+			case Common.END_GAME:
+				finish();
+				break;
+			}
+		}
+	};
 	/*
 	public class LoopThread extends Thread{
 		GameView view;
