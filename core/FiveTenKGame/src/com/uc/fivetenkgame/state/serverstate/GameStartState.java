@@ -105,7 +105,8 @@ public class GameStartState extends ServerState{
 				sb.append(",");
 			}
 			
-			mServerContext.getNetworkManager().sendMessage(sb.deleteCharAt(sb.length()-1).toString(), player.getPlayerNumber());
+			mServerContext.getNetworkManager()
+				.sendMessage(sb.deleteCharAt(sb.length()-1).toString(), player.getPlayerNumber());
 			
 		}
 	}
@@ -117,6 +118,6 @@ public class GameStartState extends ServerState{
 		Random random = new Random();
 		int num = random.nextInt(Common.TOTAL_PLAYER_NUM) + 1;
 		mServerContext.setCurrentPlayerNumber(num);
-		mServerContext.getNetworkManager().sendMessage(Common.YOUR_TURN + num, num);
+		mServerContext.getNetworkManager().sendMessage(Common.YOUR_TURN + num);
 	}
 }
