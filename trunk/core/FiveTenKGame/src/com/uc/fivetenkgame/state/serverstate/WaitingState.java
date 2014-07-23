@@ -51,6 +51,9 @@ public class WaitingState extends ServerState {
 			if (giveUpTimes == GIAVE_UP_TIME_LIMITE)
 				roundOver();
 			callNextPlayer();
+		} else if(msg.startsWith(Common.GAME_PAUSE) || msg.startsWith(Common.GAME_RESUME) ||
+				msg.startsWith(Common.GAME_EXIT)){
+			mServerContext.getNetworkManager().sendMessage(msg);
 		}
 
 	}
