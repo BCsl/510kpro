@@ -37,12 +37,15 @@ public class Player implements PlayerContext {
 
 		@Override
 		public void reveiveMessage(String msg) {
-			if (msg.equals(Common.GAME_PAUSE) || msg.equals(Common.GAME_RESUME)
-					|| msg.equals(Common.GAME_EXIT))
+			Log.i("!!!player","... "+msg);
+			if (msg.startsWith(Common.GAME_PAUSE) || msg.startsWith(Common.GAME_RESUME)
+					|| msg.startsWith(Common.GAME_EXIT)){
 				mHandler.obtainMessage(Common.GAME_STATE_CHANGE, msg)
 						.sendToTarget(); //由activity处理
-			else
+				Log.i("!!!player","msg sent to target");
+			}else{
 				mState.handle(msg); //由状态机处理
+			}
 		}
 	};
 	// protected int currentPlayer;

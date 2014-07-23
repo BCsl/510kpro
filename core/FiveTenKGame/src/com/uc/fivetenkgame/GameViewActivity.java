@@ -59,6 +59,7 @@ public class GameViewActivity extends Activity {
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
+			Log.i("gameViewActivity","handler receive msg:"+msg);
 			switch (msg.what) {
 			case Common.END_GAME:
 				new AlertDialog.Builder(GameViewActivity.this)
@@ -76,13 +77,20 @@ public class GameViewActivity extends Activity {
 				
 			case Common.GAME_STATE_CHANGE:
 				String objMsg = (String)msg.obj;
-				if(objMsg.equals(Common.GAME_PAUSE)){
-					if(!ifPause)
+				Log.i("objMsg is ",objMsg.length()+"");
+				if(objMsg.startsWith(Common.GAME_PAUSE)){
+					if(!ifPause){
 						pauseDialog.show();//其他玩家通知
-				}else if(objMsg.equals(Common.GAME_RESUME)){
-					if(ifPause)
+						ifPause = true;
+						Log.i("pauseDialog","show");
+					}
+				}else if(objMsg.startsWith(Common.GAME_RESUME)){
+					if(ifPause){
 						pauseDialog.cancel();//其他玩家通知
-				}else if(objMsg.equals(Common.GAME_EXIT)){
+						ifPause = false;
+						Log.i("pauseDialog","cancel");
+					}
+				}else if(objMsg.startsWith(Common.GAME_EXIT)){
 					GameViewActivity.this.finish();
 				}
 				break;
@@ -98,6 +106,7 @@ public class GameViewActivity extends Activity {
 				.setPositiveButton("返回", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						ifPause = false;
 						Player.getInstance().sendMsg(Common.GAME_RESUME);// 恢复游戏
 					}
 				})
@@ -113,6 +122,7 @@ public class GameViewActivity extends Activity {
 		backPressDialog.setOnCancelListener(new OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {
+				ifPause = false;
 				Player.getInstance().sendMsg(Common.GAME_RESUME);// 再次按返回键，返回游戏
 			}
 		});
@@ -122,6 +132,7 @@ public class GameViewActivity extends Activity {
 				.setPositiveButton("不想等了，退出本次游戏", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						Player.getInstance().sendMsg(Common.GAME_EXIT);
 						GameViewActivity.this.finish();
 					}
 				})
@@ -131,20 +142,21 @@ public class GameViewActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
-		Player.getInstance().sendMsg(Common.GAME_PAUSE);// 暂停游戏
 		backPressDialog.show();
+		ifPause = true;
+		Player.getInstance().sendMsg(Common.GAME_PAUSE);// 暂停游戏
 	}
 
 	private String TAG = "GameViewActivity";
 
 	@Override
 	protected void onResume() {
-		Log.i(TAG, "onResume");
+		Log.i(TAG, "onResume "+ifPause);
 		super.onResume();
 		
 		if(ifPause){
-			Player.getInstance().sendMsg(Common.GAME_RESUME);//通知其他玩家恢复游戏
 			ifPause = false;
+			Player.getInstance().sendMsg(Common.GAME_RESUME);//通知其他玩家恢复游戏
 		}
 	}
 	
@@ -160,5 +172,19 @@ public class GameViewActivity extends Activity {
 	protected void onStop() {
 		super.onStop();
 
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		outState.putBoolean("ifPause", ifPause);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		ifPause = savedInstanceState.getBoolean("ifPause");
 	}
 }

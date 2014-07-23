@@ -53,6 +53,7 @@ public class WaitingState extends ServerState {
 			callNextPlayer();
 		} else if(msg.startsWith(Common.GAME_PAUSE) || msg.startsWith(Common.GAME_RESUME) ||
 				msg.startsWith(Common.GAME_EXIT)){
+			Log.i("waitingState!!!","*** "+msg);
 			mServerContext.getNetworkManager().sendMessage(msg);
 		}
 
