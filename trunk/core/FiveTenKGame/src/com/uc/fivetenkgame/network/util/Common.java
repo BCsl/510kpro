@@ -33,12 +33,17 @@ public class Common {
 	public static final String PLAY_CARDS = "9#";//自己出牌：9#+玩家号+牌的序号 + , +.....	
 	public static final String GIVE_UP = "0#";//自己放弃出牌0#+玩家号
 	
+	public static final String GAME_PAUSE = "10#";//某个玩家暂停游戏，所有玩家暂停
+	public static final String GAME_RESUME = "11#";//所有玩家恢复游戏
+	public static final String GAME_EXIT = "12#";//某个玩家退出游戏，所有玩家退出
+	
 	// handler消息处理编号
 	public static final int UPDATE_WAITING_PLAYER_NUM = 1;
 	public static final int START_GAME = 2;
 	public static final int END_GAME = 3;
 	public static final int HOST_FULL = 4;
 	public static final int TIME_OUT = 5;
+	public static final int GAME_STATE_CHANGE = 6;//和GAME_PAUSE,GAME_RESUME，GAME_EXIT匹配
 	
 	// 服务器状态改变内部消息
 	public static final String SERVER_LISTENING = "1@";
