@@ -137,9 +137,8 @@ public class ServerManager extends NetworkManager {
 	 * 
 	 */
 	public void sendMessage(String msg) {
-
+		Log.i(LOG_SERVER_TAG, "send :" + msg);
 		for (TCPServer player : mClientPlayers) {
-			Log.i(LOG_SERVER_TAG, "send :" + msg);
 			player.sendMessage(msg);
 		}
 	}
