@@ -188,17 +188,14 @@ public class GameViewActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		Log.i(TAG, "onPause");
-		super.onPause();
-		//
-		// Player.getInstance().sendMsg(Common.GAME_PAUSE);//通知其他玩家暂停游戏
-		// ifPause = true;
+		
+		 Player.getInstance().sendMsg(Common.GAME_PAUSE);//通知其他玩家暂停游戏
+		 ifPause = true;
 	};
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		Player.getInstance().sendMsg(Common.GAME_EXIT);
-		Player.getInstance().resetPlayer();
 	}
 
 	@Override
