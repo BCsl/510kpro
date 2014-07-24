@@ -55,6 +55,10 @@ public class WaitingState extends ServerState {
 				msg.startsWith(Common.GAME_EXIT)){
 			Log.i("waitingState!!!","*** "+msg);
 			mServerContext.getNetworkManager().sendMessage(msg);
+			if(msg.startsWith(Common.GAME_EXIT)){
+				mServerContext.resetServer();
+				mServerContext.setState(new InitState(mServerContext));
+			}
 		}
 
 	}

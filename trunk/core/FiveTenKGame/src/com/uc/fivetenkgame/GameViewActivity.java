@@ -177,7 +177,8 @@ public class GameViewActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-
+		Player.getInstance().sendMsg(Common.GAME_EXIT);
+		Player.getInstance().resetPlayer();
 	}
 	
 	@Override
