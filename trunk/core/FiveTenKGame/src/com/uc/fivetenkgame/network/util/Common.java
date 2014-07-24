@@ -46,6 +46,7 @@ public class Common {
 	public static final int HOST_FULL = 4;
 	public static final int TIME_OUT = 5;
 	public static final int GAME_STATE_CHANGE = 6;//和GAME_PAUSE,GAME_RESUME，GAME_EXIT匹配
+	public static final int PLAYER_LEFT = 7;
 	
 	// 服务器状态改变内部消息
 	public static final String SERVER_LISTENING = "1@";

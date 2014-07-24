@@ -42,5 +42,11 @@ public class ClientManager extends NetworkManager{
 		
 	}
 
+	@Override
+	public void reset() {
+		mTCPToServer.setFlag(false);
+		mTCPToServer = new TCPClient(this);
+	}
+
 	
 }

@@ -130,4 +130,6 @@ public interface PlayerContext {
 	public void playerGiveUp(int playerId);
 	
 	public void timeOutAction();
+	
+	public void resetPlayer();
 }	

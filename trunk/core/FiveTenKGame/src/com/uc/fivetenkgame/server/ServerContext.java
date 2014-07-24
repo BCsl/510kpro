@@ -105,4 +105,6 @@ public interface ServerContext {
 	 * @param msg 要处理的消息
 	 */
 	public void handleMessage(String msg);
+	
+	public void resetServer();
 }

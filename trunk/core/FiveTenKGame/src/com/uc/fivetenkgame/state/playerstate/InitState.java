@@ -11,6 +11,7 @@ import com.uc.fivetenkgame.player.PlayerContext;
  *
  */
 public class InitState extends PlayerState {
+	String TAG = "InitState";
 
 	public InitState(PlayerContext context) {
 		super(context);
@@ -27,6 +28,7 @@ public class InitState extends PlayerState {
 			Log.i("开始状态", "msg为null");
 			
 		}else{
+			Log.i(TAG, msg);
 			mPlayerContext.initNetwork(msg);//连接到server
 			mPlayerContext.setState(new ConnectState(mPlayerContext));
 			mPlayerContext.handle(null);
