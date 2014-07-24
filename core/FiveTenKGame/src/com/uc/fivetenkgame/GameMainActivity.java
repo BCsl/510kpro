@@ -7,9 +7,11 @@ import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * 游戏主界面，界面有四个按钮,点击后分别跳转到相应的界面
@@ -20,7 +22,6 @@ import android.widget.Button;
 public class GameMainActivity extends Activity {
 	private static final int REQUEST_SERVER_IP = 90000;
 	private static final int REQUEST_SCAN_IP = 1;
-	private static boolean INPUT = true;
 	private Button mNewGameButton;
 	private Button mJoinGameButton;
 	private Button mHelpButton;
@@ -30,6 +31,7 @@ public class GameMainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_main);
+		Log.e("GameMainActivity", "on create");
 
 		mNewGameButton = (Button) findViewById(R.id.main_new_game_id);
 		mJoinGameButton = (Button) findViewById(R.id.main_joid_game_id);
@@ -103,12 +105,18 @@ public class GameMainActivity extends Activity {
 				Bundle bundle = data.getExtras();
 				if (bundle != null) {
 					String ipAddr = bundle.getString("result");
+					if(Common.isIPAddress(ipAddr)){
 					Intent intent = new Intent();
 					intent.putExtra("isServer", false);
 					intent.putExtra("IP", ipAddr);
 					intent.setClass(GameMainActivity.this,
 							WaitingGameActivity.class);
 					startActivity(intent);
+					}
+					else
+						Toast.makeText(GameMainActivity.this, 
+								getResources().getString(R.string.ip_scan_error_str), 
+								Toast.LENGTH_SHORT).show();
 				}
 			}
 		}// REQUEST_SCAN_IP

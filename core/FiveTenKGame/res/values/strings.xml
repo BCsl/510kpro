@@ -16,6 +16,7 @@
     <string name="start_game_str">开始游戏</string>
     <string name="my_ip_addr_str">我的ip地址：</string>
     <string name="ip_input_error_str">请输入正确ip</string>
+    <string name="ip_scan_error_str">ip扫描失败，请重试</string>
     <string name="help_rule_str">单张：任意一张单牌。
 	    						\n顺子：任意五张或者五张以上点数相连的牌，2不能出现在顺子中。
 	    						\n对子：任意两张点数相同的牌。

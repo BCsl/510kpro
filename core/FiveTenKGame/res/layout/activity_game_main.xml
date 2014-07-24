@@ -15,38 +15,22 @@
 
         <Button
             android:id="@+id/main_new_game_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/main_button"
-            android:minWidth="200dp"
+            style="@style/MainButtonStyle"
             android:text="@string/new_game_str" />
 
         <Button
             android:id="@+id/main_joid_game_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/main_button"
-            android:minWidth="200dp"
+            style="@style/MainButtonStyle"
             android:text="@string/join_game_str" />
 
         <Button
             android:id="@+id/main_help_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/main_button"
-            android:minWidth="200dp"
+            style="@style/MainButtonStyle"
             android:text="@string/help_str" />
 
         <Button
             android:id="@+id/main_setting_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/main_button"
-            android:minWidth="200dp"
+            style="@style/MainButtonStyle"
             android:text="@string/setting_str" />
     </LinearLayout>
 

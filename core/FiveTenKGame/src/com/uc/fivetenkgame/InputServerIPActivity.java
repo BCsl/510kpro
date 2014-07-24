@@ -3,6 +3,8 @@ package com.uc.fivetenkgame;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.uc.fivetenkgame.network.util.Common;
+
 import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -40,7 +42,7 @@ public class InputServerIPActivity extends Activity {
 		public void onClick(View v) {
 			if( v == mOKButton ){
 				String ipAddr = mServerIP.getText().toString();
-				if( isIPAddress(ipAddr) ){
+				if( Common.isIPAddress(ipAddr) ){
 					Intent intent = getIntent();
 					Bundle bundle = new Bundle();
 					bundle.putString("IP", ipAddr);
@@ -59,20 +61,5 @@ public class InputServerIPActivity extends Activity {
 		
 	};
 	
-	/**
-	 * 检查IP是否有效
-	 * 
-	 * @param ipaddr 输入的IP字符串
-	 * @return   是否有效
-	 */
-	public static boolean isIPAddress(String ipaddr) {
-		boolean flag = false;
-		Pattern pattern = Pattern.compile("\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
-				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
-				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
-				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
-		Matcher m = pattern.matcher(ipaddr);
-		flag = m.matches();
-		return flag;
-		}
+
 }
