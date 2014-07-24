@@ -47,7 +47,7 @@ public class Server implements ServerContext{
 		
 		mClientNum = 0;
 		mRoundScore=0;
-		mState = new InitState(this);
+//		mState = new InitState(this);
 	}
 	
 	protected OnReceiveMessageListener mReceiveMessage = new OnReceiveMessageListener() {
@@ -66,6 +66,7 @@ public class Server implements ServerContext{
 	 * 
 	 */
 	public void startListen(){
+		mState = new InitState(this);
 		mState.handle(Common.SERVER_LISTENING);
 		mNetworkManager.initNetwork(null);
 	}
