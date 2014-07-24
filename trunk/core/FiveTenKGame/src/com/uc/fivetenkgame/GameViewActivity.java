@@ -3,6 +3,7 @@ package com.uc.fivetenkgame;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,6 +21,7 @@ import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.view.GameView;
 
 public class GameViewActivity extends Activity {
+//	private PowerManager.WakeLock mWakeLock;
 
 	private AlertDialog backPressDialog;//本玩家按返回键出现的dialog
 	private AlertDialog pauseDialog;//其他玩家暂停时本玩家出现的dialog
@@ -32,9 +35,11 @@ public class GameViewActivity extends Activity {
 		// 隐藏状态栏
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		// 设置不黑屏
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, 
+				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); 
+//		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE); 
+//		 mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+		
 
 		// 根据当前玩家是否是服务器来获取不同的实例
 		Intent intent = getIntent();
@@ -161,11 +166,12 @@ public class GameViewActivity extends Activity {
 	}
 	
 	protected void onPause() {
+		super.onPause();
 		Log.i(TAG, "onPause");
 		super.onPause();
-
-		Player.getInstance().sendMsg(Common.GAME_PAUSE);//通知其他玩家暂停游戏
-		ifPause = true;
+//
+//		Player.getInstance().sendMsg(Common.GAME_PAUSE);//通知其他玩家暂停游戏
+//		ifPause = true;
 	};
 
 	@Override

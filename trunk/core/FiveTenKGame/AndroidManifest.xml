@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
@@ -18,46 +18,55 @@
         android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         <activity
             android:name="com.uc.fivetenkgame.GameMainActivity"
-            android:label="@string/app_name" 
-            android:screenOrientation="landscape">
+            android:label="@string/app_name"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.uc.fivetenkgame.WaitingGameActivity"
             android:label="@string/waiting_str"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Holo.Dialog" >
         </activity>
-        
         <activity
             android:name="com.uc.fivetenkgame.GameViewActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
-        
         <activity
             android:name="com.uc.fivetenkgame.InputServerIPActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Dialog">
+            android:theme="@android:style/Theme.Holo.Dialog" >
         </activity>
-        
         <activity
             android:name="com.uc.fivetenkgame.GameSettingActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
         </activity>
-        
-        <activity 
+        <activity
             android:name="com.uc.fivetenkgame.GameHelpActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.google.zxing.qr_codescan.MipcaActivityCapture"
+            android:label="@string/scan_qrcode_str"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
 </manifest>
