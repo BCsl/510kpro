@@ -6,6 +6,9 @@ import java.util.Vector;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
+
+import com.uc.fivetenkgame.application.GameApplication;
+import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.view.GameView;
 import com.uc.fivetenkgame.view.entity.Card;
 
@@ -31,12 +34,11 @@ public abstract class EventListener {
 	 */
 	public final void handleTouchEvent(MotionEvent event, GameView view,
 			List<Card> cardList) {
-		// 只接受按下事件
-		// if(event.getAction()!=MotionEvent.ACTION_UP)
-		// return ;
+//		 只接受按下事件
+		 if(event.getAction()!=MotionEvent.ACTION_DOWN)
+		 return ;
 		float rawX = event.getRawX();
 		float rawY = event.getRawY();
-		// Log.e(TAG, "x" + rawX + ";y" + rawY);
 		int CARD_WIDTH = view.cardSizeHolder.width;
 		int CARD_HEIGHT = view.cardSizeHolder.height;
 		int SCREEN_WIDTH = view.screenHolder.width;
@@ -46,6 +48,7 @@ public abstract class EventListener {
 				CARD_INTENT, rawX, rawY, cardList);
 		// 卡牌被点击
 		if (card != null) {
+			((GameApplication)view.context.getApplicationContext()).playSound(Common.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "被点击：" + card.getCardId());
 			if (card.isClicked()) {
 				card.setClick(false);

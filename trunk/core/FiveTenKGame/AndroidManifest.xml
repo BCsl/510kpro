@@ -12,6 +12,7 @@
         android:targetSdkVersion="19" />
 
     <application
+        android:name="com.uc.fivetenkgame.application.GameApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -20,6 +21,7 @@
         <activity
             android:name="com.uc.fivetenkgame.GameMainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,7 +39,7 @@
             android:name="com.uc.fivetenkgame.GameViewActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            >
         </activity>
         <activity
             android:name="com.uc.fivetenkgame.InputServerIPActivity"
@@ -52,7 +54,7 @@
         <activity
             android:name="com.uc.fivetenkgame.GameHelpActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+            >
         </activity>
         <activity
             android:name="com.google.zxing.qr_codescan.MipcaActivityCapture"

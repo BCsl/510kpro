@@ -29,7 +29,7 @@ public class Common {
 	public static final String YOUR_TURN = "4#";//提醒玩家出牌信号：4#+玩家序号
 	public static final String PLAY_END = "5#";//出牌转发信号：5#+玩家号+牌号 + , + .... //+桌面分数+玩家1牌数+玩家2牌数+玩家3牌数（后4位）
 	public static final String ROUND_END = "6#";//回合结束信号，更新玩家的分数：6#+玩家1分数+玩家2分数+玩家3分数
-	public static final String GAME_OVER = "7#";//游戏结束信号：7#+胜利者
+	public static final String GAME_OVER = "7#";//游戏结束信号：7#+胜利者+各玩家分数
 	public static final String PLAYER_NUMBER_UPDATE = "8#";//更新等待玩家人数：8#+等待玩家人数
 	
 	public static final String PLAY_CARDS = "9#";//自己出牌：9#+玩家号+牌的序号 + , +.....	
@@ -61,6 +61,11 @@ public class Common {
 	public static final String TABLE_SETTING="setting";
 	public static final String SP_QRCODE_FLAG="qrcode";
 	public static final String SP_MUSIC_FLAG="music";
+	
+	public static final int SOUND_BUTTON_PRESS=0;
+	public static final int SOUND_GAME_START=1;
+	public static final int SOUND_WIN = 2;
+	public static final int SOUND_FAILD =3;
 	
 	public static void setOrder(List<Card> list){
 		Collections.sort(list, new Comparator<Card>() {

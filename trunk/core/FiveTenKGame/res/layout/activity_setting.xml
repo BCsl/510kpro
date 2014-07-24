@@ -90,23 +90,6 @@
                 android:text="@string/close_str"
                 android:textColor="@android:color/black" />
         </RadioGroup>
-
-        <TextView
-            android:id="@+id/background_music_text_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/background_music_str"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
-
-        <SeekBar
-            android:id="@+id/music_volume_seekBar_id"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:progressDrawable="@android:drawable/progress_horizontal"
-            android:scrollbarStyle="insideInset" />
     </LinearLayout>
 
 </RelativeLayout>
