@@ -35,7 +35,9 @@ public class ConnectState extends PlayerState {
 
 		} else if (msg.startsWith(Common.PLAYER_REFUSED)) {
 			// 连接失败，跳转到开始界面
-			mPlayerContext.getHandler().obtainMessage(Common.HOST_FULL);
+			mPlayerContext.getHandler().obtainMessage(Common.HOST_FULL).sendToTarget();
+		} else if (msg.startsWith(Common.GAME_OVER)){
+			mPlayerContext.getHandler().obtainMessage(Common.PLAYER_LEFT).sendToTarget();
 		}
 	}
 	

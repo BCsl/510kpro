@@ -97,6 +97,6 @@ public class WaitForMsgState extends PlayerState {
 			mPlayerContext.handle(msg.substring(2));
 			Log.i("GAME_OVER", msg);
 			return;
-		}
+		} 
 	}
 }

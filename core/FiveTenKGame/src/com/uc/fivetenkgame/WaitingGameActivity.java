@@ -140,6 +140,10 @@ public class WaitingGameActivity extends Activity {
 							}
 						}).show();
 				break;
+			case Common.PLAYER_LEFT:
+				Toast.makeText(WaitingGameActivity.this,"连接异常",Toast.LENGTH_SHORT).show();
+				finish();
+				break;
 			}
 		}
 
@@ -149,6 +153,7 @@ public class WaitingGameActivity extends Activity {
 
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			Log.e(TAG, "这里需要关闭网络！");
+			mPlayer.sendMsg(Common.GIVE_UP);
 		}
 		return super.onKeyDown(keyCode, event);
 	};

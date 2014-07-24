@@ -70,7 +70,7 @@ public class Server implements ServerContext{
 		mNetworkManager.initNetwork(null);
 	}
 
-	@Override
+	
 	public NetworkManager getNetworkManager() {
 		return mNetworkManager;
 	}
@@ -121,6 +121,14 @@ public class Server implements ServerContext{
 	@Override
 	public void setCurrentPlayerNumber(int CurrentPlayerNumber) {
 		mCurrentPlayer=CurrentPlayerNumber;
+	}
+
+	@Override
+	public void resetServer() {
+		mClientNum = 0;
+		mRoundScore=0;
+		mState = new InitState(this);
+		mNetworkManager.reset();
 	}
 	
 }

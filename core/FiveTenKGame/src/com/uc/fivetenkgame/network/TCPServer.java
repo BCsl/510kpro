@@ -20,8 +20,10 @@ public class TCPServer {
 	private OutputStream mOutputStream;
 	private InputStream mInputStream;
 	private byte[] mBuffer;
+	private int mNumber = 0;
 	
-	public TCPServer(ServerManager parent, Socket aSocket){
+	public TCPServer(ServerManager parent, Socket aSocket, int number){
+		mNumber = number;
 		mServerSocket = aSocket;
 		try {
 			mInputStream = mServerSocket.getInputStream();
@@ -30,7 +32,6 @@ public class TCPServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		mBuffer = new byte[1024];
 		mServerManager = parent;
 		mThread.start();
@@ -40,7 +41,7 @@ public class TCPServer {
 		@Override
 		public void run() {
 			
-			while( true ){
+			while( mServerManager.getFlag(mNumber-1) ){
 				try {
 					if( mInputStream != null  ){
 						int len = mInputStream.read(mBuffer);
@@ -55,7 +56,7 @@ public class TCPServer {
 						//¡¥Ω”÷–∂œ
 						else if( len < 0 ){
 							release();
-							break;
+							return;
 						}
 					}
 					else{
@@ -64,14 +65,14 @@ public class TCPServer {
 					
 				} catch (SocketException e){
 					release();
-					break;
+					return;
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}			
 			}
-	
+			release();
 		}		
 	};
 

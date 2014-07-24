@@ -347,4 +347,10 @@ public class Player implements PlayerContext {
 		viewController.setPlayersOutList(playerId, cardList);
 	}
 
+	@Override
+	public void resetPlayer() {
+		mPlayerModel = new PlayerModel();
+		mNetworkManager.reset();
+	}
+
 }

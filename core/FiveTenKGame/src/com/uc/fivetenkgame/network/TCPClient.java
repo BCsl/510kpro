@@ -20,6 +20,7 @@ public class TCPClient{
 	private OutputStream mOutputStream = null;
 	private InputStream mInputStream = null;
 	private byte[] mBuffer = null;
+	private boolean flag = true;
 	
 	public TCPClient(ClientManager parent){
 		mBuffer = new byte[1024];
@@ -49,7 +50,7 @@ public class TCPClient{
 		public void run() {
 			
 			
-			while( true ){
+			while( flag ){
 				try {
 					if( mInputStream != null  ){
 						int len = mInputStream.read(mBuffer);
@@ -64,7 +65,7 @@ public class TCPClient{
 						//¡¥Ω”÷–∂œ
 						else if( len < 0 ){
 							release();
-							break;
+							return;
 						}
 					}
 					else{
@@ -72,7 +73,7 @@ public class TCPClient{
 					}
 				} catch (SocketException e){
 					release();
-					break;
+					return;
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (InterruptedException e) {
@@ -80,6 +81,7 @@ public class TCPClient{
 				}
 				
 			}
+			release();
 		}		
 	};
 
@@ -111,5 +113,9 @@ public class TCPClient{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setFlag(boolean bool){
+		flag = bool;
 	}
 }
