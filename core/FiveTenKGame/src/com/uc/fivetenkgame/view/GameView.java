@@ -134,6 +134,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		@Override
 		public void setCurrentPlayer(int playerId) {
 			currentPlayerId=playerId;
+			if( outList.get(playerId-1) !=null)
+				outList.get(playerId-1).clear();
 		}
 	}
 

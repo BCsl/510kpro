@@ -55,6 +55,10 @@ public class Common {
 	//消息数据尾
 	public static final String MESSAGE_END = "#@";
 	
+	public static final String TABLE_SETTING="setting";
+	public static final String SP_QRCODE_FLAG="qrcode";
+	public static final String SP_MUSIC_FLAG="music";
+	
 	public static void setOrder(List<Card> list){
 		Collections.sort(list, new Comparator<Card>() {
 			@Override
