@@ -1,10 +1,5 @@
 package com.uc.fivetenkgame;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.uc.fivetenkgame.network.util.Common;
-
 import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.content.Intent;

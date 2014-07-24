@@ -19,12 +19,12 @@ import com.uc.fivetenkgame.view.entity.Card;
 public class WaitingState extends ServerState {
 	private String TAG = "WaitingState";
 	private int giveUpTimes;
-	private int GIAVE_UP_TIME_LIMITE;		//本轮的结束位,如当前玩家还有3人，连续结束2次则本轮结束。
+	private int GIAVE_UP_TIME_LIMITE; // 本轮的结束位,如当前玩家还有3人，连续结束2次则本轮结束。
 
 	public WaitingState(ServerContext context) {
 		mServerContext = context;
 		giveUpTimes = 0;
-		GIAVE_UP_TIME_LIMITE = Common.TOTAL_PLAYER_NUM-1;
+		GIAVE_UP_TIME_LIMITE = Common.TOTAL_PLAYER_NUM - 1;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class WaitingState extends ServerState {
 			updatePlayerModle(cardList);
 			sendToOtherPlayer(msg.substring(2).trim());
 			if (isCurrentPlayerHasNoCards())
-					playerFinalRoundOver();
+				playerFinalRoundOver();
 			if (gameIsOver()) {
 				GameEndState state = new GameEndState(mServerContext);
 				mServerContext.setState(state);
@@ -51,9 +51,10 @@ public class WaitingState extends ServerState {
 			if (giveUpTimes == GIAVE_UP_TIME_LIMITE)
 				roundOver();
 			callNextPlayer();
-		} else if(msg.startsWith(Common.GAME_PAUSE) || msg.startsWith(Common.GAME_RESUME) ||
-				msg.startsWith(Common.GAME_EXIT)){
-			Log.i("waitingState!!!","*** "+msg);
+		} else if (msg.startsWith(Common.GAME_PAUSE)
+				|| msg.startsWith(Common.GAME_RESUME)
+				|| msg.startsWith(Common.GAME_EXIT)) {
+			Log.i(TAG, "*** " + msg);
 			mServerContext.getNetworkManager().sendMessage(msg);
 			if(msg.startsWith(Common.GAME_EXIT)){
 				mServerContext.resetServer();
@@ -69,9 +70,9 @@ public class WaitingState extends ServerState {
 	 * @return
 	 */
 	private boolean isCurrentPlayerHasNoCards() {
-		if( mServerContext.getPlayerModel()
+		if (mServerContext.getPlayerModel()
 				.get(mServerContext.getCurrentPlayerNumber() - 1)
-				.getRemainCardsNum() == 0){
+				.getRemainCardsNum() == 0) {
 			GIAVE_UP_TIME_LIMITE--;
 			return true;
 		}
@@ -94,6 +95,7 @@ public class WaitingState extends ServerState {
 				res.deleteCharAt(res.length() - 1).toString());
 
 	}
+
 	/**
 	 * 普通的本轮结束，统计分数，并转发，本轮分数清零
 	 */
@@ -109,7 +111,7 @@ public class WaitingState extends ServerState {
 			res.append(temp.getScore() + ",");
 		mServerContext.getNetworkManager().sendMessage(
 				res.deleteCharAt(res.length() - 1).toString());
-		
+
 	}
 
 	/**
@@ -120,7 +122,6 @@ public class WaitingState extends ServerState {
 				Common.GIVE_UP + mServerContext.getCurrentPlayerNumber());
 	}
 
-
 	/**
 	 * 根据当前出牌，更新本轮分数
 	 * 
@@ -130,7 +131,7 @@ public class WaitingState extends ServerState {
 		int add = 0;
 		for (Card temp : cardList) {
 			int id = Integer.valueOf(temp.getCardId());
-			if (id == 54 || id == 55)
+			if (id > 52)
 				continue;
 			switch (id % 13) {
 			case 5:
@@ -154,12 +155,7 @@ public class WaitingState extends ServerState {
 	 * @return
 	 */
 	private boolean gameIsOver() {
-//		int i = 0;
-//		for (PlayerModel temp : mServerContext.getPlayerModel())
-//			if (temp.getRemainCardsNum() == 0)
-//				Log.i(TAG, "出完牌的玩家数：" + (++i));
-//		return i >= 2 ? true : false;
-		return GIAVE_UP_TIME_LIMITE<=0;			
+		return GIAVE_UP_TIME_LIMITE <= 0;
 	}
 
 	/**

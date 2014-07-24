@@ -9,41 +9,17 @@ import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class GameSettingActivity extends Activity implements
 		OnCheckedChangeListener {
-	private SeekBar volumeSeekBar;
 	private RadioGroup qrcodeRadiogroup;
 	private RadioGroup musicRadiogroup;
 	private RadioButton musicOpen, musicClose;
 	private RadioButton scanOpen, scanClose;
-
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
-		volumeSeekBar = (SeekBar) findViewById(R.id.music_volume_seekBar_id);
-		volumeSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-
-			}
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-
-			}
-
-		});
 		musicOpen = (RadioButton) findViewById(R.id.open_radio_id);
 		musicClose = (RadioButton) findViewById(R.id.close_radio_id);
 		scanOpen = (RadioButton) findViewById(R.id.open_qrcode_id);
@@ -98,7 +74,6 @@ public class GameSettingActivity extends Activity implements
 			}
 			sp.edit().putBoolean(Common.SP_QRCODE_FLAG, flag).commit();
 		}
-
 	}
 
 	@Override

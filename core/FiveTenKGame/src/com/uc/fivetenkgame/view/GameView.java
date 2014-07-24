@@ -41,7 +41,7 @@ import com.uc.fivetenkgame.view.util.OtherPlayerInfoDrawer;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		Runnable {
 	private String TAG = "GameView";
-	private Context context;
+	public Context context;
 	public ScreenSizeHolder screenHolder;
 	public CardSizeHolder cardSizeHolder;
 	private SurfaceHolder holder;
@@ -265,9 +265,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			try {
 				canvas = holder.lockCanvas();
 				drawBackground(canvas);
-				drawMainPlayer(canvas, paint);
 				drawLeftPlayer(canvas, paint);
 				drawRightPlayer(canvas, paint);
+				drawMainPlayer(canvas, paint);
 				drawGameScore(canvas, paint);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -291,6 +291,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		if(currentPlayerId==right_player_id&&!isMyTrun)
 			rightPlayerDrawer.drawHandCardFlag(RIGHT_CARDS_BASEX-cardSizeHolder.width+10, cardSizeHolder.height);
 		
+		rightPlayerDrawer.drawOutList(outList.get(right_player_id - 1),
+				RIGHT_OUTCARDS_BASEX);
 		rightPlayerDrawer.drawPlayer(right_player_id, paint, screenHolder.width
 				- PLAYER_TEXT_LENGTH, TEXT_SIZE);
 		rightPlayerDrawer.drawScore(scroeList.get(right_player_id - 1), paint,
@@ -298,21 +300,19 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		rightPlayerDrawer.drawCardsNumber(cardNumber.get(right_player_id - 1),
 				paint, screenHolder.width - PLAYER_TEXT_LENGTH
 						- SCORE_TEXT_LENGTH - 20, TEXT_SIZE, RIGHT_CARDS_BASEX);
-		rightPlayerDrawer.drawOutList(outList.get(right_player_id - 1),
-				RIGHT_OUTCARDS_BASEX);
 	}
 
 	private void drawLeftPlayer(Canvas canvas, Paint paint) {
 		leftPlayerDrawer.initCanvas(canvas);
 		if(currentPlayerId==left_player_id&&!isMyTrun)
 			leftPlayerDrawer.drawHandCardFlag(LEFT_CARDS_BASEX+cardSizeHolder.width+10, cardSizeHolder.height);
+		leftPlayerDrawer.drawOutList(outList.get(left_player_id - 1),
+				LEFT_OUTCARDS_BASEX);
 		leftPlayerDrawer.drawPlayer(left_player_id, paint, 10, TEXT_SIZE);
 		leftPlayerDrawer.drawScore(scroeList.get(left_player_id - 1), paint,
 				10, 2 * TEXT_SIZE);
 		leftPlayerDrawer.drawCardsNumber(cardNumber.get(left_player_id - 1),
 				paint, PLAYER_TEXT_LENGTH + 10, TEXT_SIZE, LEFT_CARDS_BASEX);
-		leftPlayerDrawer.drawOutList(outList.get(left_player_id - 1),
-				LEFT_OUTCARDS_BASEX);
 	}
 
 	private void drawMainPlayer(Canvas canvas, Paint paint) {

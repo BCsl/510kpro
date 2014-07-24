@@ -88,7 +88,6 @@ public final class R {
         /**  Messages IDs 
          */
         public static final int auto_focus=0x7f060000;
-        public static final int background_music_text_id=0x7f060022;
         public static final int close_qrcode_id=0x7f060021;
         public static final int close_radio_id=0x7f06001e;
         public static final int decode=0x7f060001;
@@ -98,14 +97,13 @@ public final class R {
         public static final int encode_succeeded=0x7f060005;
         public static final int gridview=0x7f06000c;
         public static final int help_text_id=0x7f060012;
-        public static final int ip_addr_text_ID=0x7f060024;
+        public static final int ip_addr_text_ID=0x7f060022;
         public static final int launch_product_query=0x7f060006;
         public static final int main_help_id=0x7f060016;
         public static final int main_joid_game_id=0x7f060015;
         public static final int main_new_game_id=0x7f060014;
         public static final int main_setting_id=0x7f060017;
         public static final int music_radiogroup_id=0x7f06001c;
-        public static final int music_volume_seekBar_id=0x7f060023;
         public static final int music_volume_text_id=0x7f06001b;
         public static final int ok_button_ID=0x7f060019;
         public static final int open_qrcode_id=0x7f060020;
@@ -113,7 +111,7 @@ public final class R {
         public static final int preview_view=0x7f060010;
         public static final int qrcode_radiogroup_id=0x7f06001f;
         public static final int quit=0x7f060007;
-        public static final int ready_player_text_ID=0x7f060025;
+        public static final int ready_player_text_ID=0x7f060023;
         public static final int restart_preview=0x7f060008;
         public static final int return_scan_result=0x7f060009;
         public static final int scrollview_id=0x7f060013;
@@ -122,6 +120,10 @@ public final class R {
         public static final int server_ip_text_ID=0x7f060018;
         public static final int setting_text_id=0x7f06001a;
         public static final int split=0x7f06000f;
+        public static final int text_score_player1=0x7f060025;
+        public static final int text_score_player2=0x7f060026;
+        public static final int text_score_player3=0x7f060027;
+        public static final int text_winning_player=0x7f060024;
         public static final int viewfinder_view=0x7f060011;
         public static final int webview=0x7f06000d;
     }
@@ -132,36 +134,47 @@ public final class R {
         public static final int activity_input_server_ip=0x7f030003;
         public static final int activity_setting=0x7f030004;
         public static final int activity_waiting_game=0x7f030005;
+        public static final int dialog_winning=0x7f030006;
     }
     public static final class raw {
         public static final int beep=0x7f040000;
-        public static final int realm_properties=0x7f040001;
+        public static final int button=0x7f040001;
+        public static final int fail=0x7f040002;
+        public static final int realm_properties=0x7f040003;
+        public static final int start=0x7f040004;
+        public static final int win=0x7f040005;
     }
     public static final class string {
         public static final int app_name=0x7f070000;
-        public static final int background_music_str=0x7f070011;
-        public static final int close_str=0x7f070014;
+        public static final int background_music_str=0x7f070012;
+        public static final int close_str=0x7f070015;
         public static final int confirm_str=0x7f07000b;
+        public static final int exit_game_str=0x7f070010;
+        public static final int game_over=0x7f070019;
         public static final int hello_world=0x7f070001;
-        public static final int help_rule_str=0x7f070010;
+        public static final int help_rule_str=0x7f070011;
         public static final int help_str=0x7f070004;
         public static final int input_server_ip_hint=0x7f07000a;
         public static final int ip_input_error_str=0x7f07000e;
         public static final int ip_scan_error_str=0x7f07000f;
         public static final int join_game_str=0x7f070003;
         public static final int join_str=0x7f070007;
-        public static final int music_volume_str=0x7f070012;
+        public static final int music_volume_str=0x7f070013;
         public static final int my_ip_addr_str=0x7f07000d;
         public static final int new_game_str=0x7f070002;
-        public static final int open_str=0x7f070013;
-        public static final int qrcode_settting_str=0x7f070016;
+        public static final int open_str=0x7f070014;
+        public static final int player1_score=0x7f07001b;
+        public static final int player2_score=0x7f07001c;
+        public static final int player3_score=0x7f07001d;
+        public static final int qrcode_settting_str=0x7f070017;
         public static final int ready_player_str=0x7f070009;
         public static final int scan_qrcode_str=0x7f070006;
-        public static final int scan_text=0x7f070015;
+        public static final int scan_text=0x7f070016;
         public static final int setting_str=0x7f070005;
         public static final int start_game_str=0x7f07000c;
-        public static final int time_out_str=0x7f070017;
+        public static final int time_out_str=0x7f070018;
         public static final int waiting_str=0x7f070008;
+        public static final int winner=0x7f07001a;
     }
     public static final class style {
         /** 

@@ -1,6 +1,7 @@
 package com.uc.fivetenkgame.state.serverstate;
 
 import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.server.ServerContext;
 /**
  * 
@@ -18,7 +19,12 @@ public class GameEndState extends ServerState {
 	public void handle(String msg) {
 		if (msg.equals(Common.GAME_END)) {
 			int id = winnerId();
-			mServerContext.getNetworkManager().sendMessage(Common.GAME_OVER+id);
+			StringBuilder sb=new StringBuilder();
+			sb.append(Common.GAME_OVER);
+			sb.append(id+",");
+			for(PlayerModel model:mServerContext.getPlayerModel())
+					sb.append(model.getScore()+",");
+			mServerContext.getNetworkManager().sendMessage(sb.deleteCharAt(sb.length()-1).toString());
 		}
 		
 	}

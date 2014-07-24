@@ -265,9 +265,9 @@ public class Player implements PlayerContext {
 	}
 
 	@Override
-	public void gameOver(int playerId) {
+	public void gameOver(String[] str) {
 		// viewController.gameOver(playerId);
-		mHandler.obtainMessage(Common.END_GAME, (Integer) playerId)
+		mHandler.obtainMessage(Common.END_GAME,str)
 				.sendToTarget();
 	}
 

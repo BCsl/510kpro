@@ -1,6 +1,10 @@
 package com.uc.fivetenkgame;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.google.zxing.qr_codescan.MipcaActivityCapture;
+import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.network.util.Common;
 
 import my.example.fivetenkgame.R;
@@ -8,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,19 +25,20 @@ import android.widget.Toast;
  * 
  */
 public class GameMainActivity extends Activity {
+	private String TAG = "GameMainActivity";
 	private static final int REQUEST_SERVER_IP = 90000;
 	private static final int REQUEST_SCAN_IP = 1;
 	private Button mNewGameButton;
 	private Button mJoinGameButton;
 	private Button mHelpButton;
 	private Button mSettingButton;
+	private int EXIT_TIME;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game_main);
-		Log.e("GameMainActivity", "on create");
-
+		EXIT_TIME = 0;
 		mNewGameButton = (Button) findViewById(R.id.main_new_game_id);
 		mJoinGameButton = (Button) findViewById(R.id.main_joid_game_id);
 		mHelpButton = (Button) findViewById(R.id.main_help_id);
@@ -46,7 +52,7 @@ public class GameMainActivity extends Activity {
 	private OnClickListener mClickListener = new OnClickListener() {
 
 		public void onClick(View v) {
-
+				((GameApplication) getApplication()).playSound(Common.SOUND_BUTTON_PRESS);
 			if (v == mNewGameButton) {
 				Intent intent = new Intent();
 
@@ -105,18 +111,21 @@ public class GameMainActivity extends Activity {
 				Bundle bundle = data.getExtras();
 				if (bundle != null) {
 					String ipAddr = bundle.getString("result");
-					if(Common.isIPAddress(ipAddr)){
-					Intent intent = new Intent();
-					intent.putExtra("isServer", false);
-					intent.putExtra("IP", ipAddr);
-					intent.setClass(GameMainActivity.this,
-							WaitingGameActivity.class);
-					startActivity(intent);
-					}
-					else
-						Toast.makeText(GameMainActivity.this, 
-								getResources().getString(R.string.ip_scan_error_str), 
-								Toast.LENGTH_SHORT).show();
+					Log.i(TAG, "É¨Ãè½á¹û£º" + ipAddr);
+
+					if (Common.isIPAddress(ipAddr)) {
+						Intent intent = new Intent();
+						intent.putExtra("isServer", false);
+						intent.putExtra("IP", ipAddr);
+						intent.setClass(GameMainActivity.this,
+								WaitingGameActivity.class);
+						startActivity(intent);
+					} else
+						Toast.makeText(
+								GameMainActivity.this,
+								getResources().getString(
+										R.string.ip_scan_error_str),
+								Toast.LENGTH_LONG).show();
 				}
 			}
 		}// REQUEST_SCAN_IP
@@ -124,9 +133,32 @@ public class GameMainActivity extends Activity {
 	}
 
 	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+			doubleClickToExit();
+		return false;
+	}
+
+	public void doubleClickToExit() {
+		++EXIT_TIME;
+		if (EXIT_TIME == 2)
+			finish();
+		Toast.makeText(GameMainActivity.this,
+				getResources().getString(R.string.exit_game_str),
+				Toast.LENGTH_SHORT).show();
+		Timer task = new Timer();
+		task.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				EXIT_TIME = 0;
+			}
+		}, 2000);
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
+		((GameApplication) getApplication()).relese();
 		int pid = android.os.Process.myPid();
 		android.os.Process.killProcess(pid);
 	}

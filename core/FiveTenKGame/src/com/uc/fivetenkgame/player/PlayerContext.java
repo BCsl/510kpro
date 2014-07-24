@@ -74,10 +74,10 @@ public interface PlayerContext {
 	int getPlayerNumber();
 	
 	/**
-	 * 游戏结束
-	 * @param playerId 赢家号
+	 * 
+	 * @param str 0为胜利玩家，往后为各玩家分数
 	 */
-	void gameOver(int playerId);
+	void gameOver(String[] str);
 	
 	/**
 	 * 设置handler

@@ -25,7 +25,7 @@ public class GameOverState extends PlayerState {
 			 Log.i("PlayerGameOverState","msg为null");
 			
 		}else{ //有上一状态（WaitForMsg）跳转而来，让玩家选择退出或重玩
-			mPlayerContext.gameOver(Integer.parseInt(msg));
+			mPlayerContext.gameOver(msg.split(","));
 			Log.i("GameOverState", msg);
 		}
 	}
