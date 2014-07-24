@@ -11,8 +11,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
 
 public class GameSettingActivity extends Activity implements
 		OnCheckedChangeListener {
@@ -34,7 +32,6 @@ public class GameSettingActivity extends Activity implements
 			public void onStopTrackingTouch(SeekBar seekBar) {
 
 			}
-
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
@@ -77,7 +74,7 @@ public class GameSettingActivity extends Activity implements
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		boolean flag = false;
 		if (group == musicRadiogroup) {
-			SharedPreferences sp = getPreferences(MODE_PRIVATE);
+			SharedPreferences sp = getApplicationContext().getSharedPreferences(Common.TABLE_SETTING, MODE_PRIVATE);
 			switch (checkedId) {
 			case R.id.open_radio_id:
 				flag = true;
@@ -107,6 +104,8 @@ public class GameSettingActivity extends Activity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
+		
+		
 
 	}
 

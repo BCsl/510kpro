@@ -17,7 +17,7 @@
             android:id="@+id/setting_text_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="dp"
+            android:layout_marginTop="10dp"
             android:text="@string/setting_str"
             android:textColor="@android:color/black"
             android:textSize="25sp" />
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal" >
 
             <RadioButton
@@ -47,21 +47,32 @@
                 android:paddingRight="30dp"
                 android:text="@string/open_str"
                 android:textColor="@android:color/black" />
+
             <RadioButton
                 android:id="@+id/close_radio_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/close_str"
                 android:textColor="@android:color/black" />
-            </RadioGroup>
+        </RadioGroup>
 
-            <RadioGroup
-                android:id="@+id/qrcode_radiogroup_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/close_str"
-                android:textColor="@android:color/black"
-                 android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/qrcode_settting_str"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <RadioGroup
+            android:id="@+id/qrcode_radiogroup_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:text="@string/close_str"
+            android:textColor="@android:color/black" >
+
             <RadioButton
                 android:id="@+id/open_qrcode_id"
                 android:layout_width="wrap_content"
@@ -93,7 +104,7 @@
             android:id="@+id/music_volume_seekBar_id"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="10dp"
             android:progressDrawable="@android:drawable/progress_horizontal"
             android:scrollbarStyle="insideInset" />
     </LinearLayout>

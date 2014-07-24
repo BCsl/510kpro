@@ -10,6 +10,14 @@ package my.example.fivetenkgame;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        public static final int drak=0x7f050005;
+        public static final int orange=0x7f050004;
+        public static final int possible_result_points=0x7f050002;
+        public static final int result_view=0x7f050000;
+        public static final int viewfinder_mask=0x7f050001;
+        public static final int white=0x7f050003;
+    }
     public static final class drawable {
         public static final int a1_10=0x7f020000;
         public static final int a1_11=0x7f020001;
@@ -73,55 +81,87 @@ public final class R {
         public static final int main_button=0x7f02003b;
         public static final int main_button_normal=0x7f02003c;
         public static final int main_button_press=0x7f02003d;
+        public static final int pass=0x7f02003e;
     }
     public static final class id {
-        public static final int background_music_text_id=0x7f060009;
-        public static final int close_radio_id=0x7f06000b;
-        public static final int help_text_id=0x7f060000;
-        public static final int ip_addr_text_ID=0x7f06000f;
-        public static final int main_help_id=0x7f060004;
-        public static final int main_joid_game_id=0x7f060003;
-        public static final int main_new_game_id=0x7f060002;
-        public static final int main_setting_id=0x7f060005;
-        public static final int music_radiogroup_id=0x7f060008;
-        public static final int music_volume_seekBar_id=0x7f06000e;
-        public static final int music_volume_text_id=0x7f06000d;
-        public static final int ok_button_ID=0x7f060007;
-        public static final int open_radio_id=0x7f06000a;
-        public static final int ready_player_text_ID=0x7f060011;
-        public static final int scrollview_id=0x7f060001;
-        public static final int server_ip_text_ID=0x7f060006;
-        public static final int setting_text_id=0x7f06000c;
-        public static final int waiting_progressBar_ID=0x7f060010;
+        public static final int about_version_code=0x7f06000e;
+        /**  Messages IDs 
+         */
+        public static final int auto_focus=0x7f060000;
+        public static final int background_music_text_id=0x7f060022;
+        public static final int close_qrcode_id=0x7f060021;
+        public static final int close_radio_id=0x7f06001e;
+        public static final int decode=0x7f060001;
+        public static final int decode_failed=0x7f060002;
+        public static final int decode_succeeded=0x7f060003;
+        public static final int encode_failed=0x7f060004;
+        public static final int encode_succeeded=0x7f060005;
+        public static final int gridview=0x7f06000c;
+        public static final int help_text_id=0x7f060012;
+        public static final int ip_addr_text_ID=0x7f060024;
+        public static final int launch_product_query=0x7f060006;
+        public static final int main_help_id=0x7f060016;
+        public static final int main_joid_game_id=0x7f060015;
+        public static final int main_new_game_id=0x7f060014;
+        public static final int main_setting_id=0x7f060017;
+        public static final int music_radiogroup_id=0x7f06001c;
+        public static final int music_volume_seekBar_id=0x7f060023;
+        public static final int music_volume_text_id=0x7f06001b;
+        public static final int ok_button_ID=0x7f060019;
+        public static final int open_qrcode_id=0x7f060020;
+        public static final int open_radio_id=0x7f06001d;
+        public static final int preview_view=0x7f060010;
+        public static final int qrcode_radiogroup_id=0x7f06001f;
+        public static final int quit=0x7f060007;
+        public static final int ready_player_text_ID=0x7f060025;
+        public static final int restart_preview=0x7f060008;
+        public static final int return_scan_result=0x7f060009;
+        public static final int scrollview_id=0x7f060013;
+        public static final int search_book_contents_failed=0x7f06000a;
+        public static final int search_book_contents_succeeded=0x7f06000b;
+        public static final int server_ip_text_ID=0x7f060018;
+        public static final int setting_text_id=0x7f06001a;
+        public static final int split=0x7f06000f;
+        public static final int viewfinder_view=0x7f060011;
+        public static final int webview=0x7f06000d;
     }
     public static final class layout {
-        public static final int activity_game_help=0x7f030000;
-        public static final int activity_game_main=0x7f030001;
-        public static final int activity_input_server_ip=0x7f030002;
-        public static final int activity_setting=0x7f030003;
-        public static final int activity_waiting_game=0x7f030004;
+        public static final int activity_capture=0x7f030000;
+        public static final int activity_game_help=0x7f030001;
+        public static final int activity_game_main=0x7f030002;
+        public static final int activity_input_server_ip=0x7f030003;
+        public static final int activity_setting=0x7f030004;
+        public static final int activity_waiting_game=0x7f030005;
+    }
+    public static final class raw {
+        public static final int beep=0x7f040000;
+        public static final int realm_properties=0x7f040001;
     }
     public static final class string {
-        public static final int app_name=0x7f040000;
-        public static final int background_music_str=0x7f04000f;
-        public static final int close_str=0x7f040012;
-        public static final int confirm_str=0x7f04000a;
-        public static final int hello_world=0x7f040001;
-        public static final int help_rule_str=0x7f04000e;
-        public static final int help_str=0x7f040005;
-        public static final int input_server_ip_hint=0x7f040009;
-        public static final int ip_input_error_str=0x7f04000d;
-        public static final int join_game_str=0x7f040003;
-        public static final int join_str=0x7f040006;
-        public static final int music_volume_str=0x7f040010;
-        public static final int my_ip_addr_str=0x7f04000c;
-        public static final int new_game_str=0x7f040002;
-        public static final int open_str=0x7f040011;
-        public static final int ready_player_str=0x7f040008;
-        public static final int setting_str=0x7f040004;
-        public static final int start_game_str=0x7f04000b;
-        public static final int time_out_str=0x7f040013;
-        public static final int waiting_str=0x7f040007;
+        public static final int app_name=0x7f070000;
+        public static final int background_music_str=0x7f070011;
+        public static final int close_str=0x7f070014;
+        public static final int confirm_str=0x7f07000b;
+        public static final int hello_world=0x7f070001;
+        public static final int help_rule_str=0x7f070010;
+        public static final int help_str=0x7f070004;
+        public static final int input_server_ip_hint=0x7f07000a;
+        public static final int ip_input_error_str=0x7f07000e;
+        public static final int ip_scan_error_str=0x7f07000f;
+        public static final int join_game_str=0x7f070003;
+        public static final int join_str=0x7f070007;
+        public static final int music_volume_str=0x7f070012;
+        public static final int my_ip_addr_str=0x7f07000d;
+        public static final int new_game_str=0x7f070002;
+        public static final int open_str=0x7f070013;
+        public static final int qrcode_settting_str=0x7f070016;
+        public static final int ready_player_str=0x7f070009;
+        public static final int scan_qrcode_str=0x7f070006;
+        public static final int scan_text=0x7f070015;
+        public static final int setting_str=0x7f070005;
+        public static final int start_game_str=0x7f07000c;
+        public static final int time_out_str=0x7f070017;
+        public static final int waiting_str=0x7f070008;
     }
     public static final class style {
         /** 
@@ -145,10 +185,11 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f050000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f050001;
+        public static final int AppTheme=0x7f080001;
+        public static final int MainButtonStyle=0x7f080002;
     }
 }

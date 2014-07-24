@@ -3,6 +3,8 @@ package com.uc.fivetenkgame.network.util;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.uc.fivetenkgame.view.entity.Card;
 
@@ -90,4 +92,20 @@ public class Common {
 			}
 		});
 	}
+	/**
+	 * 检查IP是否有效
+	 * 
+	 * @param ipaddr 输入的IP字符串
+	 * @return   是否有效
+	 */
+	public static boolean isIPAddress(String ipaddr) {
+		boolean flag = false;
+		Pattern pattern = Pattern.compile("\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
+				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
+				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])"
+				+ "\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
+		Matcher m = pattern.matcher(ipaddr);
+		flag = m.matches();
+		return flag;
+		}
 }
