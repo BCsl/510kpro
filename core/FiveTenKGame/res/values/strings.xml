@@ -33,6 +33,7 @@
 								\n炸弹：四张点数相同的牌。如6666。</string>
     <string name="background_music_str">背景音乐</string>
     <string name="music_volume_str">音量开关</string>
+    <string name="wifi_setting_str">wifi开关</string>
     <string name="open_str">开</string>
     <string name="close_str">关</string>
     <string name="scan_text">将二维码放入框内, 即可自动扫描</string>

@@ -3,13 +3,13 @@ package com.uc.fivetenkgame;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.google.zxing.qr_codescan.MipcaActivityCapture;
-import com.uc.fivetenkgame.application.GameApplication;
-import com.uc.fivetenkgame.network.util.Common;
-
 import my.example.fivetenkgame.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Service;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,10 +18,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.zxing.qr_codescan.MipcaActivityCapture;
+import com.uc.fivetenkgame.application.GameApplication;
+import com.uc.fivetenkgame.network.util.Common;
+
 /**
  * 游戏主界面，界面有四个按钮,点击后分别跳转到相应的界面
  * 
- * @author liuzd,chensl
+ * @author liuzd,chensl,lm
  * 
  */
 public class GameMainActivity extends Activity {
@@ -33,6 +37,7 @@ public class GameMainActivity extends Activity {
 	private Button mHelpButton;
 	private Button mSettingButton;
 	private int EXIT_TIME;
+	private WifiManager wifiManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,35 +52,74 @@ public class GameMainActivity extends Activity {
 		mJoinGameButton.setOnClickListener(mClickListener);
 		mHelpButton.setOnClickListener(mClickListener);
 		mSettingButton.setOnClickListener(mClickListener);
+		
+		checkAndOpenWifi();
 	}
 
+	private void checkAndOpenWifi(){
+		if(wifiManager==null)
+			wifiManager = (WifiManager)getSystemService(Service.WIFI_SERVICE);
+		if(!wifiManager.isWifiEnabled()){
+			AlertDialog dialog = new AlertDialog.Builder(this)
+									.setTitle("wifi未开启，是否现在打开")
+									.setPositiveButton("开启", new DialogInterface.OnClickListener() {
+										
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											if(wifiManager.setWifiEnabled(true))
+												Toast.makeText(getApplicationContext(), "WiFi已开启", Toast.LENGTH_SHORT).show();
+											else
+												Toast.makeText(getApplicationContext(), "WiFi打开失败", Toast.LENGTH_SHORT).show();
+										}
+									})
+									.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+										
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+										}
+									})
+									.create();
+			dialog.setCanceledOnTouchOutside(false);						
+			dialog.show();
+		}
+	}
+	
 	private OnClickListener mClickListener = new OnClickListener() {
 
 		public void onClick(View v) {
 				((GameApplication) getApplication()).playSound(Common.SOUND_BUTTON_PRESS);
 			if (v == mNewGameButton) {
-				Intent intent = new Intent();
+				if(wifiManager.isWifiEnabled()){
+					Intent intent = new Intent();
 
-				intent.putExtra("isServer", true);
-				intent.setClass(GameMainActivity.this,
-						WaitingGameActivity.class);
-				startActivity(intent);
-			} else if (v == mJoinGameButton) {
-				// 在这里开启二维码扫描
-				if (!getApplicationContext().getSharedPreferences(
-						Common.TABLE_SETTING, MODE_PRIVATE).getBoolean(
-						Common.SP_QRCODE_FLAG, false)) {
-					Intent intent = new Intent();
+					intent.putExtra("isServer", true);
 					intent.setClass(GameMainActivity.this,
-							InputServerIPActivity.class);
-					startActivityForResult(intent, REQUEST_SERVER_IP);
-				} else {
-					Intent intent = new Intent();
-					intent.setClass(GameMainActivity.this,
-							MipcaActivityCapture.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivityForResult(intent, REQUEST_SCAN_IP);
+							WaitingGameActivity.class);
+					startActivity(intent);
+				}else{
+					Toast.makeText(getApplicationContext(), "请打开wifi", Toast.LENGTH_SHORT).show();
 				}
+			} else if (v == mJoinGameButton) {
+				if(wifiManager.isWifiEnabled()){
+					// 在这里开启二维码扫描
+					if (!getApplicationContext().getSharedPreferences(
+							Common.TABLE_SETTING, MODE_PRIVATE).getBoolean(
+							Common.SP_QRCODE_FLAG, false)) {
+						Intent intent = new Intent();
+						intent.setClass(GameMainActivity.this,
+								InputServerIPActivity.class);
+						startActivityForResult(intent, REQUEST_SERVER_IP);
+					} else {
+						Intent intent = new Intent();
+						intent.setClass(GameMainActivity.this,
+								MipcaActivityCapture.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivityForResult(intent, REQUEST_SCAN_IP);
+					}
+				}else{
+					Toast.makeText(getApplicationContext(), "请打开wifi", Toast.LENGTH_SHORT).show();
+				}
+				
 			} else if (v == mSettingButton) {
 				Intent intent = new Intent();
 				intent.setClass(GameMainActivity.this,

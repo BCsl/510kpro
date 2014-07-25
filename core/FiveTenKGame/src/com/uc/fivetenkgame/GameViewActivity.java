@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.network.util.Common;
@@ -96,6 +97,7 @@ public class GameViewActivity extends Activity {
 						Log.i("pauseDialog", "cancel");
 					}
 				} else if (objMsg.startsWith(Common.GAME_EXIT)) {
+					Toast.makeText(getApplicationContext(), "其他玩家退出游戏", Toast.LENGTH_LONG).show();
 					GameViewActivity.this.finish();
 				}
 				break;
