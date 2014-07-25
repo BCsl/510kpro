@@ -261,6 +261,7 @@ public class Player implements PlayerContext {
 
 	@Override
 	public int getPlayerNumber() {
+		Log.i("getPlayerNumber:",String.valueOf(mPlayerModel.getPlayerNumber()));
 		return mPlayerModel.getPlayerNumber();
 	}
 

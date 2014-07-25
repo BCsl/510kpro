@@ -46,8 +46,8 @@ public class WaitForStartingState extends PlayerState {
 					.obtainMessage(Common.UPDATE_WAITING_PLAYER_NUM,
 							playerNumber).sendToTarget();
 		} else if (msg.startsWith(Common.GAME_OVER)) {
-			//String number = msg.substring(2);
-			mPlayerContext.getHandler().obtainMessage(Common.PLAYER_LEFT).sendToTarget();
+			int number = Integer.parseInt(msg.substring(2,3).trim());
+			mPlayerContext.getHandler().obtainMessage(Common.PLAYER_LEFT,number).sendToTarget();
 			mPlayerContext.resetPlayer();
 		}
 	}
