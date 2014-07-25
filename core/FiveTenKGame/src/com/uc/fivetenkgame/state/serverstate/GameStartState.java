@@ -30,15 +30,18 @@ public class GameStartState extends ServerState {
 
 	@Override
 	public void handle(String msg) {
+		/*
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
-				washCards();
-				dealCards();
-				sendCards();
-				setFirstPlayer();
-				mServerContext.setState(new WaitingState(mServerContext));
+				
 			}
 		}, 500);
+		*/
+		washCards();
+		dealCards();
+		sendCards();
+		setFirstPlayer();
+		mServerContext.setState(new WaitingState(mServerContext));
 	}
 
 	/**

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.Player;
+import com.uc.fivetenkgame.server.Server;
 import com.uc.fivetenkgame.view.GameView;
 
 public class GameViewActivity extends Activity {
@@ -195,6 +196,8 @@ public class GameViewActivity extends Activity {
 
 	@Override
 	protected void onStop() {
+		Player.getInstance().resetPlayer();
+		Server.getInstance().resetServer();
 		super.onStop();
 	}
 
