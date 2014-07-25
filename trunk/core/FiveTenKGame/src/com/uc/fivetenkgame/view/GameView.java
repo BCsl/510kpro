@@ -265,6 +265,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		synchronized (holder) {
 			try {
 				canvas = holder.lockCanvas();
+//				if(frameCount++<4)
+				drawBackground(canvas);
 				
 				if(!isMyTrun)
 					drawMeFirst(canvas, paint);
@@ -272,8 +274,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 					drawOtherFirst(canvas, paint);
 				
 				drawGameScore(canvas, paint);
-//				if(frameCount++<4)
-					drawBackground(canvas);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -372,10 +372,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	public static  void makeToast(String text){
-		if(context !=	null)
-			 Toast.makeText(context, text, Toast.LENGTH_LONG).show();
 	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

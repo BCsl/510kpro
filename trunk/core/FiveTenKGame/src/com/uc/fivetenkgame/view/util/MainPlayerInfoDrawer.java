@@ -14,9 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.util.Log;
-
-import com.uc.fivetenkgame.view.GameView;
+import android.widget.Toast;
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
@@ -29,10 +27,11 @@ import com.uc.fivetenkgame.view.entity.Card;
 public class MainPlayerInfoDrawer extends AbsDrawer {
 
 	private String TAG = "MainPlayerInfoDrawer";
+	private boolean isFirst=true;
 
-	public MainPlayerInfoDrawer(Context con, ScreenSizeHolder screenHolder,
+	public MainPlayerInfoDrawer(Context context, ScreenSizeHolder screenHolder,
 			CardSizeHolder cardSizeHolder) {
-		super(con, screenHolder, cardSizeHolder);
+		super(context, screenHolder, cardSizeHolder);
 	}
 
 	/**
@@ -106,8 +105,11 @@ public class MainPlayerInfoDrawer extends AbsDrawer {
 				/ (outList.size() * TEXT_SIZE_SMALL) > 1 ? TEXT_SIZE_SMALL
 				: (screenHolder.width - 10)
 						/ (outList.size() * TEXT_SIZE_SMALL) * TEXT_SIZE_SMALL;
-			if(space<(float)cardSizeHolder.width/3)	
-					GameView.makeToast("为了能有更好的体验，请用分辨率跟高的手机进行游戏！");
+			if(space<(float)cardSizeHolder.width/3 &&isFirst)	{
+				isFirst=false;
+				Toast.makeText(context,"为了能有更好的体验，请用分辨率跟高的手机进行游戏！",Toast.LENGTH_LONG).show();
+			}
+			
 		float baseX = (float) screenHolder.width / 2 - outList.size() / 2
 				* space;
 		Card card = null;
