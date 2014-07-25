@@ -141,13 +141,12 @@ public final class R {
         public static final int dialog_winning=0x7f030006;
     }
     public static final class raw {
-        public static final int barcodescanner=0x7f040000;
-        public static final int beep=0x7f040001;
-        public static final int button=0x7f040002;
-        public static final int fail=0x7f040003;
-        public static final int realm_properties=0x7f040004;
-        public static final int start=0x7f040005;
-        public static final int win=0x7f040006;
+        public static final int beep=0x7f040000;
+        public static final int button=0x7f040001;
+        public static final int fail=0x7f040002;
+        public static final int realm_properties=0x7f040003;
+        public static final int start=0x7f040004;
+        public static final int win=0x7f040005;
     }
     public static final class string {
         public static final int DIALOG_DEFAULT_MESSAGE=0x7f070020;

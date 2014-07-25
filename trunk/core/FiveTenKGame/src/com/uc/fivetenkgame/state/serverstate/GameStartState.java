@@ -21,8 +21,8 @@ import com.uc.fivetenkgame.view.entity.Card;
 public class GameStartState extends ServerState {
 
 	private Card[] mCards;
-	private final int TOTAL_CARD_NUM = 54 ;	
-	private final int CARD_PAIRS=2;
+	private final int TOTAL_CARD_NUM = 54;
+	private final int CARD_PAIRS = 2;
 
 	public GameStartState(ServerContext context) {
 		mServerContext = context;
@@ -32,12 +32,10 @@ public class GameStartState extends ServerState {
 	@Override
 	public void handle(String msg) {
 		/*
-		new Handler().postDelayed(new Runnable() {
-			public void run() {
-				
-			}
-		}, 500);
-		*/
+		 * new Handler().postDelayed(new Runnable() { public void run() {
+		 * 
+		 * } }, 500);
+		 */
 		washCards();
 		dealCards();
 		sendCards();
@@ -50,13 +48,13 @@ public class GameStartState extends ServerState {
 	 */
 	private void washCards() {
 		List<Card> cardlist = new ArrayList<Card>();
-	for(int j=0;j<CARD_PAIRS;j++)
-		for(int i = 0; i < TOTAL_CARD_NUM; ++i ){
-			//牌的ID，1～54
-			mCards[i+ j*TOTAL_CARD_NUM] = new Card((i+1)+"");
+		for (int j = 0; j < CARD_PAIRS; j++)
+			for (int i = 0; i < TOTAL_CARD_NUM; ++i) {
+				// 牌的ID，1～54
+				mCards[i + j * TOTAL_CARD_NUM] = new Card((i + 1) + "");
 
-			cardlist.add(mCards[i]);
-		}
+				cardlist.add(mCards[i]);
+			}
 
 		Collections.shuffle(cardlist);
 
@@ -76,9 +74,9 @@ public class GameStartState extends ServerState {
 		for (int i = 0; i < Common.TOTAL_PLAYER_NUM; ++i) {
 			playerCardList[i] = new ArrayList<Card>();
 		}
-		
-		//给各玩家添加洗好的牌
-		for(int i = 0; i < TOTAL_CARD_NUM * CARD_PAIRS; ++i){
+
+		// 给各玩家添加洗好的牌
+		for (int i = 0; i < TOTAL_CARD_NUM * CARD_PAIRS; ++i) {
 			playerCardList[i % 3].add(mCards[i]);
 		}
 
@@ -88,7 +86,7 @@ public class GameStartState extends ServerState {
 			PlayerModel player = new PlayerModel();
 			player.setCardList(playerCardList[i]);
 			player.setPlayerNumber(i + 1);
-			//排序
+			// 排序
 			Common.setOrder(player.getCardList());
 			players.add(player);
 		}
@@ -127,15 +125,16 @@ public class GameStartState extends ServerState {
 		Random random = new Random();
 		final int num = random.nextInt(Common.TOTAL_PLAYER_NUM) + 1;
 		mServerContext.setCurrentPlayerNumber(num);
-//		Log.i("first time to call Next Player", "wait a second");
-//		for (int i = 0; i < 1000000000; i++){}
-//		Log.i("first time to call Next Player", "end waiting");
+		// Log.i("first time to call Next Player", "wait a second");
+		// for (int i = 0; i < 1000000000; i++){}
+		// Log.i("first time to call Next Player", "end waiting");
 		Timer mTimer = new Timer();
 		mTimer.schedule(new TimerTask() {
-			
+
 			@Override
 			public void run() {
-				mServerContext.getNetworkManager().sendMessage(Common.YOUR_TURN + num);
+				mServerContext.getNetworkManager().sendMessage(
+						Common.YOUR_TURN + num);
 			}
 		}, 1000);
 	}
