@@ -56,6 +56,7 @@ public abstract class EventListener {
 			} else {
 				card.setClick(true);
 				handList.add(card);
+				 
 			}
 			return;
 		}

@@ -26,8 +26,8 @@ public class BasicRule implements Rule {
 	 *            是否是第一个出牌玩家
 	 */
 	public int checkCards(List<Card> cardList1, List<Card> cardList2) {
-		BasicRule.setOrder(cardList1);
-		BasicRule.setOrder(cardList2);
+		// BasicRule.setOrder(cardList1);
+		// BasicRule.setOrder(cardList2);
 
 		CardType cType = this.judgeType(cardList1);
 		CardType cType2 = this.judgeType(cardList2);
@@ -74,12 +74,20 @@ public class BasicRule implements Rule {
 		if (cType == CardType.c4) {
 			if (cType2 != CardType.c4) {
 				return 1;
+			} else {
+				if (cardList1.size() != cardList2.size()) {
+					return 0;
+				} else {
+					if (BasicRule.getValue(cardList1.get(0)) > BasicRule
+							.getValue(cardList2.get(0)))
+						return 1;
+				}
 			}
 		}
 
 		// 单牌,对子,3带,4炸弹
 		if (cType == CardType.c1 || cType == CardType.c2
-				|| cType == CardType.c3 || cType == CardType.c4) {
+				|| cType == CardType.c3) {
 			if (BasicRule.getValue(cardList1.get(0)) <= BasicRule
 					.getValue(cardList2.get(0))) {
 				return 0;
@@ -131,11 +139,16 @@ public class BasicRule implements Rule {
 
 	// 判断牌型
 	private CardType judgeType(List<Card> list) {
-		BasicRule.setOrder(list);
+		// BasicRule.setOrder(list);
 		// 因为之前排序过所以比较好判断
 		int len = list.size();
 		// 双王,化为对子返回
-		if (len == 2 && BasicRule.getColor(list.get(1)) == 5)
+		if (len == 2 && BasicRule.getColor(list.get(1)) == 5
+				&& BasicRule.getColor(list.get(0)) == 5)
+			return CardType.ckk;
+
+		if (len >= 4
+				&& BasicRule.judgeEveryCardsTheSame(list))
 			return CardType.c4;
 
 		// *******判断510k和纯510k**************//
@@ -185,7 +198,7 @@ public class BasicRule implements Rule {
 		// 当5张以上时，连字，3带2，飞机，2顺，4带2等等
 		if (len >= 5) {// 现在按相同数字最大出现次数
 			Card_index card_index = new Card_index();
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 8; i++)
 				card_index.numberList[i] = new Vector<Integer>();
 			// 求出各种数字出现频率
 			BasicRule.getMax(card_index, list); // a[0,1,2,3]分别表示重复1,2,3,4次的牌
@@ -193,12 +206,34 @@ public class BasicRule implements Rule {
 			if (card_index.numberList[2].size() == 1
 					&& card_index.numberList[1].size() == 1 && len == 5)
 				return CardType.c32;
+
 			// 4带2(单,双)
 			if (card_index.numberList[3].size() == 1 && len == 6)
 				return CardType.c411;
 			if (card_index.numberList[3].size() == 1
 					&& card_index.numberList[1].size() == 2 && len == 8)
 				return CardType.c422;
+			if (card_index.numberList[4].size() == 1 && len == 7)
+				return CardType.c411;
+			if (card_index.numberList[4].size() == 1
+					&& card_index.numberList[1].size() == 2 && len == 9)
+				return CardType.c422;
+			if (card_index.numberList[5].size() == 1 && len == 8)
+				return CardType.c411;
+			if (card_index.numberList[5].size() == 1
+					&& card_index.numberList[1].size() == 2 && len == 10)
+				return CardType.c422;
+			if (card_index.numberList[6].size() == 1 && len == 9)
+				return CardType.c411;
+			if (card_index.numberList[6].size() == 1
+					&& card_index.numberList[1].size() == 2 && len == 11)
+				return CardType.c422;
+			if (card_index.numberList[7].size() == 1 && len == 10)
+				return CardType.c411;
+			if (card_index.numberList[7].size() == 1
+					&& card_index.numberList[1].size() == 2 && len == 12)
+				return CardType.c422;
+
 			// 单连,保证不存在王
 			if ((BasicRule.getColor(list.get(0)) != 5)
 					&& (card_index.numberList[0].size() == len)
@@ -206,29 +241,33 @@ public class BasicRule implements Rule {
 							- BasicRule.getValue(list.get(len - 1)) == -(len - 1)) || (BasicRule
 							.getValue(list.get(0))
 							- BasicRule.getValue(list.get(len - 1)) == (len - 1)))
-					&& ( (BasicRule.getValue(list.get(len - 1)) != 15) || (BasicRule.getValue(list.get(0)) != 15)) )
+					&& ((BasicRule.getValue(list.get(len - 1)) != 15) || (BasicRule
+							.getValue(list.get(0)) != 15)))
 				return CardType.c123;
 			// 连队
 			if (card_index.numberList[1].size() == len / 2
 					&& len % 2 == 0
 					&& len / 2 >= 3
-					&& ( (BasicRule.getValue(list.get(0))
-							- BasicRule.getValue(list.get(len - 1)) == -(len / 2 - 1)) || (BasicRule.getValue(list.get(0))
-									- BasicRule.getValue(list.get(len - 1)) == (len / 2 - 1)) ))
+					&& ((BasicRule.getValue(list.get(0))
+							- BasicRule.getValue(list.get(len - 1)) == -(len / 2 - 1)) || (BasicRule
+							.getValue(list.get(0))
+							- BasicRule.getValue(list.get(len - 1)) == (len / 2 - 1))))
 				return CardType.c1122;
 			// 飞机
 			if (card_index.numberList[2].size() == len / 3
 					&& (len % 3 == 0)
-					&& ( (BasicRule.getValue(list.get(0))
-							- BasicRule.getValue(list.get(len - 1)) == -(len / 3 - 1)) || (BasicRule.getValue(list.get(0))
-									- BasicRule.getValue(list.get(len - 1)) == (len / 3 - 1)) ))
+					&& ((BasicRule.getValue(list.get(0))
+							- BasicRule.getValue(list.get(len - 1)) == -(len / 3 - 1)) || (BasicRule
+							.getValue(list.get(0))
+							- BasicRule.getValue(list.get(len - 1)) == (len / 3 - 1))))
 				return CardType.c111222;
 			// 飞机带n单,n/2对
 			if (card_index.numberList[2].size() >= 2
 					&& card_index.numberList[2].size() == len / 4
-					&& ( ((Integer) (card_index.numberList[2].get(len / 4 - 1))
-							- (Integer) (card_index.numberList[2].get(0)) == len / 4 - 1) || ((Integer) (card_index.numberList[2].get(len / 4 - 1))
-									- (Integer) (card_index.numberList[2].get(0)) == -(len / 4 - 1)) )
+					&& (((Integer) (card_index.numberList[2].get(len / 4 - 1))
+							- (Integer) (card_index.numberList[2].get(0)) == len / 4 - 1) || ((Integer) (card_index.numberList[2]
+							.get(len / 4 - 1))
+							- (Integer) (card_index.numberList[2].get(0)) == -(len / 4 - 1)))
 					&& len == card_index.numberList[2].size() * 4)
 				return CardType.c11122234;
 
@@ -236,9 +275,10 @@ public class BasicRule implements Rule {
 			if (card_index.numberList[2].size() >= 2
 					&& card_index.numberList[2].size() == len / 5
 					&& card_index.numberList[2].size() == len / 5
-					&& ( ((Integer) (card_index.numberList[2].get(len / 5 - 1))
-							- (Integer) (card_index.numberList[2].get(0)) == len / 5 - 1) ||((Integer) (card_index.numberList[2].get(len / 5 - 1))
-									- (Integer) (card_index.numberList[2].get(0)) == -(len / 5 - 1)))
+					&& (((Integer) (card_index.numberList[2].get(len / 5 - 1))
+							- (Integer) (card_index.numberList[2].get(0)) == len / 5 - 1) || ((Integer) (card_index.numberList[2]
+							.get(len / 5 - 1))
+							- (Integer) (card_index.numberList[2].get(0)) == -(len / 5 - 1)))
 					&& len == card_index.numberList[2].size() * 5)
 				return CardType.c1112223344;
 
@@ -271,7 +311,7 @@ public class BasicRule implements Rule {
 	// 返回值
 	private static int getValue(Card card) {
 		String cardName = BasicRule.cardResourceName(card.getCardId());
-		//Log.i("getValue", cardName);
+		// Log.i("getValue", cardName);
 		int i = Integer.parseInt(cardName.substring(3, cardName.length()));
 		// Log.i(cardName, String.valueOf(i));
 		return i;
@@ -307,6 +347,18 @@ public class BasicRule implements Rule {
 				break;
 			case 4:
 				card_index.numberList[3].add(i + 1);
+				break;
+			case 5:
+				card_index.numberList[4].add(i + 1);
+				break;
+			case 6:
+				card_index.numberList[5].add(i + 1);
+				break;
+			case 7:
+				card_index.numberList[6].add(i + 1);
+				break;
+			case 8:
+				card_index.numberList[7].add(i + 1);
 				break;
 			}
 		}
@@ -366,7 +418,16 @@ public class BasicRule implements Rule {
 	// 判断牌型用的
 	private class Card_index {
 		// numberList[i]代表i+1张相同的牌
-		List numberList[] = new Vector[4];
+		List numberList[] = new Vector[8];
+	}
+
+	private static boolean judgeEveryCardsTheSame(List<Card> list) {
+		for (int count = list.size(), i = 1; i < count; i++) {
+			if (BasicRule.getValue(list.get(i - 1)) != BasicRule.getValue(list
+					.get(i)))
+				return false;
+		}
+		return true;
 	}
 
 	private static String cardResourceName(String cardId) {
@@ -401,7 +462,8 @@ public class BasicRule implements Rule {
 			prefix.append(String.valueOf(cardNO + 13));
 		else
 			prefix.append(String.valueOf(cardNO));
-		//Log.i("card Resource Name length: ", String.valueOf(prefix.length()));
+		// Log.i("card Resource Name length: ",
+		// String.valueOf(prefix.length()));
 		return prefix.toString().trim();
 	}
 
