@@ -26,8 +26,8 @@ public class BasicRule implements Rule {
 	 *            是否是第一个出牌玩家
 	 */
 	public int checkCards(List<Card> cardList1, List<Card> cardList2) {
-		// BasicRule.setOrder(cardList1);
-		// BasicRule.setOrder(cardList2);
+		BasicRule.setOrder(cardList1);
+		BasicRule.setOrder(cardList2);
 
 		CardType cType = this.judgeType(cardList1);
 		CardType cType2 = this.judgeType(cardList2);
@@ -121,13 +121,17 @@ public class BasicRule implements Rule {
 
 	public int firstPlayCards(List<Card> cardList) {
 		Log.i("basic rule", "第一个打牌");
-		if (judgeType(cardList) != CardType.c0)
+		CardType mCardType = judgeType(cardList);
+		Log.i("第一个打牌", mCardType.toString());
+		if (mCardType != CardType.c0) {
 			return 1;
+		}
 		return 0;
 	}
 
 	// 判断牌型
 	private CardType judgeType(List<Card> list) {
+		BasicRule.setOrder(list);
 		// 因为之前排序过所以比较好判断
 		int len = list.size();
 		// 双王,化为对子返回
@@ -160,9 +164,12 @@ public class BasicRule implements Rule {
 							.get(len - 1))))
 				return CardType.c31;
 			if (len == 3
-					&& ((BasicRule.getValue(list.get(0)) == 5 && (BasicRule
+					&& (((BasicRule.getValue(list.get(0)) == 5 && (BasicRule
 							.getValue(list.get(1)) == 10 && (BasicRule
-							.getValue(list.get(2)) == 13))))) {
+							.getValue(list.get(2)) == 13)))) || (BasicRule
+							.getValue(list.get(2)) == 5 && (BasicRule
+							.getValue(list.get(1)) == 10 && (BasicRule
+							.getValue(list.get(0)) == 13))))) {
 				if ((BasicRule.getValue(list.get(0)) == BasicRule.getValue(list
 						.get(1)))
 						&& (BasicRule.getValue(list.get(2)) == BasicRule
@@ -195,28 +202,33 @@ public class BasicRule implements Rule {
 			// 单连,保证不存在王
 			if ((BasicRule.getColor(list.get(0)) != 5)
 					&& (card_index.numberList[0].size() == len)
-					&& (BasicRule.getValue(list.get(0))
-							- BasicRule.getValue(list.get(len - 1)) == -(len - 1))
-					&& (BasicRule.getValue(list.get(len - 1)) != 15))
+					&& ((BasicRule.getValue(list.get(0))
+							- BasicRule.getValue(list.get(len - 1)) == -(len - 1)) || (BasicRule
+							.getValue(list.get(0))
+							- BasicRule.getValue(list.get(len - 1)) == (len - 1)))
+					&& ( (BasicRule.getValue(list.get(len - 1)) != 15) || (BasicRule.getValue(list.get(0)) != 15)) )
 				return CardType.c123;
 			// 连队
 			if (card_index.numberList[1].size() == len / 2
 					&& len % 2 == 0
 					&& len / 2 >= 3
-					&& (BasicRule.getValue(list.get(0))
-							- BasicRule.getValue(list.get(len - 1)) == -(len / 2 - 1)))
+					&& ( (BasicRule.getValue(list.get(0))
+							- BasicRule.getValue(list.get(len - 1)) == -(len / 2 - 1)) || (BasicRule.getValue(list.get(0))
+									- BasicRule.getValue(list.get(len - 1)) == (len / 2 - 1)) ))
 				return CardType.c1122;
 			// 飞机
 			if (card_index.numberList[2].size() == len / 3
 					&& (len % 3 == 0)
-					&& (BasicRule.getValue(list.get(0))
-							- BasicRule.getValue(list.get(len - 1)) == -(len / 3 - 1)))
+					&& ( (BasicRule.getValue(list.get(0))
+							- BasicRule.getValue(list.get(len - 1)) == -(len / 3 - 1)) || (BasicRule.getValue(list.get(0))
+									- BasicRule.getValue(list.get(len - 1)) == (len / 3 - 1)) ))
 				return CardType.c111222;
 			// 飞机带n单,n/2对
 			if (card_index.numberList[2].size() >= 2
 					&& card_index.numberList[2].size() == len / 4
-					&& ((Integer) (card_index.numberList[2].get(len / 4 - 1))
-							- (Integer) (card_index.numberList[2].get(0)) == len / 4 - 1)
+					&& ( ((Integer) (card_index.numberList[2].get(len / 4 - 1))
+							- (Integer) (card_index.numberList[2].get(0)) == len / 4 - 1) || ((Integer) (card_index.numberList[2].get(len / 4 - 1))
+									- (Integer) (card_index.numberList[2].get(0)) == -(len / 4 - 1)) )
 					&& len == card_index.numberList[2].size() * 4)
 				return CardType.c11122234;
 
@@ -224,8 +236,9 @@ public class BasicRule implements Rule {
 			if (card_index.numberList[2].size() >= 2
 					&& card_index.numberList[2].size() == len / 5
 					&& card_index.numberList[2].size() == len / 5
-					&& ((Integer) (card_index.numberList[2].get(len / 5 - 1))
-							- (Integer) (card_index.numberList[2].get(0)) == len / 5 - 1)
+					&& ( ((Integer) (card_index.numberList[2].get(len / 5 - 1))
+							- (Integer) (card_index.numberList[2].get(0)) == len / 5 - 1) ||((Integer) (card_index.numberList[2].get(len / 5 - 1))
+									- (Integer) (card_index.numberList[2].get(0)) == -(len / 5 - 1)))
 					&& len == card_index.numberList[2].size() * 5)
 				return CardType.c1112223344;
 
@@ -258,8 +271,9 @@ public class BasicRule implements Rule {
 	// 返回值
 	private static int getValue(Card card) {
 		String cardName = BasicRule.cardResourceName(card.getCardId());
+		//Log.i("getValue", cardName);
 		int i = Integer.parseInt(cardName.substring(3, cardName.length()));
-		Log.i(cardName, String.valueOf(i));
+		// Log.i(cardName, String.valueOf(i));
 		return i;
 	}
 
@@ -387,6 +401,7 @@ public class BasicRule implements Rule {
 			prefix.append(String.valueOf(cardNO + 13));
 		else
 			prefix.append(String.valueOf(cardNO));
+		//Log.i("card Resource Name length: ", String.valueOf(prefix.length()));
 		return prefix.toString().trim();
 	}
 

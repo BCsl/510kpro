@@ -42,7 +42,6 @@ public class WaitingGameActivity extends Activity {
 	private TextView mIpAddress;
 	private TextView mReadyPlayer;
 	private boolean isServer;
-	private int currentPlayerNumber;
 	private boolean isConnect = false;
 
 	@Override
@@ -94,7 +93,7 @@ public class WaitingGameActivity extends Activity {
 		}
 		new Handler().postDelayed(new Runnable() {
 			public void run() {
-				Log.i(TAG,"延迟检查连接情况");
+				Log.i(TAG, "延迟检查连接情况");
 				if (!isConnect) {
 					finish();
 					Toast.makeText(WaitingGameActivity.this, "连接异常",
@@ -113,8 +112,6 @@ public class WaitingGameActivity extends Activity {
 			case Common.UPDATE_WAITING_PLAYER_NUM:
 				isConnect = true;
 				Integer num = (Integer) (msg.obj);
-				currentPlayerNumber = num;
-				Log.i("currentPlayerNumber:",String.valueOf(currentPlayerNumber));
 				mReadyPlayer.setText(getResources().getString(
 						R.string.ready_player_str)
 						+ num + "人");
@@ -160,12 +157,9 @@ public class WaitingGameActivity extends Activity {
 				break;
 			case Common.PLAYER_LEFT:
 				Integer number = (Integer) (msg.obj);
-				currentPlayerNumber = mPlayer.getPlayerNumber();
 				Log.i("PLAYER_LEFT:", String.valueOf(number));
-				Log.i("current Player Number:", String.valueOf(number));
-				if (number != currentPlayerNumber)
-					Toast.makeText(WaitingGameActivity.this, "连接异常",
-							Toast.LENGTH_SHORT).show();
+				Toast.makeText(WaitingGameActivity.this, "连接异常",
+						Toast.LENGTH_SHORT).show();
 				finish();
 				break;
 			}

@@ -30,6 +30,7 @@ public class ConnectState extends PlayerState {
 			
 			int playerNumber = Integer.parseInt(msg.substring(2,3).trim());
 			mPlayerContext.setPlayerNumber(playerNumber);//…Ë÷√ÕÊº“–Ú∫≈
+			Log.i("set Player Number", String.valueOf(playerNumber));
 			mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
 			mPlayerContext.handle(null);
 

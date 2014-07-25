@@ -173,13 +173,13 @@ public class Player implements PlayerContext {
 	}
 
 	public void setInitPlayerCards(String cards) {
+		Log.i("≥ı º ÷≈∆:", cards);
 		String[] tCard = cards.split(",");
 		ArrayList<Card> cardList = new ArrayList<Card>();
 		for (int i = 0, count = tCard.length; i < count; i++) {
 			cardList.add(new Card(tCard[i]));
 		}
 		mPlayerModel.setCardList(cardList);
-
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class Player implements PlayerContext {
 
 	@Override
 	public int getPlayerNumber() {
-		Log.i("getPlayerNumber:",String.valueOf(mPlayerModel.getPlayerNumber()));
+		//Log.i("getPlayerNumber:",String.valueOf(mPlayerModel.getPlayerNumber()));
 		return mPlayerModel.getPlayerNumber();
 	}
 
@@ -303,6 +303,7 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void setMyTurn(boolean flag) {
+		Log.i("setMyTurn", String.valueOf(flag));
 		while (viewController == null) {
 		}
 		viewController.setMyTurn(flag);
