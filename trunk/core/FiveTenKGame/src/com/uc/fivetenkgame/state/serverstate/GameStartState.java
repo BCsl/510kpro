@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-import android.os.Handler;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.PlayerModel;
@@ -125,8 +125,18 @@ public class GameStartState extends ServerState {
 	 */
 	private void setFirstPlayer() {
 		Random random = new Random();
-		int num = random.nextInt(Common.TOTAL_PLAYER_NUM) + 1;
+		final int num = random.nextInt(Common.TOTAL_PLAYER_NUM) + 1;
 		mServerContext.setCurrentPlayerNumber(num);
-		mServerContext.getNetworkManager().sendMessage(Common.YOUR_TURN + num);
+//		Log.i("first time to call Next Player", "wait a second");
+//		for (int i = 0; i < 1000000000; i++){}
+//		Log.i("first time to call Next Player", "end waiting");
+		Timer mTimer = new Timer();
+		mTimer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				mServerContext.getNetworkManager().sendMessage(Common.YOUR_TURN + num);
+			}
+		}, 1000);
 	}
 }
