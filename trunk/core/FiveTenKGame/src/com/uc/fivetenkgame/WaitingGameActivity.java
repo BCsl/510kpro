@@ -73,7 +73,6 @@ public class WaitingGameActivity extends Activity {
 					(int) QR_WIDTH, (int) QR_HEIGHT));
 			bd.setBounds(0, 0, bd.getMinimumWidth(), bd.getMinimumHeight());
 			if (bd != null) {
-				Log.i(TAG, "bitmap ²»Îª¿Õ");
 				mIpAddress.setCompoundDrawables(null, null, null, bd);
 			}
 		}

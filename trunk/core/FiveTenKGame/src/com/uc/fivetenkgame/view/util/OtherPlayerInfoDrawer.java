@@ -46,6 +46,8 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 		super.drawCardsNumber(cardsNumber, paint, x, y);
 		if (cardsNumber == 0)
 			return;
+
+		cardsNumber = cardsNumber > 15 ? 15 : cardsNumber;// 最多只画15张背面的牌
 		float factor = (float) (screenHolder.height / 2 - cardSizeHolder.height - cardSizeHolder.width)
 				/ (float) (cardsNumber / 2 * cardSizeHolder.height * 1 / 3);
 		float baseSpace = (float) factor > 1 ? cardSizeHolder.height * 1 / 3
@@ -72,15 +74,13 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 	public void drawOutList(List<Card> outList, float baseX) {
 		if (outList == null || outList.size() == 0)
 			return;
-		float baseY = (float) (screenHolder.height - cardSizeHolder.height - 3 * cardSizeHolder.width)
-				/ 2
-				- outList.size()
-				/ 2
-				* cardSizeHolder.height
-				/ 3
-				+ 2
-				* cardSizeHolder.width;
-		float baseSpace = (float) cardSizeHolder.height / 4;
+		float factor = (float) screenHolder.height
+				/ (float) cardSizeHolder.height / 4 > 1 ? 1
+				: (float) screenHolder.height / (float) cardSizeHolder.height
+						/ 4;
+		float baseSpace = (float) cardSizeHolder.height / 4 * factor;
+		float baseY = (float) screenHolder.height / 2 - outList.size() / 2
+				* baseSpace;
 		Bitmap temp = null;
 		Card card = null;
 		for (int i = 0; i < outList.size(); i++) {
@@ -95,6 +95,7 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 	}
 
 	public void drawHandCardFlag(float left, float top) {
-		canvas.drawBitmap(CardGenerator.getBitmap(context, "chupai"), left, top, null);
+		canvas.drawBitmap(CardGenerator.getBitmap(context, "chupai"), left,
+				top, null);
 	}
 }

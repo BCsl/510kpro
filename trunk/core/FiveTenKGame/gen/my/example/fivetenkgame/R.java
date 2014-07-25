@@ -149,6 +149,11 @@ public final class R {
         public static final int win=0x7f040005;
     }
     public static final class string {
+        public static final int DIALOG_DEFAULT_MESSAGE=0x7f070020;
+        public static final int DIALOG_DEFAULT_NO=0x7f070022;
+        public static final int DIALOG_DEFAULT_TITLE=0x7f07001f;
+        public static final int DIALOG_DEFAULT_YES=0x7f070021;
+        public static final int MEDIA_UNMOUNTED=0x7f070023;
         public static final int app_name=0x7f070000;
         public static final int background_music_str=0x7f070012;
         public static final int close_str=0x7f070016;
