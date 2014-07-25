@@ -23,7 +23,7 @@
             android:textSize="25sp" />
 
         <TextView
-            android:id="@+id/wifi_text_id"
+            android:id="@+id/wifi_text_id" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
