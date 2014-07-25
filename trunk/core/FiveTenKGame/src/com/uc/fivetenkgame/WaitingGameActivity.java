@@ -1,5 +1,7 @@
 package com.uc.fivetenkgame;
 
+import java.util.Timer;
+
 import my.example.fivetenkgame.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.qrcode.util.QRcodeGenerator;
@@ -39,6 +42,8 @@ public class WaitingGameActivity extends Activity {
 	private TextView mIpAddress;
 	private TextView mReadyPlayer;
 	private boolean isServer;
+	private int currentPlayerNumber;
+	private boolean isConnect = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,16 @@ public class WaitingGameActivity extends Activity {
 			String ipAddr = intent.getStringExtra("IP");
 			mPlayer.startPlay(ipAddr);
 		}
+		new Handler().postDelayed(new Runnable() {
+			public void run() {
+				Log.i(TAG,"延迟检查连接情况");
+				if (!isConnect) {
+					finish();
+					Toast.makeText(WaitingGameActivity.this, "连接异常",
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		}, 2000);
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -96,7 +111,10 @@ public class WaitingGameActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case Common.UPDATE_WAITING_PLAYER_NUM:
+				isConnect = true;
 				Integer num = (Integer) (msg.obj);
+				currentPlayerNumber = num;
+				Log.i("currentPlayerNumber:",String.valueOf(currentPlayerNumber));
 				mReadyPlayer.setText(getResources().getString(
 						R.string.ready_player_str)
 						+ num + "人");
@@ -113,35 +131,39 @@ public class WaitingGameActivity extends Activity {
 				finish();
 				break;
 			case Common.HOST_FULL:
-				new  AlertDialog.Builder(WaitingGameActivity.this)
-				.setTitle("人数已满")
-				.setMessage("点击确定返回上一页")
-				.setPositiveButton("确定",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								finish();
-							}
-						}).show();
+				new AlertDialog.Builder(WaitingGameActivity.this)
+						.setTitle("人数已满")
+						.setMessage("点击确定返回上一页")
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										finish();
+									}
+								}).show();
 				break;
 			case Common.TIME_OUT:
-				if(isServer)
+				if (isServer)
 					break;
-				new  AlertDialog.Builder(WaitingGameActivity.this)
-				.setTitle(R.string.time_out_str)
-				.setMessage("点击确定返回")
-				.setPositiveButton("确定",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								finish();
-							}
-						}).show();
+				new AlertDialog.Builder(WaitingGameActivity.this)
+						.setTitle(R.string.time_out_str)
+						.setMessage("点击确定返回")
+						.setPositiveButton("确定",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										finish();
+									}
+								}).show();
 				break;
 			case Common.PLAYER_LEFT:
-				Toast.makeText(WaitingGameActivity.this,"连接异常",Toast.LENGTH_SHORT).show();
+				Integer number = (Integer) (msg.obj);
+				Log.i("PLAYER_LEFT:", String.valueOf(number));
+				if (number != currentPlayerNumber)
+					Toast.makeText(WaitingGameActivity.this, "连接异常",
+							Toast.LENGTH_SHORT).show();
 				finish();
 				break;
 			}
@@ -153,7 +175,8 @@ public class WaitingGameActivity extends Activity {
 
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			Log.e(TAG, "这里需要关闭网络！");
-			mPlayer.sendMsg(Common.GIVE_UP);
+			mPlayer.sendMsg(Common.GIVE_UP + mPlayer.getPlayerNumber());
+			currentPlayerNumber = mPlayer.getPlayerNumber();
 		}
 		return super.onKeyDown(keyCode, event);
 	};

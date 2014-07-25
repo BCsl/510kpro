@@ -3,6 +3,7 @@ package com.uc.fivetenkgame.state.serverstate;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.uc.fivetenkgame.network.util.Common;
@@ -56,7 +57,7 @@ public class WaitingState extends ServerState {
 				|| msg.startsWith(Common.GAME_EXIT)) {
 			Log.i(TAG, "*** " + msg);
 			mServerContext.getNetworkManager().sendMessage(msg);
-			if(msg.startsWith(Common.GAME_EXIT)){
+			if (msg.startsWith(Common.GAME_EXIT)) {
 				mServerContext.resetServer();
 				mServerContext.setState(new InitState(mServerContext));
 			}
