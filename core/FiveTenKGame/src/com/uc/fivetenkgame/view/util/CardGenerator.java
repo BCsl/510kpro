@@ -56,7 +56,7 @@ public class CardGenerator {
 	public static Bitmap getBitmap(Context con, String resourceName) {
 		String TAG = "getBitmap";
 		if (CARDS_BITMAP.get(resourceName) == null) {
-			Log.i(TAG, resourceName +"不存在！");
+//			Log.i(TAG, resourceName +"不存在！");
 			CARDS_BITMAP.put(resourceName, BitmapFactory.decodeResource(
 					con.getResources(),
 					con.getResources().getIdentifier(resourceName, "drawable",
