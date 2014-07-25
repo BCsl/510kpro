@@ -37,7 +37,7 @@
     <string name="open_str">开</string>
     <string name="close_str">关</string>
     <string name="scan_text">对准房主二维码, 即可自动扫描</string>
-    <string name="qrcode_settting_str">二维码扫描</string>
+    <string name="qrcode_settting_str">二维码扫描</string> 
     <string name="time_out_str"></string>
     <string name="game_over">游戏结束</string>
 	<string name="winner">玩家#胜利</string>
