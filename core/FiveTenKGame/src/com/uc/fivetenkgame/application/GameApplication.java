@@ -18,7 +18,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 /**
  * @author chensl@ucweb.com
- *
+ *保存全局的SoundPool，用来播放音效
  * 下午2:40:38 2014-7-24
  */
 public class GameApplication extends Application {

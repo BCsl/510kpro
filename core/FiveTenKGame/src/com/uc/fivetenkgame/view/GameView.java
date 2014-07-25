@@ -41,7 +41,7 @@ import com.uc.fivetenkgame.view.util.OtherPlayerInfoDrawer;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		Runnable {
 	private String TAG = "GameView";
-	public Context context;
+	public  static Context context;
 	public ScreenSizeHolder screenHolder;
 	public CardSizeHolder cardSizeHolder;
 	private SurfaceHolder holder;
@@ -65,6 +65,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			RIGHT_OUTCARDS_BASEX;
 	private Bitmap bg;
 	private int currentPlayerId;
+	private int frameCount=0;
 
 	public GameView(Context context, int playerId) {
 		super(context);
@@ -210,7 +211,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		PLAYER_TEXT_LENGTH = paint.measureText("Íæ¼Ò11");
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		SCORE_TEXT_LENGTH = paint.measureText("·ÖÊý:000");
-		MAIN_CARDS__BASEY = (float) screenHolder.height - cardSizeHolder.width
+		MAIN_CARDS__BASEY = (float) screenHolder.height - (float)cardSizeHolder.width
 				* 2 / 3 - cardSizeHolder.height;
 		MAIN_OUT_CARDS_BASEY = (float) screenHolder.height
 				- cardSizeHolder.height - cardSizeHolder.width * 3;
@@ -264,11 +265,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		synchronized (holder) {
 			try {
 				canvas = holder.lockCanvas();
-				drawBackground(canvas);
-				drawLeftPlayer(canvas, paint);
-				drawRightPlayer(canvas, paint);
-				drawMainPlayer(canvas, paint);
+				
+				if(!isMyTrun)
+					drawMeFirst(canvas, paint);
+				else
+					drawOtherFirst(canvas, paint);
+				
 				drawGameScore(canvas, paint);
+//				if(frameCount++<4)
+					drawBackground(canvas);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -277,6 +282,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			}
 		}
 
+	}
+
+	private void drawMeFirst(Canvas canvas, Paint paint) {
+		drawMainPlayer(canvas, paint);
+		drawLeftPlayer(canvas, paint);
+		drawRightPlayer(canvas, paint);
+	}
+
+	private void drawOtherFirst(Canvas canvas, Paint paint) {
+		drawLeftPlayer(canvas, paint);
+		drawRightPlayer(canvas, paint);
+		drawMainPlayer(canvas, paint);
 	}
 
 	private void drawGameScore(Canvas canvas, Paint paint) {
@@ -320,7 +337,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		if (isMyTrun)
 			mainPlayerDrawer.drawButton(paint, BUTTON_BASE_HEIGHT);
 		mainPlayerDrawer.drawPlayer(playerId, paint, 10.0f,
-				(float) screenHolder.height - 10);
+				(float) screenHolder.height-5 );
 		mainPlayerDrawer.drawCardsNumber(cardNumber.get(playerId - 1), paint,
 				PLAYER_TEXT_LENGTH + TEXT_SIZE_SMALL, screenHolder.height - 10);
 		mainPlayerDrawer.drawScore(scroeList.get(playerId - 1), paint,
@@ -342,6 +359,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	public void run() {
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setStyle(Style.FILL);
+		paint.setAntiAlias(true);
 		while (start) {
 			doDraw(paint);
 			Sleep(33);
@@ -355,7 +373,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			e.printStackTrace();
 		}
 	}
-
+	public static  void makeToast(String text){
+		if(context !=	null)
+			 Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+	}
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if(!isMyTrun)

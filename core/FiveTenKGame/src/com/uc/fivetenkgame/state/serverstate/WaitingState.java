@@ -109,6 +109,12 @@ public class WaitingState extends ServerState {
 		res.append(Common.ROUND_END);
 		for (PlayerModel temp : mServerContext.getPlayerModel())
 			res.append(temp.getScore() + ",");
+		try {
+			Thread.sleep(500);	
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mServerContext.getNetworkManager().sendMessage(
 				res.deleteCharAt(res.length() - 1).toString());
 

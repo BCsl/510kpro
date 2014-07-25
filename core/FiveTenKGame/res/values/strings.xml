@@ -16,7 +16,7 @@
     <string name="start_game_str">开始游戏</string>
     <string name="my_ip_addr_str">我的ip地址：</string>
     <string name="ip_input_error_str">请输入正确ip</string>
-    <string name="ip_scan_error_str">ip扫描失败，请重试</string>
+    <string name="ip_scan_error_str">扫描结果#非ip地址，请重试。</string>
     <string name="exit_game_str">再按一次退出游戏</string>
     <string name="help_rule_str">单张：任意一张单牌。
 	    						\n顺子：任意五张或者五张以上点数相连的牌，2不能出现在顺子中。
@@ -36,7 +36,7 @@
     <string name="wifi_setting_str">wifi开关</string>
     <string name="open_str">开</string>
     <string name="close_str">关</string>
-    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="scan_text">对准房主二维码, 即可自动扫描</string>
     <string name="qrcode_settting_str">二维码扫描</string>
     <string name="time_out_str"></string>
     <string name="game_over">游戏结束</string>
@@ -44,4 +44,10 @@
 	<string name="player1_score">玩家1分数：#</string>
 	<string name="player2_score">玩家2分数：#</string>
 	<string name="player3_score">玩家3分数：#</string>
+	
+	<string  name ="DIALOG_DEFAULT_TITLE">安装条码扫描器</string>
+	<string  name ="DIALOG_DEFAULT_MESSAGE">你的手机没有安装条码扫描器，现在安装?</string>
+	<string  name ="DIALOG_DEFAULT_YES">确定</string>
+	<string  name ="DIALOG_DEFAULT_NO">取消</string>
+	<string name="MEDIA_UNMOUNTED">请插入外存储设备</string>
 </resources>

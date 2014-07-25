@@ -284,9 +284,9 @@ public class Player implements PlayerContext {
 		viewController.setCards(mPlayerModel.getCardList());
 		// สฃำเลฦสý
 		List<Integer> leftCardsNum = new ArrayList<Integer>();
-		leftCardsNum.add(new Integer(18));
-		leftCardsNum.add(new Integer(18));
-		leftCardsNum.add(new Integer(18));
+		leftCardsNum.add(new Integer(36));
+		leftCardsNum.add(new Integer(36));
+		leftCardsNum.add(new Integer(36));
 		viewController.setCardNumber(leftCardsNum);
 	}
 
