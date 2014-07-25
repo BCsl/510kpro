@@ -165,8 +165,6 @@ public class BasicRule implements Rule {
 					return CardType.c2;
 				case 3:
 					return CardType.c3;
-				case 4:
-					return CardType.c4;
 				}
 			}
 			// 当第一个和最后个不同时,3带1
@@ -311,7 +309,7 @@ public class BasicRule implements Rule {
 	// 返回值
 	private static int getValue(Card card) {
 		String cardName = BasicRule.cardResourceName(card.getCardId());
-		// Log.i("getValue", cardName);
+		Log.i("getValue", cardName);
 		int i = Integer.parseInt(cardName.substring(3, cardName.length()));
 		// Log.i(cardName, String.valueOf(i));
 		return i;
@@ -440,7 +438,7 @@ public class BasicRule implements Rule {
 		if (cardNO == 54)
 			return "a5_17";
 
-		switch (cardNO / 13) {
+		switch ((cardNO-1) / 13) {
 		case 0:
 			prefix.append("a2_");
 			break;

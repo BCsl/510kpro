@@ -30,11 +30,11 @@ public class GameSettingActivity extends Activity implements
 		musicClose = (RadioButton) findViewById(R.id.close_radio_id);
 		scanOpen = (RadioButton) findViewById(R.id.open_qrcode_id);
 		scanClose = (RadioButton) findViewById(R.id.close_qrcode_id);
-		//wifiOpen = (RadioButton) findViewById(R.id.open_wifi_id);
-		//wifiClose = (RadioButton) findViewById(R.id.close_wifi_id);
+		wifiOpen = (RadioButton) findViewById(R.id.open_wifi_id);
+		wifiClose = (RadioButton) findViewById(R.id.close_wifi_id);
 		qrcodeRadioGroup = (RadioGroup) findViewById(R.id.qrcode_radiogroup_id);
 		musicRadioGroup = (RadioGroup) findViewById(R.id.music_radiogroup_id);
-		//wifiRadioGroup = (RadioGroup) findViewById(R.id.wifi_radiogroup_id);
+		wifiRadioGroup = (RadioGroup) findViewById(R.id.wifi_radiogroup_id);
 		
 		qrcodeRadioGroup.setOnCheckedChangeListener(this);
 		musicRadioGroup.setOnCheckedChangeListener(this);
@@ -92,16 +92,16 @@ public class GameSettingActivity extends Activity implements
 			}
 			sp.edit().putBoolean(Common.SP_QRCODE_FLAG, flag).commit();
 			
-//		}else if(group == wifiRadioGroup){
-//			switch(checkedId){
-//			case R.id.open_wifi_id:
-//				wifiManager.setWifiEnabled(true);
-//				break;
-//			case R.id.close_wifi_id:
-//				wifiManager.setWifiEnabled(false);
-//				break;
-//			default :new IllegalArgumentException("checkedId not find!");
-//			}
+		}else if(group == wifiRadioGroup){
+			switch(checkedId){
+			case R.id.open_wifi_id:
+				wifiManager.setWifiEnabled(true);
+				break;
+			case R.id.close_wifi_id:
+				wifiManager.setWifiEnabled(false);
+				break;
+			default :new IllegalArgumentException("checkedId not find!");
+			}
 		}
 	}
 
