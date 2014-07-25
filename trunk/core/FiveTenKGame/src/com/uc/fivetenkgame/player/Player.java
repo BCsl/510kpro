@@ -353,6 +353,7 @@ public class Player implements PlayerContext {
 	public void resetPlayer() {
 		mPlayerModel = new PlayerModel();
 		mNetworkManager.reset();
+		Log.i("Player", "reset player");
 	}
 
 }

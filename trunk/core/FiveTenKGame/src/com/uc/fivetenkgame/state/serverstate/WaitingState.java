@@ -55,8 +55,9 @@ public class WaitingState extends ServerState {
 				|| msg.startsWith(Common.GAME_RESUME)
 				|| msg.startsWith(Common.GAME_EXIT)) {
 			Log.i(TAG, "*** " + msg);
-			mServerContext.getNetworkManager().sendMessage(msg);
-			if(msg.startsWith(Common.GAME_EXIT)){
+			String number = msg.substring(Common.GAME_EXIT.length()).trim();
+			mServerContext.getNetworkManager().sendMessage(msg + number);
+			if (msg.startsWith(Common.GAME_EXIT)) {
 				mServerContext.resetServer();
 				mServerContext.setState(new InitState(mServerContext));
 			}
@@ -110,7 +111,7 @@ public class WaitingState extends ServerState {
 		for (PlayerModel temp : mServerContext.getPlayerModel())
 			res.append(temp.getScore() + ",");
 		try {
-			Thread.sleep(500);	
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

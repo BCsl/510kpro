@@ -33,7 +33,7 @@ public class ListeningState extends ServerState {
 				mServerContext.handleMessage(null);
 			}
 		} else if (msg.startsWith(Common.GIVE_UP)) {
-			Log.i("send give up in listeningState", msg);
+			Log.i("send game over in listeningState", msg);
 			mServerContext.getNetworkManager().sendMessage(Common.GAME_OVER + msg.substring(2,3).trim());
 			mServerContext.resetServer();
 		}
