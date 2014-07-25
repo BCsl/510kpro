@@ -1,5 +1,8 @@
 package com.uc.fivetenkgame;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import my.example.fivetenkgame.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -32,6 +35,7 @@ public class GameViewActivity extends Activity {
 	private AlertDialog winningDialog;// 其他玩家暂停时本玩家出现的dialog
 	private boolean ifPause;
 	private View winningView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -97,8 +101,16 @@ public class GameViewActivity extends Activity {
 						Log.i("pauseDialog", "cancel");
 					}
 				} else if (objMsg.startsWith(Common.GAME_EXIT)) {
-					Toast.makeText(getApplicationContext(), "其他玩家退出游戏", Toast.LENGTH_LONG).show();
-					GameViewActivity.this.finish();
+					Timer mTimer = new Timer();
+					mTimer.schedule(new TimerTask() {
+
+						@Override
+						public void run() {
+							GameViewActivity.this.finish();
+						}
+					}, 1000);
+					Toast.makeText(getApplicationContext(), "其他玩家退出游戏",
+							Toast.LENGTH_LONG).show();
 				}
 				break;
 			}
@@ -119,7 +131,10 @@ public class GameViewActivity extends Activity {
 				.setNegativeButton("退出", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Player.getInstance().sendMsg(Common.GAME_EXIT);
+						Player.getInstance().sendMsg(
+								Common.GAME_EXIT
+										+ Player.getInstance()
+												.getPlayerNumber());
 						GameViewActivity.this.finish();// 退出游戏
 					}
 				}).create();
@@ -149,23 +164,30 @@ public class GameViewActivity extends Activity {
 	}
 
 	protected void showWinningDialog(String[] res) {
-		if(winningView==null)
-			winningView=LayoutInflater.from(this).inflate(R.layout.dialog_winning, null);
-		((TextView)winningView.findViewById(R.id.text_winning_player)).setText(getResources().getString(R.string.winner).replace("#", res[0]));
-		((TextView)winningView.findViewById(R.id.text_score_player1)).setText(getResources().getString(R.string.player1_score).replace("#", res[1]));
-		((TextView)winningView.findViewById(R.id.text_score_player2)).setText(getResources().getString(R.string.player2_score).replace("#", res[2]));
-		((TextView)winningView.findViewById(R.id.text_score_player3)).setText(getResources().getString(R.string.player3_score).replace("#", res[3]));
-			winningDialog=new AlertDialog.Builder(this).
-					setTitle(getResources().getString(R.string.game_over))
-					.setView(winningView)
-					.setPositiveButton("退出",
-							new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog,
-								int which) {
-							finish();
-						}
-					}).setCancelable(false).show();
+		if (winningView == null)
+			winningView = LayoutInflater.from(this).inflate(
+					R.layout.dialog_winning, null);
+		((TextView) winningView.findViewById(R.id.text_winning_player))
+				.setText(getResources().getString(R.string.winner).replace("#",
+						res[0]));
+		((TextView) winningView.findViewById(R.id.text_score_player1))
+				.setText(getResources().getString(R.string.player1_score)
+						.replace("#", res[1]));
+		((TextView) winningView.findViewById(R.id.text_score_player2))
+				.setText(getResources().getString(R.string.player2_score)
+						.replace("#", res[2]));
+		((TextView) winningView.findViewById(R.id.text_score_player3))
+				.setText(getResources().getString(R.string.player3_score)
+						.replace("#", res[3]));
+		winningDialog = new AlertDialog.Builder(this)
+				.setTitle(getResources().getString(R.string.game_over))
+				.setView(winningView)
+				.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				}).setCancelable(false).show();
 	}
 
 	@Override
@@ -191,16 +213,15 @@ public class GameViewActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 		Log.i(TAG, "onPause");
-		
-		 Player.getInstance().sendMsg(Common.GAME_PAUSE);//通知其他玩家暂停游戏
-		 ifPause = true;
+
+		Player.getInstance().sendMsg(Common.GAME_PAUSE);// 通知其他玩家暂停游戏
+		ifPause = true;
 	};
 
 	@Override
-	protected void onStop() {
+	protected void onDestroy() {
 		Player.getInstance().resetPlayer();
-		Server.getInstance().resetServer();
-		super.onStop();
+		super.onDestroy();
 	}
 
 	@Override

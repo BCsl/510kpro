@@ -130,6 +130,7 @@ public class Server implements ServerContext{
 		mRoundScore=0;
 		mState = new InitState(this);
 		mNetworkManager.reset();
+		Log.i("Server", "reset server");
 	}
 	
 }
