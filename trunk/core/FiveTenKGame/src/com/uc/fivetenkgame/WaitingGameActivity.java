@@ -160,7 +160,9 @@ public class WaitingGameActivity extends Activity {
 				break;
 			case Common.PLAYER_LEFT:
 				Integer number = (Integer) (msg.obj);
+				currentPlayerNumber = mPlayer.getPlayerNumber();
 				Log.i("PLAYER_LEFT:", String.valueOf(number));
+				Log.i("current Player Number:", String.valueOf(number));
 				if (number != currentPlayerNumber)
 					Toast.makeText(WaitingGameActivity.this, "连接异常",
 							Toast.LENGTH_SHORT).show();
@@ -176,7 +178,6 @@ public class WaitingGameActivity extends Activity {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			Log.e(TAG, "这里需要关闭网络！");
 			mPlayer.sendMsg(Common.GIVE_UP + mPlayer.getPlayerNumber());
-			currentPlayerNumber = mPlayer.getPlayerNumber();
 		}
 		return super.onKeyDown(keyCode, event);
 	};
