@@ -363,6 +363,8 @@ public class Player implements PlayerContext {
 			Log.i("out time action: ", String.valueOf(cardNumber));
 			mHandList.add(mPlayerModel.getCardList().get(cardNumber));
 			mPlayerModel.getCardList().removeAll(mHandList);
+			viewController.setPlayersOutList(-1,
+					 new ArrayList<Card>(mHandList));
 			Log.i("选牌超时(第一个打牌)",
 					"当前手牌数: "
 							+ String.valueOf(mPlayerModel.getRemainCardsNum()));

@@ -76,7 +76,7 @@ public abstract class EventListener {
 				 new ArrayList<Card>(handList));
 				((GameApplication) view.context.getApplicationContext())
 				.playSound(Common.SOUND_OUTPUT_CARDS);
-				cardList.removeAll(handList);
+//				cardList.removeAll(handList);
 				handList.clear();
 			}
 			return;

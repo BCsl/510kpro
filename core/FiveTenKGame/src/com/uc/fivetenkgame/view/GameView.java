@@ -101,7 +101,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		public void setPlayersOutList(int number, List<Card> list) {
 			if (number == -1) // 设置的是当前Player
+			{
+				cardList.removeAll(list);
 				outList.put(playerId - 1, list);
+			}
 			else
 				outList.put(number - 1, list);
 		}
@@ -139,7 +142,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		@Override
 		public void setCurrentPlayer(int playerId) {
-			TIME_REMIND=10;
+			TIME_REMIND=30;
 			timer.cancel();
 			timer=new Timer();
 			timer.schedule(new TimerTask() {
