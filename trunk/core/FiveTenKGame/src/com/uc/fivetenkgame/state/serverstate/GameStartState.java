@@ -112,8 +112,7 @@ public class GameStartState extends ServerState {
 			}
 
 			mServerContext.getNetworkManager().sendMessage(
-					sb.deleteCharAt(sb.length() - 1).toString(),
-					player.getPlayerNumber());
+					sb.deleteCharAt(sb.length() - 1).toString());
 
 		}
 	}

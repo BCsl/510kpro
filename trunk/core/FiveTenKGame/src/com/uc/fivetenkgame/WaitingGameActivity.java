@@ -82,7 +82,8 @@ public class WaitingGameActivity extends Activity {
 			mServer = Server.getInstance();
 			mServer.setHandler(mHandler);
 			mServer.startListen();
-			mPlayer.startPlay("127.0.0.1");
+			
+			mPlayer.startPlay(strIp);
 		} else {
 			String ipAddr = intent.getStringExtra("IP");
 			mPlayer.startPlay(ipAddr);
