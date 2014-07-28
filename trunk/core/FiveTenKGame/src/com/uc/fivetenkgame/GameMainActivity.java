@@ -2,6 +2,8 @@ package com.uc.fivetenkgame;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.google.zxing.qr_codescan.MipcaActivityCapture;
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.google.zxing.integration.IntentIntegrator;
 import com.uc.fivetenkgame.google.zxing.integration.IntentResult;
@@ -117,14 +119,14 @@ public class GameMainActivity extends Activity {
 								InputServerIPActivity.class);
 						startActivityForResult(intent, REQUEST_SERVER_IP);
 					} else {
-						// Intent intent = new Intent();
-						// intent.setClass(GameMainActivity.this,
-						// MipcaActivityCapture.class);
-						// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						// startActivityForResult(intent, REQUEST_SCAN_IP);
-						IntentIntegrator integrator = new IntentIntegrator(
-								GameMainActivity.this);
-						integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+						Intent intent = new Intent();
+						intent.setClass(GameMainActivity.this,
+								MipcaActivityCapture.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivityForResult(intent, REQUEST_SCAN_IP);
+						// IntentIntegrator integrator = new IntentIntegrator(
+						// GameMainActivity.this);
+						// integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
 					}
 				} else {
 					Toast.makeText(getApplicationContext(), "请打开wifi",
@@ -161,37 +163,13 @@ public class GameMainActivity extends Activity {
 			} else
 				System.out.println("input server ip cancel");
 		}// REQUEST_SERVER_IP
-		else
-		// if (requestCode == REQUEST_SCAN_IP) {
-		// if (resultCode == RESULT_OK) {
-		// Bundle bundle = data.getExtras();
-		// if (bundle != null) {
-		// String ipAddr = bundle.getString("result");
-		// Log.i(TAG, "扫描结果：" + ipAddr);
-		//
-		// if (Common.isIPAddress(ipAddr)) {
-		// Intent intent = new Intent();
-		// intent.putExtra("isServer", false);
-		// intent.putExtra("IP", ipAddr);
-		// intent.setClass(GameMainActivity.this,
-		// WaitingGameActivity.class);
-		// startActivity(intent);
-		// } else
-		// Toast.makeText(
-		// GameMainActivity.this,
-		// getResources().getString(
-		// R.string.ip_scan_error_str),
-		// Toast.LENGTH_LONG).show();
-		// }
-		// }
-		// }// REQUEST_SCAN_IP
-		if (requestCode == IntentIntegrator.REQUEST_CODE) {
-			IntentResult scanResult = IntentIntegrator.parseActivityResult(
-					requestCode, resultCode, data);
-			if (scanResult != null) {
-				String ipAddr = scanResult.getContents();
-				Log.i(TAG, "扫描结果：" + ipAddr);
-				if (ipAddr != null)
+		else if (requestCode == REQUEST_SCAN_IP) {
+			if (resultCode == RESULT_OK) {
+				Bundle bundle = data.getExtras();
+				if (bundle != null) {
+					String ipAddr = bundle.getString("result");
+					Log.i(TAG, "扫描结果：" + ipAddr);
+
 					if (Common.isIPAddress(ipAddr)) {
 						Intent intent = new Intent();
 						intent.putExtra("isServer", false);
@@ -203,10 +181,34 @@ public class GameMainActivity extends Activity {
 						Toast.makeText(
 								GameMainActivity.this,
 								getResources().getString(
-										R.string.ip_scan_error_str).replace(
-										"#", ipAddr), Toast.LENGTH_LONG).show();
+										R.string.ip_scan_error_str).replace("#", ipAddr),
+								Toast.LENGTH_LONG).show();
+				}
 			}
-		}
+		}// REQUEST_SCAN_IP
+			// else
+		// if (requestCode == IntentIntegrator.REQUEST_CODE) {
+		// IntentResult scanResult = IntentIntegrator.parseActivityResult(
+		// requestCode, resultCode, data);
+		// if (scanResult != null) {
+		// String ipAddr = scanResult.getContents();
+		// Log.i(TAG, "扫描结果：" + ipAddr);
+		// if (ipAddr != null)
+		// if (Common.isIPAddress(ipAddr)) {
+		// Intent intent = new Intent();
+		// intent.putExtra("isServer", false);
+		// intent.putExtra("IP", ipAddr);
+		// intent.setClass(GameMainActivity.this,
+		// WaitingGameActivity.class);
+		// startActivity(intent);
+		// } else
+		// Toast.makeText(
+		// GameMainActivity.this,
+		// getResources().getString(
+		// R.string.ip_scan_error_str).replace(
+		// "#", ipAddr), Toast.LENGTH_LONG).show();
+		// }
+		// }
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 

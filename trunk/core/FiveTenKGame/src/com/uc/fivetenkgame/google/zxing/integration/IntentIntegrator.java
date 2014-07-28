@@ -16,6 +16,10 @@
 
 package com.uc.fivetenkgame.google.zxing.integration;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +33,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -165,10 +170,10 @@ public class IntentIntegrator {
 
 	private static final String BS_PACKAGE = "com.google.zxing.client.android";
 	private static final String BSPLUS_PACKAGE = "com.srowen.bs.android";
-	
-	private String APK_NAME="/FiveTenKGame/apk/BarcodeScanner.apk";
-	private String FILE_PATH;
-	
+
+	private String APK_NAME = "BarcodeScanner.apk";
+	private String APK_PATH;
+
 	// supported barcode formats
 	public static final Collection<String> PRODUCT_CODE_TYPES = list("UPC_A",
 			"UPC_E", "EAN_8", "EAN_13", "RSS_14");
@@ -209,6 +214,8 @@ public class IntentIntegrator {
 	public IntentIntegrator(Activity activity) {
 		this.activity = activity;
 		this.fragment = null;
+		APK_PATH = "/data/data/" + activity.getPackageName() + "/apk";
+		Log.e(TAG, "APK_PATH:" + APK_PATH);
 		initializeConfiguration();
 	}
 
@@ -221,6 +228,8 @@ public class IntentIntegrator {
 	public IntentIntegrator(Fragment fragment) {
 		this.activity = fragment.getActivity();
 		this.fragment = fragment;
+		APK_PATH = "/data/data/" + activity.getPackageName() + APK_NAME;
+		Log.e(TAG, "APK_PATH:" + APK_PATH);
 		initializeConfiguration();
 	}
 
@@ -395,6 +404,7 @@ public class IntentIntegrator {
 		String targetAppPackage = findTargetAppPackage(intentScan);
 		if (targetAppPackage == null) {
 			return showDownloadDialog();
+//			return showAutoInstallDialog();
 		}
 		intentScan.setPackage(targetAppPackage);
 		intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -448,32 +458,66 @@ public class IntentIntegrator {
 		}
 		return false;
 	}
-	private AlertDialog showAutoInstallDialog(){
-		AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
-		downloadDialog.setTitle(title);
-		downloadDialog.setMessage(message);
-		downloadDialog.setPositiveButton(buttonYes,
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						if(Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED){
-							FILE_PATH=Environment.getExternalStorageDirectory()+FILE_PATH;
-							
-							
-						}
-						else{
-							if(activity!=null)
-							Toast.makeText(activity,activity.getResources().getString(R.string.MEDIA_UNMOUNTED), Toast.LENGTH_LONG).show();
-							else
-								Toast.makeText(fragment.getActivity(),fragment.getActivity().getResources().getString(R.string.MEDIA_UNMOUNTED), Toast.LENGTH_LONG).show();
-						}
-					}
-				});
-		downloadDialog.setNegativeButton(buttonNo, null);
-		downloadDialog.setCancelable(true);
-		return downloadDialog.show();
-	}
-	
+
+//	private AlertDialog showAutoInstallDialog() {
+//		AlertDialog.Builder autoInstallDialog = new AlertDialog.Builder(
+//				activity);
+//		autoInstallDialog.setTitle(title);
+//		autoInstallDialog.setMessage(message);
+//		autoInstallDialog.setPositiveButton(buttonYes,
+//				new DialogInterface.OnClickListener() {
+//					@Override
+//					public void onClick(DialogInterface dialogInterface, int i) {
+//						File path=new File(APK_PATH);
+//						path.mkdir();
+//						File file = new File(APK_PATH, APK_NAME);
+//						createFileIfNotExist(file);
+//						try {
+//							String command1 = "chmod " + "701" + " "
+//									+ path.getAbsolutePath();
+//							String command2 = "chmod " + "777" + " "
+//									+ file.getAbsolutePath();
+//							Runtime runtime = Runtime.getRuntime();
+//							runtime.exec(command1);
+//							runtime.exec(command2);
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						}
+//						Log.e(TAG, "here3");
+//						Intent intent = new Intent();
+//						intent.setAction(android.content.Intent.ACTION_VIEW);
+//						intent.setDataAndType(Uri.fromFile(file),
+//								"application/vnd.android.package-archive");
+//						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//						activity.startActivity(intent);
+//					}
+//				});
+//		autoInstallDialog.setNegativeButton(buttonNo, null);
+//		autoInstallDialog.setCancelable(true);
+//		return autoInstallDialog.show();
+//	}
+
+//	private void createFileIfNotExist(File file) {
+//		if (file.exists())
+//			return;
+//		try {
+//			InputStream is = activity.getResources().openRawResource(
+//					R.raw.barcodescanner);
+//			file.createNewFile();
+//			FileOutputStream os = new FileOutputStream(file);
+//			byte[] bytes = new byte[512];
+//			int i = -1;
+//			while ((i = is.read(bytes)) > 0)
+//				os.write(bytes);
+//			os.flush();
+//			os.close();
+//			is.close();
+//			Log.d(TAG, APK_NAME + " has been copy to " + APK_PATH);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+
 	private AlertDialog showDownloadDialog() {
 		AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
 		downloadDialog.setTitle(title);

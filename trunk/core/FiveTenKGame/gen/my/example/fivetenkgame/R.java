@@ -99,6 +99,7 @@ public final class R {
         public static final int gridview=0x7f06000c;
         public static final int help_text_id=0x7f060012;
         public static final int ip_addr_text_ID=0x7f060026;
+        public static final int ip_qrcode_ID=0x7f060027;
         public static final int launch_product_query=0x7f060006;
         public static final int main_help_id=0x7f060016;
         public static final int main_joid_game_id=0x7f060015;
@@ -113,7 +114,7 @@ public final class R {
         public static final int preview_view=0x7f060010;
         public static final int qrcode_radiogroup_id=0x7f060023;
         public static final int quit=0x7f060007;
-        public static final int ready_player_text_ID=0x7f060027;
+        public static final int ready_player_text_ID=0x7f060028;
         public static final int restart_preview=0x7f060008;
         public static final int return_scan_result=0x7f060009;
         public static final int scrollview_id=0x7f060013;
@@ -122,10 +123,10 @@ public final class R {
         public static final int server_ip_text_ID=0x7f060018;
         public static final int setting_text_id=0x7f06001a;
         public static final int split=0x7f06000f;
-        public static final int text_score_player1=0x7f060029;
-        public static final int text_score_player2=0x7f06002a;
-        public static final int text_score_player3=0x7f06002b;
-        public static final int text_winning_player=0x7f060028;
+        public static final int text_score_player1=0x7f06002a;
+        public static final int text_score_player2=0x7f06002b;
+        public static final int text_score_player3=0x7f06002c;
+        public static final int text_winning_player=0x7f060029;
         public static final int viewfinder_view=0x7f060011;
         public static final int webview=0x7f06000d;
         public static final int wifi_radiogroup_id=0x7f06001c;

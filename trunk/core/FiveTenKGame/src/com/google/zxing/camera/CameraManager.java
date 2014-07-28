@@ -18,6 +18,9 @@ package com.google.zxing.camera;
 
 import java.io.IOException;
 
+import com.google.zxing.camera.open.OpenCameraInterface;
+
+
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
@@ -29,6 +32,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
+ * 摄像机类，实现和封装好需要处预览和解码的图片的步骤。
  * This object wraps the Camera service object and expects to be the only one talking to it. The
  * implementation encapsulates the steps needed to take preview-sized images, which are used for
  * both preview and decoding.
@@ -37,11 +41,15 @@ import android.view.SurfaceHolder;
 public final class CameraManager {
 
   private static final String TAG = CameraManager.class.getSimpleName();
-
-  private static final int MIN_FRAME_WIDTH = 240;
-  private static final int MIN_FRAME_HEIGHT = 240;
-  private static final int MAX_FRAME_WIDTH = 480;
-  private static final int MAX_FRAME_HEIGHT = 360;
+//
+  private static  int MIN_FRAME_WIDTH ;
+  private static  int MIN_FRAME_HEIGHT ;
+  private static  int MAX_FRAME_WIDTH ;
+  private static  int MAX_FRAME_HEIGHT ;
+//  private static final int MIN_FRAME_WIDTH = 240;
+//  private static final int MIN_FRAME_HEIGHT = 240;
+//  private static final int MAX_FRAME_WIDTH = 1200;
+//  private static final int MAX_FRAME_HEIGHT = 675;
 
   private static CameraManager cameraManager;
 
@@ -97,16 +105,21 @@ public final class CameraManager {
 
     this.context = context;
     this.configManager = new CameraConfigurationManager(context);
-
     // Camera.setOneShotPreviewCallback() has a race condition in Cupcake, so we use the older
     // Camera.setPreviewCallback() on 1.5 and earlier. For Donut and later, we need to use
     // the more efficient one shot callback, as the older one can swamp the system and cause it
     // to run out of memory. We can't use SDK_INT because it was introduced in the Donut SDK.
     //useOneShotPreviewCallback = Integer.parseInt(Build.VERSION.SDK) > Build.VERSION_CODES.CUPCAKE;
     useOneShotPreviewCallback = Integer.parseInt(Build.VERSION.SDK) > 3; // 3 = Cupcake
-
+//    int density=context.getResources().getDisplayMetrics().densityDpi;
+    MIN_FRAME_WIDTH=MIN_FRAME_HEIGHT=(int) ((float)context.getResources().getDisplayMetrics().widthPixels/1.5f);
+    MAX_FRAME_WIDTH=MAX_FRAME_HEIGHT=(int) ((float)context.getResources().getDisplayMetrics().widthPixels/1.5f);
+    Log.d(TAG, "MAX_FRAME_WIDTH:"+MAX_FRAME_WIDTH+";MIN_FRAME_WIDTH"+MIN_FRAME_WIDTH);
     previewCallback = new PreviewCallback(configManager, useOneShotPreviewCallback);
     autoFocusCallback = new AutoFocusCallback();
+   	
+    
+    
   }
 
   /**
@@ -117,7 +130,7 @@ public final class CameraManager {
    */
   public void openDriver(SurfaceHolder holder) throws IOException {
     if (camera == null) {
-      camera = Camera.open();
+      camera = OpenCameraInterface.open();
       if (camera == null) {
         throw new IOException();
       }
@@ -208,7 +221,7 @@ public final class CameraManager {
     }
   }
 
-  /**
+  /**中间扫描框大小
    * Calculates the framing rect which the UI should draw to show the user where to place the
    * barcode. This target helps with alignment as well as forces the user to hold the device
    * far enough away to ensure the image will be in focus.
