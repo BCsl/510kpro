@@ -27,6 +27,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
+
+import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
 import com.uc.fivetenkgame.view.util.IViewControler;
@@ -148,9 +150,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					TIME_REMIND-=1;
-					if(eventListener.checkForTimeOut(context, TIME_REMIND))
-						timer.cancel();
+					if(!((GameApplication)context.getApplicationContext()).isPause()){
+						TIME_REMIND-=1;
+						if(eventListener.checkForTimeOut(context, TIME_REMIND))
+							timer.cancel();
+					}
 					}
 			}, 1000,1300);
 			currentPlayerId=playerId;

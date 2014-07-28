@@ -24,10 +24,19 @@ import android.media.SoundPool;
 public class GameApplication extends Application {
 	private SoundPool soundPool;
 	private HashMap<Integer,Integer> soundMap; 
+	private boolean isPause;
+	
+	public boolean isPause() {
+		return isPause;
+	}
+	public void setPause(boolean isPause) {
+		this.isPause = isPause;
+	}
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		initSoundPool();
+		isPause=false;
 	}
 	private void initSoundPool() {
 		soundMap=new HashMap<Integer, Integer>();

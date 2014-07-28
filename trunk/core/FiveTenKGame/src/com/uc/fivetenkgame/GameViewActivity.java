@@ -32,9 +32,10 @@ public class GameViewActivity extends Activity {
 	private AlertDialog backPressDialog;// 本玩家按返回键出现的dialog
 	private AlertDialog pauseDialog;// 其他玩家暂停时本玩家出现的dialog
 	private AlertDialog winningDialog;// 其他玩家暂停时本玩家出现的dialog
-	private boolean ifPause;
+//	private boolean ifPause;
 	private View winningView;
 	private GameView view ;
+	private GameApplication gameApplication;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class GameViewActivity extends Activity {
 		if (isServer) {
 			// mPlayer = ServerPlayer.getInstance();
 		}
-
+		
 		// 锁定横屏
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		 view = new GameView(getApplicationContext(), Player
@@ -64,6 +65,7 @@ public class GameViewActivity extends Activity {
 		Player.getInstance().initView();
 		((GameApplication) getApplication()).playSound(Common.SOUND_GAME_START);
 		setContentView(view);
+		gameApplication=(GameApplication) getApplication();
 		initDialog();
 	}
 	
@@ -89,15 +91,17 @@ public class GameViewActivity extends Activity {
 				String objMsg = (String) msg.obj;
 				Log.i("objMsg is ", objMsg.length() + "");
 				if (objMsg.startsWith(Common.GAME_PAUSE)) {
-					if (!ifPause) {
+					if (!gameApplication.isPause()) {
 						pauseDialog.show();// 其他玩家通知
-						ifPause = true;
+//						ifPause = true;
+						gameApplication.setPause(true);
 						Log.i("pauseDialog", "show");
 					}
 				} else if (objMsg.startsWith(Common.GAME_RESUME)) {
-					if (ifPause) {
+					if (gameApplication.isPause()) {
 						pauseDialog.cancel();// 其他玩家通知
-						ifPause = false;
+//						ifPause = false;
+						gameApplication.setPause(false);
 						Log.i("pauseDialog", "cancel");
 					}
 				} else if (objMsg.startsWith(Common.GAME_EXIT)) {
@@ -124,7 +128,8 @@ public class GameViewActivity extends Activity {
 				.setPositiveButton("返回", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						ifPause = false;
+//						ifPause = false;
+						gameApplication.setPause(false);
 						Player.getInstance().sendMsg(Common.GAME_RESUME);// 恢复游戏
 					}
 				})
@@ -143,7 +148,8 @@ public class GameViewActivity extends Activity {
 		backPressDialog.setOnCancelListener(new OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {
-				ifPause = false;
+//				ifPause = false;
+				gameApplication.setPause(false);
 				Player.getInstance().sendMsg(Common.GAME_RESUME);// 再次按返回键，返回游戏
 			}
 		});
@@ -193,7 +199,8 @@ public class GameViewActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		backPressDialog.show();
-		ifPause = true;
+//		ifPause = true;
+		gameApplication.setPause(true);
 		Player.getInstance().sendMsg(Common.GAME_PAUSE);// 暂停游戏
 	}
 
@@ -201,11 +208,12 @@ public class GameViewActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		Log.i(TAG, "onResume " + ifPause);
+		Log.i(TAG, "onResume " + gameApplication.isPause());
 		super.onResume();
 		view.initHolder();
-		if (ifPause) {
-			ifPause = false;
+		if ( gameApplication.isPause()) {
+//			ifPause = false;
+			gameApplication.setPause(true);
 			Player.getInstance().sendMsg(Common.GAME_RESUME);// 通知其他玩家恢复游戏
 		}
 	}
@@ -215,7 +223,8 @@ public class GameViewActivity extends Activity {
 		Log.i(TAG, "onPause");
 
 		Player.getInstance().sendMsg(Common.GAME_PAUSE);// 通知其他玩家暂停游戏
-		ifPause = true;
+//		ifPause = true;
+		gameApplication.setPause(true);
 	};
 
 	@Override
@@ -228,13 +237,13 @@ public class GameViewActivity extends Activity {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putBoolean("ifPause", ifPause);
+//		outState.putBoolean("ifPause", ifPause);
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 
-		ifPause = savedInstanceState.getBoolean("ifPause");
+//		ifPause = savedInstanceState.getBoolean("ifPause");
 	}
 }
