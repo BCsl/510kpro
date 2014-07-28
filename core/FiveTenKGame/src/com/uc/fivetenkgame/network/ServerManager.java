@@ -5,8 +5,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-
-import android.content.res.Resources.Theme;
 import android.util.Log;
 
 import com.uc.fivetenkgame.network.util.Common;
@@ -25,8 +23,6 @@ public class ServerManager extends NetworkManager {
 	private ServerSocket mServerSocket;
 	private ArrayList<TCPServer> mClientPlayers;
 	private ArrayList<String> mPlayerIPs;
-
-	private boolean kill = false;;
 
 	private static ServerManager gInstance;
 
@@ -62,12 +58,7 @@ public class ServerManager extends NetworkManager {
 			try {
 				// 接收玩家链接
 				for (int i = 1; i <= Common.TOTAL_PLAYER_NUM; ++i) {
-					if (kill){
-						kill = false;
-						break;
-					}	
-					if (mServerSocket.isClosed())
-						mServerSocket = new ServerSocket(NETWORK_PORT);
+
 					// return;
 					Socket socket = mServerSocket.accept();
 
@@ -96,15 +87,14 @@ public class ServerManager extends NetworkManager {
 
 	public void startListen() {
 		Log.i("ServerManager", "startListen");
-		if (mThread != null && mThread.isAlive() && !mServerSocket.isClosed()) {
-			Log.i("ServerManager", "kill now");
-			try {
-				mServerSocket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			kill = true;
+		
+		try {
+			if (mServerSocket == null || mServerSocket.isClosed())
+				mServerSocket = new ServerSocket(NETWORK_PORT);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		
 		Log.i("ServerManager", "start ");
 		mThread = new MyThread();
 		mThread.start();
@@ -171,10 +161,13 @@ public class ServerManager extends NetworkManager {
 			flag[i] = false;
 		}
 		mPlayerIPs.removeAll(mPlayerIPs);
+//		for (TCPServer player : mClientPlayers) {
+//			player.release();
+//		}
+		
 		try {
 			mServerSocket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
