@@ -66,9 +66,11 @@ public class Common {
 	public static final int SOUND_GAME_START=1;
 	public static final int SOUND_WIN = 2;
 	public static final int SOUND_FAILD =3;
-	public static final int SOUND_SECOND_CALL_0_0 =4;
-	public static final int SOUND_SECOND_CALL_0_1 =5;
-	public static final int SOUND_SECOND_CALL_1_0 =6;
+	public static final int SOUND_SECOND_CALL =4;
+//	public static final int SOUND_SECOND_CALL_1 =5;
+//	public static final int SOUND_SECOND_CALL_2 =6;
+	public static final int SOUND_OUTPUT_CARDS =7;
+	public static final int SOUND_PASS =8;
 	
 	public static void setOrder(List<Card> list){
 		Collections.sort(list, new Comparator<Card>() {

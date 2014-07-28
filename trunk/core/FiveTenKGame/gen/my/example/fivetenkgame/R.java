@@ -145,11 +145,11 @@ public final class R {
         public static final int beep=0x7f040000;
         public static final int button=0x7f040001;
         public static final int fail=0x7f040002;
-        public static final int realm_properties=0x7f040003;
-        public static final int second_call_0_0=0x7f040004;
-        public static final int second_call_0_1=0x7f040005;
-        public static final int second_call_1_0=0x7f040006;
-        public static final int start=0x7f040007;
+        public static final int outputcards=0x7f040003;
+        public static final int pass_0_0=0x7f040004;
+        public static final int realm_properties=0x7f040005;
+        public static final int start=0x7f040006;
+        public static final int time=0x7f040007;
         public static final int win=0x7f040008;
     }
     public static final class string {

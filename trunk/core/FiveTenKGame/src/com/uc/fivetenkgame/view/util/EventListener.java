@@ -72,8 +72,10 @@ public abstract class EventListener {
 			Log.e(TAG, "出牌：" + handList.toString());
 			if (handCard(handList, false)) {
 				// // 出牌成功
-				// view.getViewControler().setPlayersOutList(-1,
-				// new ArrayList<Card>(handList));
+				 view.getViewControler().setPlayersOutList(-1,
+				 new ArrayList<Card>(handList));
+				((GameApplication) view.context.getApplicationContext())
+				.playSound(Common.SOUND_OUTPUT_CARDS);
 				cardList.removeAll(handList);
 				handList.clear();
 			}
@@ -83,6 +85,7 @@ public abstract class EventListener {
 				&& buttonClick(rightButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
 						rawX, rawY)) {
 			Log.e(TAG, "放弃出牌");
+
 			for (Card temp : handList) {
 				temp.setClick(false);
 			}
@@ -152,25 +155,18 @@ public abstract class EventListener {
 	}
 
 	public boolean checkForTimeOut(Context context, int timeRemind) {
+		if(timeRemind<4)
 		switch (timeRemind) {
 		case 3:
-			((GameApplication) context.getApplicationContext())
-					.playSound(Common.SOUND_SECOND_CALL_1_0);
-			break;
-
 		case 2:
-			((GameApplication) context.getApplicationContext())
-					.playSound(Common.SOUND_SECOND_CALL_0_1);
-			break;
 		case 1:
 			((GameApplication) context.getApplicationContext())
-					.playSound(Common.SOUND_SECOND_CALL_0_0);
+					.playSound(Common.SOUND_SECOND_CALL);
 			break;
 		case 0:
 			handCard(null, true);
 			return true;
 		}
-
 		return false;
 
 	}
