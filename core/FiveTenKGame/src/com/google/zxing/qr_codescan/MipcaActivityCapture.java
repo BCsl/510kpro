@@ -12,9 +12,11 @@ import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.KeyEvent;
@@ -29,7 +31,7 @@ import com.google.zxing.decoding.InactivityTimer;
 import com.google.zxing.view.ViewfinderView;
 
 /**
- * Initial the camera
+ *  主要是初始化相机，声音，震动，和界面（surfaceView + ViewfinderView(核心)）
  * 
  */
 public class MipcaActivityCapture extends Activity implements Callback {
@@ -110,10 +112,11 @@ public class MipcaActivityCapture extends Activity implements Callback {
 			Toast.makeText(MipcaActivityCapture.this, "Scan failed!",
 					Toast.LENGTH_SHORT).show();
 		} else {
+			Log.i("handleDecode","handleDecode");
 			Intent resultIntent = new Intent();
 			Bundle bundle = new Bundle();
 			bundle.putString("result", resultString);
-			bundle.putParcelable("bitmap", barcode);
+//			bundle.putParcelable("bitmap", barcode);
 			resultIntent.putExtras(bundle);
 			this.setResult(RESULT_OK, resultIntent);
 		}

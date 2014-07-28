@@ -168,23 +168,23 @@ public final class ViewfinderView extends View {
 		} else {
 
 			//画扫描框边上的角，总共8个部分
-			paint.setColor(Color.GREEN);
-			canvas.drawRect(frame.left, frame.top, frame.left + ScreenRate,
-					frame.top + CORNER_WIDTH, paint);
-			canvas.drawRect(frame.left, frame.top, frame.left + CORNER_WIDTH, frame.top
-					+ ScreenRate, paint);
-			canvas.drawRect(frame.right - ScreenRate, frame.top, frame.right,
-					frame.top + CORNER_WIDTH, paint);
-			canvas.drawRect(frame.right - CORNER_WIDTH, frame.top, frame.right, frame.top
-					+ ScreenRate, paint);
-			canvas.drawRect(frame.left, frame.bottom - CORNER_WIDTH, frame.left
-					+ ScreenRate, frame.bottom, paint);
-			canvas.drawRect(frame.left, frame.bottom - ScreenRate,
-					frame.left + CORNER_WIDTH, frame.bottom, paint);
-			canvas.drawRect(frame.right - ScreenRate, frame.bottom - CORNER_WIDTH,
-					frame.right, frame.bottom, paint);
-			canvas.drawRect(frame.right - CORNER_WIDTH, frame.bottom - ScreenRate,
-					frame.right, frame.bottom, paint);
+//			paint.setColor(Color.GREEN);
+//			canvas.drawRect(frame.left, frame.top, frame.left + ScreenRate,
+//					frame.top + CORNER_WIDTH, paint);
+//			canvas.drawRect(frame.left, frame.top, frame.left + CORNER_WIDTH, frame.top
+//					+ ScreenRate, paint);
+//			canvas.drawRect(frame.right - ScreenRate, frame.top, frame.right,
+//					frame.top + CORNER_WIDTH, paint);
+//			canvas.drawRect(frame.right - CORNER_WIDTH, frame.top, frame.right, frame.top
+//					+ ScreenRate, paint);
+//			canvas.drawRect(frame.left, frame.bottom - CORNER_WIDTH, frame.left
+//					+ ScreenRate, frame.bottom, paint);
+//			canvas.drawRect(frame.left, frame.bottom - ScreenRate,
+//					frame.left + CORNER_WIDTH, frame.bottom, paint);
+//			canvas.drawRect(frame.right - ScreenRate, frame.bottom - CORNER_WIDTH,
+//					frame.right, frame.bottom, paint);
+//			canvas.drawRect(frame.right - CORNER_WIDTH, frame.bottom - ScreenRate,
+//					frame.right, frame.bottom, paint);
 
 			
 			//绘制中间的线,每次刷新界面，中间的线往下移动SPEEN_DISTANCE

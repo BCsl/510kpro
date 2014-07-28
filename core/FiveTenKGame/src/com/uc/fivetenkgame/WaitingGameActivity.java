@@ -1,15 +1,12 @@
 package com.uc.fivetenkgame;
 
-import java.util.Timer;
-
 import my.example.fivetenkgame.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -19,6 +16,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +53,7 @@ public class WaitingGameActivity extends Activity {
 		setFinishOnTouchOutside(false);
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		QR_WIDTH = dm.widthPixels / 2.5f;
+		QR_WIDTH = dm.widthPixels / 3.0f;
 		QR_HEIGHT = QR_WIDTH;
 		mIpAddress = (TextView) findViewById(R.id.ip_addr_text_ID);
 		mReadyPlayer = (TextView) findViewById(R.id.ready_player_text_ID);
@@ -69,12 +67,11 @@ public class WaitingGameActivity extends Activity {
 				+ ((ip >> 16) & 0xFF) + "." + ((ip >> 24) & 0xFF);
 		mIpAddress.setText(mIpAddress.getText() + strIp);
 		if (isServer) {
-			Drawable bd = new BitmapDrawable(QRcodeGenerator.createImage(strIp,
-					(int) QR_WIDTH, (int) QR_HEIGHT));
-			bd.setBounds(0, 0, bd.getMinimumWidth(), bd.getMinimumHeight());
-			if (bd != null) {
-				mIpAddress.setCompoundDrawables(null, null, null, bd);
-			}
+			Bitmap bitmap = QRcodeGenerator.createImage(strIp, (int) QR_WIDTH,
+					(int) QR_HEIGHT);
+			if (bitmap != null)
+				((ImageView) findViewById(R.id.ip_qrcode_ID))
+						.setImageBitmap(bitmap);
 		}
 		mPlayer = Player.getInstance();
 		mPlayer.setHandler(mHandler);
