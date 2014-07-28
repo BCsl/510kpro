@@ -30,6 +30,7 @@ public class WaitForMsgState extends PlayerState {
 			if (msg.substring(2).equals(
 					String.valueOf(mPlayerContext.getPlayerNumber()))) {
 				mPlayerContext.setMyTurn(true);
+				
 				while (!mPlayerContext.doneHandCards()) {
 				}
 				String cards = mPlayerContext.getCardsToBePlayed();

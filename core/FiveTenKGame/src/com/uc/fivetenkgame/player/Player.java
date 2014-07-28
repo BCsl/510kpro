@@ -28,7 +28,6 @@ import com.uc.fivetenkgame.view.util.IViewControler;
  */
 @SuppressLint("UseValueOf")
 public class Player implements PlayerContext {
-	// protected boolean isFirst = false;
 	private Rule mRule;
 	private State mState;
 	private boolean doneHandCard = false;
@@ -37,28 +36,34 @@ public class Player implements PlayerContext {
 
 		@Override
 		public void reveiveMessage(String msg) {
-			Log.i("!!!player","... "+msg);
-			if (msg.startsWith(Common.GAME_PAUSE) || msg.startsWith(Common.GAME_RESUME)
-					|| msg.startsWith(Common.GAME_EXIT)){
+			Log.i("!!!player", "... " + msg);
+			if (msg.startsWith(Common.GAME_PAUSE)
+					|| msg.startsWith(Common.GAME_RESUME)
+					|| msg.startsWith(Common.GAME_EXIT)) {
 				mHandler.obtainMessage(Common.GAME_STATE_CHANGE, msg)
-						.sendToTarget(); //由activity处理
-				Log.i("!!!player","msg sent to target");
-			}else{
-				mState.handle(msg); //由状态机处理
+						.sendToTarget(); // 由activity处理
+				Log.i("!!!player", "msg sent to target");
+			} else {
+				mState.handle(msg); // 由状态机处理
 			}
 		}
 	};
-	// protected int currentPlayer;
+	private int currentPlayer;
 	private PlayerModel mPlayerModel;
 	private NetworkInterface mNetworkManager;
 	private Handler mHandler;
-	// protected List<Card> currentPlayerOutList;
 	private List<Card> formerCardList;
 	private List<Card> mHandList;
-	// protected int tableScore;
 	private EventListener mEventListener = new EventListener() {
 		@Override
-		public boolean handCard(List<Card> handList) {
+		public boolean handCard(List<Card> handList, boolean timeOut) {
+			if (timeOut) {
+				if (currentPlayer == mPlayerModel.getPlayerNumber()) {
+					outTimeAction();
+					return true;
+				}
+				return false;
+			}
 			mHandList = new ArrayList<Card>();
 			if (formerCardList == null) {
 				// 第一次出牌
@@ -113,10 +118,6 @@ public class Player implements PlayerContext {
 			// }
 		}
 	};
-
-	public void timeOutAction() {
-		setState(null);
-	}
 
 	public void startPlay(String addr) {
 		setState(new InitState(gInstance));
@@ -261,15 +262,14 @@ public class Player implements PlayerContext {
 
 	@Override
 	public int getPlayerNumber() {
-		//Log.i("getPlayerNumber:",String.valueOf(mPlayerModel.getPlayerNumber()));
+		// Log.i("getPlayerNumber:",String.valueOf(mPlayerModel.getPlayerNumber()));
 		return mPlayerModel.getPlayerNumber();
 	}
 
 	@Override
 	public void gameOver(String[] str) {
 		// viewController.gameOver(playerId);
-		mHandler.obtainMessage(Common.END_GAME,str)
-				.sendToTarget();
+		mHandler.obtainMessage(Common.END_GAME, str).sendToTarget();
 	}
 
 	public void setEventListener() {
@@ -329,7 +329,7 @@ public class Player implements PlayerContext {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
+		currentPlayer = palyerId;
 		viewController.setCurrentPlayer(palyerId);
 	}
 
@@ -356,4 +356,23 @@ public class Player implements PlayerContext {
 		Log.i("Player", "reset player");
 	}
 
+	private void outTimeAction() {
+		mHandList = new ArrayList<Card>();
+		if (isFirstPlayer()) {
+			int cardNumber = mPlayerModel.getCardList().size() - 1;
+			Log.i("out time action: ", String.valueOf(cardNumber));
+			mHandList.add(mPlayerModel.getCardList().get(cardNumber));
+			mPlayerModel.getCardList().removeAll(mHandList);
+			Log.i("选牌超时(第一个打牌)",
+					"当前手牌数: "
+							+ String.valueOf(mPlayerModel.getRemainCardsNum()));
+			setDoneHandCards(true);
+		} else {
+			mHandList = null;
+			Log.i("选牌超时(不是第一个打)",
+					"当前手牌数: "
+							+ String.valueOf(mPlayerModel.getRemainCardsNum()));
+			setDoneHandCards(true);
+		}
+	}
 }

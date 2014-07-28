@@ -41,20 +41,4 @@ public class ConnectState extends PlayerState {
 			mPlayerContext.getHandler().obtainMessage(Common.PLAYER_LEFT).sendToTarget();
 		}
 	}
-	
-	private Thread mThread = new Thread(new Runnable() {
-		
-		@Override
-		public void run() {
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//Log.i("TimeOut", null);
-			mPlayerContext.getHandler().obtainMessage(Common.TIME_OUT).sendToTarget();;
-			mPlayerContext.timeOutAction();
-		}
-	});
 }
