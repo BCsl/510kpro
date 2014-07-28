@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.player.Player;
-import com.uc.fivetenkgame.server.Server;
 import com.uc.fivetenkgame.view.GameView;
 
 public class GameViewActivity extends Activity {
@@ -48,7 +47,6 @@ public class GameViewActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
 		// 根据当前玩家是否是服务器来获取不同的实例
 		Intent intent = getIntent();
 		boolean isServer = intent.getBooleanExtra("isServer", false);

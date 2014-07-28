@@ -31,14 +31,16 @@ public class GameApplication extends Application {
 	}
 	private void initSoundPool() {
 		soundMap=new HashMap<Integer, Integer>();
-		 soundPool=new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+		 soundPool=new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 		 soundMap.put(Common.SOUND_BUTTON_PRESS, soundPool.load(getApplicationContext(), R.raw.button, 1));
 		 soundMap.put(Common.SOUND_GAME_START, soundPool.load(getApplicationContext(), R.raw.start, 1));
 		 soundMap.put(Common.SOUND_WIN, soundPool.load(getApplicationContext(), R.raw.win, 1));
 		 soundMap.put(Common.SOUND_FAILD, soundPool.load(getApplicationContext(), R.raw.fail, 1));
-		 soundMap.put(Common.SOUND_SECOND_CALL_0_0, soundPool.load(getApplicationContext(), R.raw.second_call_0_0, 1));
-		 soundMap.put(Common.SOUND_SECOND_CALL_0_1, soundPool.load(getApplicationContext(), R.raw.second_call_0_1, 1));
-		 soundMap.put(Common.SOUND_SECOND_CALL_1_0, soundPool.load(getApplicationContext(), R.raw.second_call_1_0, 1));
+		 soundMap.put(Common.SOUND_SECOND_CALL, soundPool.load(getApplicationContext(), R.raw.time, 1));
+//		 soundMap.put(Common.SOUND_SECOND_CALL_1, soundPool.load(getApplicationContext(), R.raw.time, 1));
+//		 soundMap.put(Common.SOUND_SECOND_CALL_2, soundPool.load(getApplicationContext(), R.raw.time, 1));
+		 soundMap.put(Common.SOUND_OUTPUT_CARDS, soundPool.load(getApplicationContext(), R.raw.outputcards, 1));
+		 soundMap.put(Common.SOUND_PASS, soundPool.load(getApplicationContext(), R.raw.pass_0_0, 1));
 	}	
 	public void playSound(int soundKey){
 		if (getSharedPreferences(Common.TABLE_SETTING, MODE_PRIVATE)
