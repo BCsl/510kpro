@@ -6,7 +6,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import android.util.Log;
-
 import com.uc.fivetenkgame.network.util.Common;
 
 /**
@@ -58,7 +57,8 @@ public class ServerManager extends NetworkManager {
 			try {
 				// 接收玩家链接
 				for (int i = 1; i <= Common.TOTAL_PLAYER_NUM; ++i) {
-
+//					if (mServerSocket.isClosed())
+//						mServerSocket = new ServerSocket(NETWORK_PORT);
 					// return;
 					Socket socket = mServerSocket.accept();
 
@@ -82,7 +82,6 @@ public class ServerManager extends NetworkManager {
 			}
 		}
 	}
-
 	private MyThread mThread = null;
 
 	public void startListen() {
