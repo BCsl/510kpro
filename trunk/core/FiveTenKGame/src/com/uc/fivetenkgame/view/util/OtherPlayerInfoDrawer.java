@@ -98,4 +98,5 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 		canvas.drawBitmap(CardGenerator.getBitmap(context, "chupai"), left,
 				top, null);
 	}
+
 }

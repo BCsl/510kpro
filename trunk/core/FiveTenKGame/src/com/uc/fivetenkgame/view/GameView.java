@@ -10,6 +10,8 @@ package com.uc.fivetenkgame.view;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 import my.example.fivetenkgame.R;
 import android.content.Context;
@@ -25,6 +27,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
+
+import com.uc.fivetenkgame.application.GameApplication;
+import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
 import com.uc.fivetenkgame.view.util.IViewControler;
@@ -41,12 +46,12 @@ import com.uc.fivetenkgame.view.util.OtherPlayerInfoDrawer;
 public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		Runnable {
 	private String TAG = "GameView";
-	public  static Context context;
+	public   Context context;
 	public ScreenSizeHolder screenHolder;
 	public CardSizeHolder cardSizeHolder;
 	private SurfaceHolder holder;
 	private Thread drawThread;
-	private boolean start;
+	private boolean gameStart;
 	private List<Card> cardList; // 玩家自己拥有的牌
 	private int playerId, right_player_id = -1, left_player_id = -1;
 	private boolean isMyTrun;
@@ -66,16 +71,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private Bitmap bg;
 	private int currentPlayerId;
 	private int frameCount=0;
+	private Timer timer;
+	private int TIME_REMIND;
 
 	public GameView(Context context, int playerId) {
 		super(context);
 		this.context = context;
 		this.playerId = playerId;
-		holder = this.getHolder();
-		holder.addCallback(this); // 设置Surface生命周期回调
 		init();
 	
 		
+	}
+	public void initHolder(){
+		holder = this.getHolder();
+		holder.addCallback(this); // 设置Surface生命周期回调
 	}
 
 	private class ViewControler implements IViewControler {
@@ -134,6 +143,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 		@Override
 		public void setCurrentPlayer(int playerId) {
+			TIME_REMIND=30;
+			timer.cancel();
+			timer=new Timer();
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					TIME_REMIND-=1;
+					if(eventListener.checkForTimeOut(context, TIME_REMIND))
+						timer.cancel();
+					}
+			}, 1000,1300);
 			currentPlayerId=playerId;
 			if( outList.get(playerId-1) !=null)
 				outList.get(playerId-1).clear();
@@ -143,7 +163,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private void init() {
 		initPlayersId(playerId);
 		viewControler = new ViewControler();
-		start = true;
+		gameStart = true;
 		isMyTrun = false;
 		gameScore = 0;
 		cardNumber = new Vector<Integer>();
@@ -159,6 +179,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		outList = new HashMap<Integer, List<Card>>();
 		bg= BitmapFactory.decodeResource(getResources(), R.drawable.bg);
 		currentPlayerId=-1;
+		timer=new Timer();
 	}
 
 	private void initPlayersId(int playerId2) {
@@ -222,14 +243,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		Log.i(TAG, screenHolder.toString());
 		Log.i(TAG, cardSizeHolder.toString());
 		temp.recycle();
-
 	}
 
 	public void surfaceCreated(SurfaceHolder holder) {
 		Log.i(TAG, " surfaceCreated");
-		initBeforeCreateView();
 		// 开始绘图进程
 		if (drawThread == null) {
+			initBeforeCreateView();
 			drawThread = new Thread(this);
 			drawThread.start();
 		}
@@ -241,9 +261,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		// Log.i(TAG," surfaceDestroyed");
+		 Log.i(TAG," surfaceDestroyed");
 		boolean reatry = true;
-		start = false;
+		gameStart = false;
+		if(timer!=null)
+		timer.cancel();
 		while (reatry) {
 			try {
 				drawThread.join();
@@ -266,8 +288,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			try {
 				canvas = holder.lockCanvas();
 //				if(frameCount++<4)
-				drawBackground(canvas);
 				
+				drawBackground(canvas);
 				if(!isMyTrun)
 					drawMeFirst(canvas, paint);
 				else
@@ -305,8 +327,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void drawRightPlayer(Canvas canvas, Paint paint) {
 		rightPlayerDrawer.initCanvas(canvas);
-		if(currentPlayerId==right_player_id&&!isMyTrun)
+		if(currentPlayerId==right_player_id&&!isMyTrun){
+			rightPlayerDrawer.drawTime(String.valueOf(TIME_REMIND), paint, RIGHT_CARDS_BASEX-cardSizeHolder.width+10, screenHolder.height/2);
 			rightPlayerDrawer.drawHandCardFlag(RIGHT_CARDS_BASEX-cardSizeHolder.width+10, cardSizeHolder.height);
+		}
 		
 		rightPlayerDrawer.drawOutList(outList.get(right_player_id - 1),
 				RIGHT_OUTCARDS_BASEX);
@@ -321,8 +345,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void drawLeftPlayer(Canvas canvas, Paint paint) {
 		leftPlayerDrawer.initCanvas(canvas);
-		if(currentPlayerId==left_player_id&&!isMyTrun)
+		if(currentPlayerId==left_player_id&&!isMyTrun){
+			leftPlayerDrawer.drawTime(String.valueOf(TIME_REMIND), paint, LEFT_CARDS_BASEX+cardSizeHolder.width+10, screenHolder.height/2);
 			leftPlayerDrawer.drawHandCardFlag(LEFT_CARDS_BASEX+cardSizeHolder.width+10, cardSizeHolder.height);
+		}
 		leftPlayerDrawer.drawOutList(outList.get(left_player_id - 1),
 				LEFT_OUTCARDS_BASEX);
 		leftPlayerDrawer.drawPlayer(left_player_id, paint, 10, TEXT_SIZE);
@@ -334,8 +360,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void drawMainPlayer(Canvas canvas, Paint paint) {
 		mainPlayerDrawer.initCanvas(canvas);
-		if (isMyTrun)
+		if (isMyTrun){
 			mainPlayerDrawer.drawButton(paint, BUTTON_BASE_HEIGHT);
+			mainPlayerDrawer.drawTime(String.valueOf(TIME_REMIND), paint,screenHolder.width/2, BUTTON_BASE_HEIGHT);
+		}
 		mainPlayerDrawer.drawPlayer(playerId, paint, 10.0f,
 				(float) screenHolder.height-5 );
 		mainPlayerDrawer.drawCardsNumber(cardNumber.get(playerId - 1), paint,
@@ -360,9 +388,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setStyle(Style.FILL);
 		paint.setAntiAlias(true);
-		while (start) {
-			doDraw(paint);
-			Sleep(33);
+		while (gameStart) {
+				doDraw(paint);
+				Sleep(33);
 		}
 	}
 
@@ -380,7 +408,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		if (eventListener == null)
 			throw new IllegalArgumentException(
 					"EventListener should not be null!!!");
-		Log.e(TAG, " onTouchEvent2");
 		eventListener.handleTouchEvent(event, this, cardList);
 		return super.onTouchEvent(event);
 	}

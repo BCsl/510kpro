@@ -168,7 +168,7 @@ public final class ViewfinderView extends View {
 		} else {
 
 			//画扫描框边上的角，总共8个部分
-//			paint.setColor(Color.GREEN);
+			paint.setColor(Color.GREEN);
 //			canvas.drawRect(frame.left, frame.top, frame.left + ScreenRate,
 //					frame.top + CORNER_WIDTH, paint);
 //			canvas.drawRect(frame.left, frame.top, frame.left + CORNER_WIDTH, frame.top
