@@ -3,6 +3,8 @@ package com.uc.fivetenkgame.view.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import android.content.Context;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -34,9 +36,9 @@ public abstract class EventListener {
 	 */
 	public final void handleTouchEvent(MotionEvent event, GameView view,
 			List<Card> cardList) {
-//		 只接受按下事件
-		 if(event.getAction()!=MotionEvent.ACTION_DOWN)
-		 return ;
+		// 只接受按下事件
+		if (event.getAction() != MotionEvent.ACTION_DOWN)
+			return;
 		float rawX = event.getRawX();
 		float rawY = event.getRawY();
 		int CARD_WIDTH = view.cardSizeHolder.width;
@@ -48,7 +50,8 @@ public abstract class EventListener {
 				CARD_INTENT, rawX, rawY, cardList);
 		// 卡牌被点击
 		if (card != null) {
-			((GameApplication)view.context.getApplicationContext()).playSound(Common.SOUND_BUTTON_PRESS);
+			((GameApplication) view.context.getApplicationContext())
+					.playSound(Common.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "被点击：" + card.getCardId());
 			if (card.isClicked()) {
 				card.setClick(false);
@@ -56,7 +59,7 @@ public abstract class EventListener {
 			} else {
 				card.setClick(true);
 				handList.add(card);
-				 
+
 			}
 			return;
 		}
@@ -67,14 +70,13 @@ public abstract class EventListener {
 				&& buttonClick(leftButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
 						rawX, rawY) && handList.size() >= 0) {
 			Log.e(TAG, "出牌：" + handList.toString());
-			if (handCard(handList)) {
-				// 出牌成功
-				view.getViewControler().setPlayersOutList(-1,
-						new ArrayList<Card>(handList));
+			if (handCard(handList, false)) {
+				// // 出牌成功
+				// view.getViewControler().setPlayersOutList(-1,
+				// new ArrayList<Card>(handList));
 				cardList.removeAll(handList);
-				// view.setMyTurn(false);
 				handList.clear();
-			} 
+			}
 			return;
 		}
 		if (view.isMyTurn()
@@ -85,8 +87,7 @@ public abstract class EventListener {
 				temp.setClick(false);
 			}
 			handList.clear();
-			handCard(null);
-			// view.setMyTurn(false);
+			handCard(null, false);
 			return;
 		}
 
@@ -150,14 +151,38 @@ public abstract class EventListener {
 		return null;
 	}
 
+	public boolean checkForTimeOut(Context context, int timeRemind) {
+		switch (timeRemind) {
+		case 3:
+			((GameApplication) context.getApplicationContext())
+					.playSound(Common.SOUND_SECOND_CALL_1_0);
+			break;
+
+		case 2:
+			((GameApplication) context.getApplicationContext())
+					.playSound(Common.SOUND_SECOND_CALL_0_1);
+			break;
+		case 1:
+			((GameApplication) context.getApplicationContext())
+					.playSound(Common.SOUND_SECOND_CALL_0_0);
+			break;
+		case 0:
+			handCard(null, true);
+			return true;
+		}
+
+		return false;
+
+	}
+
 	/**
 	 * 出牌操作(需要进行规则的判断)
 	 * 
-	 * @param handList
-	 *            准备出的牌 handList为NULL，则为放弃操作。
+	 * @param handList           准备出的牌 handList为NULL，则为放弃操作。
+	 * @param timeOut            是否超时了
 	 * 
 	 * @return 出牌成功返回false
 	 */
-	public abstract boolean handCard(List<Card> handList);
+	public abstract boolean handCard(List<Card> handList, boolean timeOut);
 
 }

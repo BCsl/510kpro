@@ -35,10 +35,12 @@ public class GameViewActivity extends Activity {
 	private AlertDialog winningDialog;// 其他玩家暂停时本玩家出现的dialog
 	private boolean ifPause;
 	private View winningView;
+	private GameView view ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.i(TAG, "oncreate");
 		// 隐藏标题栏
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// 隐藏状态栏
@@ -56,7 +58,7 @@ public class GameViewActivity extends Activity {
 
 		// 锁定横屏
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		GameView view = new GameView(getApplicationContext(), Player
+		 view = new GameView(getApplicationContext(), Player
 				.getInstance().getPlayerNumber());
 		Player.getInstance().setViewControler(view.getViewControler());
 		Player.getInstance().setEventListener();
@@ -64,14 +66,14 @@ public class GameViewActivity extends Activity {
 		Player.getInstance().initView();
 		((GameApplication) getApplication()).playSound(Common.SOUND_GAME_START);
 		setContentView(view);
-
 		initDialog();
 	}
+	
 
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			Log.i("gameViewActivity", "handler receive msg:" + msg);
+			Log.i(TAG, "handler receive msg:" + msg);
 			switch (msg.what) {
 			case Common.END_GAME:
 				String[] res = (String[]) msg.obj;
@@ -203,7 +205,7 @@ public class GameViewActivity extends Activity {
 	protected void onResume() {
 		Log.i(TAG, "onResume " + ifPause);
 		super.onResume();
-
+		view.initHolder();
 		if (ifPause) {
 			ifPause = false;
 			Player.getInstance().sendMsg(Common.GAME_RESUME);// 通知其他玩家恢复游戏

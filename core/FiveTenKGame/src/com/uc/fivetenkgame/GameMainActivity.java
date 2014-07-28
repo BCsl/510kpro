@@ -5,8 +5,6 @@ import java.util.TimerTask;
 
 import com.google.zxing.qr_codescan.MipcaActivityCapture;
 import com.uc.fivetenkgame.application.GameApplication;
-import com.uc.fivetenkgame.google.zxing.integration.IntentIntegrator;
-import com.uc.fivetenkgame.google.zxing.integration.IntentResult;
 import com.uc.fivetenkgame.network.util.Common;
 import my.example.fivetenkgame.R;
 import android.app.Activity;
@@ -38,6 +36,7 @@ public class GameMainActivity extends Activity {
 	private Button mHelpButton;
 	private Button mSettingButton;
 	private int EXIT_TIME;
+	private Timer task;
 	private WifiManager wifiManager;
 
 	@Override
@@ -226,7 +225,7 @@ public class GameMainActivity extends Activity {
 		Toast.makeText(GameMainActivity.this,
 				getResources().getString(R.string.exit_game_str),
 				Toast.LENGTH_SHORT).show();
-		Timer task = new Timer();
+		task = new Timer();
 		task.schedule(new TimerTask() {
 			@Override
 			public void run() {

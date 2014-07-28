@@ -36,7 +36,10 @@ public class GameApplication extends Application {
 		 soundMap.put(Common.SOUND_GAME_START, soundPool.load(getApplicationContext(), R.raw.start, 1));
 		 soundMap.put(Common.SOUND_WIN, soundPool.load(getApplicationContext(), R.raw.win, 1));
 		 soundMap.put(Common.SOUND_FAILD, soundPool.load(getApplicationContext(), R.raw.fail, 1));
-	}
+		 soundMap.put(Common.SOUND_SECOND_CALL_0_0, soundPool.load(getApplicationContext(), R.raw.second_call_0_0, 1));
+		 soundMap.put(Common.SOUND_SECOND_CALL_0_1, soundPool.load(getApplicationContext(), R.raw.second_call_0_1, 1));
+		 soundMap.put(Common.SOUND_SECOND_CALL_1_0, soundPool.load(getApplicationContext(), R.raw.second_call_1_0, 1));
+	}	
 	public void playSound(int soundKey){
 		if (getSharedPreferences(Common.TABLE_SETTING, MODE_PRIVATE)
 				.getBoolean(Common.SP_MUSIC_FLAG, true))

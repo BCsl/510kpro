@@ -55,7 +55,7 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	public void drawScore(int score, Paint paint, float x, float y) {
+	public final void drawScore(int score, Paint paint, float x, float y) {
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		paint.setColor(Color.rgb(255, 184, 15));
 		canvas.drawText("分数：" + score, x, y, paint);
@@ -84,9 +84,21 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	public void drawPlayer(int playerId, Paint paint, float x, float y) {
+	public final void drawPlayer(int playerId, Paint paint, float x, float y) {
 		paint.setTextSize(TEXT_SIZE);
 		paint.setColor(Color.rgb(255, 246, 143));
 		canvas.drawText("玩家" + playerId, x, y, paint);
+	}
+	/**
+	 * 画剩余时间
+	 * @param timeRemind		
+	 * @param paint
+	 * @param x
+	 * @param y
+	 */
+	public final void drawTime(String timeRemind,Paint paint, float x, float y){
+		paint.setTextSize(TEXT_SIZE);
+		paint.setColor(Color.rgb(255, 246, 143));
+		canvas.drawText(timeRemind, x, y, paint);
 	}
 }
