@@ -11,6 +11,8 @@ import com.uc.fivetenkgame.server.ServerContext;
  */
 public class GameEndState extends ServerState {
 
+	private int playAgainNum = 0;
+	
 	public GameEndState(ServerContext context) {
 		mServerContext = context;
 	}
@@ -26,7 +28,17 @@ public class GameEndState extends ServerState {
 					sb.append(model.getScore()+",");
 			mServerContext.getNetworkManager().sendMessage(sb.deleteCharAt(sb.length()-1).toString());
 		}
-		
+		else if( msg.startsWith(Common.PLAY_AGAIN) ){
+			++playAgainNum;
+			if( playAgainNum == Common.TOTAL_PLAYER_NUM ){
+				mServerContext.setState(new GameStartState(mServerContext));
+				mServerContext.handleMessage(null);
+			}
+		}
+		else if( msg.startsWith(Common.GAME_EXIT) ){
+			mServerContext.getNetworkManager().sendMessage(Common.GAME_EXIT);
+			mServerContext.resetServer();
+		}
 	}
 
 	private int winnerId() {
