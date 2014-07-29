@@ -24,7 +24,7 @@ public class Common {
 	//网络消息头标号定义
 	public static final String PLAYER_ACCEPTED = "1#";//连接成功信号：1#+当前玩家序号
 	public static final String PLAYER_REFUSED = "2#";//连接失败信号:2#
-	//public static final String PLAYER_NUMBER_UPDATE = "10#";
+	
 	public static final String BEGIN_GAME = "3#";//游戏开始信号：3#+玩家序号+牌号+ ，+牌号....
 	public static final String YOUR_TURN = "4#";//提醒玩家出牌信号：4#+玩家序号
 	public static final String PLAY_END = "5#";//出牌转发信号：5#+玩家号+牌号 + , + .... //+桌面分数+玩家1牌数+玩家2牌数+玩家3牌数（后4位）
@@ -38,6 +38,8 @@ public class Common {
 	public static final String GAME_PAUSE = "10#";//某个玩家暂停游戏，所有玩家暂停
 	public static final String GAME_RESUME = "11#";//所有玩家恢复游戏
 	public static final String GAME_EXIT = "12#";//某个玩家退出游戏，所有玩家退出
+	
+	public static final String PLAYER_NAME = "13#";//1.server接收：13#+玩家序号+玩家名字    2.player接收：13#玩家1名字+玩家2名字+玩家3名字
 	
 	// handler消息处理编号
 	public static final int UPDATE_WAITING_PLAYER_NUM = 1;
