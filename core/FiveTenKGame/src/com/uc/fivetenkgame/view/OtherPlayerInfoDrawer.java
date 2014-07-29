@@ -5,7 +5,7 @@
  *@author chensl@ucweb.com
  *@version 
  */
-package com.uc.fivetenkgame.view.util;
+package com.uc.fivetenkgame.view;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ import android.graphics.Paint;
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.util.CardGenerator;
 
 /**
  * 画其他玩家信息类（垂直方向上的布局）

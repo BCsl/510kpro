@@ -5,7 +5,7 @@
  *@author chensl@ucweb.com
  *@version 
  */
-package com.uc.fivetenkgame.view.util;
+package com.uc.fivetenkgame.view;
 
 import java.util.List;
 

@@ -76,46 +76,48 @@ public final class R {
         public static final int bg=0x7f020036;
         public static final int cardbg1=0x7f020037;
         public static final int chupai=0x7f020038;
-        public static final int ic_launcher=0x7f020039;
-        public static final int main_bg=0x7f02003a;
-        public static final int main_button=0x7f02003b;
-        public static final int main_button_normal=0x7f02003c;
-        public static final int main_button_press=0x7f02003d;
-        public static final int pass=0x7f02003e;
+        public static final int edit_text=0x7f020039;
+        public static final int ic_launcher=0x7f02003a;
+        public static final int main_bg=0x7f02003b;
+        public static final int main_button=0x7f02003c;
+        public static final int main_button_normal=0x7f02003d;
+        public static final int main_button_press=0x7f02003e;
+        public static final int pass=0x7f02003f;
     }
     public static final class id {
         public static final int about_version_code=0x7f06000e;
         /**  Messages IDs 
          */
         public static final int auto_focus=0x7f060000;
-        public static final int close_qrcode_id=0x7f060025;
-        public static final int close_radio_id=0x7f060022;
-        public static final int close_wifi_id=0x7f06001e;
+        public static final int close_qrcode_id=0x7f060026;
+        public static final int close_radio_id=0x7f060023;
+        public static final int close_wifi_id=0x7f06001f;
         public static final int decode=0x7f060001;
         public static final int decode_failed=0x7f060002;
         public static final int decode_succeeded=0x7f060003;
+        public static final int edit_user_name=0x7f06001b;
         public static final int encode_failed=0x7f060004;
         public static final int encode_succeeded=0x7f060005;
         public static final int gridview=0x7f06000c;
         public static final int help_text_id=0x7f060012;
-        public static final int ip_addr_text_ID=0x7f060026;
-        public static final int ip_qrcode_ID=0x7f060027;
+        public static final int ip_addr_text_ID=0x7f060027;
+        public static final int ip_qrcode_ID=0x7f060028;
         public static final int launch_product_query=0x7f060006;
         public static final int main_help_id=0x7f060016;
         public static final int main_joid_game_id=0x7f060015;
         public static final int main_new_game_id=0x7f060014;
         public static final int main_setting_id=0x7f060017;
-        public static final int music_radiogroup_id=0x7f060020;
-        public static final int music_volume_text_id=0x7f06001f;
-        public static final int name_autotext_ID=0x7f060029;
+        public static final int music_radiogroup_id=0x7f060021;
+        public static final int music_volume_text_id=0x7f060020;
+        public static final int name_autotext_ID=0x7f06002a;
         public static final int ok_button_ID=0x7f060019;
-        public static final int open_qrcode_id=0x7f060024;
-        public static final int open_radio_id=0x7f060021;
-        public static final int open_wifi_id=0x7f06001d;
+        public static final int open_qrcode_id=0x7f060025;
+        public static final int open_radio_id=0x7f060022;
+        public static final int open_wifi_id=0x7f06001e;
         public static final int preview_view=0x7f060010;
-        public static final int qrcode_radiogroup_id=0x7f060023;
+        public static final int qrcode_radiogroup_id=0x7f060024;
         public static final int quit=0x7f060007;
-        public static final int ready_player_text_ID=0x7f060028;
+        public static final int ready_player_text_ID=0x7f060029;
         public static final int restart_preview=0x7f060008;
         public static final int return_scan_result=0x7f060009;
         public static final int scrollview_id=0x7f060013;
@@ -124,14 +126,14 @@ public final class R {
         public static final int server_ip_text_ID=0x7f060018;
         public static final int setting_text_id=0x7f06001a;
         public static final int split=0x7f06000f;
-        public static final int text_score_player1=0x7f06002b;
-        public static final int text_score_player2=0x7f06002c;
-        public static final int text_score_player3=0x7f06002d;
-        public static final int text_winning_player=0x7f06002a;
+        public static final int text_score_player1=0x7f06002c;
+        public static final int text_score_player2=0x7f06002d;
+        public static final int text_score_player3=0x7f06002e;
+        public static final int text_winning_player=0x7f06002b;
         public static final int viewfinder_view=0x7f060011;
         public static final int webview=0x7f06000d;
-        public static final int wifi_radiogroup_id=0x7f06001c;
-        public static final int wifi_text_id=0x7f06001b;
+        public static final int wifi_radiogroup_id=0x7f06001d;
+        public static final int wifi_text_id=0x7f06001c;
     }
     public static final class layout {
         public static final int activity_capture=0x7f030000;
@@ -155,11 +157,13 @@ public final class R {
         public static final int win=0x7f040008;
     }
     public static final class string {
+        public static final int COMPLETION_HINT=0x7f070025;
         public static final int DIALOG_DEFAULT_MESSAGE=0x7f070021;
         public static final int DIALOG_DEFAULT_NO=0x7f070023;
         public static final int DIALOG_DEFAULT_TITLE=0x7f070020;
         public static final int DIALOG_DEFAULT_YES=0x7f070022;
-        public static final int MEDIA_UNMOUNTED=0x7f070024;
+        public static final int INPUT_USER_NAME=0x7f070024;
+        public static final int USER_NAME=0x7f070026;
         public static final int app_name=0x7f070000;
         public static final int background_music_str=0x7f070012;
         public static final int close_str=0x7f070016;

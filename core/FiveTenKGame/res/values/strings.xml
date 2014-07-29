@@ -50,5 +50,7 @@
 	<string  name ="DIALOG_DEFAULT_MESSAGE">你的手机没有安装条码扫描器，现在安装?</string>
 	<string  name ="DIALOG_DEFAULT_YES">确定</string>
 	<string  name ="DIALOG_DEFAULT_NO">取消</string>
-	<string name="MEDIA_UNMOUNTED">请插入外存储设备</string>
+	<string  name ="INPUT_USER_NAME">请输入用户名，最大长度为5。</string>
+	<string  name ="COMPLETION_HINT">最近3条记录</string>
+	<string  name ="USER_NAME">用户名:</string>
 </resources>

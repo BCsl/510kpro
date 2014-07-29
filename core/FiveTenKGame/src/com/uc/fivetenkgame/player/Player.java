@@ -16,9 +16,9 @@ import com.uc.fivetenkgame.ruleController.Rule;
 import com.uc.fivetenkgame.state.State;
 import com.uc.fivetenkgame.state.playerstate.InitState;
 import com.uc.fivetenkgame.state.playerstate.PlayerState;
+import com.uc.fivetenkgame.view.EventListener;
+import com.uc.fivetenkgame.view.IViewControler;
 import com.uc.fivetenkgame.view.entity.Card;
-import com.uc.fivetenkgame.view.util.EventListener;
-import com.uc.fivetenkgame.view.util.IViewControler;
 
 /**
  * 玩家类, 修改：player类不再作为抽象类，与clientplayer类合并
@@ -376,5 +376,17 @@ public class Player implements PlayerContext {
 							+ String.valueOf(mPlayerModel.getRemainCardsNum()));
 			setDoneHandCards(true);
 		}
+	}
+
+	@Override
+	public String getPlayerName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setPlayersName(int playerId, String playerName) {
+		// TODO Auto-generated method stub
+		
 	}
 }
