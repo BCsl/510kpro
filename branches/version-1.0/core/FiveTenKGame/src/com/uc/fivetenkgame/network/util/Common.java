@@ -38,9 +38,10 @@ public class Common {
 	public static final String GAME_PAUSE = "10#";//某个玩家暂停游戏，所有玩家暂停
 	public static final String GAME_RESUME = "11#";//所有玩家恢复游戏
 	public static final String GAME_EXIT = "12#";//某个玩家退出游戏，所有玩家退出
-	
+
 	public static final String PLAYER_NAME = "13#";//1.server接收：13#+玩家序号+玩家名字    2.player接收：13#玩家1名字+玩家2名字+玩家3名字
-	
+	public static final String PLAY_AGAIN = "14#"; //重玩消息
+		
 	// handler消息处理编号
 	public static final int UPDATE_WAITING_PLAYER_NUM = 1;
 	public static final int START_GAME = 2;
