@@ -71,6 +71,7 @@ public class Common {
 //	public static final int SOUND_SECOND_CALL_2 =6;
 	public static final int SOUND_OUTPUT_CARDS =7;
 	public static final int SOUND_PASS =8;
+	public static final int SOUND_BEEP =9;
 	
 	public static void setOrder(List<Card> list){
 		Collections.sort(list, new Comparator<Card>() {
