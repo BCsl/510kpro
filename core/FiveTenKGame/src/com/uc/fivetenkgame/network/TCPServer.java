@@ -85,7 +85,7 @@ public class TCPServer {
 			//加上消息尾
 			msg = msg.concat(Common.MESSAGE_END);
 			mOutputStream.write(msg.getBytes(), 0, msg.getBytes().length);
-			mOutputStream.flush();
+			//mOutputStream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
