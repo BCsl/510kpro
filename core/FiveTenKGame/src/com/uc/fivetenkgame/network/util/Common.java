@@ -58,6 +58,8 @@ public class Common {
 	//消息数据尾
 	public static final String MESSAGE_END = "#@";
 	
+	//sharepreference相关
+	public static final String TABLE_PLAYERS="players";
 	public static final String TABLE_SETTING="setting";
 	public static final String SP_QRCODE_FLAG="qrcode";
 	public static final String SP_MUSIC_FLAG="music";
