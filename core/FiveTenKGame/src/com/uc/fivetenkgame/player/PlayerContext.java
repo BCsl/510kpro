@@ -130,4 +130,8 @@ public interface PlayerContext {
 	public void playerGiveUp(int playerId);
 	
 	public void resetPlayer();
+	
+	public String getPlayerName();
+	
+	public void setPlayersName(int playerId,String playerName);
 }	

@@ -39,7 +39,15 @@ public class WaitForStartingState extends PlayerState {
 				mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
 				mPlayerContext.handle(null);
 			}
-		} else if (msg.startsWith(Common.PLAYER_NUMBER_UPDATE)) {
+		} else if(msg.startsWith(Common.PLAYER_NAME)){
+			msg = msg.substring(Common.PLAYER_NAME.length());//玩家1名字+玩家2名字+玩家3名字
+			String[]names = msg.split(",");
+			int index = 1;
+			for(String name:names){
+				mPlayerContext.setPlayersName(index++, name);
+			}
+			
+		}else if (msg.startsWith(Common.PLAYER_NUMBER_UPDATE)) {
 			int playerNumber = Integer.parseInt(msg.substring(2, 3).trim());
 			mPlayerContext
 					.getHandler()

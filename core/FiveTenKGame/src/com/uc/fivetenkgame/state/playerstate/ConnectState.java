@@ -13,7 +13,6 @@ import com.uc.fivetenkgame.player.PlayerContext;
 public class ConnectState extends PlayerState {
 	public ConnectState(PlayerContext context) {
 		super(context);
-		//mThread.start();
 	}
 
 	/**
@@ -30,6 +29,7 @@ public class ConnectState extends PlayerState {
 			
 			int playerNumber = Integer.parseInt(msg.substring(2,3).trim());
 			mPlayerContext.setPlayerNumber(playerNumber);//设置玩家序号
+			mPlayerContext.sendMsg(Common.PLAYER_NAME+playerNumber+","+mPlayerContext.getPlayerName());//将玩家名字发给server
 			Log.i("set Player Number", String.valueOf(playerNumber));
 			mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
 			mPlayerContext.handle(null);
