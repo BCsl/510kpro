@@ -352,6 +352,9 @@ public class Player implements PlayerContext {
 	@Override
 	public void resetPlayer() {
 		mPlayerModel = new PlayerModel();
+		doneHandCard = false;
+		currentPlayer = 0;
+		formerCardList = null;
 		mNetworkManager.reset();
 		Log.i("Player", "reset player");
 	}
