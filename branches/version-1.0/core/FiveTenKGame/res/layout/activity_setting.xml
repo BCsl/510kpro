@@ -22,11 +22,39 @@
             android:textColor="@android:color/black"
             android:textSize="25sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/USER_NAME"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="17sp" 
+                android:singleLine="true"/>
+
+            <TextView
+                android:id="@+id/edit_user_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/edit_text"
+                android:gravity="right|fill"
+                android:textSize="17sp" 
+                android:textColor="@android:color/holo_orange_light"
+                android:singleLine="true"/>
+                
+        </LinearLayout>
+
         <TextView
-            android:id="@+id/wifi_text_id" 
+            android:id="@+id/wifi_text_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="15dp"
             android:text="@string/wifi_setting_str"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
@@ -55,7 +83,7 @@
                 android:text="@string/close_str"
                 android:textColor="@android:color/black" />
         </RadioGroup>
-        
+
         <TextView
             android:id="@+id/music_volume_text_id"
             android:layout_width="wrap_content"

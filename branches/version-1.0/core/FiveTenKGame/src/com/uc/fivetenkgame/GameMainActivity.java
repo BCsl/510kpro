@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -39,12 +38,6 @@ public class GameMainActivity extends Activity {
 	private int EXIT_TIME;
 	private Timer task;
 	private WifiManager wifiManager;
-	private AlertDialog inputNameDialog;
-	private View inputNameDialogView;
-	private AutoCompleteTextView tvName;
-	private String name;
-	private enum Type{NEW_GAME,JOIN_GAME}
-	private Type type;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,57 +52,6 @@ public class GameMainActivity extends Activity {
 		mJoinGameButton.setOnClickListener(mClickListener);
 		mHelpButton.setOnClickListener(mClickListener);
 		mSettingButton.setOnClickListener(mClickListener);
-		inputNameDialogView=getLayoutInflater().inflate(R.layout.dialog_input_name, null);
-		tvName=(AutoCompleteTextView) inputNameDialogView.findViewById(R.id.name_autotext_ID);
-		inputNameDialog=new AlertDialog.Builder(this).setTitle(getResources().getString(R.string.input_user_name))
-				.setView(inputNameDialogView).setPositiveButton(getResources().getString(R.string.confirm_str),  
-						new DialogInterface.OnClickListener()
-					{
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						name=tvName.getText().toString();
-						if(type==Type.JOIN_GAME){
-							if (wifiManager.isWifiEnabled()) {
-								// 在这里开启二维码扫描
-								if (!getApplicationContext().getSharedPreferences(
-										Common.TABLE_SETTING, MODE_PRIVATE).getBoolean(
-										Common.SP_QRCODE_FLAG, false)) {
-									Intent intent = new Intent();
-									intent.setClass(GameMainActivity.this,
-											InputServerIPActivity.class);
-									startActivityForResult(intent, REQUEST_SERVER_IP);
-								} else {
-									Intent intent = new Intent();
-									intent.setClass(GameMainActivity.this,
-											MipcaActivityCapture.class);
-									intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-									startActivityForResult(intent, REQUEST_SCAN_IP);
-									// IntentIntegrator integrator = new IntentIntegrator(
-									// GameMainActivity.this);
-									// integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
-								}
-							} else {
-								Toast.makeText(getApplicationContext(), "请打开wifi",
-										Toast.LENGTH_SHORT).show();
-							}
-						}else
-							if(type==Type.NEW_GAME){
-								if (wifiManager.isWifiEnabled()) {
-								Intent intent = new Intent();
-								intent.putExtra("isServer", true);
-								intent.putExtra("name", name);
-								intent.setClass(GameMainActivity.this,
-										WaitingGameActivity.class);
-								startActivity(intent);
-							} else
-								Toast.makeText(getApplicationContext(), "请打开wifi",
-										Toast.LENGTH_SHORT).show();
-							}
-						
-						
-					}
-				}).create();
-		inputNameDialog.setCancelable(true);
 		checkAndOpenWifi();
 	}
 
@@ -147,20 +89,45 @@ public class GameMainActivity extends Activity {
 			dialog.show();
 		}
 	}
-	
 
 	private OnClickListener mClickListener = new OnClickListener() {
-
 		public void onClick(View v) {
 			((GameApplication) getApplication())
 					.playSound(Common.SOUND_BUTTON_PRESS);
 			if (v == mNewGameButton) {
-				type=Type.NEW_GAME;
-				showInputNameDialog();
-			} 
-			else if (v == mJoinGameButton) {
-				type=Type.JOIN_GAME;
-				showInputNameDialog();
+				if (wifiManager.isWifiEnabled()) {
+					Intent intent = new Intent();
+					intent.putExtra("isServer", true);
+					intent.setClass(GameMainActivity.this,
+							WaitingGameActivity.class);
+					startActivity(intent);
+				} else
+					Toast.makeText(getApplicationContext(), "请打开wifi",
+							Toast.LENGTH_SHORT).show();
+			} else if (v == mJoinGameButton) {
+				if (wifiManager.isWifiEnabled()) {
+					// 在这里开启二维码扫描
+					if (!getApplicationContext().getSharedPreferences(
+							Common.TABLE_SETTING, MODE_PRIVATE).getBoolean(
+							Common.SP_QRCODE_FLAG, false)) {
+						Intent intent = new Intent();
+						intent.setClass(GameMainActivity.this,
+								InputServerIPActivity.class);
+						startActivityForResult(intent, REQUEST_SERVER_IP);
+					} else {
+						Intent intent = new Intent();
+						intent.setClass(GameMainActivity.this,
+								MipcaActivityCapture.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivityForResult(intent, REQUEST_SCAN_IP);
+						// IntentIntegrator integrator = new IntentIntegrator(
+						// GameMainActivity.this);
+						// integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
+					}
+				} else {
+					Toast.makeText(getApplicationContext(), "请打开wifi",
+							Toast.LENGTH_SHORT).show();
+				}
 			} else if (v == mSettingButton) {
 				Intent intent = new Intent();
 				intent.setClass(GameMainActivity.this,
@@ -184,7 +151,6 @@ public class GameMainActivity extends Activity {
 					Intent intent = new Intent();
 					intent.putExtra("isServer", false);
 					intent.putExtra("IP", ipAddr);
-					intent.putExtra("name", name);
 					intent.setClass(GameMainActivity.this,
 							WaitingGameActivity.class);
 					startActivity(intent);
@@ -202,7 +168,6 @@ public class GameMainActivity extends Activity {
 						Intent intent = new Intent();
 						intent.putExtra("isServer", false);
 						intent.putExtra("IP", ipAddr);
-						intent.putExtra("name", name);
 						intent.setClass(GameMainActivity.this,
 								WaitingGameActivity.class);
 						startActivity(intent);
@@ -210,8 +175,8 @@ public class GameMainActivity extends Activity {
 						Toast.makeText(
 								GameMainActivity.this,
 								getResources().getString(
-										R.string.ip_scan_error_str).replace("#", ipAddr),
-								Toast.LENGTH_LONG).show();
+										R.string.ip_scan_error_str).replace(
+										"#", ipAddr), Toast.LENGTH_LONG).show();
 				}
 			}
 		}// REQUEST_SCAN_IP
@@ -239,11 +204,6 @@ public class GameMainActivity extends Activity {
 		// }
 		// }
 		super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	private  void showInputNameDialog() {
-		if(inputNameDialog!=null)
-		inputNameDialog.show();
 	}
 
 	@Override

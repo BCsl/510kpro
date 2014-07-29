@@ -5,14 +5,15 @@
  *@author chensl@ucweb.com
  *@version 
  */
-package com.uc.fivetenkgame.view.util;
+package com.uc.fivetenkgame.view;
+
+import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
+import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
-import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 
 /**
  * 画界面的基类

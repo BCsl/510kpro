@@ -64,8 +64,11 @@ public class Common {
 	//sharepreferenceœ‡πÿ
 	public static final String TABLE_PLAYERS="players";
 	public static final String TABLE_SETTING="setting";
+	public static final String MY_NAME="name";
+	public static final String TABLE_HISTORY="history";
 	public static final String SP_QRCODE_FLAG="qrcode";
 	public static final String SP_MUSIC_FLAG="music";
+	public static final String SP_HISTORY="history";
 	
 	public static final int SOUND_BUTTON_PRESS=0;
 	public static final int SOUND_GAME_START=1;
@@ -77,6 +80,7 @@ public class Common {
 	public static final int SOUND_OUTPUT_CARDS =7;
 	public static final int SOUND_PASS =8;
 	public static final int SOUND_BEEP =9;
+	
 	
 	public static void setOrder(List<Card> list){
 		Collections.sort(list, new Comparator<Card>() {

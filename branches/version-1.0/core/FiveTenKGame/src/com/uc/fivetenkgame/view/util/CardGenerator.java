@@ -5,7 +5,6 @@ import java.util.Map;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 /**
  * 把手牌的序号转换为对应的资源名
@@ -54,7 +53,6 @@ public class CardGenerator {
 	}
 
 	public static Bitmap getBitmap(Context con, String resourceName) {
-		String TAG = "getBitmap";
 		if (CARDS_BITMAP.get(resourceName) == null) {
 //			Log.i(TAG, resourceName +"不存在！");
 			CARDS_BITMAP.put(resourceName, BitmapFactory.decodeResource(
