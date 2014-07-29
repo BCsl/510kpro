@@ -51,11 +51,33 @@ public class BasicRule implements Rule {
 				&& cType != CardType.c510K && cType != cType2) {
 			return 0;
 		}
+
+		// 张数大于4的炸弹
+		if (cType == CardType.c4 && cType2 != CardType.c4) {
+			if (cardList1.size() > 4)
+				return 1;
+		}
+		if (cType2 == CardType.c4 && cType != CardType.c4) {
+			if (cardList2.size() > 4)
+				return 0;
+		}
+		if (cType == CardType.c4 && cType2 == CardType.c4) {
+			if (cardList1.size() > cardList2.size()) {
+				return 1;
+			} else if (cardList1.size() == cardList2.size()) {
+				if (BasicRule.getValue(cardList1.get(0)) > BasicRule
+						.getValue(cardList2.get(0)))
+					return 1;
+				return 0;
+			}
+			return 0;
+		}
+
 		// 比较出的牌是否要大
 		// 510k和纯510K
 		if (cType == CardType.c510K) {
 			if (cType2 == CardType.c510K
-					&& BasicRule.getColor(cardList1.get(0)) < BasicRule
+					&& BasicRule.getColor(cardList1.get(0)) <= BasicRule
 							.getColor(cardList2.get(0))) {
 				return 0;
 			}
@@ -69,23 +91,14 @@ public class BasicRule implements Rule {
 
 		if (cType2 == CardType.c510K || cType2 == CardType.c510k)
 			return 0;
+		
+		//张数等于4的炸弹
+		if (cType == CardType.c4)
+			return 1;
+		if (cType2 == CardType.c4)
+			return 0;
 
-		// 我是炸弹
-		if (cType == CardType.c4) {
-			if (cType2 != CardType.c4) {
-				return 1;
-			} else {
-				if (cardList1.size() != cardList2.size()) {
-					return 0;
-				} else {
-					if (BasicRule.getValue(cardList1.get(0)) > BasicRule
-							.getValue(cardList2.get(0)))
-						return 1;
-				}
-			}
-		}
-
-		// 单牌,对子,3带,4炸弹
+		// 单牌,对子,3带
 		if (cType == CardType.c1 || cType == CardType.c2
 				|| cType == CardType.c3) {
 			if (BasicRule.getValue(cardList1.get(0)) <= BasicRule
@@ -147,11 +160,8 @@ public class BasicRule implements Rule {
 				&& BasicRule.getColor(list.get(0)) == 5)
 			return CardType.ckk;
 
-		if (len >= 4
-				&& BasicRule.judgeEveryCardsTheSame(list))
+		if (len >= 4 && BasicRule.judgeEveryCardsTheSame(list))
 			return CardType.c4;
-
-		// *******判断510k和纯510k**************//
 
 		// 单牌,对子，3不带，4个一样炸弹
 		if (len <= 4) { // 如果第一个和最后个相同，说明全部相同
@@ -181,10 +191,10 @@ public class BasicRule implements Rule {
 							.getValue(list.get(2)) == 5 && (BasicRule
 							.getValue(list.get(1)) == 10 && (BasicRule
 							.getValue(list.get(0)) == 13))))) {
-				if ((BasicRule.getValue(list.get(0)) == BasicRule.getValue(list
+				if ((BasicRule.getColor(list.get(0)) == BasicRule.getColor(list
 						.get(1)))
-						&& (BasicRule.getValue(list.get(2)) == BasicRule
-								.getValue(list.get(1)))) {
+						&& (BasicRule.getColor(list.get(2)) == BasicRule
+								.getColor(list.get(1)))) {
 					return CardType.c510K;
 				} else {
 					return CardType.c510k;
@@ -438,7 +448,7 @@ public class BasicRule implements Rule {
 		if (cardNO == 54)
 			return "a5_17";
 
-		switch ((cardNO-1) / 13) {
+		switch ((cardNO - 1) / 13) {
 		case 0:
 			prefix.append("a2_");
 			break;

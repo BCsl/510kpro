@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import com.google.zxing.qr_codescan.MipcaActivityCapture;
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.network.util.Common;
+
 import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -38,6 +40,7 @@ public class GameMainActivity extends Activity {
 	private int EXIT_TIME;
 	private Timer task;
 	private WifiManager wifiManager;
+	private static Toast mToast;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +72,9 @@ public class GameMainActivity extends Activity {
 								public void onClick(DialogInterface dialog,
 										int which) {
 									if (wifiManager.setWifiEnabled(true))
-										Toast.makeText(getApplicationContext(),
-												"WiFi已开启", Toast.LENGTH_SHORT)
-												.show();
+										showToast("WiFi已开启", 1000);
 									else
-										Toast.makeText(getApplicationContext(),
-												"WiFi打开失败", Toast.LENGTH_SHORT)
-												.show();
+										showToast("WiFi打开失败", 1000);
 								}
 							})
 					.setNegativeButton("取消",
@@ -105,8 +104,7 @@ public class GameMainActivity extends Activity {
 							WaitingGameActivity.class);
 					startActivity(intent);
 				} else
-					Toast.makeText(getApplicationContext(), "请打开wifi",
-							Toast.LENGTH_SHORT).show();
+					showToast("请打开wifi", 1000);
 			} else if (v == mJoinGameButton) {
 				if (wifiManager.isWifiEnabled()) {
 					// 在这里开启二维码扫描
@@ -128,8 +126,7 @@ public class GameMainActivity extends Activity {
 						// integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
 					}
 				} else {
-					Toast.makeText(getApplicationContext(), "请打开wifi",
-							Toast.LENGTH_SHORT).show();
+					showToast("请打开wifi", 1000);
 				}
 
 			} else if (v == mSettingButton) {
@@ -177,11 +174,10 @@ public class GameMainActivity extends Activity {
 								WaitingGameActivity.class);
 						startActivity(intent);
 					} else
-						Toast.makeText(
-								GameMainActivity.this,
+						showToast(
 								getResources().getString(
-										R.string.ip_scan_error_str).replace("#", ipAddr),
-								Toast.LENGTH_LONG).show();
+										R.string.ip_scan_error_str).replace(
+										"#", ipAddr), 2000);
 				}
 			}
 		}// REQUEST_SCAN_IP
@@ -222,9 +218,7 @@ public class GameMainActivity extends Activity {
 		++EXIT_TIME;
 		if (EXIT_TIME == 2)
 			finish();
-		Toast.makeText(GameMainActivity.this,
-				getResources().getString(R.string.exit_game_str),
-				Toast.LENGTH_SHORT).show();
+		showToast(getResources().getString(R.string.exit_game_str), 2000);
 		task = new Timer();
 		task.schedule(new TimerTask() {
 			@Override
@@ -242,4 +236,20 @@ public class GameMainActivity extends Activity {
 		android.os.Process.killProcess(pid);
 	}
 
+	private static Handler mToastHandler = new Handler();
+	private static Runnable toastRunnable = new Runnable() {
+		public void run() {
+			mToast.cancel();
+		}
+	};
+
+	public void showToast(String text, int duration) {
+		if (mToast != null)
+			mToast.setText(text);
+		else
+			mToast = Toast.makeText(GameMainActivity.this, text,
+					Toast.LENGTH_SHORT);
+		mToastHandler.postDelayed(toastRunnable, duration);
+		mToast.show();
+	}
 }

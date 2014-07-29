@@ -41,6 +41,7 @@ public class WaitingGameActivity extends Activity {
 	private TextView mReadyPlayer;
 	private boolean isServer;
 	private boolean isConnect = false;
+	private static Toast mToast;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +94,7 @@ public class WaitingGameActivity extends Activity {
 				Log.i(TAG, "延迟检查连接情况");
 				if (!isConnect) {
 					finish();
-					Toast.makeText(WaitingGameActivity.this, "连接异常",
-							Toast.LENGTH_SHORT).show();
+					showToast("连接异常");
 				}
 			}
 		}, 2000);
@@ -114,9 +114,7 @@ public class WaitingGameActivity extends Activity {
 						+ num + "人");
 				break;
 			case Common.START_GAME:
-				Toast.makeText(WaitingGameActivity.this,
-						getResources().getString(R.string.start_game_str),
-						Toast.LENGTH_SHORT).show();
+				showToast(getResources().getString(R.string.start_game_str));
 				Intent intent = new Intent();
 				intent.putExtra("isServer", isServer);
 				intent.setClass(WaitingGameActivity.this,
@@ -155,8 +153,7 @@ public class WaitingGameActivity extends Activity {
 			case Common.PLAYER_LEFT:
 				Integer number = (Integer) (msg.obj);
 				Log.i("PLAYER_LEFT:", String.valueOf(number));
-				Toast.makeText(WaitingGameActivity.this, "连接异常",
-						Toast.LENGTH_SHORT).show();
+				showToast("连接异常");
 				finish();
 				break;
 			}
@@ -172,4 +169,21 @@ public class WaitingGameActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	};
+
+	private static Handler mToastHandler = new Handler();
+	private static Runnable toastRunnable = new Runnable() {
+		public void run() {
+			mToast.cancel();
+		}
+	};
+
+	public void showToast(String text) {
+		if (mToast != null)
+			mToast.setText(text);
+		else
+			mToast = Toast.makeText(WaitingGameActivity.this, text,
+					Toast.LENGTH_SHORT);
+		mToastHandler.postDelayed(toastRunnable, 1000);
+		mToast.show();
+	}
 }
