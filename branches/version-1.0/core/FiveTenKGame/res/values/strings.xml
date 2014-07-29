@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">FiveTenKGame</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="new_game_str">新建游戏</string>
+    <string name="join_game_str">加入游戏</string>
+    <string name="help_str">帮助</string>
+    <string name="setting_str">设置</string>
+    <string name="scan_qrcode_str">二维码扫描</string>
+    <string name="join_str">加入</string>
+    <string name="waiting_str">等待游戏</string>
+    <string name="ready_player_str">当前游戏人数：</string>
+    <string name="input_server_ip_hint">输入服务器地址</string>
+    <string name="confirm_str">确定</string>
+    <string name="start_game_str">开始游戏</string>
+    <string name="my_ip_addr_str">我的ip地址：</string>
+    <string name="ip_input_error_str">请输入正确ip</string>
+    <string name="ip_scan_error_str">扫描结果#非ip地址，请重试。</string>
+    <string name="exit_game_str">再按一次退出游戏</string>
+    <string name="help_rule_str">单张：任意一张单牌。
+	    						\n顺子：任意五张或者五张以上点数相连的牌，2不能出现在顺子中。
+	    						\n对子：任意两张点数相同的牌。
+								\n连对：两对或两对以上点数相连的牌，如：5566。2不能出现在连对中。
+								\n三张：任意三张点数相同的牌。
+								\n三顺：两组或两组以上点数相连的三张牌，如：555666；555666777。2不能出现在三顺中。
+								\n三带一：三张+一张和三张本身点数不同的牌，如555+7。
+								\n三带二：三张+一对（对子）牌，如555+77
+								\n三顺带一：三顺+数量相同的，和三顺点数不同的单张牌（单张之间不可以重复），如：555666+89
+								\n三顺带二：三顺+数量相同的，和三顺点数不同的对子牌（对子之间不可以重复），如555666+8899
+								\n五十K：单张的5、10、K组成的牌型。
+								\n纯五十K：单张的5、10、K组成的牌型，且三张牌的花色相同。
+								\n炸弹：四张点数相同的牌。如6666。</string>
+    <string name="background_music_str">背景音乐</string>
+    <string name="music_volume_str">音量开关</string>
+    <string name="wifi_setting_str">wifi开关</string>
+    <string name="open_str">开</string>
+    <string name="close_str">关</string>
+    <string name="scan_text">对准房主二维码, 即可自动扫描</string>
+    <string name="qrcode_settting_str">二维码扫描</string> 
+    <string name="time_out_str"></string>
+    <string name="game_over">游戏结束</string>
+	<string name="winner">玩家#胜利</string>
+	<string name="player1_score">玩家1分数：#</string>
+	<string name="player2_score">玩家2分数：#</string>
+	<string name="player3_score">玩家3分数：#</string>
+	
+	<string  name ="DIALOG_DEFAULT_TITLE">安装条码扫描器</string>
+	<string  name ="DIALOG_DEFAULT_MESSAGE">你的手机没有安装条码扫描器，现在安装?</string>
+	<string  name ="DIALOG_DEFAULT_YES">确定</string>
+	<string  name ="DIALOG_DEFAULT_NO">取消</string>
+	<string name="MEDIA_UNMOUNTED">请插入外存储设备</string>
+</resources>

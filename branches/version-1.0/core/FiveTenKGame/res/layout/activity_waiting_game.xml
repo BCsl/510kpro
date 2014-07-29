@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}" >
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:orientation="vertical">
+    <TextView 
+        android:id="@+id/ip_addr_text_ID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/my_ip_addr_str"
+        android:gravity="center_horizontal"
+        />
+    <ImageView android:id="@+id/ip_qrcode_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        >
+        
+    </ImageView>"
+    <TextView 
+        android:layout_marginTop="10dp"
+        android:id="@+id/ready_player_text_ID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ready_player_str"
+        android:gravity="center_horizontal"
+        />
+	</LinearLayout>
+</RelativeLayout>
