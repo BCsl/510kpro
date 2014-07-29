@@ -13,8 +13,10 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+
 import my.example.fivetenkgame.R;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,6 +31,7 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
+import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.EventListener;
 import com.uc.fivetenkgame.view.util.IViewControler;
@@ -53,6 +56,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private boolean gameStart;
 	private List<Card> cardList; // 玩家自己拥有的牌
 	private int playerId, right_player_id = -1, left_player_id = -1;
+	private String player_name, right_player_name , left_player_name ;
 	private boolean isMyTrun;
 	private int gameScore;
 	private List<Integer> cardNumber;
@@ -164,7 +168,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	private void init() {
-		initPlayersId(playerId);
+		initPlayersInfos(playerId);
 		viewControler = new ViewControler();
 		gameStart = true;
 		isMyTrun = false;
@@ -185,7 +189,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		timer=new Timer();
 	}
 
-	private void initPlayersId(int playerId2) {
+	private void initPlayersInfos(int playerId) {
+		SharedPreferences sp=context.getSharedPreferences(Common.TABLE_PLAYERS,context.MODE_PRIVATE);
 		switch (playerId) {
 		case 1:
 			right_player_id = 2;
@@ -200,6 +205,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			left_player_id = 2;
 			break;
 		}
+		player_name=sp.getString(String.valueOf(playerId), "玩家"+playerId);
+		right_player_name=sp.getString(String.valueOf(right_player_id), "玩家"+right_player_id);
+		left_player_name=sp.getString(String.valueOf(left_player_id), "玩家"+left_player_id);
 	}
 
 	public IViewControler getViewControler() {
@@ -232,7 +240,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		TEXT_SIZE_BIG = cardSizeHolder.width * 3 / 4;
 		Paint paint = new Paint();
 		paint.setTextSize(TEXT_SIZE);
-		PLAYER_TEXT_LENGTH = paint.measureText("玩家11");
+		PLAYER_TEXT_LENGTH = paint.measureText("玩家玩家");
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		SCORE_TEXT_LENGTH = paint.measureText("分数:000");
 		MAIN_CARDS__BASEY = (float) screenHolder.height - (float)cardSizeHolder.width
@@ -337,7 +345,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		
 		rightPlayerDrawer.drawOutList(outList.get(right_player_id - 1),
 				RIGHT_OUTCARDS_BASEX);
-		rightPlayerDrawer.drawPlayer(right_player_id, paint, screenHolder.width
+		rightPlayerDrawer.drawPlayer(right_player_name, paint, screenHolder.width
 				- PLAYER_TEXT_LENGTH, TEXT_SIZE);
 		rightPlayerDrawer.drawScore(scroeList.get(right_player_id - 1), paint,
 				screenHolder.width - SCORE_TEXT_LENGTH - 20, 2 * TEXT_SIZE);
@@ -354,7 +362,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		}
 		leftPlayerDrawer.drawOutList(outList.get(left_player_id - 1),
 				LEFT_OUTCARDS_BASEX);
-		leftPlayerDrawer.drawPlayer(left_player_id, paint, 10, TEXT_SIZE);
+		leftPlayerDrawer.drawPlayer(left_player_name, paint, 10, TEXT_SIZE);
 		leftPlayerDrawer.drawScore(scroeList.get(left_player_id - 1), paint,
 				10, 2 * TEXT_SIZE);
 		leftPlayerDrawer.drawCardsNumber(cardNumber.get(left_player_id - 1),
@@ -367,7 +375,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			mainPlayerDrawer.drawButton(paint, BUTTON_BASE_HEIGHT);
 			mainPlayerDrawer.drawTime(String.valueOf(TIME_REMIND), paint,screenHolder.width/2, BUTTON_BASE_HEIGHT);
 		}
-		mainPlayerDrawer.drawPlayer(playerId, paint, 10.0f,
+		mainPlayerDrawer.drawPlayer(player_name, paint, 10.0f,
 				(float) screenHolder.height-5 );
 		mainPlayerDrawer.drawCardsNumber(cardNumber.get(playerId - 1), paint,
 				PLAYER_TEXT_LENGTH + TEXT_SIZE_SMALL, screenHolder.height - 10);

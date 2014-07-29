@@ -84,7 +84,7 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	public final void drawPlayer(int playerId, Paint paint, float x, float y) {
+	public final void drawPlayer(String playerId, Paint paint, float x, float y) {
 		paint.setTextSize(TEXT_SIZE);
 		paint.setColor(Color.rgb(255, 246, 143));
 		canvas.drawText("Íæ¼Ò" + playerId, x, y, paint);

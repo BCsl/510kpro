@@ -40,6 +40,7 @@
     <string name="qrcode_settting_str">二维码扫描</string> 
     <string name="time_out_str"></string>
     <string name="game_over">游戏结束</string>
+    <string name="input_user_name">输入用户名</string>
 	<string name="winner">玩家#胜利</string>
 	<string name="player1_score">玩家1分数：#</string>
 	<string name="player2_score">玩家2分数：#</string>

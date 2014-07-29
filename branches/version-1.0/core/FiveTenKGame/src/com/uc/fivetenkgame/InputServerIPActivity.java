@@ -42,7 +42,6 @@ public class InputServerIPActivity extends Activity {
 					Bundle bundle = new Bundle();
 					bundle.putString("IP", ipAddr);
 					intent.putExtras(bundle);
-					
 					setResult(RESULT_OK, intent);
 					finish();
 				}
