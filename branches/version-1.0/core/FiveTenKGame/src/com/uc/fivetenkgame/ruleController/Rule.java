@@ -24,11 +24,6 @@ public interface Rule {
 	 */
 	int firstPlayCards(List<Card> cardList);
 	
-	/**
-	 * 
-	 * @param cardList the cards to be played
-	 * @return the score of a set of cards
-	 */
-	int countCardsScore(List<Card> cardList);
+	String getRuleName();
 }
 
