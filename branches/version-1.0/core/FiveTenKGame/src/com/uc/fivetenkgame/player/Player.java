@@ -120,7 +120,9 @@ public class Player implements PlayerContext {
 		}
 	};
 
-	public void startPlay(String addr) {
+	public void startPlay(String addr, String name) {
+		mPlayerModel.setPlayerName(name);
+		Log.i("start play", "player name: " + mPlayerModel.getPlayerName());
 		setState(new InitState(gInstance));
 		handle(addr);
 	}
@@ -319,10 +321,6 @@ public class Player implements PlayerContext {
 	}
 
 	@Override
-	public void ReStartGame() {
-	}
-
-	@Override
 	public void setCurrentPlayer(int palyerId) {
 		while (viewController == null)
 			try {
@@ -364,8 +362,8 @@ public class Player implements PlayerContext {
 			Log.i("out time action: ", String.valueOf(cardNumber));
 			mHandList.add(mPlayerModel.getCardList().get(cardNumber));
 			mPlayerModel.getCardList().removeAll(mHandList);
-			viewController.setPlayersOutList(-1,
-					 new ArrayList<Card>(mHandList));
+			viewController
+					.setPlayersOutList(-1, new ArrayList<Card>(mHandList));
 			Log.i("选牌超时(第一个打牌)",
 					"当前手牌数: "
 							+ String.valueOf(mPlayerModel.getRemainCardsNum()));
@@ -380,14 +378,21 @@ public class Player implements PlayerContext {
 	}
 
 	@Override
+	public void ReStartGame() {
+		//通知gameViewActivity重绘界面
+		resetPlayer();
+	}
+
+	@Override
 	public String getPlayerName() {
-		// TODO Auto-generated method stub
-		return null;
+		return mPlayerModel.getPlayerName();
 	}
 
 	@Override
 	public void setPlayersName(int playerId, String playerName) {
-		// TODO Auto-generated method stub
-		
+		if(playerId == mPlayerModel.getPlayerNumber()){
+			mPlayerModel.setPlayerName(playerName);
+		}
+		//刷界面
 	}
 }
