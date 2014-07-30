@@ -64,7 +64,7 @@ public class WaitingGameActivity extends Activity {
 		isServer = intent.getBooleanExtra("isServer", false);
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
 				SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
-		mName = sp.getString(SharePreferenceCommon.MY_NAME, "Player");
+		mName = sp.getString(SharePreferenceCommon.FIELD_MY_NAME, "Player");
 		// 获取并显示wifi地址
 		WifiManager wifiService = (WifiManager) getSystemService(WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiService.getConnectionInfo();

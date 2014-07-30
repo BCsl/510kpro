@@ -192,7 +192,6 @@ public final class R {
         public static final int player1_score=0x7f070014;
         public static final int player2_score=0x7f070015;
         public static final int player3_score=0x7f070016;
-        public static final int player_text_length=0x7f07002f;
         public static final int players=0x7f07002a;
         public static final int please_base_on_rule=0x7f07002d;
         public static final int qrcode_settting_str=0x7f070018;
@@ -202,7 +201,7 @@ public final class R {
          */
         public static final int scan_text=0x7f070017;
         public static final int score=0x7f070029;
-        public static final int score_text_length=0x7f070030;
+        public static final int score_text_length=0x7f07002f;
         /**  设置界面 
          */
         public static final int setting_str=0x7f07001d;

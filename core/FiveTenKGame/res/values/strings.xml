@@ -64,6 +64,6 @@
 	<string name="game_score">本轮分数：</string>
 	<string name="please_base_on_rule">请按规则出牌喔</string>
 	<string name="tips">为了能有更好的体验，请用分辨率跟高的手机进行游戏!</string>
-	<string name="player_text_length">玩家玩家玩</string>
 	<string name="score_text_length">分数分数分</string>
+	
 </resources>

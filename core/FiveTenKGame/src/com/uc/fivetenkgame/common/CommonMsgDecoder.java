@@ -42,7 +42,7 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
     public String[] getCardsNumber(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.BEGIN_GAME)
                 || checkMessage(sourceMsg, NetworkCommon.PLAY_CARDS)) {
-            return sourceMsg.substring(sourceMsg.indexOf(',')).trim()
+            return sourceMsg.substring(sourceMsg.indexOf(',')+1).trim()
                     .split(",");
         } else if (checkMessage(sourceMsg, NetworkCommon.PLAY_END)) {
             String msg = sourceMsg.substring(sourceMsg.indexOf('#') + 1).trim();

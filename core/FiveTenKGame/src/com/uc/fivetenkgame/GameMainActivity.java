@@ -112,7 +112,7 @@ public class GameMainActivity extends Activity {
 					// 在这里开启二维码扫描
 					if (!getApplicationContext().getSharedPreferences(
 							SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE).getBoolean(
-									SharePreferenceCommon.SP_QRCODE_FLAG, false)) {
+									SharePreferenceCommon.FIELD_QRCODE_FLAG, false)) {
 						Intent intent = new Intent();
 						intent.setClass(GameMainActivity.this,
 								InputServerIPActivity.class);

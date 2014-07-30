@@ -61,7 +61,7 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	protected final void drawScore(int score, Paint paint, float x, float y) {
+	protected  void drawScore(int score, Paint paint, float x, float y) {
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		paint.setColor(Color.rgb(255, 184, 15));
 		mCanvas.drawText(mContext.getResources().getString(R.string.score) + score, x, y, paint);
@@ -75,7 +75,7 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	protected final void drawCardsNumber(int cardsNumber, Paint paint, float x,
+	protected  void drawCardsNumber(int cardsNumber, Paint paint, float x,
 			float y) {
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		paint.setColor(Color.rgb(255, 184, 15));
@@ -90,7 +90,7 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	protected final void drawPlayer(String playerName, Paint paint, float x, float y) {
+	protected  void drawPlayer(String playerName, Paint paint, float x, float y) {
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		paint.setColor(Color.rgb(255, 246, 143));
 		mCanvas.drawText(playerName, x, y, paint);
@@ -102,7 +102,7 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	protected final void drawTime(String timeRemind,Paint paint, float x, float y){
+	protected  void drawTime(String timeRemind,Paint paint, float x, float y){
 		paint.setTextSize(TEXT_SIZE);
 		paint.setColor(Color.rgb(255, 246, 143));
 		mCanvas.drawText(timeRemind, x, y, paint);
