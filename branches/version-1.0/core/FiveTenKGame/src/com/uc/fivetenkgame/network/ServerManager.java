@@ -73,7 +73,7 @@ public class ServerManager extends NetworkManager {
 
 					InetAddress ip = socket.getInetAddress();
 					mPlayerIPs.add(ip.toString());
-					receiveMessage(NetworkCommon.PLAYER_ACCEPTED);
+//					receiveMessage(NetworkCommon.PLAYER_ACCEPTED);
 				}
 
 			} catch (IOException e) {

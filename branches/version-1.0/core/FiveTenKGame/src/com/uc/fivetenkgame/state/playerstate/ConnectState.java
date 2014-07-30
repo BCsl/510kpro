@@ -15,7 +15,6 @@ public class ConnectState extends PlayerState {
     
 	public ConnectState(PlayerContext context) {
 		super(context);
-		//mThread.start();
 	}
 
 	/**
@@ -26,12 +25,14 @@ public class ConnectState extends PlayerState {
 	@Override
 	public void handle(String msg) {
 	    Log.i(tag,"msg is " + msg);
-		if(mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)){//有上一状态（initState）跳转过来，暂不处理
+		if(mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)){//由上一状态（initState）跳转过来，暂不处理
 			
 		}else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_ACCEPTED)) {// 连接成功，处理msg后跳转到等待开始状态
-			Log.i("连接server成功", "玩家号："+mPlayerContext.getPlayerNumber());
 			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
 			mPlayerContext.setPlayerNumber(playerNumber);//设置玩家序号
+			Log.i("连接server成功", "玩家号："+mPlayerContext.getPlayerNumber());
+            mPlayerContext.sendMsg(NetworkCommon.PLAYER_NAME + playerNumber
+                    + "," + mPlayerContext.getPlayerName());
 			Log.i("send Player Name to server", mPlayerContext.getPlayerName());
 			mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
 			mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
