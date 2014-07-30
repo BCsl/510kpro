@@ -1,5 +1,7 @@
 package com.uc.fivetenkgame.ruleController;
 
+import com.uc.fivetenkgame.ruleController.ruleSet.BasicRule;
+
 import android.util.Log;
 
 public class RuleManager {
