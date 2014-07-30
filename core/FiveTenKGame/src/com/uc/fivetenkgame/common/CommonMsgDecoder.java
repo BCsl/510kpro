@@ -18,8 +18,7 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
                     sourceMsg.indexOf('#') + 1).trim());
         } else if (checkMessage(sourceMsg, NetworkCommon.BEGIN_GAME)
                 || checkMessage(sourceMsg, NetworkCommon.PLAY_CARDS)
-                || checkMessage(sourceMsg, NetworkCommon.PLAY_END)
-                || checkMessage(sourceMsg, NetworkCommon.GAME_OVER)) {
+                || checkMessage(sourceMsg, NetworkCommon.PLAY_END)) {
             return Integer.parseInt(sourceMsg.substring(
                     sourceMsg.indexOf('#') + 1, sourceMsg.indexOf(',')).trim());
         } else if (checkMessage(sourceMsg, NetworkCommon.PLAYER_NAME)
@@ -27,6 +26,14 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
                         ",")) {
             return Integer.parseInt(sourceMsg.substring(
                     sourceMsg.indexOf('#') + 1, sourceMsg.indexOf(',')).trim());
+        } else if (checkMessage(sourceMsg, NetworkCommon.GAME_OVER)) {
+            if (sourceMsg.contains(",")) { //包含赢家号和各玩家分数
+                return Integer.parseInt(sourceMsg.substring(
+                        sourceMsg.indexOf('#') + 1, sourceMsg.indexOf(',')).trim());
+            } else { //包含退出玩家的序号
+                return Integer.parseInt(sourceMsg.substring(
+                        sourceMsg.indexOf('#') + 1).trim());
+            }
         }
         return -1;
     }

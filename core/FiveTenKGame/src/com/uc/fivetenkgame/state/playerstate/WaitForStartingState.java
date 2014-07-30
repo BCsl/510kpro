@@ -29,6 +29,11 @@ public class WaitForStartingState extends PlayerState {
 	    Log.i(tag,"msg is " + msg);
 		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {// 有上一状态（ConnectState)跳转而来，暂不处理
 
+		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NAME)) {
+		    String[] playerNames = mCommonMsgDecoder.getPlayerNames(msg);
+		    for (int i=1;i<=NetworkCommon.TOTAL_PLAYER_NUM;i++){
+		        mPlayerContext.setPlayersName(i, playerNames[i-1]);
+		    }
 		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.BEGIN_GAME)) {
 			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
 			if (mPlayerContext.getPlayerNumber() == playerNumber) {// 是自己的手牌,跳转到下一个状态waitForMsg
@@ -51,6 +56,13 @@ public class WaitForStartingState extends PlayerState {
 					.getHandler()
 					.obtainMessage(NetworkCommon.UPDATE_WAITING_PLAYER_NUM,
 							playerNumber).sendToTarget();
-		} 
+		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) {
+			int number = mCommonMsgDecoder.getPlayerNumber(msg);
+			if (number != mPlayerContext.getPlayerNumber())
+				mPlayerContext.getHandler()
+						.obtainMessage(NetworkCommon.PLAYER_LEFT, number)
+						.sendToTarget();
+			mPlayerContext.resetPlayer();
+		}
 	}
 }

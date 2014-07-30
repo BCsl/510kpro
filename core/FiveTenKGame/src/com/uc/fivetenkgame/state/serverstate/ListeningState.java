@@ -24,33 +24,31 @@ public class ListeningState extends ServerState {
 	@Override
 	public void handle(String msg) {
 		// 玩家链接成功
-		if (msg.startsWith(NetworkCommon.PLAYER_ACCEPTED)) {
-			int clientNum = mServerContext.getClientNum();
-			++clientNum;
-			mServerContext.setClientNum(clientNum);
-
-			if (clientNum <= NetworkCommon.TOTAL_PLAYER_NUM) {
-				mServerContext.getNetworkManager().sendMessage(
-						NetworkCommon.PLAYER_NUMBER_UPDATE + clientNum);
-			}
-			// else if (clientNum == Common.TOTAL_PLAYER_NUM) {
-			//
-			// }
-		} else if (msg.startsWith(NetworkCommon.GIVE_UP)) {
+		if (msg.startsWith(NetworkCommon.GIVE_UP)) {
 			Log.i("send game over in listeningState", msg);
 			mServerContext.getNetworkManager().sendMessage(
 					NetworkCommon.GAME_OVER + msg.substring(2, 3).trim());
 			mServerContext.resetServer();
 		} else if (msg.startsWith(NetworkCommon.PLAYER_NAME)) {
 			// 保存玩家名字
+		    int clientNum = mServerContext.getClientNum();
+            ++clientNum;
+            mServerContext.setClientNum(clientNum);
+
+            if (clientNum <= NetworkCommon.TOTAL_PLAYER_NUM) {
+                mServerContext.getNetworkManager().sendMessage(
+                        NetworkCommon.PLAYER_NUMBER_UPDATE + clientNum);
+            }
+            
 			int playerNumber = Integer.valueOf(msg.substring(3, 4));
 			playerNames[playerNumber - 1] = msg.substring(5).trim();
 			Log.i("add player name", "player name is: "
 					+ playerNames[playerNumber - 1]);
+			Log.i("游戏人数",mServerContext.getClientNum()+"");
 			// 达到所需的玩家人数开始游戏
 			if (mServerContext.getClientNum() == NetworkCommon.TOTAL_PLAYER_NUM) {
 				StringBuilder sb = new StringBuilder();
-
+				
 				sb.append(NetworkCommon.PLAYER_NAME);
 				for (String name : playerNames) {
 					sb.append(name + ',');
