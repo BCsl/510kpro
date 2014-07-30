@@ -3,9 +3,6 @@ package com.uc.fivetenkgame;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.google.zxing.qr_codescan.MipcaActivityCapture;
-import com.uc.fivetenkgame.application.GameApplication;
-import com.uc.fivetenkgame.network.util.Common;
 import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,6 +17,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.zxing.qr_codescan.MipcaActivityCapture;
+import com.uc.fivetenkgame.application.GameApplication;
+import com.uc.fivetenkgame.common.SharePreferenceCommon;
+import com.uc.fivetenkgame.common.SoundPoolCommon;
+import com.uc.fivetenkgame.util.IPMatcherUtil;
 
 /**
  * 游戏主界面，界面有四个按钮,点击后分别跳转到相应的界面
@@ -93,7 +96,7 @@ public class GameMainActivity extends Activity {
 	private OnClickListener mClickListener = new OnClickListener() {
 		public void onClick(View v) {
 			((GameApplication) getApplication())
-					.playSound(Common.SOUND_BUTTON_PRESS);
+					.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 			if (v == mNewGameButton) {
 				if (wifiManager.isWifiEnabled()) {
 					Intent intent = new Intent();
@@ -108,8 +111,8 @@ public class GameMainActivity extends Activity {
 				if (wifiManager.isWifiEnabled()) {
 					// 在这里开启二维码扫描
 					if (!getApplicationContext().getSharedPreferences(
-							Common.TABLE_SETTING, MODE_PRIVATE).getBoolean(
-							Common.SP_QRCODE_FLAG, false)) {
+							SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE).getBoolean(
+									SharePreferenceCommon.SP_QRCODE_FLAG, false)) {
 						Intent intent = new Intent();
 						intent.setClass(GameMainActivity.this,
 								InputServerIPActivity.class);
@@ -164,7 +167,7 @@ public class GameMainActivity extends Activity {
 				if (bundle != null) {
 					String ipAddr = bundle.getString("result");
 					Log.i(TAG, "扫描结果：" + ipAddr);
-					if (Common.isIPAddress(ipAddr)) {
+					if (IPMatcherUtil.isIPAddress(ipAddr)) {
 						Intent intent = new Intent();
 						intent.putExtra("isServer", false);
 						intent.putExtra("IP", ipAddr);

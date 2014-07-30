@@ -22,7 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
+import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.view.GameView;
 
@@ -55,7 +56,7 @@ public class GameViewActivity extends Activity {
 		Player.getInstance().setEventListener();
 		Player.getInstance().setHandler(mHandler);
 		Player.getInstance().initView();
-		((GameApplication) getApplication()).playSound(Common.SOUND_GAME_START);
+		((GameApplication) getApplication()).playSound(SoundPoolCommon.SOUND_GAME_START);
 		setContentView(view);
 		gameApplication=(GameApplication) getApplication();
 		initDialog();
@@ -67,36 +68,36 @@ public class GameViewActivity extends Activity {
 		public void handleMessage(Message msg) {
 			Log.i(TAG, "handler receive msg:" + msg);
 			switch (msg.what) {
-			case Common.END_GAME:
+			case NetworkCommon.END_GAME:
 				String[] res = (String[]) msg.obj;
 				if (Integer.valueOf(res[0]) == Player.getInstance()
 						.getPlayerNumber())
 					((GameApplication) getApplication())
-							.playSound(Common.SOUND_WIN);
+							.playSound(SoundPoolCommon.SOUND_WIN);
 				else
 					((GameApplication) getApplication())
-							.playSound(Common.SOUND_FAILD);
+							.playSound(SoundPoolCommon.SOUND_FAILD);
 				showWinningDialog(res);
 				break;
 
-			case Common.GAME_STATE_CHANGE:
+			case NetworkCommon.GAME_STATE_CHANGE:
 				String objMsg = (String) msg.obj;
 				Log.i("objMsg is ", objMsg.length() + "");
-				if (objMsg.startsWith(Common.GAME_PAUSE)) {
+				if (objMsg.startsWith(NetworkCommon.GAME_PAUSE)) {
 					if (!gameApplication.isPause()) {
 						pauseDialog.show();// 其他玩家通知
 //						ifPause = true;
 						gameApplication.setPause(true);
 						Log.i("pauseDialog", "show");
 					}
-				} else if (objMsg.startsWith(Common.GAME_RESUME)) {
+				} else if (objMsg.startsWith(NetworkCommon.GAME_RESUME)) {
 					if (gameApplication.isPause()) {
 						pauseDialog.cancel();// 其他玩家通知
 //						ifPause = false;
 						gameApplication.setPause(false);
 						Log.i("pauseDialog", "cancel");
 					}
-				} else if (objMsg.startsWith(Common.GAME_EXIT)) {
+				} else if (objMsg.startsWith(NetworkCommon.GAME_EXIT)) {
 					Timer mTimer = new Timer();
 					mTimer.schedule(new TimerTask() {
 
@@ -122,14 +123,14 @@ public class GameViewActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 //						ifPause = false;
 						gameApplication.setPause(false);
-						Player.getInstance().sendMsg(Common.GAME_RESUME);// 恢复游戏
+						Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 恢复游戏
 					}
 				})
 				.setNegativeButton("退出", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Player.getInstance().sendMsg(
-								Common.GAME_EXIT
+								NetworkCommon.GAME_EXIT
 										+ Player.getInstance()
 												.getPlayerNumber());
 						GameViewActivity.this.finish();// 退出游戏
@@ -141,7 +142,7 @@ public class GameViewActivity extends Activity {
 			public void onCancel(DialogInterface dialog) {
 //				ifPause = false;
 				gameApplication.setPause(false);
-				Player.getInstance().sendMsg(Common.GAME_RESUME);// 再次按返回键，返回游戏
+				Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 再次按返回键，返回游戏
 			}
 		});
 
@@ -153,7 +154,7 @@ public class GameViewActivity extends Activity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								Player.getInstance().sendMsg(Common.GAME_EXIT);
+								Player.getInstance().sendMsg(NetworkCommon.GAME_EXIT);
 								GameViewActivity.this.finish();
 							}
 						}).create();
@@ -192,7 +193,7 @@ public class GameViewActivity extends Activity {
 		backPressDialog.show();
 //		ifPause = true;
 		gameApplication.setPause(true);
-		Player.getInstance().sendMsg(Common.GAME_PAUSE);// 暂停游戏
+		Player.getInstance().sendMsg(NetworkCommon.GAME_PAUSE);// 暂停游戏
 	}
 
 	private String TAG = "GameViewActivity";
@@ -205,7 +206,7 @@ public class GameViewActivity extends Activity {
 		if ( gameApplication.isPause()) {
 //			ifPause = false;
 			gameApplication.setPause(true);
-			Player.getInstance().sendMsg(Common.GAME_RESUME);// 通知其他玩家恢复游戏
+			Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 通知其他玩家恢复游戏
 		}
 	}
 
@@ -213,7 +214,7 @@ public class GameViewActivity extends Activity {
 		super.onPause();
 		Log.i(TAG, "onPause");
 
-		Player.getInstance().sendMsg(Common.GAME_PAUSE);// 通知其他玩家暂停游戏
+		Player.getInstance().sendMsg(NetworkCommon.GAME_PAUSE);// 通知其他玩家暂停游戏
 //		ifPause = true;
 		gameApplication.setPause(true);
 	};

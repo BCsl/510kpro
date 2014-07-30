@@ -20,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.qrcode.util.QRcodeGenerator;
 import com.uc.fivetenkgame.server.Server;
@@ -105,14 +105,14 @@ public class WaitingGameActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case Common.UPDATE_WAITING_PLAYER_NUM:
+			case NetworkCommon.UPDATE_WAITING_PLAYER_NUM:
 				isConnect = true;
 				Integer num = (Integer) (msg.obj);
 				mReadyPlayer.setText(getResources().getString(
 						R.string.ready_player_str)
 						+ num + "人");
 				break;
-			case Common.START_GAME:
+			case NetworkCommon.START_GAME:
 				Toast.makeText(WaitingGameActivity.this,
 						getResources().getString(R.string.start_game_str),
 						Toast.LENGTH_SHORT).show();
@@ -123,7 +123,7 @@ public class WaitingGameActivity extends Activity {
 				startActivity(intent);
 				finish();
 				break;
-			case Common.HOST_FULL:
+			case NetworkCommon.HOST_FULL:
 				new AlertDialog.Builder(WaitingGameActivity.this)
 						.setTitle("人数已满")
 						.setMessage("点击确定返回上一页")
@@ -136,7 +136,7 @@ public class WaitingGameActivity extends Activity {
 									}
 								}).show();
 				break;
-			case Common.TIME_OUT:
+			case NetworkCommon.TIME_OUT:
 				if (isServer)
 					break;
 				new AlertDialog.Builder(WaitingGameActivity.this)
@@ -151,7 +151,7 @@ public class WaitingGameActivity extends Activity {
 									}
 								}).show();
 				break;
-			case Common.PLAYER_LEFT:
+			case NetworkCommon.PLAYER_LEFT:
 				Integer number = (Integer) (msg.obj);
 				Log.i("PLAYER_LEFT:", String.valueOf(number));
 				Toast.makeText(WaitingGameActivity.this, "连接异常",
@@ -167,7 +167,7 @@ public class WaitingGameActivity extends Activity {
 
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			Log.e(TAG, "这里需要关闭网络！");
-			mPlayer.sendMsg(Common.GIVE_UP + mPlayer.getPlayerNumber());
+			mPlayer.sendMsg(NetworkCommon.GIVE_UP + mPlayer.getPlayerNumber());
 		}
 		return super.onKeyDown(keyCode, event);
 	};

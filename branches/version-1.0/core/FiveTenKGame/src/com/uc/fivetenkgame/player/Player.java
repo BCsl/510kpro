@@ -7,15 +7,16 @@ import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
-import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.ruleController.BasicRule;
 import com.uc.fivetenkgame.ruleController.Rule;
 import com.uc.fivetenkgame.state.State;
 import com.uc.fivetenkgame.state.playerstate.InitState;
 import com.uc.fivetenkgame.state.playerstate.PlayerState;
+import com.uc.fivetenkgame.util.OredrUtil;
 import com.uc.fivetenkgame.view.EventListener;
 import com.uc.fivetenkgame.view.IViewControler;
 import com.uc.fivetenkgame.view.entity.Card;
@@ -37,10 +38,10 @@ public class Player implements PlayerContext {
 		@Override
 		public void reveiveMessage(String msg) {
 			Log.i("!!!player", "... " + msg);
-			if (msg.startsWith(Common.GAME_PAUSE)
-					|| msg.startsWith(Common.GAME_RESUME)
-					|| msg.startsWith(Common.GAME_EXIT)) {
-				mHandler.obtainMessage(Common.GAME_STATE_CHANGE, msg)
+			if (msg.startsWith(NetworkCommon.GAME_PAUSE)
+					|| msg.startsWith(NetworkCommon.GAME_RESUME)
+					|| msg.startsWith(NetworkCommon.GAME_EXIT)) {
+				mHandler.obtainMessage(NetworkCommon.GAME_STATE_CHANGE, msg)
 						.sendToTarget(); // 由activity处理
 				Log.i("!!!player", "msg sent to target");
 			} else {
@@ -99,7 +100,7 @@ public class Player implements PlayerContext {
 
 					mPlayerModel.getCardList().removeAll(handList);
 
-					Common.setOrder(mHandList);
+					OredrUtil.setOrder(mHandList);
 
 					setDoneHandCards(true);
 					Log.i("当前手牌数",
@@ -269,7 +270,7 @@ public class Player implements PlayerContext {
 	@Override
 	public void gameOver(String[] str) {
 		// viewController.gameOver(playerId);
-		mHandler.obtainMessage(Common.END_GAME, str).sendToTarget();
+		mHandler.obtainMessage(NetworkCommon.END_GAME, str).sendToTarget();
 	}
 
 	public void setEventListener() {

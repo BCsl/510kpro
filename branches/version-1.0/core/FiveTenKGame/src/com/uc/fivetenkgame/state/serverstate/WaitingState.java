@@ -5,7 +5,7 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.server.ServerContext;
 import com.uc.fivetenkgame.view.entity.Card;
@@ -24,12 +24,12 @@ public class WaitingState extends ServerState {
 	public WaitingState(ServerContext context) {
 		mServerContext = context;
 		giveUpTimes = 0;
-		GIAVE_UP_TIME_LIMITE = Common.TOTAL_PLAYER_NUM - 1;
+		GIAVE_UP_TIME_LIMITE = NetworkCommon.TOTAL_PLAYER_NUM - 1;
 	}
 
 	@Override
 	public void handle(String msg) {
-		if (msg.startsWith(Common.PLAY_CARDS)) {
+		if (msg.startsWith(NetworkCommon.PLAY_CARDS)) {
 			// 首先更新当前出牌玩家信息，然后判断游戏是否结束
 			String str[] = msg.substring(2).trim().split(",");
 			List<Card> cardList = getCardList(str);
@@ -41,23 +41,23 @@ public class WaitingState extends ServerState {
 			if (gameIsOver()) {
 				GameEndState state = new GameEndState(mServerContext);
 				mServerContext.setState(state);
-				state.handle(Common.GAME_END);
+				state.handle(NetworkCommon.GAME_END);
 			} else
 				callNextPlayer();
 			giveUpTimes = 0;
-		} else if (msg.startsWith(Common.GIVE_UP)) {
+		} else if (msg.startsWith(NetworkCommon.GIVE_UP)) {
 			++giveUpTimes;
 			giveUpAction();
 			if (giveUpTimes == GIAVE_UP_TIME_LIMITE)
 				roundOver();
 			callNextPlayer();
-		} else if (msg.startsWith(Common.GAME_PAUSE)
-				|| msg.startsWith(Common.GAME_RESUME)
-				|| msg.startsWith(Common.GAME_EXIT)) {
+		} else if (msg.startsWith(NetworkCommon.GAME_PAUSE)
+				|| msg.startsWith(NetworkCommon.GAME_RESUME)
+				|| msg.startsWith(NetworkCommon.GAME_EXIT)) {
 			Log.i(TAG, "*** " + msg);
-			String number = msg.substring(Common.GAME_EXIT.length()).trim();
+			String number = msg.substring(NetworkCommon.GAME_EXIT.length()).trim();
 			mServerContext.getNetworkManager().sendMessage(msg + number);
-			if (msg.startsWith(Common.GAME_EXIT)) {
+			if (msg.startsWith(NetworkCommon.GAME_EXIT)) {
 				mServerContext.resetServer();
 				mServerContext.setState(new InitState(mServerContext));
 			}
@@ -89,7 +89,7 @@ public class WaitingState extends ServerState {
 		player.setScore(player.getScore() + mServerContext.getRoundScore());
 		mServerContext.setRoundScore(0);
 		StringBuilder res = new StringBuilder();
-		res.append(Common.ROUND_END);
+		res.append(NetworkCommon.ROUND_END);
 		for (PlayerModel temp : mServerContext.getPlayerModel())
 			res.append(temp.getScore() + ",");
 		mServerContext.getNetworkManager().sendMessage(
@@ -107,7 +107,7 @@ public class WaitingState extends ServerState {
 		player.setScore(player.getScore() + mServerContext.getRoundScore());
 		mServerContext.setRoundScore(0);
 		StringBuilder res = new StringBuilder();
-		res.append(Common.ROUND_END);
+		res.append(NetworkCommon.ROUND_END);
 		for (PlayerModel temp : mServerContext.getPlayerModel())
 			res.append(temp.getScore() + ",");
 		try {
@@ -126,7 +126,7 @@ public class WaitingState extends ServerState {
 	 */
 	private void giveUpAction() {
 		mServerContext.getNetworkManager().sendMessage(
-				Common.GIVE_UP + mServerContext.getCurrentPlayerNumber());
+				NetworkCommon.GIVE_UP + mServerContext.getCurrentPlayerNumber());
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class WaitingState extends ServerState {
 		for (PlayerModel model : mServerContext.getPlayerModel())
 			res.append(model.getRemainCardsNum() + ",");
 		mServerContext.getNetworkManager().sendMessage(
-				Common.PLAY_END + res.substring(0, res.length() - 1));
+				NetworkCommon.PLAY_END + res.substring(0, res.length() - 1));
 	}
 
 	/**
@@ -211,7 +211,7 @@ public class WaitingState extends ServerState {
 		int nextPlayer = getNextPlayerId();
 		mServerContext.setCurrentPlayerNumber(nextPlayer);
 		mServerContext.getNetworkManager().sendMessage(
-				Common.YOUR_TURN + nextPlayer);
+				NetworkCommon.YOUR_TURN + nextPlayer);
 	}
 
 	private int getNextPlayerId() {

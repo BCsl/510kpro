@@ -1,6 +1,6 @@
 package com.uc.fivetenkgame.state.playerstate;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerContext;
 
 /**
@@ -22,7 +22,7 @@ public class ExitState extends PlayerState {
 	@Override
 	public void handle(String msg) {
 		if(msg==null){//有上一状态（waitForMsgState)跳转而来，退出游戏
-			mPlayerContext.getHandler().obtainMessage(Common.END_GAME).sendToTarget();
+			mPlayerContext.getHandler().obtainMessage(NetworkCommon.END_GAME).sendToTarget();
 		}
 	}
 

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import android.os.Handler;
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.network.NetworkManager;
 import com.uc.fivetenkgame.network.ServerManager;
-import com.uc.fivetenkgame.network.util.Common;
 import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.state.serverstate.InitState;
@@ -67,7 +67,7 @@ public class Server implements ServerContext{
 	 */
 	public void startListen(){
 		mState = new InitState(this);
-		mState.handle(Common.SERVER_LISTENING);
+		mState.handle(NetworkCommon.SERVER_LISTENING);
 		mNetworkManager.initNetwork(null);
 	}
 
