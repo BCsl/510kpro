@@ -3,7 +3,7 @@ package com.uc.fivetenkgame.common;
 public class CommonMsgDecoder implements ICommonMsgDecoder {
 
     private int playerCount = 3;
-    
+
     @Override
     public boolean checkMessage(String sourceMsg, String commonMsg) {
         return sourceMsg.startsWith(commonMsg);
@@ -27,10 +27,11 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
             return Integer.parseInt(sourceMsg.substring(
                     sourceMsg.indexOf('#') + 1, sourceMsg.indexOf(',')).trim());
         } else if (checkMessage(sourceMsg, NetworkCommon.GAME_OVER)) {
-            if (sourceMsg.contains(",")) { //包含赢家号和各玩家分数
+            if (sourceMsg.contains(",")) { // 包含赢家号和各玩家分数
                 return Integer.parseInt(sourceMsg.substring(
-                        sourceMsg.indexOf('#') + 1, sourceMsg.indexOf(',')).trim());
-            } else { //包含退出玩家的序号
+                        sourceMsg.indexOf('#') + 1, sourceMsg.indexOf(','))
+                        .trim());
+            } else { // 包含退出玩家的序号
                 return Integer.parseInt(sourceMsg.substring(
                         sourceMsg.indexOf('#') + 1).trim());
             }
@@ -42,7 +43,7 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
     public String[] getCardsNumber(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.BEGIN_GAME)
                 || checkMessage(sourceMsg, NetworkCommon.PLAY_CARDS)) {
-            return sourceMsg.substring(sourceMsg.indexOf(',')+1).trim()
+            return sourceMsg.substring(sourceMsg.indexOf(',') + 1).trim()
                     .split(",");
         } else if (checkMessage(sourceMsg, NetworkCommon.PLAY_END)) {
             String msg = sourceMsg.substring(sourceMsg.indexOf('#') + 1).trim();
@@ -123,8 +124,8 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
             String str[] = sourceMsg.substring(sourceMsg.indexOf('#') + 1)
                     .trim().split(",");
             String[] remainCards = new String[playerCount];
-            for (int i=0;i<playerCount;i++){
-                remainCards[i] = str[str.length-playerCount+i];
+            for (int i = 0; i < playerCount; i++) {
+                remainCards[i] = str[str.length - playerCount + i];
             }
             return remainCards;
         }
