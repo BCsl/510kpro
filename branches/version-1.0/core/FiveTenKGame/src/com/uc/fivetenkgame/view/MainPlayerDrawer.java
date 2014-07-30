@@ -59,7 +59,7 @@ public class MainPlayerDrawer extends AbsMainPlayerInfoDrawer {
 					mScreenHolder.width / 2, BUTTON_BASE_HEIGHT);
 		}
 		drawPlayer(name, paint, 10.0f,
-				(float) mScreenHolder.height - 5);
+				(float) mScreenHolder.height - 10);
 		drawCardsNumber(cardNumber,
 				paint, PLAYER_TEXT_LENGTH + TEXT_SIZE_SMALL,
 				mScreenHolder.height - 10);

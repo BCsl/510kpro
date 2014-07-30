@@ -27,8 +27,6 @@ public class RightPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 
 	private final int RIGHT_CARDS_BASEX;
 	private final float RIGHT_OUTCARDS_BASEX;
-	private final int PLAYER_TEXT_LENGTH;
-	private final int SCORE_TEXT_LENGTH;
 
 	/**
 	 * @param context
@@ -40,13 +38,12 @@ public class RightPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 		super(context, screenHolder, cardSizeHolder);
 		RIGHT_OUTCARDS_BASEX = mScreenHolder.width - 4 * mCardSizeHolder.width;
 		RIGHT_CARDS_BASEX = mScreenHolder.width - 2 * mCardSizeHolder.width;
-		Paint paint = new Paint();
-		paint.setTextSize(TEXT_SIZE);
-		PLAYER_TEXT_LENGTH = (int) paint.measureText(mContext.getResources()
-				.getString(R.string.player_text_length));
-		paint.setTextSize(TEXT_SIZE_SMALL);
-		SCORE_TEXT_LENGTH = (int) paint.measureText(mContext.getResources()
-				.getString(R.string.player_text_length));
+//		Paint paint = new Paint();
+//		paint.setTextSize(TEXT_SIZE_SMALL);
+//		PLAYER_TEXT_LENGTH = (int) paint.measureText(mContext.getResources()
+//				.getString(R.string.player_text_length));
+//		SCORE_TEXT_LENGTH = (int) paint.measureText(mContext.getResources()
+//				.getString(R.string.player_text_length));
 	}
 
 	@Override
@@ -56,16 +53,16 @@ public class RightPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 		if (isMyTurn) {
 			drawTime(String.valueOf(timeRemind), paint, RIGHT_CARDS_BASEX
 					- mCardSizeHolder.width + 10, mScreenHolder.height / 2);
-			drawHandCardFlag(RIGHT_CARDS_BASEX - mCardSizeHolder.width + 10,
-					mCardSizeHolder.height);
+			drawHandCardFlag(RIGHT_CARDS_BASEX - mCardSizeHolder.width + 10);
 		}
 		drawOutList(outList, RIGHT_OUTCARDS_BASEX);
-		drawPlayer(name, paint, mScreenHolder.width - PLAYER_TEXT_LENGTH,
+		paint.setTextSize(TEXT_SIZE_SMALL);
+		drawPlayer(name, paint, mScreenHolder.width - paint.measureText(name)-10,
 				TEXT_SIZE);
-		drawScore(score, paint, mScreenHolder.width - SCORE_TEXT_LENGTH - 20,
+		drawScore(score, paint, mScreenHolder.width - paint.measureText(mContext.getString(R.string.score)+String.valueOf(score)) - 20,
 				2 * TEXT_SIZE);
 		drawCardsNumber(cardNumber, paint, mScreenHolder.width
-				- PLAYER_TEXT_LENGTH - SCORE_TEXT_LENGTH - 20, TEXT_SIZE,
+				- paint.measureText(name) - paint.measureText(mContext.getString(R.string.cards_number)+String.valueOf(cardNumber)) - 20, TEXT_SIZE,
 				RIGHT_CARDS_BASEX);
 
 	}

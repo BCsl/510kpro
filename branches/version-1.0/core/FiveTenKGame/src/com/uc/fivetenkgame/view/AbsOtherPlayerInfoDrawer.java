@@ -47,7 +47,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 		super.drawCardsNumber(cardsNumber, paint, x, y);
 		if (cardsNumber == 0)
 			return;
-		cardsNumber = cardsNumber > 15 ? 15 : cardsNumber;// 最多只画15张背面的牌
+		cardsNumber = cardsNumber > 14 ? 14 : cardsNumber;// 最多只画15张背面的牌
 		float factor = (float) (mScreenHolder.height / 2 - mCardSizeHolder.height - mCardSizeHolder.width)
 				/ (float) (cardsNumber / 2 * mCardSizeHolder.height * 1 / 3);
 		float baseSpace = (float) factor > 1 ? mCardSizeHolder.height * 1 / 3
@@ -56,7 +56,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 		card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 		Bitmap temp = null;
 		for (int i = 0; i < cardsNumber; i++) {
-			card.setLocation((int) baseX, (int) (i * baseSpace + 2 * mCardSizeHolder.width));
+			card.setLocation((int) baseX, (int) (i * baseSpace +  mCardSizeHolder.width+TEXT_SIZE_SMALL));
 			temp = CardGenerator.getBitmap(mContext,
 					CardGenerator.cardResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
@@ -93,9 +93,9 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 		card = null;
 	}
 
-	protected void drawHandCardFlag(float left, float top) {
+	protected void drawHandCardFlag(float left) {
 		mCanvas.drawBitmap(CardGenerator.getBitmap(mContext, "chupai"), left,
-				top, null);
+				 mCardSizeHolder.width+TEXT_SIZE_SMALL, null);
 	}
 	/**
 	 * 画全部信息
