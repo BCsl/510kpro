@@ -1,6 +1,5 @@
 package com.uc.fivetenkgame.network;
 
-import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 
 /**
  * 网络模块对外提供的接口

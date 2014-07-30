@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.network.NetworkManager;
+import com.uc.fivetenkgame.network.OnReceiveMessageListener;
 import com.uc.fivetenkgame.network.ServerManager;
-import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
 import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.state.serverstate.InitState;
 import com.uc.fivetenkgame.state.serverstate.ServerState;
