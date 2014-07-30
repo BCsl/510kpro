@@ -13,6 +13,8 @@ import com.uc.fivetenkgame.player.PlayerContext;
  */
 public class GameOverState extends PlayerState {
 
+    String tag = "gameOverState";
+    
     public GameOverState(PlayerContext context) {
         super(context);
     }
@@ -24,6 +26,7 @@ public class GameOverState extends PlayerState {
      */
     @Override
     public void handle(String msg) {
+        Log.i(tag,"msg is " + msg);
         if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) { // 有上一状态（WaitForMsg）跳转而来，让玩家选择退出或重玩
             String[] scores = mCommonMsgDecoder.getPlayerScores(msg);
             String[] msgs = new String[scores.length + 1];
@@ -32,7 +35,6 @@ public class GameOverState extends PlayerState {
                 msgs[i + 1] = scores[i];
             }
             mPlayerContext.gameOver(msgs);
-            Log.i("GameOverState", msg);
         }
     }
 
