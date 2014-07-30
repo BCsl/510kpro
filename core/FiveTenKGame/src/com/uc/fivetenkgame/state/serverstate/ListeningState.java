@@ -32,6 +32,7 @@ public class ListeningState extends ServerState {
 		} else if (msg.startsWith(NetworkCommon.PLAYER_NAME)) {
 			// ±£´æÍæ¼ÒÃû×Ö
 		    int clientNum = mServerContext.getClientNum();
+		    
             ++clientNum;
             mServerContext.setClientNum(clientNum);
 
