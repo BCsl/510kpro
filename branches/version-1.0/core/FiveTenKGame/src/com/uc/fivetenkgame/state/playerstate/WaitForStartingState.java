@@ -24,42 +24,38 @@ public class WaitForStartingState extends PlayerState {
 	 */
 	@Override
 	public void handle(String msg) {
-		if (msg == null) {// 有上一状态（ConnectState)跳转而来，暂不处理
+		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {// 有上一状态（ConnectState)跳转而来，暂不处理
 
-		} else if (msg.startsWith(NetworkCommon.BEGIN_GAME)) {
-			String playerNumber = msg.substring(NetworkCommon.BEGIN_GAME.length(),
-					msg.indexOf(','));// 原信息为：标志头+玩家序号,牌号,牌号....
-			if (mPlayerContext.getPlayerNumber() == Integer
-					.parseInt(playerNumber)) {// 是自己的手牌,跳转到下一个状态waitForMsg
+		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.BEGIN_GAME)) {
+			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
+			if (mPlayerContext.getPlayerNumber() == playerNumber) {// 是自己的手牌,跳转到下一个状态waitForMsg
 				mPlayerContext.getHandler().obtainMessage(NetworkCommon.START_GAME)
 						.sendToTarget();
+				String[] initCards = mCommonMsgDecoder.getCardsNumber(msg);
+                StringBuilder cards = new StringBuilder();
+                for (String card : initCards) {
+                    cards.append(card);
+				}
 				mPlayerContext
-						.setInitPlayerCards(msg.substring(4, msg.length()));
-				Log.i("初始手牌：", msg.substring(4, msg.length()));
+						.setInitPlayerCards(cards.toString());
+				Log.i("初始手牌：", cards.toString());
 				mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
-				mPlayerContext.handle(null);
+				mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
 			}
-		} else if(msg.startsWith(NetworkCommon.PLAYER_NAME)){
-			msg = msg.substring(NetworkCommon.PLAYER_NAME.length());//玩家1名字+玩家2名字+玩家3名字
-			String[]names = msg.split(",");
-			int index = 1;
-			for(String name:names){
-				mPlayerContext.setPlayersName(index++, name);
-			}
-			
-		}else if (msg.startsWith(NetworkCommon.PLAYER_NUMBER_UPDATE)) {
-			int playerNumber = Integer.parseInt(msg.substring(2, 3).trim());
+		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NUMBER_UPDATE)) {
+			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
 			mPlayerContext
 					.getHandler()
 					.obtainMessage(NetworkCommon.UPDATE_WAITING_PLAYER_NUM,
 							playerNumber).sendToTarget();
-		} else if (msg.startsWith(NetworkCommon.GAME_OVER)) {
-			int number = Integer.parseInt(msg.substring(2, 3).trim());
-			if (number != mPlayerContext.getPlayerNumber())
-				mPlayerContext.getHandler()
-						.obtainMessage(NetworkCommon.PLAYER_LEFT, number)
-						.sendToTarget();
-			mPlayerContext.resetPlayer();
-		}
+		} 
+//		else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) {
+//			int number = mCommonMsgDecoder.getPlayerNumber(msg);
+//			if (number != mPlayerContext.getPlayerNumber())
+//				mPlayerContext.getHandler()
+//						.obtainMessage(NetworkCommon.PLAYER_LEFT, number)
+//						.sendToTarget();
+//			mPlayerContext.resetPlayer();
+//		}
 	}
 }

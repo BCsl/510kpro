@@ -2,6 +2,7 @@ package com.uc.fivetenkgame.state.playerstate;
 
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerContext;
 
 /**
@@ -25,13 +26,13 @@ public class InitState extends PlayerState {
 	@Override
 	public void handle(String msg) {
 		if(msg==null){//记录日志，此状态下不能为null
-			Log.i("开始状态", "msg为null");
+			Log.i("开始状态", "msg(ip)为null");
 			
 		}else{
 			Log.i(TAG, msg);
 			mPlayerContext.initNetwork(msg);//连接到server
 			mPlayerContext.setState(new ConnectState(mPlayerContext));
-			mPlayerContext.handle(null);
+			mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
 		}
 	}
 

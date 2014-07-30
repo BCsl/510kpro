@@ -2,6 +2,7 @@ package com.uc.fivetenkgame.player;
 
 import android.os.Handler;
 
+import com.uc.fivetenkgame.common.ICommonMsgDecoder;
 import com.uc.fivetenkgame.state.playerstate.PlayerState;
 
 /**
@@ -154,4 +155,6 @@ public interface PlayerContext {
 	 * @param playerName
 	 */
 	public void setPlayersName(int playerId,String playerName);
+	
+	public ICommonMsgDecoder getICommomDecoder();
 }	
