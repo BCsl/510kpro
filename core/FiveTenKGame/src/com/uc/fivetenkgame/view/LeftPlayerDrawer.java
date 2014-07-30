@@ -27,7 +27,7 @@ public class LeftPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 
 	private final int LEFT_CARDS_BASEX;
 	private final float LEFT_OUTCARDS_BASEX;
-	private final  int PLAYER_TEXT_LENGTH;
+//	private final  int PLAYER_TEXT_LENGTH;
 	/**
 	 * @param context
 	 * @param screenHolder
@@ -38,9 +38,9 @@ public class LeftPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 		super(context, screenHolder, cardSizeHolder);
 		LEFT_OUTCARDS_BASEX = 3 * mCardSizeHolder.width;
 		LEFT_CARDS_BASEX = mCardSizeHolder.width;
-		Paint paint = new Paint();
-		paint.setTextSize(TEXT_SIZE);
-		PLAYER_TEXT_LENGTH = (int) paint.measureText(mContext.getResources().getString(R.string.player_text_length));
+//		Paint paint = new Paint();
+//		paint.setTextSize(TEXT_SIZE_SMALL);
+//		PLAYER_TEXT_LENGTH = (int) paint.measureText(mContext.getResources().getString(R.string.player_text_length));
 		
 	}
 	@Override
@@ -50,15 +50,16 @@ public class LeftPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 					LEFT_CARDS_BASEX + mCardSizeHolder.width + 10,
 					mScreenHolder.height / 2);
 			drawHandCardFlag(LEFT_CARDS_BASEX
-					+ mCardSizeHolder.width + 10, mCardSizeHolder.height);
+					+ mCardSizeHolder.width + 10);
 		}
+		paint.setTextSize(TEXT_SIZE_SMALL);
 		drawOutList(outList,
 				LEFT_OUTCARDS_BASEX);
 		drawPlayer(name, paint, 10, TEXT_SIZE);
 		drawScore(score, paint,
 				10, 2 * TEXT_SIZE);
 		drawCardsNumber(cardNumber,
-				paint, PLAYER_TEXT_LENGTH + 10, TEXT_SIZE, LEFT_CARDS_BASEX);
+				paint, paint.measureText(name) + 10, TEXT_SIZE, LEFT_CARDS_BASEX);
 		
 	}
 

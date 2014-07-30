@@ -85,15 +85,15 @@ public abstract class AbsDrawer {
 	/**
 	 * 根据(X,Y)画玩家
 	 * 
-	 * @param playerId
+	 * @param playerName
 	 * @param paint
 	 * @param x
 	 * @param y
 	 */
-	protected final void drawPlayer(String playerId, Paint paint, float x, float y) {
-		paint.setTextSize(TEXT_SIZE);
+	protected final void drawPlayer(String playerName, Paint paint, float x, float y) {
+		paint.setTextSize(TEXT_SIZE_SMALL);
 		paint.setColor(Color.rgb(255, 246, 143));
-		mCanvas.drawText(mContext.getResources().getString(R.string.players) + playerId, x, y, paint);
+		mCanvas.drawText(playerName, x, y, paint);
 	}
 	/**
 	 * 画剩余时间

@@ -189,9 +189,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		mBackgroudBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
 		mCurrentPlayerId = -1;
 		mtimer = new Timer();
-		mRightPlayerDarwer=new RightPlayerDrawer(mContext, mScreenHolder, mCardSizeHolder);
-		mLeftPlayerDrawer=new LeftPlayerDrawer(mContext, mScreenHolder, mCardSizeHolder);
-		mMainPlayerDrawer=new MainPlayerDrawer(mContext, mScreenHolder, mCardSizeHolder);
 		isFirst=true;
 	}
 
@@ -236,6 +233,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		mCardSizeHolder.height = temp.getHeight();
 		mCardSizeHolder.width = temp.getWidth();
 		TEXT_SIZE_BIG = mCardSizeHolder.width * 3 / 4;
+		mRightPlayerDarwer=new RightPlayerDrawer(mContext, mScreenHolder, mCardSizeHolder);
+		mLeftPlayerDrawer=new LeftPlayerDrawer(mContext, mScreenHolder, mCardSizeHolder);
+		mMainPlayerDrawer=new MainPlayerDrawer(mContext, mScreenHolder, mCardSizeHolder);
 		Log.i(TAG, mScreenHolder.toString());
 		Log.i(TAG, mCardSizeHolder.toString());
 		temp.recycle();
@@ -344,7 +344,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void drawMainPlayer(Canvas canvas, Paint paint) {
 		mMainPlayerDrawer.initCanvas(canvas);
-		boolean myTurn=isMyTurn==true?true:false;
+		boolean myTurn=isMyTurn?true:false;
 		((MainPlayerDrawer)mMainPlayerDrawer).doDraw(paint, myTurn, mTimeRemind, mPlayerName, mCardNumber.get(mPlayerId)-1,
 				mScroeList.get(mPlayerId-1), mCardList,mOutList.get(mPlayerId-1));
 	}

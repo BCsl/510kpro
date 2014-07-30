@@ -92,7 +92,7 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 				rightButtonXEagle + baseLength, baseY + 10);
 		mCanvas.drawRoundRect(rectLeft, 20f, 20f, paint);
 		mCanvas.drawRoundRect(rectRight, 20f, 20f, paint);
-		paint.setColor(Color.rgb(255, 48, 48));
+		paint.setColor(Color.YELLOW);
 		mCanvas.drawText(mContext.getString(R.string.hand_cards),
 				leftButtonXEagle, baseY, paint);
 		mCanvas.drawText(mContext.getString(R.string.give_up),
