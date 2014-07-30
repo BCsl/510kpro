@@ -7,6 +7,8 @@ import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.CommonMsgDecoder;
+import com.uc.fivetenkgame.common.ICommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
@@ -52,6 +54,7 @@ public class Player implements PlayerContext {
 	private int currentPlayer;
 	private PlayerModel mPlayerModel;
 	private NetworkInterface mNetworkManager;
+	private ICommonMsgDecoder mICommonMsgDecoder;
 	private Handler mHandler;
 	private List<Card> formerCardList;
 	private List<Card> mHandList;
@@ -169,6 +172,7 @@ public class Player implements PlayerContext {
 		mNetworkManager = ClientManager.getInstance();
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
+		mICommonMsgDecoder = new CommonMsgDecoder();
 
 		setRule(new BasicRule());
 		// mPlayerModel.setCardList(null);
@@ -393,4 +397,9 @@ public class Player implements PlayerContext {
 
 		// À¢ΩÁ√Ê
 	}
+
+    @Override
+    public ICommonMsgDecoder getICommomDecoder() {
+        return this.mICommonMsgDecoder;
+    }
 }

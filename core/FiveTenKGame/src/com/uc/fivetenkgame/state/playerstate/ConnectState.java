@@ -13,6 +13,7 @@ import com.uc.fivetenkgame.player.PlayerContext;
 public class ConnectState extends PlayerState {
 	public ConnectState(PlayerContext context) {
 		super(context);
+		//mThread.start();
 	}
 
 	/**
@@ -22,21 +23,20 @@ public class ConnectState extends PlayerState {
 	 */
 	@Override
 	public void handle(String msg) {
-		if(msg==null){//有上一状态（initState）跳转过来，暂不处理
+		if(mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)){//有上一状态（initState）跳转过来，暂不处理
 			
-		}else if (msg.startsWith(NetworkCommon.PLAYER_ACCEPTED)) {// 连接成功，处理msg后跳转到等待开始状态
+		}else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_ACCEPTED)) {// 连接成功，处理msg后跳转到等待开始状态
 			Log.i("连接server成功", "玩家号："+mPlayerContext.getPlayerNumber());
-			int playerNumber = Integer.parseInt(msg.substring(2,3).trim());
+			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
 			mPlayerContext.setPlayerNumber(playerNumber);//设置玩家序号
-			mPlayerContext.sendMsg(NetworkCommon.PLAYER_NAME+playerNumber+","+mPlayerContext.getPlayerName());//将玩家名字发给server
 			Log.i("send Player Name to server", mPlayerContext.getPlayerName());
 			mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
-			mPlayerContext.handle(null);
+			mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
 
-		} else if (msg.startsWith(NetworkCommon.PLAYER_REFUSED)) {
+		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_REFUSED)) {
 			// 连接失败，跳转到开始界面
 			mPlayerContext.getHandler().obtainMessage(NetworkCommon.HOST_FULL).sendToTarget();
-		} else if (msg.startsWith(NetworkCommon.GAME_OVER)){
+		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_EXIT)){
 			mPlayerContext.getHandler().obtainMessage(NetworkCommon.PLAYER_LEFT).sendToTarget();
 		}
 	}

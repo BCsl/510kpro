@@ -21,7 +21,8 @@ public class ExitState extends PlayerState {
 	 */
 	@Override
 	public void handle(String msg) {
-		if(msg==null){//有上一状态（waitForMsgState)跳转而来，退出游戏
+	    if (mCommonMsgDecoder.checkMessage(msg,
+                NetworkCommon.PLAYER_STATE_CHANGE)) {//由上一状态跳转而来
 			mPlayerContext.getHandler().obtainMessage(NetworkCommon.END_GAME).sendToTarget();
 		}
 	}
