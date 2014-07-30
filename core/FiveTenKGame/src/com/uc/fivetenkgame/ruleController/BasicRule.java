@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import android.util.Log;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.view.entity.Card;
 
 /**

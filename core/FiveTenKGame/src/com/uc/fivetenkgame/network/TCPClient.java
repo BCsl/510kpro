@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
 
 /**
  * 客户端TCP网络发送接收数据线程类
@@ -58,7 +58,7 @@ public class TCPClient{
 						if( len > 1 ){
 							String data = new String(mBuffer, 0, len);
 							//拆分消息
-							String []msg = data.split(Common.MESSAGE_END);
+							String []msg = data.split(NetworkCommon.MESSAGE_END);
 							for( String m : msg)
 								mClientManager.receiveMessage(m);
 						}
@@ -91,7 +91,7 @@ public class TCPClient{
 		
 		try {
 			//加上消息尾
-			msg = msg.concat(Common.MESSAGE_END);
+			msg = msg.concat(NetworkCommon.MESSAGE_END);
 			mOutputStream.write(msg.getBytes(), 0, msg.getBytes().length);
 			//mOutputStream.flush();
 		} catch (IOException e) {

@@ -7,9 +7,10 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.server.ServerContext;
+import com.uc.fivetenkgame.util.OredrUtil;
 import com.uc.fivetenkgame.view.entity.Card;
 
 /**
@@ -71,7 +72,7 @@ public class GameStartState extends ServerState {
 	private void dealCards() {
 		ArrayList<Card>[] playerCardList = new ArrayList[3];
 
-		for (int i = 0; i < Common.TOTAL_PLAYER_NUM; ++i) {
+		for (int i = 0; i < NetworkCommon.TOTAL_PLAYER_NUM; ++i) {
 			playerCardList[i] = new ArrayList<Card>();
 		}
 
@@ -82,12 +83,12 @@ public class GameStartState extends ServerState {
 
 		// 服务器保存各玩家信息
 		ArrayList<PlayerModel> players = new ArrayList<PlayerModel>();
-		for (int i = 0; i < Common.TOTAL_PLAYER_NUM; ++i) {
+		for (int i = 0; i < NetworkCommon.TOTAL_PLAYER_NUM; ++i) {
 			PlayerModel player = new PlayerModel();
 			player.setCardList(playerCardList[i]);
 			player.setPlayerNumber(i + 1);
 			// 排序
-			Common.setOrder(player.getCardList());
+			OredrUtil.setOrder(player.getCardList());
 			players.add(player);
 		}
 		mServerContext.setPlayerModel(players);
@@ -98,10 +99,10 @@ public class GameStartState extends ServerState {
 	 */
 	private void sendCards() {
 		ArrayList<PlayerModel> players = mServerContext.getPlayerModel();
-		for (int i = 0; i < Common.TOTAL_PLAYER_NUM; ++i) {
+		for (int i = 0; i < NetworkCommon.TOTAL_PLAYER_NUM; ++i) {
 			PlayerModel player = players.get(i);
 			StringBuilder sb = new StringBuilder();
-			sb.append(Common.BEGIN_GAME);
+			sb.append(NetworkCommon.BEGIN_GAME);
 			sb.append(player.getPlayerNumber() + ",");
 
 			// 牌号
@@ -122,7 +123,7 @@ public class GameStartState extends ServerState {
 	 */
 	private void setFirstPlayer() {
 		Random random = new Random();
-		final int num = random.nextInt(Common.TOTAL_PLAYER_NUM) + 1;
+		final int num = random.nextInt(NetworkCommon.TOTAL_PLAYER_NUM) + 1;
 		mServerContext.setCurrentPlayerNumber(num);
 		// Log.i("first time to call Next Player", "wait a second");
 		// for (int i = 0; i < 1000000000; i++){}
@@ -133,7 +134,7 @@ public class GameStartState extends ServerState {
 			@Override
 			public void run() {
 				mServerContext.getNetworkManager().sendMessage(
-						Common.YOUR_TURN + num);
+						NetworkCommon.YOUR_TURN + num);
 			}
 		}, 1000);
 	}

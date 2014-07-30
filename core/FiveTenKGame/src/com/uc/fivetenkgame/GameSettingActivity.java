@@ -16,13 +16,13 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
+import com.uc.fivetenkgame.common.SharePreferenceCommon;
 
 public class GameSettingActivity extends Activity implements
 		OnCheckedChangeListener {
@@ -94,8 +94,8 @@ public class GameSettingActivity extends Activity implements
 	}
 	protected void saveUserName(String name) {
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
-				Common.TABLE_SETTING, MODE_PRIVATE);
-		sp.edit().putString(Common.MY_NAME, name).commit();
+				SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
+		sp.edit().putString(SharePreferenceCommon.MY_NAME, name).commit();
 	}
 	private void showInputNameDialog() {
 		if (inputNameDialog != null)
@@ -104,13 +104,13 @@ public class GameSettingActivity extends Activity implements
 
 	private void initData() {
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
-				Common.TABLE_SETTING, MODE_PRIVATE);
-		if (sp.getBoolean(Common.SP_QRCODE_FLAG, false))
+				SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
+		if (sp.getBoolean(SharePreferenceCommon.SP_QRCODE_FLAG, false))
 			scanOpen.setChecked(true);
 		else
 			scanClose.setChecked(true);
 
-		if (sp.getBoolean(Common.SP_MUSIC_FLAG, true))
+		if (sp.getBoolean(SharePreferenceCommon.SP_MUSIC_FLAG, true))
 			musicOpen.setChecked(true);
 		else
 			musicClose.setChecked(true);
@@ -121,7 +121,7 @@ public class GameSettingActivity extends Activity implements
 			wifiOpen.setChecked(true);
 		else
 			wifiClose.setChecked(true);
-		nameText.setText(sp.getString(Common.MY_NAME,driveName));
+		nameText.setText(sp.getString(SharePreferenceCommon.MY_NAME,driveName));
 		
 	}
 
@@ -130,7 +130,7 @@ public class GameSettingActivity extends Activity implements
 		boolean flag = false;
 		if (group == musicRadioGroup) {
 			SharedPreferences sp = getApplicationContext()
-					.getSharedPreferences(Common.TABLE_SETTING, MODE_PRIVATE);
+					.getSharedPreferences(SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 			switch (checkedId) {
 			case R.id.open_radio_id:
 				flag = true;
@@ -141,11 +141,11 @@ public class GameSettingActivity extends Activity implements
 			default:
 				new IllegalArgumentException("checkedId not find!");
 			}
-			sp.edit().putBoolean(Common.SP_MUSIC_FLAG, flag).commit();
+			sp.edit().putBoolean(SharePreferenceCommon.SP_MUSIC_FLAG, flag).commit();
 
 		} else if (group == qrcodeRadioGroup) {
 			SharedPreferences sp = getApplicationContext()
-					.getSharedPreferences(Common.TABLE_SETTING, MODE_PRIVATE);
+					.getSharedPreferences(SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 			switch (checkedId) {
 			case R.id.open_qrcode_id:
 				flag = true;
@@ -156,7 +156,7 @@ public class GameSettingActivity extends Activity implements
 			default:
 				new IllegalArgumentException("checkedId not find!");
 			}
-			sp.edit().putBoolean(Common.SP_QRCODE_FLAG, flag).commit();
+			sp.edit().putBoolean(SharePreferenceCommon.SP_QRCODE_FLAG, flag).commit();
 
 		} else if (group == wifiRadioGroup) {
 			switch (checkedId) {
@@ -181,9 +181,9 @@ public class GameSettingActivity extends Activity implements
 	 *            要操作的AutoCompleteTextView
 	 */
 	private void initAutoComplete(AutoCompleteTextView auto) {
-		SharedPreferences sp = getSharedPreferences(Common.TABLE_HISTORY,
+		SharedPreferences sp = getSharedPreferences(SharePreferenceCommon.TABLE_HISTORY,
 				MODE_PRIVATE);
-		String longhistory = sp.getString(Common.SP_HISTORY, "nothing");
+		String longhistory = sp.getString(SharePreferenceCommon.SP_HISTORY, "nothing");
 		String[] hisArrays = longhistory.split(",");
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line, hisArrays);
@@ -216,13 +216,13 @@ public class GameSettingActivity extends Activity implements
 	 *            保存在sharedPreference中的字段名
 	 */
 	private void saveHistory(String field) {
-		SharedPreferences sp = getSharedPreferences(Common.TABLE_HISTORY,
+		SharedPreferences sp = getSharedPreferences(SharePreferenceCommon.TABLE_HISTORY,
 				MODE_PRIVATE);
-		String longhistory = sp.getString(Common.SP_HISTORY, "nothing");
+		String longhistory = sp.getString(SharePreferenceCommon.SP_HISTORY, "nothing");
 		if (!longhistory.contains(field + ",")) {
 			StringBuilder sb = new StringBuilder(longhistory);
 			sb.insert(0, field + ",");
-			sp.edit().putString(Common.SP_HISTORY, sb.toString()).commit();
+			sp.edit().putString(SharePreferenceCommon.SP_HISTORY, sb.toString()).commit();
 		}
 	}
 }

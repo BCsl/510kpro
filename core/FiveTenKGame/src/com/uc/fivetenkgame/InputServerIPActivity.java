@@ -1,5 +1,4 @@
 package com.uc.fivetenkgame;
-import com.uc.fivetenkgame.network.util.Common;
 import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +8,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.uc.fivetenkgame.util.IPMatcherUtil;
 
 /**
  * 客户端输入服务器ip地址的界面，主题为对话框形式
@@ -37,7 +38,7 @@ public class InputServerIPActivity extends Activity {
 		public void onClick(View v) {
 			if( v == mOKButton ){
 				String ipAddr = mServerIP.getText().toString();
-				if( Common.isIPAddress(ipAddr) ){
+				if( IPMatcherUtil.isIPAddress(ipAddr) ){
 					Intent intent = getIntent();
 					Bundle bundle = new Bundle();
 					bundle.putString("IP", ipAddr);

@@ -31,7 +31,7 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.SharePreferenceCommon;
 import com.uc.fivetenkgame.view.entity.Card;
 
 /**
@@ -189,7 +189,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void initPlayersInfos(int playerId) {
 		SharedPreferences sp = context.getSharedPreferences(
-				Common.TABLE_PLAYERS, context.MODE_PRIVATE);
+				SharePreferenceCommon.TABLE_PLAYERS, context.MODE_PRIVATE);
 		switch (playerId) {
 		case 1:
 			right_player_id = 2;

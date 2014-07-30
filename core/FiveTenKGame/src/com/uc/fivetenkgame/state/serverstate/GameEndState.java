@@ -1,6 +1,6 @@
 package com.uc.fivetenkgame.state.serverstate;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.server.ServerContext;
 /**
@@ -19,24 +19,24 @@ public class GameEndState extends ServerState {
 
 	@Override
 	public void handle(String msg) {
-		if (msg.equals(Common.GAME_END)) {
+		if (msg.equals(NetworkCommon.GAME_END)) {
 			int id = winnerId();
 			StringBuilder sb=new StringBuilder();
-			sb.append(Common.GAME_OVER);
+			sb.append(NetworkCommon.GAME_OVER);
 			sb.append(id+",");
 			for(PlayerModel model:mServerContext.getPlayerModel())
 					sb.append(model.getScore()+",");
 			mServerContext.getNetworkManager().sendMessage(sb.deleteCharAt(sb.length()-1).toString());
 		}
-		else if( msg.startsWith(Common.PLAY_AGAIN) ){
+		else if( msg.startsWith(NetworkCommon.PLAY_AGAIN) ){
 			++playAgainNum;
-			if( playAgainNum == Common.TOTAL_PLAYER_NUM ){
+			if( playAgainNum == NetworkCommon.TOTAL_PLAYER_NUM ){
 				mServerContext.setState(new GameStartState(mServerContext));
 				mServerContext.handleMessage(null);
 			}
 		}
-		else if( msg.startsWith(Common.GAME_EXIT) ){
-			mServerContext.getNetworkManager().sendMessage(Common.GAME_EXIT);
+		else if( msg.startsWith(NetworkCommon.GAME_EXIT) ){
+			mServerContext.getNetworkManager().sendMessage(NetworkCommon.GAME_EXIT);
 			mServerContext.resetServer();
 		}
 	}

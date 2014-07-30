@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.uc.fivetenkgame.application.GameApplication;
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.view.entity.Card;
 
 public final class EventHandler {
@@ -47,7 +47,7 @@ public final class EventHandler {
 		// 卡牌被点击
 		if (card != null) {
 			((GameApplication) view.context.getApplicationContext())
-					.playSound(Common.SOUND_BUTTON_PRESS);
+					.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "被点击：" + card.getCardId());
 			if (card.isClicked()) {
 				card.setClick(false);
@@ -71,7 +71,7 @@ public final class EventHandler {
 				view.getViewControler().setPlayersOutList(-1,
 						new ArrayList<Card>(handList));
 				((GameApplication) view.context.getApplicationContext())
-						.playSound(Common.SOUND_OUTPUT_CARDS);
+						.playSound(SoundPoolCommon.SOUND_OUTPUT_CARDS);
 				// cardList.removeAll(handList);
 				handList.clear();
 			}
@@ -157,7 +157,7 @@ public final class EventHandler {
 			case 2:
 			case 1:
 				((GameApplication) context.getApplicationContext())
-						.playSound(Common.SOUND_SECOND_CALL);
+						.playSound(SoundPoolCommon.SOUND_SECOND_CALL);
 				break;
 			case 0:
 				eventListener.handCard(null, true);

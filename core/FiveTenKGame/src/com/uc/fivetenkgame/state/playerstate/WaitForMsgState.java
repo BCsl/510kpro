@@ -2,7 +2,7 @@ package com.uc.fivetenkgame.state.playerstate;
 
 import android.util.Log;
 
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerContext;
 
 /**
@@ -24,7 +24,7 @@ public class WaitForMsgState extends PlayerState {
 			return;
 
 		// 得到出牌信息
-		if (msg.startsWith(Common.YOUR_TURN)) {
+		if (msg.startsWith(NetworkCommon.YOUR_TURN)) {
 			mPlayerContext.setCurrentPlayer(Integer.valueOf(msg.substring(2)));
 			// 自己出牌
 			if (msg.substring(2).equals(
@@ -36,9 +36,9 @@ public class WaitForMsgState extends PlayerState {
 				String cards = mPlayerContext.getCardsToBePlayed();
 				Log.i(TAG, "客户端出牌：" + cards);
 				if (cards == null) {
-					mPlayerContext.sendMsg(Common.GIVE_UP);
+					mPlayerContext.sendMsg(NetworkCommon.GIVE_UP);
 				} else {
-					mPlayerContext.sendMsg(Common.PLAY_CARDS + cards);
+					mPlayerContext.sendMsg(NetworkCommon.PLAY_CARDS + cards);
 				}
 				mPlayerContext.setMyTurn(false);
 				mPlayerContext.setDoneHandCards(false);
@@ -54,11 +54,11 @@ public class WaitForMsgState extends PlayerState {
 				// while (!mPlayerContext.doneHandCards()) {
 				// }
 			}
-		} else if (msg.startsWith(Common.GIVE_UP)) {
+		} else if (msg.startsWith(NetworkCommon.GIVE_UP)) {
 			msg = msg.substring(2, msg.length()).trim();
 			mPlayerContext.playerGiveUp(Integer.valueOf(msg));
 
-		} else if (msg.startsWith(Common.PLAY_END)) {
+		} else if (msg.startsWith(NetworkCommon.PLAY_END)) {
 			msg = msg.substring(2, msg.length()).trim();
 			String playerNumber = msg.substring(0, 1);
 
@@ -85,7 +85,7 @@ public class WaitForMsgState extends PlayerState {
 			return;
 		} else
 		// 得到回合结束信息
-		if (msg.startsWith(Common.ROUND_END)) {
+		if (msg.startsWith(NetworkCommon.ROUND_END)) {
 			msg = msg.substring(2, msg.length()).trim();
 			String[] playerScore = msg.split(",");
 			mPlayerContext.roundEndAction(playerScore);
@@ -93,7 +93,7 @@ public class WaitForMsgState extends PlayerState {
 			return;
 		} else
 		// 得到游戏结束信息
-		if (msg.startsWith(Common.GAME_OVER)) {
+		if (msg.startsWith(NetworkCommon.GAME_OVER)) {
 			mPlayerContext.setState(new GameOverState(mPlayerContext));
 			mPlayerContext.handle(msg.substring(2));
 			Log.i("GAME_OVER", msg);

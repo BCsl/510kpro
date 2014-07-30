@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Vector;
 
 import my.example.fivetenkgame.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,9 +14,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
-import android.view.KeyEvent;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
@@ -28,7 +27,7 @@ import com.google.zxing.decoding.CaptureActivityHandler;
 import com.google.zxing.decoding.InactivityTimer;
 import com.google.zxing.view.ViewfinderView;
 import com.uc.fivetenkgame.application.GameApplication;
-import com.uc.fivetenkgame.network.util.Common;
+import com.uc.fivetenkgame.common.SoundPoolCommon;
 
 /**
  *  主要是初始化相机，声音，震动，和界面（surfaceView + ViewfinderView(核心)）
@@ -202,7 +201,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
 //			mediaPlayer.start();
 //		}
 		if (playBeep) {
-			((GameApplication)getApplication()).playSound(Common.SOUND_BEEP);
+			((GameApplication)getApplication()).playSound(SoundPoolCommon.SOUND_BEEP);
 		}
 		if (vibrate) {
 			Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
