@@ -25,9 +25,9 @@ import com.uc.fivetenkgame.view.util.CardGenerator;
  * 
  *         下午6:42:47 2014-7-16
  */
-public class OtherPlayerInfoDrawer extends AbsDrawer {
+public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 
-	public OtherPlayerInfoDrawer(Context context,
+	protected AbsOtherPlayerInfoDrawer(Context context,
 			ScreenSizeHolder screenHolder, CardSizeHolder cardSizeHolder) {
 		super(context, screenHolder, cardSizeHolder);
 	}
@@ -42,27 +42,25 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 	 * @param baseX
 	 *            所有背景牌，都应该排列在的X坐标
 	 */
-	public void drawCardsNumber(int cardsNumber, Paint paint, float x, float y,
+	protected final void drawCardsNumber(int cardsNumber, Paint paint, float x, float y,
 			float baseX) {
 		super.drawCardsNumber(cardsNumber, paint, x, y);
 		if (cardsNumber == 0)
 			return;
-
 		cardsNumber = cardsNumber > 15 ? 15 : cardsNumber;// 最多只画15张背面的牌
-		float factor = (float) (screenHolder.height / 2 - cardSizeHolder.height - cardSizeHolder.width)
-				/ (float) (cardsNumber / 2 * cardSizeHolder.height * 1 / 3);
-		float baseSpace = (float) factor > 1 ? cardSizeHolder.height * 1 / 3
-				: cardSizeHolder.height * 1 / 3 * factor;
+		float factor = (float) (mScreenHolder.height / 2 - mCardSizeHolder.height - mCardSizeHolder.width)
+				/ (float) (cardsNumber / 2 * mCardSizeHolder.height * 1 / 3);
+		float baseSpace = (float) factor > 1 ? mCardSizeHolder.height * 1 / 3
+				: mCardSizeHolder.height * 1 / 3 * factor;
 		Card card = new Card(Card.CARD_BG_ID);
-		card.setSize(cardSizeHolder.width, cardSizeHolder.height);
+		card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 		Bitmap temp = null;
 		for (int i = 0; i < cardsNumber; i++) {
-			card.setLocation((int) baseX, (int) (i * baseSpace + 2 * TEXT_SIZE));
-			temp = CardGenerator.getBitmap(context,
+			card.setLocation((int) baseX, (int) (i * baseSpace + 2 * mCardSizeHolder.width));
+			temp = CardGenerator.getBitmap(mContext,
 					CardGenerator.cardResourceName(card.getCardId()));
-			canvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
+			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
-
 	}
 
 	/**
@@ -72,32 +70,43 @@ public class OtherPlayerInfoDrawer extends AbsDrawer {
 	 * @param baseX
 	 *            所有已出的牌，都应该排列在的X坐标
 	 */
-	public void drawOutList(List<Card> outList, float baseX) {
+	protected void drawOutList(List<Card> outList, float baseX) {
 		if (outList == null || outList.size() == 0)
 			return;
-		float factor = (float) screenHolder.height
-				/ (float) cardSizeHolder.height / 4 > 1 ? 1
-				: (float) screenHolder.height / (float) cardSizeHolder.height
+		float factor = (float) mScreenHolder.height
+				/ (float) mCardSizeHolder.height / 4 > 1 ? 1
+				: (float) mScreenHolder.height / (float) mCardSizeHolder.height
 						/ 4;
-		float baseSpace = (float) cardSizeHolder.height / 4 * factor;
-		float baseY = (float) screenHolder.height / 2 - outList.size() / 2
+		float baseSpace = (float) mCardSizeHolder.height / 4 * factor;
+		float baseY = (float) mScreenHolder.height / 2 - outList.size() / 2
 				* baseSpace;
 		Bitmap temp = null;
 		Card card = null;
 		for (int i = 0; i < outList.size(); i++) {
 			card = outList.get(i);
-			card.setSize(cardSizeHolder.width, cardSizeHolder.height);
+			card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 			card.setLocation((int) baseX, (int) (i * baseSpace + baseY));
-			temp = CardGenerator.getBitmap(context,
+			temp = CardGenerator.getBitmap(mContext,
 					CardGenerator.cardResourceName(card.getCardId()));
-			canvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
+			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 		card = null;
 	}
 
-	public void drawHandCardFlag(float left, float top) {
-		canvas.drawBitmap(CardGenerator.getBitmap(context, "chupai"), left,
+	protected void drawHandCardFlag(float left, float top) {
+		mCanvas.drawBitmap(CardGenerator.getBitmap(mContext, "chupai"), left,
 				top, null);
 	}
+	/**
+	 * 画全部信息
+	 * @param paint
+	 * @param name
+	 * @param isMyTurn
+	 * @param timeRemind
+	 * @param cardNumber
+	 * @param score
+	 * @param outList
+	 */
+	protected abstract void doDraw(Paint paint,String name,boolean isMyTurn,int timeRemind,int cardNumber,int score,List<Card> outList);
 
 }

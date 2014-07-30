@@ -7,6 +7,8 @@
  */
 package com.uc.fivetenkgame.view;
 
+import my.example.fivetenkgame.R;
+
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 
@@ -23,30 +25,33 @@ import android.graphics.Paint;
  *         下午4:33:39 2014-7-16
  */
 public abstract class AbsDrawer {
-	protected Canvas canvas;
-	protected Context context;
-	protected ScreenSizeHolder screenHolder;
-	protected CardSizeHolder cardSizeHolder;
-	protected float TEXT_SIZE, TEXT_SIZE_SMALL;
-
-	public AbsDrawer(Context context, ScreenSizeHolder screenHolder,
+	protected Canvas mCanvas;
+	protected Context mContext;
+	protected ScreenSizeHolder mScreenHolder;
+	protected CardSizeHolder mCardSizeHolder;
+	protected final float TEXT_SIZE, TEXT_SIZE_SMALL;
+/**
+ * 
+ * @param context
+ * @param screenHolder
+ * @param cardSizeHolder
+ */
+	protected AbsDrawer(Context context, ScreenSizeHolder screenHolder,
 			CardSizeHolder cardSizeHolder) {
-		this.context = context;
-		this.screenHolder = screenHolder;
-		this.cardSizeHolder = cardSizeHolder;
+		this.mContext = context;
+		this.mScreenHolder = screenHolder;
+		this.mCardSizeHolder = cardSizeHolder;
 		TEXT_SIZE = (float) cardSizeHolder.width * 2 / 3;
 		TEXT_SIZE_SMALL = (float) cardSizeHolder.width / 2;
-
 	}
 
 	/**
 	 * 
 	 * @param canvas
 	 */
-	public final void initCanvas(Canvas canvas) {
-		this.canvas = canvas;
+	protected final void initCanvas(Canvas canvas) {
+		this.mCanvas = canvas;
 	}
-
 	/**
 	 * 根据(X,Y)画分数
 	 * 
@@ -56,10 +61,10 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	public final void drawScore(int score, Paint paint, float x, float y) {
+	protected final void drawScore(int score, Paint paint, float x, float y) {
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		paint.setColor(Color.rgb(255, 184, 15));
-		canvas.drawText("分数：" + score, x, y, paint);
+		mCanvas.drawText(mContext.getResources().getString(R.string.score) + score, x, y, paint);
 	}
 
 	/**
@@ -70,11 +75,11 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	public final void drawCardsNumber(int cardsNumber, Paint paint, float x,
+	protected final void drawCardsNumber(int cardsNumber, Paint paint, float x,
 			float y) {
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		paint.setColor(Color.rgb(255, 184, 15));
-		canvas.drawText("牌数：" + cardsNumber, x, y, paint);
+		mCanvas.drawText(mContext.getResources().getString(R.string.cards_number) + cardsNumber, x, y, paint);
 	}
 
 	/**
@@ -85,10 +90,10 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	public final void drawPlayer(String playerId, Paint paint, float x, float y) {
+	protected final void drawPlayer(String playerId, Paint paint, float x, float y) {
 		paint.setTextSize(TEXT_SIZE);
 		paint.setColor(Color.rgb(255, 246, 143));
-		canvas.drawText("玩家" + playerId, x, y, paint);
+		mCanvas.drawText(mContext.getResources().getString(R.string.players) + playerId, x, y, paint);
 	}
 	/**
 	 * 画剩余时间
@@ -97,9 +102,9 @@ public abstract class AbsDrawer {
 	 * @param x
 	 * @param y
 	 */
-	public final void drawTime(String timeRemind,Paint paint, float x, float y){
+	protected final void drawTime(String timeRemind,Paint paint, float x, float y){
 		paint.setTextSize(TEXT_SIZE);
 		paint.setColor(Color.rgb(255, 246, 143));
-		canvas.drawText(timeRemind, x, y, paint);
+		mCanvas.drawText(timeRemind, x, y, paint);
 	}
 }

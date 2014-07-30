@@ -9,6 +9,8 @@ package com.uc.fivetenkgame.view;
 
 import java.util.List;
 
+import my.example.fivetenkgame.R;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -26,13 +28,13 @@ import com.uc.fivetenkgame.view.util.CardGenerator;
  * 
  *         下午5:03:12 2014-7-16
  */
-public class MainPlayerInfoDrawer extends AbsDrawer {
+public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 
 	private String TAG = "MainPlayerInfoDrawer";
-	private boolean isFirst=true;
+	private boolean isFirst = true;
 
-	public MainPlayerInfoDrawer(Context context, ScreenSizeHolder screenHolder,
-			CardSizeHolder cardSizeHolder) {
+	protected AbsMainPlayerInfoDrawer(Context context,
+			ScreenSizeHolder screenHolder, CardSizeHolder cardSizeHolder) {
 		super(context, screenHolder, cardSizeHolder);
 	}
 
@@ -43,27 +45,28 @@ public class MainPlayerInfoDrawer extends AbsDrawer {
 	 * @param baseY
 	 * @param cardIntent
 	 */
-	public void drawCards(List<Card> cardList, float baseY, float cardIntent) {
+	protected void drawCards(List<Card> cardList, float baseY, float cardIntent) {
 		if (cardList == null || cardList.size() == 0)
 			return;
-		float space = (screenHolder.width - 10) / (cardList.size() * TEXT_SIZE) > 1 ? TEXT_SIZE
-				: (screenHolder.width - 10) / (cardList.size() * TEXT_SIZE)
+		float space = (mScreenHolder.width - 10)
+				/ (cardList.size() * TEXT_SIZE) > 1 ? TEXT_SIZE
+				: (mScreenHolder.width - 10) / (cardList.size() * TEXT_SIZE)
 						* TEXT_SIZE;
-		float baseX = (float) screenHolder.width / 2 - cardList.size() / 2
+		float baseX = (float) mScreenHolder.width / 2 - cardList.size() / 2
 				* space;
 		Card card = null;
 		Bitmap temp = null;
 		for (int i = 0; i < cardList.size(); i++) {
 			card = cardList.get(i);
-			card.setSize(cardSizeHolder.width, cardSizeHolder.height);
+			card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 			if (!card.isClicked())
 				card.setLocation((int) (baseX + i * space), (int) baseY);
 			else
 				card.setLocation((int) (baseX + i * space),
 						(int) (baseY - cardIntent));
-			temp = CardGenerator.getBitmap(context,
+			temp = CardGenerator.getBitmap(mContext,
 					CardGenerator.cardResourceName(card.getCardId()));
-			canvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
+			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 		card = null;
 	}
@@ -74,23 +77,26 @@ public class MainPlayerInfoDrawer extends AbsDrawer {
 	 * @param paint
 	 * @param baseY
 	 */
-	public void drawButton(Paint paint, float baseY) {
-		paint.setColor(Color.rgb(152, 251, 152));
+	protected void drawButton(Paint paint, float baseY) {
+		paint.setColor(Color.GRAY);
 		paint.setTextSize(TEXT_SIZE);
-		float baseLength = paint.measureText("出牌");
-		float leftButtonXEagle = screenHolder.width / 2 - 2
-				* cardSizeHolder.width;
-		float rightButtonXEagle = screenHolder.width / 2 + 2
-				* cardSizeHolder.width;
+		float baseLength = paint.measureText(mContext
+				.getString(R.string.hand_cards));
+		float leftButtonXEagle = mScreenHolder.width / 2 - 2
+				* mCardSizeHolder.width;
+		float rightButtonXEagle = mScreenHolder.width / 2 + 2
+				* mCardSizeHolder.width;
 		RectF rectLeft = new RectF(leftButtonXEagle, baseY - TEXT_SIZE,
 				leftButtonXEagle + baseLength, baseY + 10);
 		RectF rectRight = new RectF(rightButtonXEagle, baseY - TEXT_SIZE,
 				rightButtonXEagle + baseLength, baseY + 10);
-		canvas.drawRoundRect(rectLeft, 20f, 20f, paint);
-		canvas.drawRoundRect(rectRight, 20f, 20f, paint);
+		mCanvas.drawRoundRect(rectLeft, 20f, 20f, paint);
+		mCanvas.drawRoundRect(rectRight, 20f, 20f, paint);
 		paint.setColor(Color.rgb(255, 48, 48));
-		canvas.drawText("出牌", leftButtonXEagle, baseY, paint);
-		canvas.drawText("放弃", rightButtonXEagle, baseY, paint);
+		mCanvas.drawText(mContext.getString(R.string.hand_cards),
+				leftButtonXEagle, baseY, paint);
+		mCanvas.drawText(mContext.getString(R.string.give_up),
+				rightButtonXEagle, baseY, paint);
 	}
 
 	/**
@@ -99,31 +105,44 @@ public class MainPlayerInfoDrawer extends AbsDrawer {
 	 * @param outList
 	 * @param baseY
 	 */
-	public void drawOutList(List<Card> outList, float baseY) {
+	protected void drawOutList(List<Card> outList, float baseY) {
 		if (outList == null || outList.size() == 0)
 			return;
-
-		float space = (float) (screenHolder.width - 10)
+		float space = (float) (mScreenHolder.width - 10)
 				/ (outList.size() * TEXT_SIZE_SMALL) > 1 ? TEXT_SIZE_SMALL
-				: (screenHolder.width - 10)
+				: (mScreenHolder.width - 10)
 						/ (outList.size() * TEXT_SIZE_SMALL) * TEXT_SIZE_SMALL;
-			if(space<(float)cardSizeHolder.width/3 &&isFirst)	{
-				isFirst=false;
-				Toast.makeText(context,"为了能有更好的体验，请用分辨率跟高的手机进行游戏！",Toast.LENGTH_LONG).show();
-			}
-			
-		float baseX = (float) screenHolder.width / 2 - outList.size() / 2
+		if (space < (float) mCardSizeHolder.width / 3 && isFirst) {
+			isFirst = false;
+			Toast.makeText(mContext,
+					mContext.getResources().getString(R.string.tips),
+					Toast.LENGTH_LONG).show();
+		}
+
+		float baseX = (float) mScreenHolder.width / 2 - outList.size() / 2
 				* space;
 		Card card = null;
 		Bitmap temp = null;
 		for (int i = 0; i < outList.size(); i++) {
 			card = outList.get(i);
-			card.setSize(cardSizeHolder.width, cardSizeHolder.height);
+			card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 			card.setLocation((int) (baseX + i * space), (int) baseY);
-			temp = CardGenerator.getBitmap(context,
+			temp = CardGenerator.getBitmap(mContext,
 					CardGenerator.cardResourceName(card.getCardId()));
-			canvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
+			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 	}
+	/**
+	 * 画整体信息
+	 * @param paint
+	 * @param ismyTurn	
+	 * @param TimeRemind
+	 * @param name					
+	 * @param cardNumber
+	 * @param score
+	 * @param cardList
+	 * @param outList
+	 */
+	protected  abstract void doDraw(Paint paint,boolean ismyTurn,int TimeRemind,String name,int cardNumber,int score,List<Card> cardList,List<Card> outList); 
 
 }

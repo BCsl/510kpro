@@ -1,8 +1,6 @@
 package com.uc.fivetenkgame.common;
 
 public class SoundPoolCommon {
-
-	
 	public static final int SOUND_BUTTON_PRESS=0;
 	public static final int SOUND_GAME_START=1;
 	public static final int SOUND_WIN = 2;
