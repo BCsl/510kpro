@@ -16,10 +16,12 @@ public class PlayerModel {
 	private ArrayList<Card> mCardList;//玩家手牌
 	private int mScore;//玩家分数
 	private int mPlayerNumber;//玩家序号
+	private String mPlayerName;
 	
 	public PlayerModel(){
 		mCardList = new ArrayList<Card>();
 		mScore = 0;
+		mPlayerNumber = 0;
 	}
 	
 	public int getScore(){
@@ -38,6 +40,10 @@ public class PlayerModel {
 		return mPlayerNumber;
 	}
 	
+	public String getPlayerName(){
+		return mPlayerName;
+	}
+	
 	public void setCardList(ArrayList<Card> cardList){
 		mCardList = cardList;
 	}
@@ -48,6 +54,10 @@ public class PlayerModel {
 
 	public void setPlayerNumber(int playerNumber){
 		mPlayerNumber = playerNumber;
+	}
+	
+	public void setPlayerName(String playerName){
+		mPlayerName = playerName;
 	}
 
 }
