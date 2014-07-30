@@ -117,16 +117,6 @@ public class BasicRule implements Rule {
 		return 1;
 	}
 
-	public int countCardsScore(List<Card> cardList) {
-		int score = 0;
-		if (cardList == null)
-			return 0;
-		for (int count = cardList.size(), i = 0; i < count; i++) {
-			score += getCardSocre(cardList.get(i));
-		}
-		return score;
-	}
-
 	public int firstPlayCards(List<Card> cardList) {
 		Log.i("basic rule", "第一个打牌");
 		CardType mCardType = judgeType(cardList);
@@ -393,26 +383,6 @@ public class BasicRule implements Rule {
 		return list3;
 	}
 
-	// 获得某张手牌分数
-	private static int getCardSocre(Card card) {
-		int score;
-		int cardNumber = BasicRule.getValue(card);
-		switch (cardNumber) {
-		case 5:
-			score = 5;
-			break;
-		case 10:
-			score = 10;
-			break;
-		case 13:
-			score = 10;
-			break;
-		default:
-			score = 0;
-		}
-		return score;
-	}
-
 	// 判断牌型用的
 	private class Card_index {
 		// numberList[i]代表i+1张相同的牌
@@ -483,5 +453,10 @@ public class BasicRule implements Rule {
 		c510k, // 510K
 		c510K, // 纯510K
 		c0// 不能出牌
+	}
+
+	@Override
+	public String getRuleName() {
+		return this.getClass().getName();
 	}
 }
