@@ -27,12 +27,12 @@ public class BasicRule implements Rule {
 		cardType cType = RuleJudgeUtils.judgeType(cardList1);
 		cardType cType2 = RuleJudgeUtils.judgeType(cardList2);
 		int result;
-		for (RuleUnit ruleUnit : mRuleSet) {
-			result = ruleUnit.checkCards(cType, cardList1, cType2, cardList2);
-			if (result == 1)
+		for (RuleUnit ruleUnit : mRuleSet){
+			result=ruleUnit.checkCards(cType, cardList1, cType2, cardList2);
+			if(result==1)
 				return result;
 		}
-		return 0;
+			return 0;
 	}
 
 	@Override
@@ -45,5 +45,4 @@ public class BasicRule implements Rule {
 	public String getRuleName() {
 		return this.getClass().getName();
 	}
-
 }
