@@ -12,7 +12,7 @@ import com.uc.fivetenkgame.player.PlayerContext;
  * 
  */
 public class WaitForMsgState extends PlayerState {
-	String TAG = "WaitForMsgState";
+	String tag = "WaitForMsgState";
 
 	public WaitForMsgState(PlayerContext player) {
 		super(player);
@@ -20,6 +20,7 @@ public class WaitForMsgState extends PlayerState {
 
 	@Override
 	public void handle(String msg) {
+	    Log.i(tag,"msg is " + msg);
 		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {//由上一状态跳转而来 
 			
 		}else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.YOUR_TURN)) {

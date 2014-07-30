@@ -39,7 +39,7 @@ public class Player implements PlayerContext {
 
 		@Override
 		public void reveiveMessage(String msg) {
-			Log.i("!!!player", "... " + msg);
+			Log.i("player receive msg", msg);
 			if (msg.startsWith(NetworkCommon.GAME_PAUSE)
 					|| msg.startsWith(NetworkCommon.GAME_RESUME)
 					|| msg.startsWith(NetworkCommon.GAME_EXIT)) {

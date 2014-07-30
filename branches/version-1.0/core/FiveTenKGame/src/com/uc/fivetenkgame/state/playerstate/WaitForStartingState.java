@@ -13,6 +13,8 @@ import com.uc.fivetenkgame.player.PlayerContext;
  */
 public class WaitForStartingState extends PlayerState {
 
+    String tag = "waitForStartingState";
+    
 	public WaitForStartingState(PlayerContext context) {
 		super(context);
 	}
@@ -24,6 +26,7 @@ public class WaitForStartingState extends PlayerState {
 	 */
 	@Override
 	public void handle(String msg) {
+	    Log.i(tag,"msg is " + msg);
 		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {// 有上一状态（ConnectState)跳转而来，暂不处理
 
 		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.BEGIN_GAME)) {
@@ -49,13 +52,5 @@ public class WaitForStartingState extends PlayerState {
 					.obtainMessage(NetworkCommon.UPDATE_WAITING_PLAYER_NUM,
 							playerNumber).sendToTarget();
 		} 
-//		else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) {
-//			int number = mCommonMsgDecoder.getPlayerNumber(msg);
-//			if (number != mPlayerContext.getPlayerNumber())
-//				mPlayerContext.getHandler()
-//						.obtainMessage(NetworkCommon.PLAYER_LEFT, number)
-//						.sendToTarget();
-//			mPlayerContext.resetPlayer();
-//		}
 	}
 }

@@ -6,7 +6,7 @@ import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerContext;
 
 public class HandCardState extends PlayerState {
-	String TAG = "handCardState";
+	String tag = "handCardState";
 	
 	public HandCardState(PlayerContext context) {
 		super(context);
@@ -14,10 +14,11 @@ public class HandCardState extends PlayerState {
 
 	@Override
 	public void handle(String msg) {
+	    Log.i(tag,"msg is " + msg);
 	    if (mCommonMsgDecoder.checkMessage(msg,
                 NetworkCommon.PLAYER_STATE_CHANGE)) {//由上一状态跳转而来
 			String cards = mPlayerContext.getCardsToBePlayed();
-			Log.i(TAG, "客户端出牌：" + cards);
+			Log.i(tag, "客户端出牌：" + cards);
 			if (cards == null) {
 				mPlayerContext.sendMsg(NetworkCommon.GIVE_UP);
 			} else {

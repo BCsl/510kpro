@@ -11,6 +11,8 @@ import com.uc.fivetenkgame.player.PlayerContext;
  *
  */
 public class ConnectState extends PlayerState {
+    String tag = "connectState"; 
+    
 	public ConnectState(PlayerContext context) {
 		super(context);
 		//mThread.start();
@@ -23,6 +25,7 @@ public class ConnectState extends PlayerState {
 	 */
 	@Override
 	public void handle(String msg) {
+	    Log.i(tag,"msg is " + msg);
 		if(mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)){//有上一状态（initState）跳转过来，暂不处理
 			
 		}else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_ACCEPTED)) {// 连接成功，处理msg后跳转到等待开始状态
