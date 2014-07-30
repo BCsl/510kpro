@@ -10,7 +10,7 @@ import android.util.Log;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
-import com.uc.fivetenkgame.network.util.OnReceiveMessageListener;
+import com.uc.fivetenkgame.network.OnReceiveMessageListener;
 import com.uc.fivetenkgame.ruleController.BasicRule;
 import com.uc.fivetenkgame.ruleController.Rule;
 import com.uc.fivetenkgame.state.State;
