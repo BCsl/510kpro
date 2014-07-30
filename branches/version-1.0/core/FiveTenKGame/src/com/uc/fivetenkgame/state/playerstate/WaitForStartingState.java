@@ -43,7 +43,7 @@ public class WaitForStartingState extends PlayerState {
 				mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
 			}
 		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NUMBER_UPDATE)) {
-			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
+			int playerNumber = mCommonMsgDecoder.getUpdatePlayerNumber(msg);
 			mPlayerContext
 					.getHandler()
 					.obtainMessage(NetworkCommon.UPDATE_WAITING_PLAYER_NUM,
