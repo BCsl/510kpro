@@ -13,9 +13,9 @@ import com.uc.fivetenkgame.server.ServerContext;
  */
 public class ListeningState extends ServerState {
 
-	//保存玩家的名字
+	// 保存玩家的名字
 	public String[] playerNames;
-	
+
 	public ListeningState(ServerContext context) {
 		mServerContext = context;
 		playerNames = new String[NetworkCommon.TOTAL_PLAYER_NUM];
@@ -33,30 +33,31 @@ public class ListeningState extends ServerState {
 				mServerContext.getNetworkManager().sendMessage(
 						NetworkCommon.PLAYER_NUMBER_UPDATE + clientNum);
 			}
-//			else if (clientNum == Common.TOTAL_PLAYER_NUM) {
-//				
-//			}
-		}
-		else if (msg.startsWith(NetworkCommon.GIVE_UP)) {
+			// else if (clientNum == Common.TOTAL_PLAYER_NUM) {
+			//
+			// }
+		} else if (msg.startsWith(NetworkCommon.GIVE_UP)) {
 			Log.i("send game over in listeningState", msg);
-			mServerContext.getNetworkManager().sendMessage(NetworkCommon.GAME_OVER + msg.substring(2,3).trim());
+			mServerContext.getNetworkManager().sendMessage(
+					NetworkCommon.GAME_OVER + msg.substring(2, 3).trim());
 			mServerContext.resetServer();
-		}
-		else if(msg.startsWith(NetworkCommon.PLAYER_NAME)) {
-			//保存玩家名字
+		} else if (msg.startsWith(NetworkCommon.PLAYER_NAME)) {
+			// 保存玩家名字
 			int playerNumber = Integer.valueOf(msg.substring(3, 4));
-			playerNames[playerNumber] = msg.substring(5).trim();
-			
-			//达到所需的玩家人数开始游戏
-			if( mServerContext.getClientNum() == NetworkCommon.TOTAL_PLAYER_NUM ){
+			playerNames[playerNumber - 1] = msg.substring(5).trim();
+			Log.i("add player name", "player name is: "
+					+ playerNames[playerNumber - 1]);
+			// 达到所需的玩家人数开始游戏
+			if (mServerContext.getClientNum() == NetworkCommon.TOTAL_PLAYER_NUM) {
 				StringBuilder sb = new StringBuilder();
-				
+
 				sb.append(NetworkCommon.PLAYER_NAME);
-				for(String name : playerNames){
-					  sb.append(name + ',');
+				for (String name : playerNames) {
+					sb.append(name + ',');
 				}
-				mServerContext.getNetworkManager().sendMessage(sb.deleteCharAt(sb.length()-1).toString());
-				
+				mServerContext.getNetworkManager().sendMessage(
+						sb.deleteCharAt(sb.length() - 1).toString());
+
 				mServerContext.setState(new GameStartState(mServerContext));
 				mServerContext.handleMessage(null);
 			}

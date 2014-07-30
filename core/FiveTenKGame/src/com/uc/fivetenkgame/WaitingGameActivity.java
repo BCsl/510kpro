@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uc.fivetenkgame.common.NetworkCommon;
+import com.uc.fivetenkgame.common.SharePreferenceCommon;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.qrcode.util.QRcodeGenerator;
 import com.uc.fivetenkgame.server.Server;
@@ -41,6 +43,7 @@ public class WaitingGameActivity extends Activity {
 	private TextView mReadyPlayer;
 	private boolean isServer;
 	private boolean isConnect = false;
+	private String mName = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,9 @@ public class WaitingGameActivity extends Activity {
 		mReadyPlayer = (TextView) findViewById(R.id.ready_player_text_ID);
 		Intent intent = getIntent();
 		isServer = intent.getBooleanExtra("isServer", false);
+		SharedPreferences sp = getApplicationContext().getSharedPreferences(
+				SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
+		mName = sp.getString(SharePreferenceCommon.MY_NAME, "Player");
 		// 获取并显示wifi地址
 		WifiManager wifiService = (WifiManager) getSystemService(WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiService.getConnectionInfo();
@@ -75,17 +81,16 @@ public class WaitingGameActivity extends Activity {
 		}
 		mPlayer = Player.getInstance();
 		mPlayer.setHandler(mHandler);
-
 		// 根据是否是服务器，执行不同的操作
 		if (isServer) {
 			Log.i(TAG, strIp);
 			mServer = Server.getInstance();
 			mServer.setHandler(mHandler);
 			mServer.startListen();
-			mPlayer.startPlay(strIp);
+			mPlayer.startPlay(strIp, mName);
 		} else {
 			String ipAddr = intent.getStringExtra("IP");
-			mPlayer.startPlay(ipAddr);
+			mPlayer.startPlay(ipAddr, mName);
 		}
 		new Handler().postDelayed(new Runnable() {
 			public void run() {

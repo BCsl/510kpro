@@ -25,12 +25,11 @@ public class ConnectState extends PlayerState {
 		if(msg==null){//有上一状态（initState）跳转过来，暂不处理
 			
 		}else if (msg.startsWith(NetworkCommon.PLAYER_ACCEPTED)) {// 连接成功，处理msg后跳转到等待开始状态
-			Log.i("连接状态", msg);
-			
+			Log.i("连接server成功", "玩家号："+mPlayerContext.getPlayerNumber());
 			int playerNumber = Integer.parseInt(msg.substring(2,3).trim());
 			mPlayerContext.setPlayerNumber(playerNumber);//设置玩家序号
 			mPlayerContext.sendMsg(NetworkCommon.PLAYER_NAME+playerNumber+","+mPlayerContext.getPlayerName());//将玩家名字发给server
-			Log.i("set Player Number", String.valueOf(playerNumber));
+			Log.i("send Player Name to server", mPlayerContext.getPlayerName());
 			mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
 			mPlayerContext.handle(null);
 

@@ -379,7 +379,7 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void ReStartGame() {
-		//通知gameViewActivity重绘界面
+		// 通知gameViewActivity重绘界面
 		resetPlayer();
 	}
 
@@ -390,9 +390,7 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void setPlayersName(int playerId, String playerName) {
-		if(playerId == mPlayerModel.getPlayerNumber()){
-			mPlayerModel.setPlayerName(playerName);
-		}
-		//刷界面
+
+		// 刷界面
 	}
 }
