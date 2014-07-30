@@ -42,8 +42,9 @@ public class WaitForStartingState extends PlayerState {
 				String[] initCards = mCommonMsgDecoder.getCardsNumber(msg);
                 StringBuilder cards = new StringBuilder();
                 for (String card : initCards) {
-                    cards.append(card);
+                    cards.append(card+",");
 				}
+                cards.deleteCharAt(cards.length()-1);
 				mPlayerContext
 						.setInitPlayerCards(cards.toString());
 				Log.i("≥ı º ÷≈∆£∫", cards.toString());

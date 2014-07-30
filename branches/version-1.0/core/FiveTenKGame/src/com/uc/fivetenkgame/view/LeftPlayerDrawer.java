@@ -6,14 +6,9 @@
  *@version 
  */
 package com.uc.fivetenkgame.view;
-
 import java.util.List;
-
-import my.example.fivetenkgame.R;
-
 import android.content.Context;
 import android.graphics.Paint;
-
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
@@ -27,7 +22,6 @@ public class LeftPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 
 	private final int LEFT_CARDS_BASEX;
 	private final float LEFT_OUTCARDS_BASEX;
-//	private final  int PLAYER_TEXT_LENGTH;
 	/**
 	 * @param context
 	 * @param screenHolder
@@ -38,9 +32,7 @@ public class LeftPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 		super(context, screenHolder, cardSizeHolder);
 		LEFT_OUTCARDS_BASEX = 3 * mCardSizeHolder.width;
 		LEFT_CARDS_BASEX = mCardSizeHolder.width;
-//		Paint paint = new Paint();
-//		paint.setTextSize(TEXT_SIZE_SMALL);
-//		PLAYER_TEXT_LENGTH = (int) paint.measureText(mContext.getResources().getString(R.string.player_text_length));
+
 		
 	}
 	@Override
@@ -56,10 +48,14 @@ public class LeftPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 		drawOutList(outList,
 				LEFT_OUTCARDS_BASEX);
 		drawPlayer(name, paint, 10, TEXT_SIZE);
-		drawScore(score, paint,
-				10, 2 * TEXT_SIZE);
-		drawCardsNumber(cardNumber,
-				paint, paint.measureText(name) + 10, TEXT_SIZE, LEFT_CARDS_BASEX);
+		drawCardsNumber(cardNumber, paint,
+				10, 2 * TEXT_SIZE,LEFT_CARDS_BASEX);
+		drawScore(score,
+				paint, paint.measureText(name) + 10, TEXT_SIZE);
+//		drawScore(score, paint,
+//				10, 2 * TEXT_SIZE);
+//		drawCardsNumber(cardNumber,
+//				paint, paint.measureText(name) + 10, TEXT_SIZE, LEFT_CARDS_BASEX);
 		
 	}
 

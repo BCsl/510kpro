@@ -24,11 +24,11 @@ import com.uc.fivetenkgame.view.entity.Card;
  * ÉÏÎç11:12:31 2014-7-30
  */
 public class MainPlayerDrawer extends AbsMainPlayerInfoDrawer {
-	protected float BUTTON_BASE_HEIGHT;
-	protected float PLAYER_TEXT_LENGTH;
-	protected float SCORE_TEXT_LENGTH;
-	protected float MAIN_CARDS_BASEY;
-	protected float MAIN_OUT_CARDS_BASEY;
+	protected final float BUTTON_BASE_HEIGHT;
+	protected final float PLAYER_TEXT_LENGTH;
+	protected final float SCORE_TEXT_LENGTH;
+	protected final float MAIN_CARDS_BASEY;
+	protected final float MAIN_OUT_CARDS_BASEY;
 	/**
 	 * @param context
 	 * @param screenHolder
@@ -41,7 +41,7 @@ public class MainPlayerDrawer extends AbsMainPlayerInfoDrawer {
 				- mCardSizeHolder.width * 3;
 		Paint paint = new Paint();
 		paint.setTextSize(TEXT_SIZE);
-		PLAYER_TEXT_LENGTH = paint.measureText(mContext.getResources().getString(R.string.player_text_length));
+		PLAYER_TEXT_LENGTH = paint.measureText(mContext.getResources().getString(R.string.score_text_length));
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		SCORE_TEXT_LENGTH = paint.measureText(mContext.getResources().getString(R.string.score_text_length));
 		MAIN_CARDS_BASEY = (float) mScreenHolder.height

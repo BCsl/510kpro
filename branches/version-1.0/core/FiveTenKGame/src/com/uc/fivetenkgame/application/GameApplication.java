@@ -54,7 +54,7 @@ public class GameApplication extends Application {
 	}	
 	public void playSound(int soundKey){
 		if (getSharedPreferences(SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE)
-				.getBoolean(SharePreferenceCommon.SP_MUSIC_FLAG, true))
+				.getBoolean(SharePreferenceCommon.FIELD_MUSIC_FLAG, true))
 		soundPool.play(soundMap.get(soundKey), 1.0f, 1.0f, 0, 0, 1);
 	}
 	public void relese(){

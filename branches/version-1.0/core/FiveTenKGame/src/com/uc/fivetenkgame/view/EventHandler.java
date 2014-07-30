@@ -54,10 +54,10 @@ public final class EventHandler {
 			return;
 		float rawX = event.getRawX();
 		float rawY = event.getRawY();
-		int CARD_WIDTH = view.mCardSizeHolder.width;
-		int CARD_HEIGHT = view.mCardSizeHolder.height;
-		int SCREEN_WIDTH = view.mScreenHolder.width;
-		int SCREEN_HEIGHT = view.mScreenHolder.height;
+		int CARD_WIDTH = view.getCardSizeHolder().width;
+		int CARD_HEIGHT = view.getCardSizeHolder().height;
+		int SCREEN_WIDTH = view.getScreenHolder().width;
+		int SCREEN_HEIGHT = view.getScreenHolder().height;
 		int CARD_INTENT = CARD_HEIGHT / 2;
 		Card card = getCard(SCREEN_HEIGHT, CARD_WIDTH, CARD_HEIGHT,
 				CARD_INTENT, rawX, rawY, cardList);
@@ -122,7 +122,8 @@ public final class EventHandler {
 		int button_top_y = button_buttom_y - card_width * 2 / 3; // 按键在Y坐标上所能到达最小的Y值
 		Paint paint = new Paint();
 		paint.setTextSize(card_width * 2 / 3);
-		float baseLength = paint.measureText(mApplication.getResources().getString(R.string.hand_cards));
+		float baseLength = paint.measureText(mApplication.getResources()
+				.getString(R.string.hand_cards));
 		paint = null;
 		// Log.e(TAG, "baseX:"+baseX+";baseLength:"+baseLength
 		// +";button_buttom_y:"+button_buttom_y+";button_top_y"+button_top_y);
@@ -164,6 +165,12 @@ public final class EventHandler {
 		return null;
 	}
 
+	/**
+	 * 检查是否超过出牌的有效时间
+	 * 
+	 * @param timeRemind
+	 * @return true 超过出牌的有效时间 false 没有超出
+	 */
 	protected boolean checkForTimeOut(int timeRemind) {
 		if (timeRemind < 4)
 			switch (timeRemind) {

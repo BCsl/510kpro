@@ -62,7 +62,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 	}
-
+	
 	/**
 	 * 以baseX为基准，画垂直方向上已出的牌
 	 * 
@@ -92,11 +92,15 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 		}
 		card = null;
 	}
-
-	protected void drawHandCardFlag(float left) {
-		mCanvas.drawBitmap(CardGenerator.getBitmap(mContext, "chupai"), left,
+/**
+ * 画出牌标志
+ * @param baseX
+ */
+	protected void drawHandCardFlag(float baseX) {
+		mCanvas.drawBitmap(CardGenerator.getBitmap(mContext, "chupai"), baseX,
 				 mCardSizeHolder.width+TEXT_SIZE_SMALL, null);
 	}
+	
 	/**
 	 * 画全部信息
 	 * @param paint
