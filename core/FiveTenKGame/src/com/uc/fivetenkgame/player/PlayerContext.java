@@ -115,9 +115,17 @@ public interface PlayerContext {
 	 */
 	public boolean isFirstPlayer();
 	
+	/**
+	 * 判断玩家是否还有手牌
+	 * @return
+	 */
 	public boolean hasCard();
 	
+	/**
+	 * 重新开始游戏
+	 */
 	public void ReStartGame();
+	
 	/**
 	 * 设置当前出牌玩家
 	 * @param palyerId
@@ -129,9 +137,21 @@ public interface PlayerContext {
 	 */
 	public void playerGiveUp(int playerId);
 	
+	/**
+	 * 重置玩家状态
+	 */
 	public void resetPlayer();
 	
+	/**
+	 * 
+	 * @return 玩家名
+	 */
 	public String getPlayerName();
 	
+	/**
+	 * 设置玩家名
+	 * @param playerId
+	 * @param playerName
+	 */
 	public void setPlayersName(int playerId,String playerName);
 }	
