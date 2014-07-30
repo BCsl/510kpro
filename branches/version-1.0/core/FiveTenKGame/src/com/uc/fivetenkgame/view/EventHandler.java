@@ -1,8 +1,17 @@
+/**<P>Title:ucweb</p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2010</p>
+ *<p>Company: ucweb.com</p>
+ *@author chensl@ucweb.com
+ *@version 
+ */
 package com.uc.fivetenkgame.view;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import my.example.fivetenkgame.R;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -13,15 +22,23 @@ import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.view.entity.Card;
 
+/**
+ * 
+ * @author chensl@ucweb.com
+ * 
+ *         上午10:11:28 2014-7-30
+ */
 public final class EventHandler {
 
-	private String TAG = "EventListener";
-	private List<Card> handList;
-	private EventListener eventListener;
+	private final String TAG = "EventListener";
+	private List<Card> mCardList;
+	private EventListener mEventListener;
+	private GameApplication mApplication;
 
-	public EventHandler(EventListener eventListener) {
-		handList = new Vector<Card>();
-		this.eventListener = eventListener;
+	public EventHandler(EventListener eventListener, Context context) {
+		mCardList = new Vector<Card>();
+		mApplication = (GameApplication) context.getApplicationContext();
+		this.mEventListener = eventListener;
 	}
 
 	/**
@@ -30,31 +47,30 @@ public final class EventHandler {
 	 * @param view
 	 *            被處理的View
 	 */
-	protected final void handleTouchEvent(MotionEvent event, GameView view,
+	protected void handleTouchEvent(MotionEvent event, GameView view,
 			List<Card> cardList) {
 		// 只接受按下事件
 		if (event.getAction() != MotionEvent.ACTION_DOWN)
 			return;
 		float rawX = event.getRawX();
 		float rawY = event.getRawY();
-		int CARD_WIDTH = view.cardSizeHolder.width;
-		int CARD_HEIGHT = view.cardSizeHolder.height;
-		int SCREEN_WIDTH = view.screenHolder.width;
-		int SCREEN_HEIGHT = view.screenHolder.height;
+		int CARD_WIDTH = view.mCardSizeHolder.width;
+		int CARD_HEIGHT = view.mCardSizeHolder.height;
+		int SCREEN_WIDTH = view.mScreenHolder.width;
+		int SCREEN_HEIGHT = view.mScreenHolder.height;
 		int CARD_INTENT = CARD_HEIGHT / 2;
 		Card card = getCard(SCREEN_HEIGHT, CARD_WIDTH, CARD_HEIGHT,
 				CARD_INTENT, rawX, rawY, cardList);
 		// 卡牌被点击
 		if (card != null) {
-			((GameApplication) view.context.getApplicationContext())
-					.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
+			mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "被点击：" + card.getCardId());
 			if (card.isClicked()) {
 				card.setClick(false);
-				handList.remove(card);
+				mCardList.remove(card);
 			} else {
 				card.setClick(true);
-				handList.add(card);
+				mCardList.add(card);
 
 			}
 			return;
@@ -64,16 +80,15 @@ public final class EventHandler {
 		// 出牌按钮被点击
 		if (view.isMyTurn()
 				&& buttonClick(leftButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
-						rawX, rawY) && handList.size() >= 0) {
-			Log.e(TAG, "出牌：" + handList.toString());
-			if (eventListener.handCard(handList, false)) {
+						rawX, rawY) && mCardList.size() >= 0) {
+			Log.e(TAG, "出牌：" + mCardList.toString());
+			if (mEventListener.handCard(mCardList, false)) {
 				// // 出牌成功
 				view.getViewControler().setPlayersOutList(-1,
-						new ArrayList<Card>(handList));
-				((GameApplication) view.context.getApplicationContext())
-						.playSound(SoundPoolCommon.SOUND_OUTPUT_CARDS);
+						new ArrayList<Card>(mCardList));
+				mApplication.playSound(SoundPoolCommon.SOUND_OUTPUT_CARDS);
 				// cardList.removeAll(handList);
-				handList.clear();
+				mCardList.clear();
 			}
 			return;
 		}
@@ -81,12 +96,11 @@ public final class EventHandler {
 				&& buttonClick(rightButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
 						rawX, rawY)) {
 			Log.e(TAG, "放弃出牌");
-
-			for (Card temp : handList) {
+			for (Card temp : mCardList) {
 				temp.setClick(false);
 			}
-			handList.clear();
-			eventListener.handCard(null, false);
+			mCardList.clear();
+			mEventListener.handCard(null, false);
 			return;
 		}
 
@@ -108,7 +122,7 @@ public final class EventHandler {
 		int button_top_y = button_buttom_y - card_width * 2 / 3; // 按键在Y坐标上所能到达最小的Y值
 		Paint paint = new Paint();
 		paint.setTextSize(card_width * 2 / 3);
-		float baseLength = paint.measureText("出牌");
+		float baseLength = paint.measureText(mApplication.getResources().getString(R.string.hand_cards));
 		paint = null;
 		// Log.e(TAG, "baseX:"+baseX+";baseLength:"+baseLength
 		// +";button_buttom_y:"+button_buttom_y+";button_top_y"+button_top_y);
@@ -150,17 +164,16 @@ public final class EventHandler {
 		return null;
 	}
 
-	protected boolean checkForTimeOut(Context context, int timeRemind) {
+	protected boolean checkForTimeOut(int timeRemind) {
 		if (timeRemind < 4)
 			switch (timeRemind) {
 			case 3:
 			case 2:
 			case 1:
-				((GameApplication) context.getApplicationContext())
-						.playSound(SoundPoolCommon.SOUND_SECOND_CALL);
+				mApplication.playSound(SoundPoolCommon.SOUND_SECOND_CALL);
 				break;
 			case 0:
-				eventListener.handCard(null, true);
+				mEventListener.handCard(null, true);
 				return true;
 			}
 		return false;

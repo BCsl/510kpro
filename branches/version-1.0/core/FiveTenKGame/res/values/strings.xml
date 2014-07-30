@@ -6,8 +6,6 @@
     <string name="new_game_str">新建游戏</string>
     <string name="join_game_str">加入游戏</string>
     <string name="help_str">帮助</string>
-    <string name="setting_str">设置</string>
-    <string name="scan_qrcode_str">二维码扫描</string>
     <string name="join_str">加入</string>
     <string name="waiting_str">等待游戏</string>
     <string name="ready_player_str">当前游戏人数：</string>
@@ -31,13 +29,6 @@
 								\n五十K：单张的5、10、K组成的牌型。
 								\n纯五十K：单张的5、10、K组成的牌型，且三张牌的花色相同。
 								\n炸弹：四张点数相同的牌。如6666。</string>
-    <string name="background_music_str">背景音乐</string>
-    <string name="music_volume_str">音量开关</string>
-    <string name="wifi_setting_str">wifi开关</string>
-    <string name="open_str">开</string>
-    <string name="close_str">关</string>
-    <string name="scan_text">对准房主二维码, 即可自动扫描</string>
-    <string name="qrcode_settting_str">二维码扫描</string> 
     <string name="time_out_str"></string>
     <string name="game_over">游戏结束</string>
     <string name="input_user_name">输入用户名</string>
@@ -45,12 +36,34 @@
 	<string name="player1_score">玩家1分数：#</string>
 	<string name="player2_score">玩家2分数：#</string>
 	<string name="player3_score">玩家3分数：#</string>
-	
+	<!-- 二维码 -->
+    <string name="scan_text">对准房主二维码, 即可自动扫描</string>
+    <string name="qrcode_settting_str">二维码扫描</string> 
 	<string  name ="DIALOG_DEFAULT_TITLE">安装条码扫描器</string>
 	<string  name ="DIALOG_DEFAULT_MESSAGE">你的手机没有安装条码扫描器，现在安装?</string>
 	<string  name ="DIALOG_DEFAULT_YES">确定</string>
 	<string  name ="DIALOG_DEFAULT_NO">取消</string>
+	<!-- 设置界面 -->
+    <string name="setting_str">设置</string>
+    <string name="scan_qrcode_str">二维码扫描</string>
+    <string name="music_volume_str">音效开关</string>
+    <string name="wifi_setting_str">wifi开关</string>
+    <string name="open_str">开</string>
+    <string name="close_str">关</string>
 	<string  name ="INPUT_USER_NAME">请输入用户名，最大长度为5。</string>
 	<string  name ="COMPLETION_HINT">最近3条记录</string>
 	<string  name ="USER_NAME">用户名:</string>
+	
+	<!-- 游戏界面相关 -->
+	<string name="hand_cards">出牌</string>
+	<string name="give_up">放弃</string>
+	<string name="cards_number">牌数：</string>
+	<string name="score">分数：</string>
+	<string name="players">玩家：</string>
+	<string name="player">玩家</string>
+	<string name="game_score">本轮分数：</string>
+	<string name="please_base_on_rule">请按规则出牌喔</string>
+	<string name="tips">为了能有更好的体验，请用分辨率跟高的手机进行游戏!</string>
+	<string name="player_text_length">玩家玩家玩</string>
+	<string name="score_text_length">分数分数分</string>
 </resources>

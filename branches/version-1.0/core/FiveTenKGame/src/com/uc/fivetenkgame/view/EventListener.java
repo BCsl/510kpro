@@ -1,3 +1,10 @@
+/**<P>Title:ucweb</p>
+ * <p>Description: </p>
+ * <p>Copyright: Copyright (c) 2010</p>
+ *<p>Company: ucweb.com</p>
+ *@author chensl@ucweb.com
+ *@version 
+ */
 package com.uc.fivetenkgame.view;
 
 import java.util.List;

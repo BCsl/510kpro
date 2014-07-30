@@ -20,8 +20,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
-
-import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.common.SharePreferenceCommon;
 
 public class GameSettingActivity extends Activity implements
@@ -37,7 +35,7 @@ public class GameSettingActivity extends Activity implements
 	private AlertDialog inputNameDialog;
 	private View inputNameDialogView;
 	private AutoCompleteTextView tvName;
-	private String driveName;
+	private String deviceName;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +61,8 @@ public class GameSettingActivity extends Activity implements
 				.findViewById(R.id.name_autotext_ID);
 		initAutoComplete(tvName);
 		Build bulid=new Build();
-		driveName=bulid.MODEL.length()>6?bulid.MODEL.substring(0,5):bulid.MODEL;
-		Log.i("GameSettingActivity", driveName);
+		deviceName=bulid.MODEL.length()>6?bulid.MODEL.substring(0,5):bulid.MODEL;
+		Log.i("GameSettingActivity", deviceName);
 		inputNameDialog = new AlertDialog.Builder(this)
 				.setTitle(getResources().getString(R.string.input_user_name))
 				.setView(inputNameDialogView)
@@ -75,7 +73,7 @@ public class GameSettingActivity extends Activity implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								String name;
-								if((name=tvName.getText().toString())!=null){
+								if((name=tvName.getText().toString().trim())!=null &&name.length()>0){
 									saveHistory(name);
 									nameText.setText(name);
 									saveUserName(name);
@@ -121,7 +119,7 @@ public class GameSettingActivity extends Activity implements
 			wifiOpen.setChecked(true);
 		else
 			wifiClose.setChecked(true);
-		nameText.setText(sp.getString(SharePreferenceCommon.MY_NAME,driveName));
+		nameText.setText(sp.getString(SharePreferenceCommon.MY_NAME,deviceName));
 		
 	}
 
