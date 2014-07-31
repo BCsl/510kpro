@@ -50,15 +50,15 @@ public class WaitForMsgState extends PlayerState {
         } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GIVE_UP)) {
             mPlayerContext.playerGiveUp(mCommonMsgDecoder.getPlayerNumber(msg));
 
-        } else if (msg.startsWith(NetworkCommon.PLAY_END)) {
+        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_END)) {
             mPlayerContext.playCardsEndAction(
                     mCommonMsgDecoder.getCardsNumber(msg),
                     String.valueOf(mCommonMsgDecoder.getPlayerNumber(msg)),
                     String.valueOf(mCommonMsgDecoder.getTableScore(msg)),
                     mCommonMsgDecoder.getRemainCards(msg));
-        } else if (msg.startsWith(NetworkCommon.ROUND_END)) {// 得到回合结束信息
+        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.ROUND_END)) {// 得到回合结束信息
             mPlayerContext.roundEndAction(mCommonMsgDecoder.getPlayerScores(msg));
-        } else if (msg.startsWith(NetworkCommon.GAME_OVER)) { // 得到游戏结束信息
+        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) { // 得到游戏结束信息
             mPlayerContext.setState(new GameOverState(mPlayerContext));
             mPlayerContext.handle(msg);
         } 

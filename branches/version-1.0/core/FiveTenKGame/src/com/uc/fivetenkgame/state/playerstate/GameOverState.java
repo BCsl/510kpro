@@ -35,6 +35,10 @@ public class GameOverState extends PlayerState {
                 msgs[i + 1] = scores[i];
             }
             mPlayerContext.gameOver(msgs);
+        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_AGAIN)) { //жиЭц
+            mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
+            mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
+            mPlayerContext.getHandler().obtainMessage(NetworkCommon.PLAY_RESTART).sendToTarget();
         }
     }
 

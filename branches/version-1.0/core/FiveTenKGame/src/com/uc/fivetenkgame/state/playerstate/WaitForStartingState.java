@@ -27,7 +27,7 @@ public class WaitForStartingState extends PlayerState {
 	@Override
 	public void handle(String msg) {
 	    Log.i(tag,"msg is " + msg);
-		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {// 有上一状态（ConnectState)跳转而来，暂不处理
+		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {// 有上一状态（ConnectState或GameOverState)跳转而来，暂不处理
 
 		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NAME)) {
 		    String[] playerNames = mCommonMsgDecoder.getPlayerNames(msg);

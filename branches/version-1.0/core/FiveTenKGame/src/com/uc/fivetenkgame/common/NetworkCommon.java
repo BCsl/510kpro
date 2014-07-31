@@ -47,6 +47,7 @@ public class NetworkCommon {
 	public static final int TIME_OUT = 5;
 	public static final int GAME_STATE_CHANGE = 6;// 和GAME_PAUSE,GAME_RESUME，GAME_EXIT匹配
 	public static final int PLAYER_LEFT = 7;
+	public static final int PLAY_RESTART = 8;
 
 	//player状态改变内部消息
 	public static final String PLAYER_STATE_CHANGE = "0@";
