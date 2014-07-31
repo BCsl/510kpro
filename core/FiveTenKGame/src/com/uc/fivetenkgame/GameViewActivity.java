@@ -185,7 +185,7 @@ public class GameViewActivity extends Activity {
 			winningDialog = new AlertDialog.Builder(this)
 					.setTitle(getResources().getString(R.string.game_over))
 					.setView(winningView)
-					.setPositiveButton("退出",
+					.setNegativeButton("退出",
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog,
@@ -209,8 +209,12 @@ public class GameViewActivity extends Activity {
 
 	protected void showWaitForRestartDialog() {
 		if (waitForRestartDialog == null) {
+		    View waitForRestartView = LayoutInflater.from(this).inflate(R.layout.dialog_wait_restart, null);
 			waitForRestartDialog = new AlertDialog.Builder(this)
-					.setTitle("等待其他玩家重玩").setCancelable(false).create();
+					.setTitle(R.string.game_restart)
+					.setView(waitForRestartView)
+					.setCancelable(false)
+					.create();
 		}
 		waitForRestartDialog.show();
 	}
