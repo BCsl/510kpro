@@ -31,6 +31,7 @@
 								\n炸弹：四张点数相同的牌。如6666。</string>
     <string name="time_out_str"></string>
     <string name="game_over">游戏结束</string>
+    <string name="history_score">回合记录</string>
     <string name="game_restart">等待其他玩家重玩</string>
     <string name="input_user_name">输入用户名</string>
 	<string name="winner">玩家#胜利</string>
@@ -66,5 +67,10 @@
 	<string name="please_base_on_rule">请按规则出牌喔</string>
 	<string name="tips">为了能有更好的体验，请用分辨率跟高的手机进行游戏!</string>
 	<string name="score_text_length">分数分数分</string>
+	
+	<!-- 历史对话框 -->
+	<string name="histor_round">回合</string>
+	<string name="histor_rounds">第#回合</string>
+	<string name="histor_final">总分</string>
 	
 </resources>

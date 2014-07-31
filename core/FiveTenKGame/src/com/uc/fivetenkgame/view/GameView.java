@@ -24,6 +24,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -31,7 +32,9 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.common.SharePreferenceCommon;
+import com.uc.fivetenkgame.view.entity.ButtonHistory;
 import com.uc.fivetenkgame.view.entity.Card;
 
 /**
@@ -65,7 +68,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private EventListener mEventListener;
 	private EventHandler mEventHandler;
-
+	private Handler mHandler;
+	
 	private Bitmap mBackgroudBitmap;
 	private int mCurrentPlayerId;
 	private Timer mtimer;
@@ -73,11 +77,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private int TEXT_SIZE_BIG;
 	private boolean isFirst;
 	private boolean  myTurn;
+	
 
-	public GameView(Context context, int playerId) {
+	public GameView(Context context, int playerId ,Handler handler) {
 		super(context);
 		this.mContext = context;
 		this.mPlayerId = playerId;
+		this.mHandler=handler;
+		initPlayersInfos(mPlayerId);
 		init();
 	}
 
@@ -181,7 +188,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	private void init() {
-		initPlayersInfos(mPlayerId);
 		startDraw = true;
 		isMyTurn = false;
 		mGameScore = 0;
@@ -311,6 +317,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 					drawOtherFirst(canvas, paint);
 
 				drawGameScore(canvas, paint);
+				drawHositoryButton(canvas);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -319,6 +326,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			}
 		}
 
+	}
+
+	private void drawHositoryButton(Canvas canvas) {
+		ButtonHistory.getInstance(mContext, canvas, mScreenHolder.width/2, mScreenHolder.height/2).doDraw();
+		
 	}
 
 	private void drawMeFirst(Canvas canvas, Paint paint) {
@@ -388,6 +400,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			doDraw(paint);
 			Sleep(33);
 		}
+	}
+	public void openHistoryDialog(){
+		mHandler.obtainMessage(NetworkCommon.SHOW_HISTORY).sendToTarget();
+		
 	}
 
 	private void Sleep(int time) {

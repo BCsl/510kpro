@@ -10,17 +10,16 @@ package com.uc.fivetenkgame.view;
 import java.util.List;
 
 import my.example.fivetenkgame.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.widget.Toast;
 
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.entity.ButtonGiveUp;
+import com.uc.fivetenkgame.view.entity.ButtonHandCard;
 import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
@@ -65,7 +64,7 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 				card.setLocation((int) (baseX + i * space),
 						(int) (baseY - cardIntent));
 			temp = CardUtil.getBitmap(mContext,
-					CardUtil.cardResourceName(card.getCardId()));
+					CardUtil.ResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 		card = null;
@@ -78,25 +77,13 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 	 * @param baseY
 	 */
 	protected void drawButton(Paint paint, float baseY) {
-		paint.setColor(Color.GRAY);
-		paint.setTextSize(TEXT_SIZE);
-		float baseLength = paint.measureText(mContext
-				.getString(R.string.hand_cards));
 		float leftButtonXEagle = mScreenHolder.width / 2 - 2
 				* mCardSizeHolder.width;
 		float rightButtonXEagle = mScreenHolder.width / 2 + 2
 				* mCardSizeHolder.width;
-		RectF rectLeft = new RectF(leftButtonXEagle, baseY - TEXT_SIZE,
-				leftButtonXEagle + baseLength, baseY + 10);
-		RectF rectRight = new RectF(rightButtonXEagle, baseY - TEXT_SIZE,
-				rightButtonXEagle + baseLength, baseY + 10);
-		mCanvas.drawRoundRect(rectLeft, 20f, 20f, paint);
-		mCanvas.drawRoundRect(rectRight, 20f, 20f, paint);
-		paint.setColor(Color.YELLOW);
-		mCanvas.drawText(mContext.getString(R.string.hand_cards),
-				leftButtonXEagle, baseY, paint);
-		mCanvas.drawText(mContext.getString(R.string.give_up),
-				rightButtonXEagle, baseY, paint);
+		ButtonHandCard.getInstance(mContext, mCanvas, leftButtonXEagle, baseY).doDraw();
+		ButtonGiveUp.getInstance(mContext, mCanvas, rightButtonXEagle, baseY).doDraw();
+
 	}
 
 	/**
@@ -128,7 +115,7 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 			card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 			card.setLocation((int) (baseX + i * space), (int) baseY);
 			temp = CardUtil.getBitmap(mContext,
-					CardUtil.cardResourceName(card.getCardId()));
+					CardUtil.ResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 	}

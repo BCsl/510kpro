@@ -1,5 +1,7 @@
 package com.uc.fivetenkgame;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -7,22 +9,29 @@ import my.example.fivetenkgame.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.NetworkCommon;
+import com.uc.fivetenkgame.common.SharePreferenceCommon;
 import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.view.GameView;
@@ -33,10 +42,13 @@ public class GameViewActivity extends Activity {
 	private AlertDialog pauseDialog;// 其他玩家暂停时本玩家出现的dialog
 	private AlertDialog winningDialog;// 游戏结束时出现的dialog
 	private AlertDialog waitForRestartDialog;// 重玩时等待其他玩家的dialog
-	private View winningView;
-	private GameView view;
-	private GameApplication gameApplication;
-
+	private AlertDialog mHistoryScoreDialog;// 重玩时等待其他玩家的dialog
+	private View mWinningView;
+	private View mHistoryView;
+	private ListView mListView;
+	private GameView mView;
+	private GameApplication mGameApplication;
+	private HistoryAdapter mHistoryAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,17 +64,30 @@ public class GameViewActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		// 锁定横屏
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		view = new GameView(getApplicationContext(), Player.getInstance()
-				.getPlayerNumber());
-		Player.getInstance().setViewControler(view.getViewControler());
+		mView = new GameView(getApplicationContext(), Player.getInstance()
+				.getPlayerNumber(),mHandler);
+		Player.getInstance().setViewControler(mView.getViewControler());
 		Player.getInstance().setEventListener();
 		Player.getInstance().setHandler(mHandler);
 		Player.getInstance().initView();
 		((GameApplication) getApplication())
 				.playSound(SoundPoolCommon.SOUND_GAME_START);
-		setContentView(view);
-		gameApplication = (GameApplication) getApplication();
+		setContentView(mView);
+		mGameApplication = (GameApplication) getApplication();
+		mWinningView = LayoutInflater.from(this).inflate(
+					R.layout.dialog_winning, null);
+		mHistoryView =LayoutInflater.from(this).inflate(R.layout.dialog_history, null);
+		mListView =(ListView) mHistoryView.findViewById(R.id.history_score_list);
+		mHistoryAdapter=new HistoryAdapter(this, makeList());
+		mListView.setAdapter(mHistoryAdapter);
 		initDialog();
+	}
+
+	private List<String> makeList() {
+		List<String> temp=new ArrayList<String>();
+		for(int i=0;i<21;i++)
+			temp.add(String.valueOf(i));
+		return temp;
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -90,15 +115,15 @@ public class GameViewActivity extends Activity {
 				String objMsg = (String) msg.obj;
 				Log.i("objMsg is ", objMsg.length() + "");
 				if (objMsg.startsWith(NetworkCommon.GAME_PAUSE)) {
-					if (!gameApplication.isPause()) {
+					if (!mGameApplication.isPause()) {
 						pauseDialog.show();// 其他玩家通知
-						gameApplication.setPause(true);
+						mGameApplication.setPause(true);
 						Log.i("pauseDialog", "show");
 					}
 				} else if (objMsg.startsWith(NetworkCommon.GAME_RESUME)) {
-					if (gameApplication.isPause()) {
+					if (mGameApplication.isPause()) {
 						pauseDialog.cancel();// 其他玩家通知
-						gameApplication.setPause(false);
+						mGameApplication.setPause(false);
 						Log.i("pauseDialog", "cancel");
 					}
 				} else if (objMsg.startsWith(NetworkCommon.GAME_EXIT)) {
@@ -114,6 +139,10 @@ public class GameViewActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 				}
 				break;
+				
+			case NetworkCommon.SHOW_HISTORY:
+				showHistoryScoreDialog();
+				break;
 			}
 
 		}
@@ -126,7 +155,7 @@ public class GameViewActivity extends Activity {
 				.setPositiveButton("返回", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						gameApplication.setPause(false);
+						mGameApplication.setPause(false);
 						Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 恢复游戏
 					}
 				})
@@ -144,7 +173,7 @@ public class GameViewActivity extends Activity {
 		backPressDialog.setOnCancelListener(new OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {
-				gameApplication.setPause(false);
+				mGameApplication.setPause(false);
 				Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 再次按返回键，返回游戏
 			}
 		});
@@ -163,46 +192,55 @@ public class GameViewActivity extends Activity {
 							}
 						}).create();
 		pauseDialog.setCancelable(false);// 除了退出游戏外，只能等待其他玩家
+		
+		
+		winningDialog = new AlertDialog.Builder(this)
+		.setTitle(getResources().getString(R.string.game_over))
+		.setView(mWinningView)
+		.setNegativeButton("退出",
+				new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog,
+					int which) {
+				finish();
+			}
+		})
+		.setPositiveButton("重玩",
+				new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog,
+					int which) {
+				Player.getInstance().sendMsg(
+						NetworkCommon.PLAY_AGAIN);
+				showWaitForRestartDialog();
+			}
+		}).setCancelable(false).create();
+		
+		mHistoryScoreDialog=new AlertDialog.Builder(this)
+		.setTitle(getResources().getString(R.string.history_score))
+		.setView(mHistoryView)
+		.setPositiveButton(getResources().getString(R.string.confirm_str)
+		, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog,
+					int which) {
+				
+			}}).setCancelable(true).create();
 	}
 
 	protected void showWinningDialog(String[] res) {
-		if (winningView == null) {
-			winningView = LayoutInflater.from(this).inflate(
-					R.layout.dialog_winning, null);
-			((TextView) winningView.findViewById(R.id.text_winning_player))
+			((TextView) mWinningView.findViewById(R.id.text_winning_player))
 					.setText(getResources().getString(R.string.winner).replace(
 							"#", res[0]));
-			((TextView) winningView.findViewById(R.id.text_score_player1))
+			((TextView) mWinningView.findViewById(R.id.text_score_player1))
 					.setText(getResources().getString(R.string.player1_score)
 							.replace("#", res[1]));
-			((TextView) winningView.findViewById(R.id.text_score_player2))
+			((TextView) mWinningView.findViewById(R.id.text_score_player2))
 					.setText(getResources().getString(R.string.player2_score)
 							.replace("#", res[2]));
-			((TextView) winningView.findViewById(R.id.text_score_player3))
+			((TextView) mWinningView.findViewById(R.id.text_score_player3))
 					.setText(getResources().getString(R.string.player3_score)
 							.replace("#", res[3]));
-			winningDialog = new AlertDialog.Builder(this)
-					.setTitle(getResources().getString(R.string.game_over))
-					.setView(winningView)
-					.setNegativeButton("退出",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									finish();
-								}
-							})
-					.setPositiveButton("重玩",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									Player.getInstance().sendMsg(
-											NetworkCommon.PLAY_AGAIN);
-									showWaitForRestartDialog();
-								}
-							}).setCancelable(false).create();
-		}
 		winningDialog.show();
 	}
 
@@ -217,11 +255,17 @@ public class GameViewActivity extends Activity {
 		}
 		waitForRestartDialog.show();
 	}
-
+	protected void showHistoryScoreDialog(){
+		if(mHistoryScoreDialog !=null){
+			mHistoryAdapter.notifyDataSetChanged();
+			mHistoryScoreDialog.show();
+		}
+		
+	}
 	@Override
 	public void onBackPressed() {
 		backPressDialog.show();
-		gameApplication.setPause(true);
+		mGameApplication.setPause(true);
 		Player.getInstance().sendMsg(NetworkCommon.GAME_PAUSE);// 暂停游戏
 	}
 
@@ -229,11 +273,11 @@ public class GameViewActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		Log.i(TAG, "onResume " + gameApplication.isPause());
+		Log.i(TAG, "onResume " + mGameApplication.isPause());
 		super.onResume();
-		view.initHolder();
-		if (gameApplication.isPause()) {
-			gameApplication.setPause(true);
+		mView.initHolder();
+		if (mGameApplication.isPause()) {
+			mGameApplication.setPause(true);
 			Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 通知其他玩家恢复游戏
 		}
 	}
@@ -243,7 +287,7 @@ public class GameViewActivity extends Activity {
 		Log.i(TAG, "onPause");
 
 		Player.getInstance().sendMsg(NetworkCommon.GAME_PAUSE);// 通知其他玩家暂停游戏
-		gameApplication.setPause(true);
+		mGameApplication.setPause(true);
 	};
 
 	@Override
@@ -251,5 +295,74 @@ public class GameViewActivity extends Activity {
 		Player.getInstance().resetPlayer();
 		super.onDestroy();
 	}
-
+	
+	
+	private class HistoryAdapter extends BaseAdapter{
+		private Context mContext;
+		private List<String> mScores; 
+		private int[] colors={ Color.WHITE, Color.rgb(219, 238, 244) };
+		private SharedPreferences mSharedPreferences;
+		public  HistoryAdapter(Context context,List<String> score) {
+			this.mContext=context;
+			this.mScores=score;
+			mSharedPreferences=context.getSharedPreferences(SharePreferenceCommon.TABLE_PLAYERS, MODE_PRIVATE);
+		}
+		@Override
+		public int getCount() {
+			return mScores==null?0:mScores.size()/3+1;
+		}
+		@Override
+		public Object getItem(int position) {
+			return position;
+		}
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+		@Override
+		public View getView(int position, View view, ViewGroup parent) {
+			ViewHolder vh = null;
+		if(view==null){
+			vh=new ViewHolder();
+			view=LayoutInflater.from(mContext).inflate(R.layout.history_list_item, null);
+			vh.tv_round=(TextView) view.findViewById(R.id.history_game_round);
+			vh.tv_player1=(TextView) view.findViewById(R.id.history_player1);
+			vh.tv_player2=(TextView) view.findViewById(R.id.history_player2);
+			vh.tv_player3=(TextView) view.findViewById(R.id.history_player3);
+			view.setTag(vh);
+			} 
+			vh=(ViewHolder) view.getTag();
+			if(position==0){
+				initView(vh);
+				view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同  
+				return view;
+			}
+			if(position==getCount()){
+				
+				vh.tv_round.setText(mContext.getResources().getString(R.string.histor_final));
+			}
+			else{
+				
+				vh.tv_round.setText(mContext.getResources().getString(R.string.histor_rounds).replace("#", String.valueOf(position)));
+			}
+			vh.tv_player1.setText(mScores.get((position-1)*3));
+			vh.tv_player2.setText(mScores.get((position-1)*3+1));
+			vh.tv_player3.setText(mScores.get((position-1)*3+2));
+			view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同  
+			return view; 
+		}
+		public void initView(ViewHolder vh){
+			vh.tv_round.setText(getResources().getString(R.string.histor_round));
+			vh.tv_player1.setText(mSharedPreferences.getString(SharePreferenceCommon.FIELD_PAAYER1, SharePreferenceCommon.FIELD_PAAYER1));
+			vh.tv_player2.setText(mSharedPreferences.getString(SharePreferenceCommon.FIELD_PAAYER2, SharePreferenceCommon.FIELD_PAAYER2));
+			vh.tv_player3.setText(mSharedPreferences.getString(SharePreferenceCommon.FIELD_PAAYER3, SharePreferenceCommon.FIELD_PAAYER3));
+		}
+		
+	}
+	class ViewHolder{
+		TextView  tv_round;
+		TextView  tv_player1;
+		TextView  tv_player2;
+		TextView  tv_player3;
+	}
 }

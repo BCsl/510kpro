@@ -6,5 +6,6 @@
       <color name="possible_result_points">#c0ffff00</color> 
       <color name="white">#FFFFFF</color> 
       <color name="orange">#FFA500</color> 
-      <color name="drak">#000000</color> 
+      <color name="drak">#000000</color>
+      <color name="divid">#B8B8B8</color> 
 </resources>
