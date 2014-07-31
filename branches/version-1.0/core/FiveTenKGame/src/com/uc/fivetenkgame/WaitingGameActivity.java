@@ -45,7 +45,6 @@ public class WaitingGameActivity extends Activity {
 	private boolean isServer;
 	private boolean isConnect = false;
 	private String mName = null;
-	private String path;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +66,6 @@ public class WaitingGameActivity extends Activity {
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
 				SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 		mName = sp.getString(SharePreferenceCommon.FIELD_MY_NAME, "Player");
-		path = getApplicationContext().getFilesDir().getAbsolutePath();
-		Log.i(TAG, "path is: " + path);
-		mPlayer.setHistoryRecordPath(path);
 		// 获取并显示wifi地址
 		WifiManager wifiService = (WifiManager) getSystemService(WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiService.getConnectionInfo();
