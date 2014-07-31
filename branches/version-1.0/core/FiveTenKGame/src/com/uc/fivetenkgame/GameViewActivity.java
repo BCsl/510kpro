@@ -110,6 +110,7 @@ public class GameViewActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 				}
 				break;
+			//ÖØ¿ªcase
 			}
 
 		}
@@ -185,9 +186,22 @@ public class GameViewActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						finish();
 					}
-				}).setCancelable(false).show();
+				}).setCancelable(false).setPositiveButton("ÖØÍæ",  new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Player.getInstance().sendMsg(NetworkCommon.PLAY_AGAIN);
+						winningDialog.setCancelable(false);
+						winningDialog.cancel();
+						showWaitingForRestartDialog();
+					}
+				}).show();
 	}
 
+	protected void showWaitingForRestartDialog() {
+		
+	}
+	
 	@Override
 	public void onBackPressed() {
 		backPressDialog.show();
