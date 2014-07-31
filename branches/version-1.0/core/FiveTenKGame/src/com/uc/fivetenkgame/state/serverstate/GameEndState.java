@@ -1,5 +1,7 @@
 package com.uc.fivetenkgame.state.serverstate;
 
+import java.io.File;
+
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.server.ServerContext;
@@ -13,8 +15,9 @@ public class GameEndState extends ServerState {
 
 	private int playAgainNum = 0;
 	
-	public GameEndState(ServerContext context) {
-		mServerContext = context;
+
+	public GameEndState(ServerContext mServerContext) {
+		this.mServerContext=mServerContext;
 	}
 
 	@Override

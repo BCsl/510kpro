@@ -21,10 +21,22 @@ import android.util.Log;
 public class CardUtil {
 	private final static String TAG="CardUtil";
 	private static Map<String, Bitmap> CARDS_BITMAP = new HashMap<String, Bitmap>();
-
-	public static String cardResourceName(String cardId) {
+	
+	
+	public static String BUTTON_HANDCARD_NORMAL_NAME="button_handcard_normal";
+	public static String BUTTON_HANDCARD_PRESSED_NAME="button_handcard_pressed";
+	public static String BUTTON_GIVEUP_NORMAL_NAME="button_giveup_normal";
+	public static String BUTTON_GIVEUP_PRESSED_NAME="button_giveup_pressed";
+	public static String BUTTON_HISTORY_NORMAL_NAME="score_history_normal";
+	public static String BUTTON_HISTORY_PRESSED_NAME="score_history_pressed";
+	/**
+	 * 
+	 * @param Id  卡片id
+	 * @return
+	 */
+	public static String ResourceName(String Id) {
 		StringBuilder prefix = new StringBuilder();
-		int cardNO = Integer.valueOf(cardId.trim());
+		int cardNO = Integer.valueOf(Id.trim());
 		if (cardNO == 0)
 			return "cardbg1";
 		if (cardNO == 53)
@@ -57,7 +69,12 @@ public class CardUtil {
 			prefix.append(String.valueOf(cardNO));
 		return prefix.toString().trim();
 	}
-
+	/**
+	 * 
+	 * @param con
+	 * @param resourceName		资源名称
+	 * @return
+	 */
 	public static Bitmap getBitmap(Context con, String resourceName) {
 		if (CARDS_BITMAP.get(resourceName) == null) {
 //			Log.i(TAG, resourceName +"不存在！");

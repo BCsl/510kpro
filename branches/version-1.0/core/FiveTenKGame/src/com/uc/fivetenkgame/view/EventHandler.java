@@ -11,15 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import my.example.fivetenkgame.R;
-
 import android.content.Context;
-import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
-
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.SoundPoolCommon;
+import com.uc.fivetenkgame.view.entity.ButtonGiveUp;
+import com.uc.fivetenkgame.view.entity.ButtonHandCard;
+import com.uc.fivetenkgame.view.entity.ButtonHistory;
 import com.uc.fivetenkgame.view.entity.Card;
 
 /**
@@ -56,7 +55,6 @@ public final class EventHandler {
 		float rawY = event.getRawY();
 		int CARD_WIDTH = view.getCardSizeHolder().width;
 		int CARD_HEIGHT = view.getCardSizeHolder().height;
-		int SCREEN_WIDTH = view.getScreenHolder().width;
 		int SCREEN_HEIGHT = view.getScreenHolder().height;
 		int CARD_INTENT = CARD_HEIGHT / 2;
 		Card card = getCard(SCREEN_HEIGHT, CARD_WIDTH, CARD_HEIGHT,
@@ -75,26 +73,23 @@ public final class EventHandler {
 			}
 			return;
 		}
-		int leftButtonBaseX = SCREEN_WIDTH / 2 - 2 * CARD_WIDTH;
-		int rightButtonBaseX = SCREEN_WIDTH / 2 + 2 * CARD_WIDTH;
 		// 出牌按钮被点击
 		if (view.isMyTurn()
-				&& buttonClick(leftButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
-						rawX, rawY) && mCardListToHand.size() >= 0) {
+				&& ButtonHandCard.getInstance().isClicked(rawX, rawY)
+				&& mCardListToHand.size() >= 0) {
+			ButtonHandCard.getInstance().onClick();
 			Log.e(TAG, "出牌：" + mCardListToHand.toString());
 			if (mEventListener.handCard(mCardListToHand, false)) {
 				// // 出牌成功
 				view.getViewControler().setPlayersOutList(-1,
 						new ArrayList<Card>(mCardListToHand));
-				mApplication.playSound(SoundPoolCommon.SOUND_OUTPUT_CARDS);
-				// cardList.removeAll(handList);
 				mCardListToHand.clear();
 			}
 			return;
-		}
-		if (view.isMyTurn()
-				&& buttonClick(rightButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
-						rawX, rawY)) {
+		} else
+			//放弃按钮
+			if (view.isMyTurn()
+				&& ButtonGiveUp.getInstance().isClicked(rawX, rawY)) {
 			Log.e(TAG, "放弃出牌");
 			for (Card temp : mCardListToHand) {
 				temp.setClick(false);
@@ -102,10 +97,13 @@ public final class EventHandler {
 			mCardListToHand.clear();
 			mEventListener.handCard(null, false);
 			return;
+		} else
+			//历史按钮
+			if (ButtonHistory.getInstance().isClicked(rawX, rawY)) {
+				view.openHistoryDialog();
 		}
 
 	}
-
 	/**
 	 * 
 	 * @param baseX
@@ -116,7 +114,7 @@ public final class EventHandler {
 	 * @param rawY
 	 * @return 按钮是否被点击
 	 */
-	private boolean buttonClick(int baseX, int screen_height, int card_width,
+/*	private boolean buttonClick(int baseX, int screen_height, int card_width,
 			float rawX, float rawY) {
 		int button_buttom_y = screen_height - card_width * 3 + 10; // 按键在Y坐标上所能到达最大的Y值
 		int button_top_y = button_buttom_y - card_width * 2 / 3; // 按键在Y坐标上所能到达最小的Y值
@@ -133,6 +131,8 @@ public final class EventHandler {
 
 		return false;
 	}
+	*/
+	
 
 	/**
 	 * 根据坐标，获取被点击的卡牌
