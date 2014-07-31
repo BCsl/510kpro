@@ -1,10 +1,15 @@
 package com.uc.fivetenkgame.view.util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.uc.fivetenkgame.view.entity.Card;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 /**
  * 把手牌的序号转换为对应的资源名
@@ -13,7 +18,8 @@ import android.graphics.BitmapFactory;
  * 
  *         下午5:09:27 2014-7-9
  */
-public class CardGenerator {
+public class CardUtil {
+	private final static String TAG="CardUtil";
 	private static Map<String, Bitmap> CARDS_BITMAP = new HashMap<String, Bitmap>();
 
 	public static String cardResourceName(String cardId) {
@@ -61,6 +67,21 @@ public class CardGenerator {
 							con.getApplicationInfo().packageName)));
 		}
 		return CARDS_BITMAP.get(resourceName);
+	}
+	/**
+	 * 对于X(X>1)副牌以上的需求，相同的牌具有X个相同的ID，所以每次只需要remove一次。
+	 * @param cards				原本的CARDS
+	 * @param cardToRemove		需要被清除的CARDS
+	 */
+	public static void  removeCards(List<Card> cards,List<Card> cardToRemove){
+		int index;	
+		for(Card temp:cardToRemove){
+				 if((index=cards.indexOf(temp))!=-1){
+					 Log.i(TAG, "remove index:" + index);
+					 	cards.remove(index);
+				 }
+			}
+		
 	}
 
 }
