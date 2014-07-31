@@ -84,7 +84,6 @@ public class GameViewActivity extends Activity {
 
 			case NetworkCommon.PLAY_RESTART:
 				waitForRestartDialog.cancel();
-				Player.getInstance().ReStartGame();
 				break;
 
 			case NetworkCommon.GAME_STATE_CHANGE:
