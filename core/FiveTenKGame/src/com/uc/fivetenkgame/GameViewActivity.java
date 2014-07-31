@@ -32,14 +32,16 @@ public class GameViewActivity extends Activity {
 	private AlertDialog backPressDialog;// 本玩家按返回键出现的dialog
 	private AlertDialog pauseDialog;// 其他玩家暂停时本玩家出现的dialog
 	private AlertDialog winningDialog;// 游戏结束时出现的dialog
-	private AlertDialog waitForRestartDialog;//重玩时等待其他玩家的dialog
+	private AlertDialog waitForRestartDialog;// 重玩时等待其他玩家的dialog
 	private View winningView;
-	private GameView view ;
+	private GameView view;
 	private GameApplication gameApplication;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Player.getInstance().setHistoryRecordPath(
+				getApplicationContext().getFilesDir().getAbsolutePath());
 		Log.i(TAG, "oncreate");
 		// 隐藏标题栏
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -50,15 +52,16 @@ public class GameViewActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		// 锁定横屏
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		 view = new GameView(getApplicationContext(), Player
-				.getInstance().getPlayerNumber());
+		view = new GameView(getApplicationContext(), Player.getInstance()
+				.getPlayerNumber());
 		Player.getInstance().setViewControler(view.getViewControler());
 		Player.getInstance().setEventListener();
 		Player.getInstance().setHandler(mHandler);
 		Player.getInstance().initView();
-		((GameApplication) getApplication()).playSound(SoundPoolCommon.SOUND_GAME_START);
+		((GameApplication) getApplication())
+				.playSound(SoundPoolCommon.SOUND_GAME_START);
 		setContentView(view);
-		gameApplication=(GameApplication) getApplication();
+		gameApplication = (GameApplication) getApplication();
 		initDialog();
 	}
 
@@ -80,10 +83,10 @@ public class GameViewActivity extends Activity {
 				break;
 
 			case NetworkCommon.PLAY_RESTART:
-			    waitForRestartDialog.cancel();
-			    Player.getInstance().ReStartGame();
-			    break;
-				
+				waitForRestartDialog.cancel();
+				Player.getInstance().ReStartGame();
+				break;
+
 			case NetworkCommon.GAME_STATE_CHANGE:
 				String objMsg = (String) msg.obj;
 				Log.i("objMsg is ", objMsg.length() + "");
@@ -119,7 +122,8 @@ public class GameViewActivity extends Activity {
 
 	private void initDialog() {
 		// 设置backPressDialog
-		backPressDialog = new AlertDialog.Builder(this).setTitle("暂停")
+		backPressDialog = new AlertDialog.Builder(this)
+				.setTitle("暂停")
 				.setPositiveButton("返回", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -154,7 +158,8 @@ public class GameViewActivity extends Activity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								Player.getInstance().sendMsg(NetworkCommon.GAME_EXIT);
+								Player.getInstance().sendMsg(
+										NetworkCommon.GAME_EXIT);
 								GameViewActivity.this.finish();
 							}
 						}).create();
@@ -165,50 +170,51 @@ public class GameViewActivity extends Activity {
 		if (winningView == null) {
 			winningView = LayoutInflater.from(this).inflate(
 					R.layout.dialog_winning, null);
-		((TextView) winningView.findViewById(R.id.text_winning_player))
-				.setText(getResources().getString(R.string.winner).replace("#",
-						res[0]));
-		((TextView) winningView.findViewById(R.id.text_score_player1))
-				.setText(getResources().getString(R.string.player1_score)
-						.replace("#", res[1]));
-		((TextView) winningView.findViewById(R.id.text_score_player2))
-				.setText(getResources().getString(R.string.player2_score)
-						.replace("#", res[2]));
-		((TextView) winningView.findViewById(R.id.text_score_player3))
-				.setText(getResources().getString(R.string.player3_score)
-						.replace("#", res[3]));
-		winningDialog = new AlertDialog.Builder(this)
-				.setTitle(getResources().getString(R.string.game_over))
-				.setView(winningView)
-				.setPositiveButton("退出", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						finish();
-					}
-				})
-				.setPositiveButton("重玩",  new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						Player.getInstance().sendMsg(NetworkCommon.PLAY_AGAIN);
-						showWaitForRestartDialog();
-					}
-				})
-				.setCancelable(false)
-				.create();
-        }
+			((TextView) winningView.findViewById(R.id.text_winning_player))
+					.setText(getResources().getString(R.string.winner).replace(
+							"#", res[0]));
+			((TextView) winningView.findViewById(R.id.text_score_player1))
+					.setText(getResources().getString(R.string.player1_score)
+							.replace("#", res[1]));
+			((TextView) winningView.findViewById(R.id.text_score_player2))
+					.setText(getResources().getString(R.string.player2_score)
+							.replace("#", res[2]));
+			((TextView) winningView.findViewById(R.id.text_score_player3))
+					.setText(getResources().getString(R.string.player3_score)
+							.replace("#", res[3]));
+			winningDialog = new AlertDialog.Builder(this)
+					.setTitle(getResources().getString(R.string.game_over))
+					.setView(winningView)
+					.setPositiveButton("退出",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									finish();
+								}
+							})
+					.setPositiveButton("重玩",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									Player.getInstance().sendMsg(
+											NetworkCommon.PLAY_AGAIN);
+									showWaitForRestartDialog();
+								}
+							}).setCancelable(false).create();
+		}
 		winningDialog.show();
-    }
+	}
 
 	protected void showWaitForRestartDialog() {
 		if (waitForRestartDialog == null) {
-		    waitForRestartDialog = new AlertDialog.Builder(this)
-		                    .setTitle("等待其他玩家重玩")
-		                    .setCancelable(false)
-		                    .create();
+			waitForRestartDialog = new AlertDialog.Builder(this)
+					.setTitle("等待其他玩家重玩").setCancelable(false).create();
 		}
 		waitForRestartDialog.show();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		backPressDialog.show();
@@ -223,7 +229,7 @@ public class GameViewActivity extends Activity {
 		Log.i(TAG, "onResume " + gameApplication.isPause());
 		super.onResume();
 		view.initHolder();
-		if ( gameApplication.isPause()) {
+		if (gameApplication.isPause()) {
 			gameApplication.setPause(true);
 			Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 通知其他玩家恢复游戏
 		}
