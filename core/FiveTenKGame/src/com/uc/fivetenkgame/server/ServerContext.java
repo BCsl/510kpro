@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import android.os.Handler;
 
-import com.uc.fivetenkgame.network.NetworkManager;
+import com.uc.fivetenkgame.network.NetworkInterface;
 import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.state.serverstate.ServerState;
 
@@ -20,7 +20,7 @@ public interface ServerContext {
 	 * 
 	 * @return NetworkManager网络接口
 	 */
-	public NetworkManager getNetworkManager();
+	public NetworkInterface getNetworkManager();
 	
 	/**
 	 * 设置服务器的状态

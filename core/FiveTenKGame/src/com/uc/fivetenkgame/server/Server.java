@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.uc.fivetenkgame.common.NetworkCommon;
-import com.uc.fivetenkgame.network.NetworkManager;
+import com.uc.fivetenkgame.network.NetworkInterface;
 import com.uc.fivetenkgame.network.OnReceiveMessageListener;
 import com.uc.fivetenkgame.network.ServerManager;
 import com.uc.fivetenkgame.player.PlayerModel;
@@ -28,11 +28,11 @@ public class Server implements ServerContext{
 	private int mClientNum;
 	private int mCurrentPlayer;
 	
-	private NetworkManager mNetworkManager;
+	private NetworkInterface mNetworkManager;
 	private ServerState mState;
 	private Handler mHandler;
 	
-	public static Server gInstance;
+	private static Server gInstance;
 	public static Server getInstance(){
 		if( null == gInstance ){
 			gInstance = new Server();
@@ -72,7 +72,7 @@ public class Server implements ServerContext{
 	}
 
 	
-	public NetworkManager getNetworkManager() {
+	public NetworkInterface getNetworkManager() {
 		return mNetworkManager;
 	}
 	
