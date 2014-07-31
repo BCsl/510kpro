@@ -9,6 +9,7 @@ import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerModel;
 import com.uc.fivetenkgame.server.ServerContext;
 import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
  * 
@@ -173,7 +174,9 @@ public class WaitingState extends ServerState {
 	private void updatePlayerModle(List<Card> cardList) {
 		PlayerModel model = mServerContext.getPlayerModel().get(
 				mServerContext.getCurrentPlayerNumber() - 1);
-		model.getCardList().removeAll(cardList);
+//		model.getCardList().removeAll(cardList);
+		Log.i(TAG, "to remove "+(mServerContext.getCurrentPlayerNumber() - 1)+" cards of:"+ cardList);
+		CardUtil.removeCards(model.getCardList(), cardList);
 	}
 
 	/**

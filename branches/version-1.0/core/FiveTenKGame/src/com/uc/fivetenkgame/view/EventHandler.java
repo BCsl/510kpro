@@ -31,12 +31,12 @@ import com.uc.fivetenkgame.view.entity.Card;
 public final class EventHandler {
 
 	private final String TAG = "EventListener";
-	private List<Card> mCardList;
+	private List<Card> mCardListToHand;
 	private EventListener mEventListener;
 	private GameApplication mApplication;
 
 	public EventHandler(EventListener eventListener, Context context) {
-		mCardList = new Vector<Card>();
+		mCardListToHand = new Vector<Card>();
 		mApplication = (GameApplication) context.getApplicationContext();
 		this.mEventListener = eventListener;
 	}
@@ -67,10 +67,10 @@ public final class EventHandler {
 			Log.e(TAG, "被点击：" + card.getCardId());
 			if (card.isClicked()) {
 				card.setClick(false);
-				mCardList.remove(card);
+				mCardListToHand.remove(card);
 			} else {
 				card.setClick(true);
-				mCardList.add(card);
+				mCardListToHand.add(card);
 
 			}
 			return;
@@ -80,15 +80,15 @@ public final class EventHandler {
 		// 出牌按钮被点击
 		if (view.isMyTurn()
 				&& buttonClick(leftButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
-						rawX, rawY) && mCardList.size() >= 0) {
-			Log.e(TAG, "出牌：" + mCardList.toString());
-			if (mEventListener.handCard(mCardList, false)) {
+						rawX, rawY) && mCardListToHand.size() >= 0) {
+			Log.e(TAG, "出牌：" + mCardListToHand.toString());
+			if (mEventListener.handCard(mCardListToHand, false)) {
 				// // 出牌成功
 				view.getViewControler().setPlayersOutList(-1,
-						new ArrayList<Card>(mCardList));
+						new ArrayList<Card>(mCardListToHand));
 				mApplication.playSound(SoundPoolCommon.SOUND_OUTPUT_CARDS);
 				// cardList.removeAll(handList);
-				mCardList.clear();
+				mCardListToHand.clear();
 			}
 			return;
 		}
@@ -96,10 +96,10 @@ public final class EventHandler {
 				&& buttonClick(rightButtonBaseX, SCREEN_HEIGHT, CARD_WIDTH,
 						rawX, rawY)) {
 			Log.e(TAG, "放弃出牌");
-			for (Card temp : mCardList) {
+			for (Card temp : mCardListToHand) {
 				temp.setClick(false);
 			}
-			mCardList.clear();
+			mCardListToHand.clear();
 			mEventListener.handCard(null, false);
 			return;
 		}

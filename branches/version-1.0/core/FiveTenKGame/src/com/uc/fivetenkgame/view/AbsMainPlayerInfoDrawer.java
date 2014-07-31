@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
-import com.uc.fivetenkgame.view.util.CardGenerator;
+import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
  * @author chensl@ucweb.com
@@ -64,8 +64,8 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 			else
 				card.setLocation((int) (baseX + i * space),
 						(int) (baseY - cardIntent));
-			temp = CardGenerator.getBitmap(mContext,
-					CardGenerator.cardResourceName(card.getCardId()));
+			temp = CardUtil.getBitmap(mContext,
+					CardUtil.cardResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 		card = null;
@@ -127,8 +127,8 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 			card = outList.get(i);
 			card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 			card.setLocation((int) (baseX + i * space), (int) baseY);
-			temp = CardGenerator.getBitmap(mContext,
-					CardGenerator.cardResourceName(card.getCardId()));
+			temp = CardUtil.getBitmap(mContext,
+					CardUtil.cardResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 	}

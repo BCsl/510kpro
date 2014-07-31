@@ -22,6 +22,7 @@ import com.uc.fivetenkgame.util.OredrUtil;
 import com.uc.fivetenkgame.view.EventListener;
 import com.uc.fivetenkgame.view.IViewControler;
 import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
  * 玩家类, 修改：player类不再作为抽象类，与clientplayer类合并
@@ -77,7 +78,8 @@ public class Player implements PlayerContext {
 					return false;
 				} else if (mRule.firstPlayCards(handList) == 1) {
 					mHandList.addAll(handList);
-					mPlayerModel.getCardList().removeAll(handList);
+//					mPlayerModel.getCardList().removeAll(handList);
+					CardUtil.removeCards(mPlayerModel.getCardList(), handList);
 					setDoneHandCards(true);
 					Log.i("当前手牌数",
 							String.valueOf(mPlayerModel.getRemainCardsNum()));
@@ -101,8 +103,8 @@ public class Player implements PlayerContext {
 				} else if (mRule.checkCards(handList, formerCardList) == 1) {
 					mHandList.addAll(handList);
 
-					mPlayerModel.getCardList().removeAll(handList);
-
+//					mPlayerModel.getCardList().removeAll(handList);
+					CardUtil.removeCards(mPlayerModel.getCardList(), handList);
 					OredrUtil.setOrder(mHandList);
 
 					setDoneHandCards(true);

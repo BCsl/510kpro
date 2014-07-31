@@ -103,12 +103,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	@Override
 	public void setCardNumber(List<Integer> cardNumberList) {
 		mCardNumber = cardNumberList;
-
+		Log.i(TAG, "set CardNumber"+mCardNumber);
 	}
 
 	@Override
 	public void setScroeList(List<Integer> playersScroeList) {
 		mScroeList = playersScroeList;
+		Log.i(TAG, "set scoreList"+mScroeList);
 	}
 
 	@Override
@@ -366,7 +367,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		mMainPlayerDrawer.initCanvas(canvas);
 		myTurn = isMyTurn ? true : false;
 		((MainPlayerDrawer) mMainPlayerDrawer).doDraw(paint, myTurn,
-				mTimeRemind, mPlayerName, mCardNumber.get(mPlayerId) - 1,
+				mTimeRemind, mPlayerName, mCardNumber.get(mPlayerId - 1),
 				mScroeList.get(mPlayerId - 1), mCardList,
 				mOutList.get(mPlayerId - 1));
 	}

@@ -16,7 +16,7 @@ import android.graphics.Paint;
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
-import com.uc.fivetenkgame.view.util.CardGenerator;
+import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
  * 画其他玩家信息类（垂直方向上的布局）
@@ -57,8 +57,8 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 		Bitmap temp = null;
 		for (int i = 0; i < cardsNumber; i++) {
 			card.setLocation((int) baseX, (int) (i * baseSpace +  mCardSizeHolder.width+TEXT_SIZE_SMALL));
-			temp = CardGenerator.getBitmap(mContext,
-					CardGenerator.cardResourceName(card.getCardId()));
+			temp = CardUtil.getBitmap(mContext,
+					CardUtil.cardResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 	}
@@ -86,8 +86,8 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 			card = outList.get(i);
 			card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 			card.setLocation((int) baseX, (int) (i * baseSpace + baseY));
-			temp = CardGenerator.getBitmap(mContext,
-					CardGenerator.cardResourceName(card.getCardId()));
+			temp = CardUtil.getBitmap(mContext,
+					CardUtil.cardResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 		card = null;
@@ -97,7 +97,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
  * @param baseX
  */
 	protected void drawHandCardFlag(float baseX) {
-		mCanvas.drawBitmap(CardGenerator.getBitmap(mContext, "chupai"), baseX,
+		mCanvas.drawBitmap(CardUtil.getBitmap(mContext, "chupai"), baseX,
 				 mCardSizeHolder.width+TEXT_SIZE_SMALL, null);
 	}
 	
