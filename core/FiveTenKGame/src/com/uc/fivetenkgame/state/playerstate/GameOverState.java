@@ -13,7 +13,8 @@ import com.uc.fivetenkgame.player.PlayerContext;
  */
 public class GameOverState extends PlayerState {
 
-    String tag = "gameOverState";
+    private String tag = "gameOverState";
+    private String[] str;
     
     public GameOverState(PlayerContext context) {
         super(context);
@@ -37,7 +38,9 @@ public class GameOverState extends PlayerState {
             //String mNewRecord;
             //mPlayerContext.recordHistory(mNewRecord);
             mPlayerContext.gameOver(msgs);
+            str = msgs;
         } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_AGAIN)) { //жиЭц
+            mPlayerContext.reStartGame(str);
             mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
             mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
             mPlayerContext.getHandler().obtainMessage(NetworkCommon.PLAY_RESTART).sendToTarget();

@@ -125,7 +125,7 @@ public interface PlayerContext {
 	/**
 	 * 重新开始游戏
 	 */
-	public void ReStartGame();
+	public void reStartGame(String[] str);
 	
 	/**
 	 * 设置当前出牌玩家
