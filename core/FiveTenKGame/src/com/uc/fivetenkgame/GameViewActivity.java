@@ -31,8 +31,8 @@ public class GameViewActivity extends Activity {
 
 	private AlertDialog backPressDialog;// 本玩家按返回键出现的dialog
 	private AlertDialog pauseDialog;// 其他玩家暂停时本玩家出现的dialog
-	private AlertDialog winningDialog;// 其他玩家暂停时本玩家出现的dialog
-//	private boolean ifPause;
+	private AlertDialog winningDialog;// 游戏结束时出现的dialog
+	private AlertDialog waitForRestartDialog;//重玩时等待其他玩家的dialog
 	private View winningView;
 	private GameView view ;
 	private GameApplication gameApplication;
@@ -61,7 +61,6 @@ public class GameViewActivity extends Activity {
 		gameApplication=(GameApplication) getApplication();
 		initDialog();
 	}
-	
 
 	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() {
@@ -80,20 +79,23 @@ public class GameViewActivity extends Activity {
 				showWinningDialog(res);
 				break;
 
+			case NetworkCommon.PLAY_RESTART:
+			    waitForRestartDialog.cancel();
+			    Player.getInstance().ReStartGame();
+			    break;
+				
 			case NetworkCommon.GAME_STATE_CHANGE:
 				String objMsg = (String) msg.obj;
 				Log.i("objMsg is ", objMsg.length() + "");
 				if (objMsg.startsWith(NetworkCommon.GAME_PAUSE)) {
 					if (!gameApplication.isPause()) {
 						pauseDialog.show();// 其他玩家通知
-//						ifPause = true;
 						gameApplication.setPause(true);
 						Log.i("pauseDialog", "show");
 					}
 				} else if (objMsg.startsWith(NetworkCommon.GAME_RESUME)) {
 					if (gameApplication.isPause()) {
 						pauseDialog.cancel();// 其他玩家通知
-//						ifPause = false;
 						gameApplication.setPause(false);
 						Log.i("pauseDialog", "cancel");
 					}
@@ -110,7 +112,6 @@ public class GameViewActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 				}
 				break;
-			//重开case
 			}
 
 		}
@@ -122,7 +123,6 @@ public class GameViewActivity extends Activity {
 				.setPositiveButton("返回", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-//						ifPause = false;
 						gameApplication.setPause(false);
 						Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 恢复游戏
 					}
@@ -141,7 +141,6 @@ public class GameViewActivity extends Activity {
 		backPressDialog.setOnCancelListener(new OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {
-//				ifPause = false;
 				gameApplication.setPause(false);
 				Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 再次按返回键，返回游戏
 			}
@@ -163,7 +162,7 @@ public class GameViewActivity extends Activity {
 	}
 
 	protected void showWinningDialog(String[] res) {
-		if (winningView == null)
+		if (winningView == null) {
 			winningView = LayoutInflater.from(this).inflate(
 					R.layout.dialog_winning, null);
 		((TextView) winningView.findViewById(R.id.text_winning_player))
@@ -186,26 +185,33 @@ public class GameViewActivity extends Activity {
 					public void onClick(DialogInterface dialog, int which) {
 						finish();
 					}
-				}).setCancelable(false).setPositiveButton("重玩",  new DialogInterface.OnClickListener() {
-					
+				})
+				.setPositiveButton("重玩",  new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Player.getInstance().sendMsg(NetworkCommon.PLAY_AGAIN);
-						winningDialog.setCancelable(false);
-						winningDialog.cancel();
-						showWaitingForRestartDialog();
+						showWaitForRestartDialog();
 					}
-				}).show();
-	}
+				})
+				.setCancelable(false)
+				.create();
+        }
+		winningDialog.show();
+    }
 
-	protected void showWaitingForRestartDialog() {
-		
+	protected void showWaitForRestartDialog() {
+		if (waitForRestartDialog == null) {
+		    waitForRestartDialog = new AlertDialog.Builder(this)
+		                    .setTitle("等待其他玩家重玩")
+		                    .setCancelable(false)
+		                    .create();
+		}
+		waitForRestartDialog.show();
 	}
 	
 	@Override
 	public void onBackPressed() {
 		backPressDialog.show();
-//		ifPause = true;
 		gameApplication.setPause(true);
 		Player.getInstance().sendMsg(NetworkCommon.GAME_PAUSE);// 暂停游戏
 	}
@@ -218,7 +224,6 @@ public class GameViewActivity extends Activity {
 		super.onResume();
 		view.initHolder();
 		if ( gameApplication.isPause()) {
-//			ifPause = false;
 			gameApplication.setPause(true);
 			Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 通知其他玩家恢复游戏
 		}
@@ -229,7 +234,6 @@ public class GameViewActivity extends Activity {
 		Log.i(TAG, "onPause");
 
 		Player.getInstance().sendMsg(NetworkCommon.GAME_PAUSE);// 通知其他玩家暂停游戏
-//		ifPause = true;
 		gameApplication.setPause(true);
 	};
 
@@ -239,17 +243,4 @@ public class GameViewActivity extends Activity {
 		super.onDestroy();
 	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-//		outState.putBoolean("ifPause", ifPause);
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-
-//		ifPause = savedInstanceState.getBoolean("ifPause");
-	}
 }

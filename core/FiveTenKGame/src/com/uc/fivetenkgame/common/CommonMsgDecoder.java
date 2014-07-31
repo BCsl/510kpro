@@ -82,7 +82,7 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
         if (checkMessage(sourceMsg, NetworkCommon.ROUND_END)) {
             return sourceMsg.substring(sourceMsg.indexOf('#') + 1).trim()
                     .split(",");
-        } else if (checkMessage(sourceMsg, NetworkCommon.ROUND_END)) {
+        } else if (checkMessage(sourceMsg, NetworkCommon.GAME_OVER)) {
             return sourceMsg.substring(sourceMsg.indexOf(',') + 1).trim()
                     .split(",");
         }
