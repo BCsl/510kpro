@@ -31,6 +31,7 @@ public class GameEndState extends ServerState {
 		else if( msg.startsWith(NetworkCommon.PLAY_AGAIN) ){
 			++playAgainNum;
 			if( playAgainNum == NetworkCommon.TOTAL_PLAYER_NUM ){
+			    mServerContext.getNetworkManager().sendMessage(NetworkCommon.PLAY_AGAIN);
 				mServerContext.setState(new GameStartState(mServerContext));
 				mServerContext.handleMessage(null);
 			}

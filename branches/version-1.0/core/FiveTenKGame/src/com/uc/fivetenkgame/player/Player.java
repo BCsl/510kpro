@@ -159,7 +159,7 @@ public class Player implements PlayerContext {
 		mNetworkManager.initNetwork(addr);
 	}
 
-	public static Player gInstance;// 唯一的Player实例
+	private static Player gInstance;// 唯一的Player实例
 
 	// 返回一个唯一的player实例
 	public static Player getInstance() {
@@ -403,9 +403,18 @@ public class Player implements PlayerContext {
 	}
 
 	@Override
-	public void ReStartGame() {
+	public void reStartGame(String[] str) {
+	    try {
+            addPlayerGameHistory(str);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        mPlayerModel.setCardList(null);
+        mPlayerModel.setScore(0);
+        
 		// 通知gameViewActivity重绘界面
-		resetPlayer();
+		
 	}
 
 	@Override
