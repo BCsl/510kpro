@@ -203,6 +203,11 @@ public class Player implements PlayerContext {
 			cardList.add(new Card(tCard[i]));
 		}
 		mPlayerModel.setCardList(cardList);
+		List<Integer> number = new ArrayList<Integer>();
+		number.add(cardList.size());
+		number.add(cardList.size());
+		number.add(cardList.size());
+		viewController.setCardNumber(number);
 	}
 
 	/**
@@ -412,7 +417,13 @@ public class Player implements PlayerContext {
         }
         mPlayerModel.setCardList(null);
         mPlayerModel.setScore(0);
-        
+        List<Integer> score = new ArrayList<Integer>();
+        score.add(0);
+        score.add(0);
+        score.add(0);
+        viewController.setScroeList(score);
+        viewController.setMyTurn(false);
+        viewController.setGameScore(0);
 		// 通知gameViewActivity重绘界面
 		
 	}
