@@ -1,7 +1,19 @@
 package com.uc.fivetenkgame.player;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Map.Entry;
+
+import org.apache.http.util.EncodingUtils;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
@@ -78,7 +90,7 @@ public class Player implements PlayerContext {
 					return false;
 				} else if (mRule.firstPlayCards(handList) == 1) {
 					mHandList.addAll(handList);
-//					mPlayerModel.getCardList().removeAll(handList);
+					// mPlayerModel.getCardList().removeAll(handList);
 					CardUtil.removeCards(mPlayerModel.getCardList(), handList);
 					setDoneHandCards(true);
 					Log.i("当前手牌数",
@@ -103,7 +115,7 @@ public class Player implements PlayerContext {
 				} else if (mRule.checkCards(handList, formerCardList) == 1) {
 					mHandList.addAll(handList);
 
-//					mPlayerModel.getCardList().removeAll(handList);
+					// mPlayerModel.getCardList().removeAll(handList);
 					CardUtil.removeCards(mPlayerModel.getCardList(), handList);
 					OredrUtil.setOrder(mHandList);
 
@@ -124,6 +136,7 @@ public class Player implements PlayerContext {
 			// }
 		}
 	};
+	private String mHistoryPath;
 
 	public void startPlay(String addr, String name) {
 		mPlayerModel.setPlayerName(name);
@@ -279,6 +292,12 @@ public class Player implements PlayerContext {
 	public void gameOver(String[] str) {
 		// viewController.gameOver(playerId);
 		mHandler.obtainMessage(NetworkCommon.END_GAME, str).sendToTarget();
+		try {
+			addPlayerGameHistory(str);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void setEventListener() {
@@ -400,8 +419,106 @@ public class Player implements PlayerContext {
 		// 刷界面
 	}
 
-    @Override
-    public ICommonMsgDecoder getICommomDecoder() {
-        return this.mICommonMsgDecoder;
-    }
+	@Override
+	public ICommonMsgDecoder getICommomDecoder() {
+		return this.mICommonMsgDecoder;
+	}
+
+	public void setHistoryRecordPath(String path) {
+		mHistoryPath = path + "/record/player_history.txt";
+	}
+
+	private void addPlayerGameHistory(String[] str) throws IOException {
+		File file = new File(mHistoryPath);
+		if (!file.exists())
+			file.createNewFile();
+		FileOutputStream fos = new FileOutputStream(file, true);
+		byte[] bytes;
+		for (String record : str) {
+			bytes = (record + ",").getBytes();
+			try {
+				fos.write(bytes);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			fos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// int[] money = new int[3];
+
+		// if(score[0]>score[1]&&score[0]>score[1])
+		// PlayerMoney[0]+=money[0];
+		// PlayerMoney[1]+=money[1];
+		// PlayerMoney[2]+=money[2];
+	}
+
+	public String[] getPlayerGameHistory() {
+		String record = null;
+		try {
+			FileInputStream fis = new FileInputStream(mHistoryPath);
+			int length = fis.available();
+			byte[] buffer = new byte[length];
+			fis.read(buffer);
+			record = EncodingUtils.getString(buffer, "UTF-8");
+			Log.i("Player", "getPlayerGameHistory: " + record);
+			fis.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		StringBuffer sb = new StringBuffer(record);
+		sb.deleteCharAt(sb.length() - 1);
+		record = new String(sb);
+		String[] result = record.split(",");
+		return result;
+	}
+
+	public int[] getPlayerMoney(String[] str) {
+		int[] money = new int[3];
+		int[] score = new int[3];
+		score[0] = Integer.valueOf(str[1]);
+		score[1] = Integer.valueOf(str[2]);
+		score[2] = Integer.valueOf(str[3]);
+
+		Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
+		map.put(0, score[0]);
+		map.put(1, score[1]);
+		map.put(2, score[2]);
+		List<Map.Entry<Integer, Integer>> infoIds = new ArrayList<Map.Entry<Integer, Integer>>(
+				map.entrySet());
+		Collections.sort(infoIds,
+				new Comparator<Map.Entry<Integer, Integer>>() {
+					public int compare(Map.Entry<Integer, Integer> o1,
+							Map.Entry<Integer, Integer> o2) {
+						return (o2.getValue() - o1.getValue());
+					}
+				});
+		if (infoIds.get(0).getValue() == infoIds.get(1).getValue()
+				&& infoIds.get(2).getValue() == infoIds.get(1).getValue()) {
+			money[infoIds.get(0).getKey()] = money[infoIds.get(1).getKey()] = money[infoIds
+					.get(2).getKey()] = 0;
+		} else if (infoIds.get(0).getValue() == infoIds.get(1).getValue()
+				&& infoIds.get(2).getValue() != infoIds.get(1).getValue()) {
+			money[infoIds.get(2).getKey()] = -2;
+			money[infoIds.get(0).getKey()] = money[infoIds.get(1).getKey()] = 1;
+		} else if (infoIds.get(0).getValue() != infoIds.get(1).getValue()
+				&& infoIds.get(2).getValue() == infoIds.get(1).getValue()) {
+			money[infoIds.get(0).getKey()] = 2;
+			money[infoIds.get(1).getKey()] = money[infoIds.get(2).getKey()] = -1;
+		} else {
+			money[infoIds.get(0).getKey()] = 1;
+			money[infoIds.get(1).getKey()] = 0;
+			money[infoIds.get(2).getKey()] = -1;
+		}
+		return money;
+	}
 }

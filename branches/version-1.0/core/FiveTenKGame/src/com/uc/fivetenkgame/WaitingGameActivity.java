@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Path;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class WaitingGameActivity extends Activity {
 	private boolean isServer;
 	private boolean isConnect = false;
 	private String mName = null;
+	private String path;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,9 @@ public class WaitingGameActivity extends Activity {
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
 				SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 		mName = sp.getString(SharePreferenceCommon.FIELD_MY_NAME, "Player");
+		path = getApplicationContext().getFilesDir().getAbsolutePath();
+		Log.i(TAG, "path is: " + path);
+		mPlayer.setHistoryRecordPath(path);
 		// 获取并显示wifi地址
 		WifiManager wifiService = (WifiManager) getSystemService(WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiService.getConnectionInfo();
@@ -92,16 +97,16 @@ public class WaitingGameActivity extends Activity {
 			String ipAddr = intent.getStringExtra("IP");
 			mPlayer.startPlay(ipAddr, mName);
 		}
-		new Handler().postDelayed(new Runnable() {
-			public void run() {
-				Log.i(TAG, "延迟检查连接情况");
-				if (!isConnect) {
-					finish();
-					Toast.makeText(WaitingGameActivity.this, "连接异常",
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		}, 2000);
+		// new Handler().postDelayed(new Runnable() {
+		// public void run() {
+		// Log.i(TAG, "延迟检查连接情况");
+		// if (!isConnect) {
+		// finish();
+		// Toast.makeText(WaitingGameActivity.this, "连接异常",
+		// Toast.LENGTH_SHORT).show();
+		// }
+		// }
+		// }, 2000);
 	}
 
 	@SuppressLint("HandlerLeak")
