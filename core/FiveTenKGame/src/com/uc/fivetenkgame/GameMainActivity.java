@@ -77,8 +77,8 @@ public class GameMainActivity extends Activity {
 			wifiManager = (WifiManager) getSystemService(Service.WIFI_SERVICE);
 		if (!wifiManager.isWifiEnabled()) {
 			AlertDialog dialog = new AlertDialog.Builder(this)
-					.setTitle("wifi未开启，是否现在打开")
-					.setPositiveButton("开启",
+					.setTitle(getResources().getString(R.string.dialog_wifi_title))
+					.setPositiveButton(getResources().getString(R.string.DIALOG_DEFAULT_YES),
 							new DialogInterface.OnClickListener() {
 
 								@Override
@@ -88,15 +88,15 @@ public class GameMainActivity extends Activity {
 										getSharedPreferences(SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE)
 										.edit().putBoolean(SharePerferenceCommon.CONNECT_WAY,true).commit();
 										Toast.makeText(getApplicationContext(),
-												"WiFi已开启", Toast.LENGTH_SHORT)
-												.show();
+												getResources().getString(R.string.dialog_wifi_open_suc),
+												Toast.LENGTH_SHORT).show();
 									}
 									else{
 										getSharedPreferences(SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE)
 										.edit().putBoolean(SharePerferenceCommon.CONNECT_WAY,false).commit();
 										Toast.makeText(getApplicationContext(),
-												"WiFi打开失败,将开启蓝牙模式", Toast.LENGTH_SHORT)
-												.show();
+												getResources().getString(R.string.dialog_wifi_open_failed),
+												Toast.LENGTH_SHORT).show();
 										if(mBluetoothAdapter==null){
 											mBluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
 											mBluetoothAdapter.enable();
@@ -104,7 +104,7 @@ public class GameMainActivity extends Activity {
 									}
 								}
 							})
-					.setNegativeButton("取消",
+					.setNegativeButton(getResources().getString(R.string.DIALOG_DEFAULT_NO),
 							new DialogInterface.OnClickListener() {
 
 								@Override
