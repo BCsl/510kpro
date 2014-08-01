@@ -74,5 +74,9 @@
 	<string name="history_name">用户名</string>
 	<string name="history_rounds">第#回合</string>
 	<string name="history_final">总分</string>
+	<!-- wifi对话框 -->
+	<string name="dialog_wifi_title">wifi未开启，是否现在打开</string>
+	<string name="dialog_wifi_open_suc">WiFi已开启</string>
+	<string name="dialog_wifi_open_failed">WiFi打开失败,将开启蓝牙模式</string>
 	
 </resources>
