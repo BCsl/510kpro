@@ -11,7 +11,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
 import org.apache.http.util.EncodingUtils;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
@@ -26,6 +28,7 @@ import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
 import com.uc.fivetenkgame.network.OnReceiveMessageListener;
 import com.uc.fivetenkgame.ruleController.Rule;
+import com.uc.fivetenkgame.ruleController.RuleManager;
 import com.uc.fivetenkgame.ruleController.ruleSet.BasicRule;
 import com.uc.fivetenkgame.state.State;
 import com.uc.fivetenkgame.state.playerstate.InitState;
@@ -139,6 +142,7 @@ public class Player implements PlayerContext {
 		}
 	};
 	private String mHistoryPath;
+	private String mRuleName;
 
 	public void startPlay(String addr, String name) {
 		mPlayerModel.setPlayerName(name);
@@ -152,8 +156,9 @@ public class Player implements PlayerContext {
 	}
 
 	// 设置规则
-	private void setRule(Rule rule) {
-		mRule = rule;
+	private void setRule(String ruleName) {
+		mRule = new RuleManager().getRule(ruleName);
+		Log.i(this.getClass().getName()+": setRule", mRule.getRuleName());
 	}
 
 	// 启动网络模块
@@ -190,8 +195,9 @@ public class Player implements PlayerContext {
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
 		mICommonMsgDecoder = new CommonMsgDecoder();
+		mRuleName = "BasicRule";
 
-		setRule(new BasicRule());
+		setRule(mRuleName);
 		// mPlayerModel.setCardList(null);
 		// mPlayerModel.setPlayerNumber(-1);
 		// mPlayerModel.setScore(0);

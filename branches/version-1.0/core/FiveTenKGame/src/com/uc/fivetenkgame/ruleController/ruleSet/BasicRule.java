@@ -16,6 +16,7 @@ import com.uc.fivetenkgame.view.entity.Card;
 
 public class BasicRule implements Rule {
 	private List<RuleUnit> mRuleSet;
+	private final String mRuleName = "BasicRule";
 
 	public BasicRule() {
 		mRuleSet = new ArrayList<RuleUnit>();
@@ -28,10 +29,9 @@ public class BasicRule implements Rule {
 	public int checkCards(List<Card> cardList1, List<Card> cardList2) {
 		cardType cType = RuleJudgeUtils.judgeType(cardList1);
 		cardType cType2 = RuleJudgeUtils.judgeType(cardList2);
-		Log.i(this.getClass().getMethods().toString(), "card list 1 type:"
-				+ cType.toString());
-		Log.i(this.getClass().getMethods().toString(), "card list 2 type:"
-				+ cType2.toString());
+		Log.i(this.getClass().getName(), "card list 1 type:" + cType.toString());
+		Log.i(this.getClass().getName(),
+				"card list 2 type:" + cType2.toString());
 
 		int result;
 		for (RuleUnit ruleUnit : mRuleSet) {
@@ -50,6 +50,6 @@ public class BasicRule implements Rule {
 
 	@Override
 	public String getRuleName() {
-		return this.getClass().getName();
+		return mRuleName;
 	}
 }
