@@ -38,8 +38,8 @@ public class BluetoothServerManager extends BluetoothManager {
 				//添加本地玩家
 				Log.i(LOG_SERVER_MANAGER, "local player");
 				IBasicNetwork locPlayer = new BluetoothLocalCommunication(BluetoothServerManager.this);
-				locPlayer.sendMessage(NetworkCommon.PLAYER_ACCEPTED + NetworkCommon.SERVER_NUM);
 				mPlayerNetwork.add(locPlayer);
+				locPlayer.sendMessage(NetworkCommon.PLAYER_ACCEPTED + NetworkCommon.SERVER_NUM);
 				
 				//添加远程蓝牙设备玩家
 				for( int i = 2; i <= NetworkCommon.TOTAL_PLAYER_NUM; ++i ){
