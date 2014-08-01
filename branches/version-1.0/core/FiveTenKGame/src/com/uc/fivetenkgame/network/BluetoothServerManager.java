@@ -42,7 +42,7 @@ public class BluetoothServerManager extends BluetoothManager {
 				mPlayerNetwork.add(locPlayer);
 				
 				//添加远程蓝牙设备玩家
-				for( int i = 2; i < NetworkCommon.TOTAL_PLAYER_NUM; ++i ){
+				for( int i = 2; i <= NetworkCommon.TOTAL_PLAYER_NUM; ++i ){
 					
 					BluetoothSocket socket = mBluetoothServerSocket.accept();
 					
