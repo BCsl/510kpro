@@ -85,7 +85,7 @@ public class WaitingGameActivity extends Activity {
 						.setImageBitmap(bitmap);
 		}
 		
-		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, true);
+		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, false);
 		
 		
 		mPlayer = Player.getInstance();

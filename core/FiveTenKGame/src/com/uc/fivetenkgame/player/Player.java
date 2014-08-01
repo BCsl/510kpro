@@ -197,7 +197,7 @@ public class Player implements PlayerContext {
 
 	private Player() {
 		//mNetworkManager = ClientManager.getInstance();
-		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
+		//mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
 		mICommonMsgDecoder = new CommonMsgDecoder();
 		mRuleName = "BasicRule";
@@ -210,6 +210,7 @@ public class Player implements PlayerContext {
 
 	public void setNetworkManager(NetworkInterface networkInterface){
 		mNetworkManager = networkInterface;
+		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 	}
 	
 	public void setInitPlayerCards(String cards) {
