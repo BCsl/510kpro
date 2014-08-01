@@ -77,7 +77,6 @@ public final class EventHandler {
 		if (view.isMyTurn()
 				&& ButtonHandCard.getInstance().isClicked(rawX, rawY)
 				&& mCardListToHand.size() >= 0) {
-			ButtonHandCard.getInstance().onClick();
 			Log.e(TAG, "出牌：" + mCardListToHand.toString());
 			if (mEventListener.handCard(mCardListToHand, false)) {
 				// // 出牌成功
@@ -104,34 +103,6 @@ public final class EventHandler {
 		}
 
 	}
-	/**
-	 * 
-	 * @param baseX
-	 *            对应按钮左边缘的x坐标
-	 * @param screen_height
-	 * @param card_width
-	 * @param rawX
-	 * @param rawY
-	 * @return 按钮是否被点击
-	 */
-/*	private boolean buttonClick(int baseX, int screen_height, int card_width,
-			float rawX, float rawY) {
-		int button_buttom_y = screen_height - card_width * 3 + 10; // 按键在Y坐标上所能到达最大的Y值
-		int button_top_y = button_buttom_y - card_width * 2 / 3; // 按键在Y坐标上所能到达最小的Y值
-		Paint paint = new Paint();
-		paint.setTextSize(card_width * 2 / 3);
-		float baseLength = paint.measureText(mApplication.getResources()
-				.getString(R.string.hand_cards));
-		paint = null;
-		// Log.e(TAG, "baseX:"+baseX+";baseLength:"+baseLength
-		// +";button_buttom_y:"+button_buttom_y+";button_top_y"+button_top_y);
-		if (rawY > button_top_y && rawY < button_buttom_y)
-			if (rawX - baseX < baseLength && rawX - baseX > 0)
-				return true;
-
-		return false;
-	}
-	*/
 	
 
 	/**
