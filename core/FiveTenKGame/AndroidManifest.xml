@@ -6,7 +6,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -17,12 +17,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" 
-       >
+        android:theme="@android:style/Theme.Holo.NoActionBar.Fullscreen" >
         <activity
             android:name="com.uc.fivetenkgame.GameMainActivity"
             android:label="@string/app_name"
-     
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,8 +38,7 @@
             android:name="com.uc.fivetenkgame.GameViewActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="landscape"
-            >
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.uc.fivetenkgame.InputServerIPActivity"
@@ -50,19 +47,16 @@
         </activity>
         <activity
             android:name="com.uc.fivetenkgame.GameSettingActivity"
-            android:screenOrientation="landscape"
-          >
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.uc.fivetenkgame.GameHelpActivity"
-            android:screenOrientation="landscape"
-            >
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.google.zxing.qr_codescan.MipcaActivityCapture"
             android:label="@string/scan_qrcode_str"
-            android:screenOrientation="portrait"
-             >
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 
@@ -71,8 +65,10 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
-	  <uses-permission android:name="android.permission.READ_OWNER_DATA"/>
-	  <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_OWNER_DATA" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
