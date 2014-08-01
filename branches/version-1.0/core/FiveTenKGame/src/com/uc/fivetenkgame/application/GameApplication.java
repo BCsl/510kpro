@@ -14,7 +14,7 @@ import android.app.Application;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
-import com.uc.fivetenkgame.common.SharePreferenceCommon;
+import com.uc.fivetenkgame.common.SharePerferenceCommon;
 import com.uc.fivetenkgame.common.SoundPoolCommon;
 /**
  * @author chensl@ucweb.com
@@ -53,8 +53,8 @@ public class GameApplication extends Application {
 		 soundMap.put(SoundPoolCommon.SOUND_BEEP, soundPool.load(getApplicationContext(), R.raw.beep, 1));
 	}	
 	public void playSound(int soundKey){
-		if (getSharedPreferences(SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE)
-				.getBoolean(SharePreferenceCommon.FIELD_MUSIC_FLAG, true))
+		if (getSharedPreferences(SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE)
+				.getBoolean(SharePerferenceCommon.FIELD_MUSIC_FLAG, true))
 		soundPool.play(soundMap.get(soundKey), 1.0f, 1.0f, 0, 0, 1);
 	}
 	public void relese(){

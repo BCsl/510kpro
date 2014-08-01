@@ -13,11 +13,9 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
-
 import my.example.fivetenkgame.R;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -34,7 +32,7 @@ import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.NetworkCommon;
-import com.uc.fivetenkgame.common.SharePreferenceCommon;
+import com.uc.fivetenkgame.common.SharePerferenceCommon;
 import com.uc.fivetenkgame.view.entity.ButtonHistory;
 import com.uc.fivetenkgame.view.entity.Card;
 
@@ -213,7 +211,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	private void initPlayersInfos(int playerId) {
 		SharedPreferences sp = mContext.getSharedPreferences(
-				SharePreferenceCommon.TABLE_PLAYERS, mContext.MODE_PRIVATE);
+				SharePerferenceCommon.TABLE_PLAYERS, mContext.MODE_PRIVATE);
 		switch (playerId) {
 		case 1:
 			mRightPlayeId = 2;

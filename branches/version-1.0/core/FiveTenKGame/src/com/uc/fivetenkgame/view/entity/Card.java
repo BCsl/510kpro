@@ -9,8 +9,8 @@ import android.graphics.Rect;
  * 下午5:09:21 2014-7-9
  */
 public class Card {
-	public static String CARD_BG_ID="0";
-	public static String CARD_PASS_ID="55";
+	public static final String CARD_BG_ID="0";
+	public static final String CARD_PASS_ID="55";
 	private int x=0;      							//横坐标
 	private int y=0;	  							//纵坐标
 	private int width;    							//宽度

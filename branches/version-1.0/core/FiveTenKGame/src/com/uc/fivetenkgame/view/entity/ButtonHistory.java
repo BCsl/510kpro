@@ -9,6 +9,8 @@ package com.uc.fivetenkgame.view.entity;
 
 import android.content.Context;
 import android.graphics.Canvas;
+
+import com.uc.fivetenkgame.common.ResourseCommon;
 import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
@@ -28,9 +30,9 @@ public class ButtonHistory extends AbsButton {
 	public ButtonHistory(Context con, Canvas can, float x, float y) {
 		super(con, can, x, y);
 		HALF_OF_WIDTH = CardUtil.getBitmap(mContext,
-				CardUtil.BUTTON_HISTORY_NORMAL_NAME).getWidth() / 2;
+				ResourseCommon.BUTTON_HISTORY_NORMAL).getWidth() / 2;
 		HALF_OF_HEIGHT = CardUtil.getBitmap(mContext,
-				CardUtil.BUTTON_HISTORY_NORMAL_NAME).getHeight() / 2;
+				ResourseCommon.BUTTON_HISTORY_NORMAL).getHeight() / 2;
 	}
 
 	private static AbsButton mButtonHistory;
@@ -51,14 +53,14 @@ public class ButtonHistory extends AbsButton {
 	@Override
 	protected void drawButtonOnPressedState() {
 		// TODO Auto-generated method stub
-		draw(CardUtil.getBitmap(mContext, CardUtil.BUTTON_HISTORY_PRESSED_NAME));
+		draw(CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_HISTORY_PRESSED));
 
 	}
 
 	@Override
 	protected void drawButtonOnNormalState() {
 		// TODO Auto-generated method stub
-		draw(CardUtil.getBitmap(mContext, CardUtil.BUTTON_HISTORY_NORMAL_NAME));
+		draw(CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_HISTORY_NORMAL));
 
 	}
 }

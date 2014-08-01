@@ -4,12 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.uc.fivetenkgame.view.entity.Card;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+
+import com.uc.fivetenkgame.common.ResourseCommon;
+import com.uc.fivetenkgame.view.entity.Card;
 
 /**
  * 把手牌的序号转换为对应的资源名
@@ -19,16 +20,8 @@ import android.util.Log;
  *         下午5:09:27 2014-7-9
  */
 public class CardUtil {
-	private final static String TAG="CardUtil";
-	private static Map<String, Bitmap> CARDS_BITMAP = new HashMap<String, Bitmap>();
-	
-	
-	public static String BUTTON_HANDCARD_NORMAL_NAME="button_handcard_normal";
-	public static String BUTTON_HANDCARD_PRESSED_NAME="button_handcard_pressed";
-	public static String BUTTON_GIVEUP_NORMAL_NAME="button_giveup_normal";
-	public static String BUTTON_GIVEUP_PRESSED_NAME="button_giveup_pressed";
-	public static String BUTTON_HISTORY_NORMAL_NAME="button_history_normal";
-	public static String BUTTON_HISTORY_PRESSED_NAME="button_history_pressed";
+	private  static String TAG="CardUtil";
+	private static Map<String, Bitmap> CARDS_BITMAP = new HashMap<String, Bitmap>(73);//54+2+6+1
 	/**
 	 * 
 	 * @param Id  卡片id
@@ -38,25 +31,25 @@ public class CardUtil {
 		StringBuilder prefix = new StringBuilder();
 		int cardNO = Integer.valueOf(Id.trim());
 		if (cardNO == 0)
-			return "cardbg1";
+			return ResourseCommon.BACKGROUND;
 		if (cardNO == 53)
-			return "a5_16";
+			return ResourseCommon.LITTLE_JOKER;
 		if (cardNO == 54)
-			return "a5_17";
+			return ResourseCommon.BIG_JOKER;
 		if (cardNO == 55)
-			return "pass";
+			return ResourseCommon.PASS;
 		switch ((cardNO - 1) / 13) {
 		case 0:
-			prefix.append("a2_");
+			prefix.append(ResourseCommon.DIAMOND_PREFIX);
 			break;
 		case 1:
-			prefix.append("a1_");
+			prefix.append(ResourseCommon.CLUBS_PREFIX);
 			break;
 		case 2:
-			prefix.append("a3_");
+			prefix.append(ResourseCommon.HEARTS_PREFIX);
 			break;
 		case 3:
-			prefix.append("a4_");
+			prefix.append(ResourseCommon.SPADE_PREFIX);
 			break;
 		default:
 			new IllegalArgumentException(cardNO + "is not defined!");

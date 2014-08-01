@@ -13,6 +13,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 
+import com.uc.fivetenkgame.common.ResourseCommon;
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
@@ -97,7 +98,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
  * @param baseX
  */
 	protected void drawHandCardFlag(float baseX) {
-		mCanvas.drawBitmap(CardUtil.getBitmap(mContext, "chupai"), baseX,
+		mCanvas.drawBitmap(CardUtil.getBitmap(mContext, ResourseCommon.HANDCARD_FLAG), baseX,
 				 mCardSizeHolder.width+TEXT_SIZE_SMALL, null);
 	}
 	
