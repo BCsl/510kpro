@@ -1,7 +1,7 @@
 package com.uc.fivetenkgame.common;
 
 public class ResourseCommon {
-	//资源名常量
+	// 资源名常量
 	public static final String BIG_JOKER = "a5_17";
 	public static final String LITTLE_JOKER = "a5_16";
 	public static final String DIAMOND_PREFIX = "a2_";
@@ -17,4 +17,9 @@ public class ResourseCommon {
 	public static final String BUTTON_HISTORY_NORMAL = "button_history_normal";
 	public static final String BUTTON_HISTORY_PRESSED = "button_history_pressed";
 	public static final String HANDCARD_FLAG = "chupai";
+
+	// 牌的后缀最大的数字
+	public static final int MAX_SUFFIX = 17;
+	// 牌的后缀最小的数字
+	public static final int MIN_SUFFIX = 17;
 }

@@ -43,8 +43,8 @@ public class RuleJudgeUtils {
 			if (len == 4
 					&& ((RuleJudgeUtils.getValue(list.get(0)) == RuleJudgeUtils
 							.getValue(list.get(len - 2))) || RuleJudgeUtils
-							.getValue(list.get(1)) == RuleJudgeUtils.getValue(list
-							.get(len - 1))))
+							.getValue(list.get(1)) == RuleJudgeUtils
+							.getValue(list.get(len - 1))))
 				return CardType.cardType.c31;
 			if (len == 3
 					&& (((RuleJudgeUtils.getValue(list.get(0)) == 5 && (RuleJudgeUtils
@@ -53,8 +53,8 @@ public class RuleJudgeUtils {
 							.getValue(list.get(2)) == 5 && (RuleJudgeUtils
 							.getValue(list.get(1)) == 10 && (RuleJudgeUtils
 							.getValue(list.get(0)) == 13))))) {
-				if ((RuleJudgeUtils.getColor(list.get(0)) == RuleJudgeUtils.getColor(list
-						.get(1)))
+				if ((RuleJudgeUtils.getColor(list.get(0)) == RuleJudgeUtils
+						.getColor(list.get(1)))
 						&& (RuleJudgeUtils.getColor(list.get(2)) == RuleJudgeUtils
 								.getColor(list.get(1)))) {
 					return CardType.cardType.c510K;
@@ -181,7 +181,7 @@ public class RuleJudgeUtils {
 	// 返回值
 	public static int getValue(Card card) {
 		String cardName = RuleJudgeUtils.cardResourceName(card.getCardId());
-//		Log.i("getValue", cardName);
+		// Log.i("getValue", cardName);
 		int i = Integer.parseInt(cardName.substring(3, cardName.length()));
 		// Log.i(cardName, String.valueOf(i));
 		return i;
@@ -238,32 +238,31 @@ public class RuleJudgeUtils {
 	// 按照重复次数排序
 	public static List<Card> getOrder2(List<Card> list) {
 		List<Card> list2 = new Vector<Card>(list);
-		List<Card> list3 = new Vector<Card>();
+		List<Card> temp = new Vector<Card>();// 有相同后缀的牌
 		// List<Integer> list4 = new Vector<Integer>();
 		int len = list2.size();
-		int a[] = new int[20];
-		for (int i = 0; i < 20; i++)
-			a[i] = 0;
+		int number[] = new int[ResourseCommon.MAX_SUFFIX + 1];// 有相同后缀的牌的张数
+		for (int i = ResourseCommon.MIN_SUFFIX; i <= ResourseCommon.MAX_SUFFIX; i++)
+			number[i] = 0;
 		for (int i = 0; i < len; i++) {
-			a[RuleJudgeUtils.getValue(list2.get(i))]++;
+			number[RuleJudgeUtils.getValue(list2.get(i))]++;
 		}
-		int max = 0;
+		int index = ResourseCommon.MIN_SUFFIX;// 数量最多的有相同后缀的牌的位置
 		for (int i = 0; i < 20; i++) {
-			max = 0;
+			index = ResourseCommon.MIN_SUFFIX;
 			for (int j = 19; j >= 0; j--) {
-				if (a[j] > a[max])
-					max = j;
+				if (number[j] > number[index])
+					index = j;
 			}
-
 			for (int k = 0; k < len; k++) {
-				if (RuleJudgeUtils.getValue(list2.get(k)) == max) {
-					list3.add(list2.get(k));
+				if (RuleJudgeUtils.getValue(list2.get(k)) == index) {
+					temp.add(list2.get(k));
 				}
 			}
-			list2.remove(list3);
-			a[max] = 0;
+			list2.removeAll(temp);
+			number[index] = 0;
 		}
-		return list3;
+		return temp;
 	}
 
 	// 判断牌型用的内部类
