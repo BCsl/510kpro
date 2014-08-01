@@ -25,7 +25,7 @@ import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.ICommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
-import com.uc.fivetenkgame.common.SharePreferenceCommon;
+import com.uc.fivetenkgame.common.SharePerferenceCommon;
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
 import com.uc.fivetenkgame.network.OnReceiveMessageListener;
@@ -536,10 +536,10 @@ public class Player implements PlayerContext {
 
 		int[] historyMoney = new int[3];
 		Editor editor = mApplicationContext.getSharedPreferences(
-				SharePreferenceCommon.MONEY_RECORD,
+				SharePerferenceCommon.MONEY_RECORD,
 				mApplicationContext.MODE_PRIVATE).edit();
 		SharedPreferences sp = mApplicationContext.getSharedPreferences(
-				SharePreferenceCommon.MONEY_RECORD,
+				SharePerferenceCommon.MONEY_RECORD,
 				mApplicationContext.MODE_PRIVATE);
 		for (int i = 0; i < 3; i++)
 			historyMoney[i] = sp.getInt(String.valueOf(i), 0);
@@ -579,7 +579,7 @@ public class Player implements PlayerContext {
 
 	public List<String> getPlayerMoney() {
 		SharedPreferences sp = mApplicationContext.getSharedPreferences(
-				SharePreferenceCommon.MONEY_RECORD,
+				SharePerferenceCommon.MONEY_RECORD,
 				mApplicationContext.MODE_PRIVATE);
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < 3; i++) {
@@ -596,7 +596,7 @@ public class Player implements PlayerContext {
 	@Override
 	public void setPlayersName(String[] playerNames) {
 		Editor editor = mApplicationContext.getSharedPreferences(
-				SharePreferenceCommon.TABLE_PLAYERS,
+				SharePerferenceCommon.TABLE_PLAYERS,
 				mApplicationContext.MODE_PRIVATE).edit();
 		for (int i = 0; i < playerNames.length; i++) {
 			editor.putString(String.valueOf(i + 1), playerNames[i]);

@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.ResourseCommon;
 import com.uc.fivetenkgame.ruleController.utils.CardType.cardType;
 import com.uc.fivetenkgame.view.entity.Card;
 
@@ -286,22 +287,22 @@ public class RuleJudgeUtils {
 		StringBuilder prefix = new StringBuilder();
 		int cardNO = Integer.valueOf(cardId.trim());
 		if (cardNO == 53)
-			return CardCommon.LITTLE_JOKER;
+			return ResourseCommon.LITTLE_JOKER;
 		if (cardNO == 54)
-			return CardCommon.BIG_JOKER;
+			return ResourseCommon.BIG_JOKER;
 
 		switch ((cardNO - 1) / 13) {
 		case 0:
-			prefix.append(CardCommon.DIAMOND_PREFIX);
+			prefix.append(ResourseCommon.DIAMOND_PREFIX);
 			break;
 		case 1:
-			prefix.append(CardCommon.CLUBS_PREFIX);
+			prefix.append(ResourseCommon.CLUBS_PREFIX);
 			break;
 		case 2:
-			prefix.append(CardCommon.HEARTS_PREFIX);
+			prefix.append(ResourseCommon.HEARTS_PREFIX);
 			break;
 		case 3:
-			prefix.append(CardCommon.SPADE_PREFIX);
+			prefix.append(ResourseCommon.SPADE_PREFIX);
 			break;
 		default:
 			new IllegalArgumentException(cardNO + "is not defined!");

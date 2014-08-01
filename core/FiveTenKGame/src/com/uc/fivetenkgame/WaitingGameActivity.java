@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.uc.fivetenkgame.common.NetworkCommon;
-import com.uc.fivetenkgame.common.SharePreferenceCommon;
+import com.uc.fivetenkgame.common.SharePerferenceCommon;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.qrcode.util.QRcodeGenerator;
 import com.uc.fivetenkgame.server.Server;
@@ -63,8 +63,8 @@ public class WaitingGameActivity extends Activity {
 		Intent intent = getIntent();
 		isServer = intent.getBooleanExtra("isServer", false);
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
-				SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE);
-		mName = sp.getString(SharePreferenceCommon.FIELD_MY_NAME, "Player");
+				SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
+		mName = sp.getString(SharePerferenceCommon.FIELD_MY_NAME, "Player");
 		// 获取并显示wifi地址
 		WifiManager wifiService = (WifiManager) getSystemService(WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiService.getConnectionInfo();

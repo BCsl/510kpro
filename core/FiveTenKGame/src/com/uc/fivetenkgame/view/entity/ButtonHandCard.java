@@ -9,7 +9,7 @@ package com.uc.fivetenkgame.view.entity;
 
 import android.content.Context;
 import android.graphics.Canvas;
-
+import com.uc.fivetenkgame.common.ResourseCommon;
 import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
@@ -21,8 +21,8 @@ public class ButtonHandCard extends AbsButton {
 	private static AbsButton mHandCardButton;
 	public ButtonHandCard(Context con, Canvas can, float x, float y) {
 		super(con, can, x, y);
-		HALF_OF_WIDTH=CardUtil.getBitmap(mContext,CardUtil.BUTTON_HANDCARD_NORMAL_NAME).getWidth()/2;
-		HALF_OF_HEIGHT= CardUtil.getBitmap(mContext,CardUtil.BUTTON_HANDCARD_NORMAL_NAME).getHeight()/2;
+		HALF_OF_WIDTH=CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_NORMAL).getWidth()/2;
+		HALF_OF_HEIGHT= CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_NORMAL).getHeight()/2;
 	}
 	public static AbsButton getInstance(){
 		if (mHandCardButton == null)
@@ -38,12 +38,13 @@ public class ButtonHandCard extends AbsButton {
 	@Override
 	protected void drawButtonOnPressedState() {
 		// TODO Auto-generated method stub
-		draw(CardUtil.getBitmap(mContext,CardUtil.BUTTON_HANDCARD_PRESSED_NAME));
+		draw(CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_PRESSED));
 	}
+
 	@Override
 	protected void drawButtonOnNormalState() {
 		// TODO Auto-generated method stub
-		draw(CardUtil.getBitmap(mContext,CardUtil.BUTTON_HANDCARD_NORMAL_NAME));
+		draw(CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_NORMAL));
 	}
 
 }

@@ -9,7 +9,9 @@ import android.app.AlertDialog;
 import android.app.Service;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,7 +22,7 @@ import android.widget.Toast;
 
 import com.google.zxing.qr_codescan.MipcaActivityCapture;
 import com.uc.fivetenkgame.application.GameApplication;
-import com.uc.fivetenkgame.common.SharePreferenceCommon;
+import com.uc.fivetenkgame.common.SharePerferenceCommon;
 import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.util.IPMatcherUtil;
 
@@ -55,6 +57,17 @@ public class GameMainActivity extends Activity {
 		mJoinGameButton.setOnClickListener(mClickListener);
 		mHelpButton.setOnClickListener(mClickListener);
 		mSettingButton.setOnClickListener(mClickListener);
+		SharedPreferences temp = getSharedPreferences(
+				SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
+		if (temp.getBoolean(SharePerferenceCommon.FIELD_FIRST_TIME, true)) {
+			Build build = new Build();
+			String deviceName = build.MODEL.trim().length() > 6 ? build.MODEL
+					.substring(0, 5) : build.MODEL;
+			temp.edit()
+					.putString(SharePerferenceCommon.FIELD_MY_NAME, deviceName)
+					.putBoolean(SharePerferenceCommon.FIELD_FIRST_TIME, false)
+					.commit();
+		}
 		checkAndOpenWifi();
 	}
 
@@ -111,8 +124,10 @@ public class GameMainActivity extends Activity {
 				if (wifiManager.isWifiEnabled()) {
 					// 在这里开启二维码扫描
 					if (!getApplicationContext().getSharedPreferences(
-							SharePreferenceCommon.TABLE_SETTING, MODE_PRIVATE).getBoolean(
-									SharePreferenceCommon.FIELD_QRCODE_FLAG, false)) {
+							SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE)
+							.getBoolean(
+									SharePerferenceCommon.FIELD_QRCODE_FLAG,
+									false)) {
 						Intent intent = new Intent();
 						intent.setClass(GameMainActivity.this,
 								InputServerIPActivity.class);

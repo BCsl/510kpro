@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.NetworkCommon;
-import com.uc.fivetenkgame.common.SharePreferenceCommon;
+import com.uc.fivetenkgame.common.SharePerferenceCommon;
 import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.view.GameView;
@@ -50,6 +50,7 @@ public class GameViewActivity extends Activity {
 	private GameView mView;
 	private GameApplication mGameApplication;
 	private HistoryAdapter mHistoryAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,8 +67,8 @@ public class GameViewActivity extends Activity {
 		// 锁定横屏
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		mView = new GameView(getApplicationContext(), Player.getInstance()
-				.getPlayerNumber(),mHandler);
-		mHistoryList=new ArrayList<String>();
+				.getPlayerNumber(), mHandler);
+		mHistoryList = new ArrayList<String>();
 		Player.getInstance().setViewControler(mView.getViewControler());
 		Player.getInstance().setEventListener();
 		Player.getInstance().setHandler(mHandler);
@@ -77,25 +78,29 @@ public class GameViewActivity extends Activity {
 		setContentView(mView);
 		mGameApplication = (GameApplication) getApplication();
 		mWinningView = LayoutInflater.from(this).inflate(
-					R.layout.dialog_winning, null);
-		mHistoryView =LayoutInflater.from(this).inflate(R.layout.dialog_history, null);
-		mListView =(ListView) mHistoryView.findViewById(R.id.history_score_list);
-		mHistoryAdapter=new HistoryAdapter(this, mHistoryList);
+				R.layout.dialog_winning, null);
+		mHistoryView = LayoutInflater.from(this).inflate(
+				R.layout.dialog_history, null);
+		mListView = (ListView) mHistoryView
+				.findViewById(R.id.history_score_list);
+		mHistoryAdapter = new HistoryAdapter(this, mHistoryList);
 		mListView.setAdapter(mHistoryAdapter);
 		initDialog();
 	}
 
 	private void UpdateHistoryList() {
-//		List<String> temp=new ArrayList<String>();
-//		for(int i=0;i<21;i++)
-//			temp.add(String.valueOf(i));
-//		return temp;
 		List temp;
-		if((temp=Player.getInstance().getPlayerGameHistory())!=null&&temp.size()>0){
+		if ((temp = Player.getInstance().getPlayerGameHistory()) != null
+				&& temp.size() > 0) {
 			mHistoryList.clear();
 			mHistoryList.addAll(temp);
+			temp.clear();
+			if ((temp = Player.getInstance().getPlayerMoney()) != null
+					&& temp.size() > 0) {
+				mHistoryList.addAll(temp);
+			}
 		}
-		if(temp!=null && temp.size()>0)
+		if (temp != null && temp.size() > 0)
 			temp.clear();
 	}
 
@@ -148,7 +153,7 @@ public class GameViewActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 				}
 				break;
-				
+
 			case NetworkCommon.SHOW_HISTORY:
 				showHistoryScoreDialog();
 				break;
@@ -201,77 +206,74 @@ public class GameViewActivity extends Activity {
 							}
 						}).create();
 		pauseDialog.setCancelable(false);// 除了退出游戏外，只能等待其他玩家
-		
-		
+
 		winningDialog = new AlertDialog.Builder(this)
-		.setTitle(getResources().getString(R.string.game_over))
-		.setView(mWinningView)
-		.setNegativeButton("退出",
-				new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog,
-					int which) {
-				finish();
-			}
-		})
-		.setPositiveButton("重玩",
-				new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog,
-					int which) {
-				Player.getInstance().sendMsg(
-						NetworkCommon.PLAY_AGAIN);
-				showWaitForRestartDialog();
-			}
-		}).setCancelable(false).create();
-		
-		mHistoryScoreDialog=new AlertDialog.Builder(this)
-		.setTitle(getResources().getString(R.string.history_score))
-		.setView(mHistoryView)
-		.setPositiveButton(getResources().getString(R.string.confirm_str)
-		, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog,
-					int which) {
-				
-			}}).setCancelable(true).create();
+				.setTitle(getResources().getString(R.string.game_over))
+				.setView(mWinningView)
+				.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				})
+				.setPositiveButton("重玩", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						Player.getInstance().sendMsg(NetworkCommon.PLAY_AGAIN);
+						showWaitForRestartDialog();
+					}
+				}).setCancelable(false).create();
+
+		mHistoryScoreDialog = new AlertDialog.Builder(this)
+				.setTitle(getResources().getString(R.string.history_score))
+				.setView(mHistoryView)
+				.setPositiveButton(
+						getResources().getString(R.string.confirm_str),
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+
+							}
+						}).setCancelable(true).create();
 	}
 
 	protected void showWinningDialog(String[] res) {
-			((TextView) mWinningView.findViewById(R.id.text_winning_player))
-					.setText(getResources().getString(R.string.winner).replace(
-							"#", res[0]));
-			((TextView) mWinningView.findViewById(R.id.text_score_player1))
-					.setText(getResources().getString(R.string.player1_score)
-							.replace("#", res[1]));
-			((TextView) mWinningView.findViewById(R.id.text_score_player2))
-					.setText(getResources().getString(R.string.player2_score)
-							.replace("#", res[2]));
-			((TextView) mWinningView.findViewById(R.id.text_score_player3))
-					.setText(getResources().getString(R.string.player3_score)
-							.replace("#", res[3]));
+		((TextView) mWinningView.findViewById(R.id.text_winning_player))
+				.setText(getResources().getString(R.string.winner).replace("#",
+						res[0]));
+		((TextView) mWinningView.findViewById(R.id.text_score_player1))
+				.setText(getResources().getString(R.string.player1_score)
+						.replace("#", res[1]));
+		((TextView) mWinningView.findViewById(R.id.text_score_player2))
+				.setText(getResources().getString(R.string.player2_score)
+						.replace("#", res[2]));
+		((TextView) mWinningView.findViewById(R.id.text_score_player3))
+				.setText(getResources().getString(R.string.player3_score)
+						.replace("#", res[3]));
 		winningDialog.show();
 	}
 
 	protected void showWaitForRestartDialog() {
 		if (waitForRestartDialog == null) {
-		    View waitForRestartView = LayoutInflater.from(this).inflate(R.layout.dialog_wait_restart, null);
+			View waitForRestartView = LayoutInflater.from(this).inflate(
+					R.layout.dialog_wait_restart, null);
 			waitForRestartDialog = new AlertDialog.Builder(this)
 					.setTitle(R.string.game_restart)
-					.setView(waitForRestartView)
-					.setCancelable(false)
-					.create();
+					.setView(waitForRestartView).setCancelable(false).create();
 		}
 		waitForRestartDialog.show();
 	}
-	protected void showHistoryScoreDialog(){
+
+	protected void showHistoryScoreDialog() {
 		UpdateHistoryList();
-		if(mHistoryScoreDialog !=null){
+		if (mHistoryScoreDialog != null) {
 			mHistoryAdapter.notifyDataSetChanged();
 			mHistoryScoreDialog.show();
 		}
-		
+
 	}
+
 	@Override
 	public void onBackPressed() {
 		backPressDialog.show();
@@ -305,74 +307,95 @@ public class GameViewActivity extends Activity {
 		Player.getInstance().resetPlayer();
 		super.onDestroy();
 	}
-	
-	
-	private class HistoryAdapter extends BaseAdapter{
+
+	private class HistoryAdapter extends BaseAdapter {
 		private Context mContext;
-		private List<String> mScores; 
-		private int[] colors={ Color.WHITE, Color.rgb(219, 238, 244) };
+		private List<String> mScores;
+		private int[] colors = { Color.WHITE, Color.rgb(219, 238, 244) };
 		private SharedPreferences mSharedPreferences;
-		public  HistoryAdapter(Context context,List<String> score) {
-			this.mContext=context;
-			this.mScores=score;
-			mSharedPreferences=context.getSharedPreferences(SharePreferenceCommon.TABLE_PLAYERS, MODE_PRIVATE);
+
+		public HistoryAdapter(Context context, List<String> score) {
+			this.mContext = context;
+			this.mScores = score;
+			mSharedPreferences = context.getSharedPreferences(
+					SharePerferenceCommon.TABLE_PLAYERS, MODE_PRIVATE);
 		}
+
 		@Override
 		public int getCount() {
-			return mScores==null?0:mScores.size()/3+1;
+			return mScores == null ? 0 : mScores.size() / 3 + 1;
 		}
+
 		@Override
 		public Object getItem(int position) {
 			return position;
 		}
+
 		@Override
 		public long getItemId(int position) {
 			return position;
 		}
+
 		@Override
 		public View getView(int position, View view, ViewGroup parent) {
 			ViewHolder vh = null;
-		if(view==null){
-			vh=new ViewHolder();
-			view=LayoutInflater.from(mContext).inflate(R.layout.history_list_item, null);
-			vh.tv_round=(TextView) view.findViewById(R.id.history_game_round);
-			vh.tv_player1=(TextView) view.findViewById(R.id.history_player1);
-			vh.tv_player2=(TextView) view.findViewById(R.id.history_player2);
-			vh.tv_player3=(TextView) view.findViewById(R.id.history_player3);
-			view.setTag(vh);
-			} 
-			vh=(ViewHolder) view.getTag();
-			if(position==0){
+			if (view == null) {
+				vh = new ViewHolder();
+				view = LayoutInflater.from(mContext).inflate(
+						R.layout.history_list_item, null);
+				vh.tv_round = (TextView) view
+						.findViewById(R.id.history_game_round);
+				vh.tv_player1 = (TextView) view
+						.findViewById(R.id.history_player1);
+				vh.tv_player2 = (TextView) view
+						.findViewById(R.id.history_player2);
+				vh.tv_player3 = (TextView) view
+						.findViewById(R.id.history_player3);
+				view.setTag(vh);
+			}
+			vh = (ViewHolder) view.getTag();
+			if (position == 0) {
 				initView(vh);
-				view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同  
+				view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
 				return view;
 			}
-			if(position==getCount()){
-				
-				vh.tv_round.setText(mContext.getResources().getString(R.string.histor_final));
+			if (position == getCount()) {
+
+				vh.tv_round.setText(mContext.getResources().getString(
+						R.string.histor_final));
+			} else {
+
+				vh.tv_round.setText(mContext.getResources()
+						.getString(R.string.histor_rounds)
+						.replace("#", String.valueOf(position)));
 			}
-			else{
-				
-				vh.tv_round.setText(mContext.getResources().getString(R.string.histor_rounds).replace("#", String.valueOf(position)));
-			}
-			vh.tv_player1.setText(mScores.get((position-1)*3));
-			vh.tv_player2.setText(mScores.get((position-1)*3+1));
-			vh.tv_player3.setText(mScores.get((position-1)*3+2));
-			view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同  
-			return view; 
+			vh.tv_player1.setText(mScores.get((position - 1) * 3));
+			vh.tv_player2.setText(mScores.get((position - 1) * 3 + 1));
+			vh.tv_player3.setText(mScores.get((position - 1) * 3 + 2));
+			view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
+			return view;
 		}
-		public void initView(ViewHolder vh){
-			vh.tv_round.setText(getResources().getString(R.string.histor_round));
-			vh.tv_player1.setText(mSharedPreferences.getString(SharePreferenceCommon.FIELD_PAAYER1, SharePreferenceCommon.FIELD_PAAYER1));
-			vh.tv_player2.setText(mSharedPreferences.getString(SharePreferenceCommon.FIELD_PAAYER2, SharePreferenceCommon.FIELD_PAAYER2));
-			vh.tv_player3.setText(mSharedPreferences.getString(SharePreferenceCommon.FIELD_PAAYER3, SharePreferenceCommon.FIELD_PAAYER3));
+
+		public void initView(ViewHolder vh) {
+			vh.tv_round
+					.setText(getResources().getString(R.string.histor_round));
+			vh.tv_player1.setText(mSharedPreferences.getString(
+					SharePerferenceCommon.FIELD_PAAYER1,
+					SharePerferenceCommon.FIELD_PAAYER1));
+			vh.tv_player2.setText(mSharedPreferences.getString(
+					SharePerferenceCommon.FIELD_PAAYER2,
+					SharePerferenceCommon.FIELD_PAAYER2));
+			vh.tv_player3.setText(mSharedPreferences.getString(
+					SharePerferenceCommon.FIELD_PAAYER3,
+					SharePerferenceCommon.FIELD_PAAYER3));
 		}
-		
+
 	}
-	class ViewHolder{
-		TextView  tv_round;
-		TextView  tv_player1;
-		TextView  tv_player2;
-		TextView  tv_player3;
+
+	class ViewHolder {
+		TextView tv_round;
+		TextView tv_player1;
+		TextView tv_player2;
+		TextView tv_player3;
 	}
 }
