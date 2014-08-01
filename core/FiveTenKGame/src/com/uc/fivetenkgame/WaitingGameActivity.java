@@ -23,6 +23,11 @@ import android.widget.Toast;
 
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.common.SharePerferenceCommon;
+import com.uc.fivetenkgame.network.BluetoothClientManager;
+import com.uc.fivetenkgame.network.BluetoothLocalClient;
+import com.uc.fivetenkgame.network.BluetoothServerManager;
+import com.uc.fivetenkgame.network.ClientManager;
+import com.uc.fivetenkgame.network.ServerManager;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.qrcode.util.QRcodeGenerator;
 import com.uc.fivetenkgame.server.Server;
@@ -79,18 +84,45 @@ public class WaitingGameActivity extends Activity {
 				((ImageView) findViewById(R.id.ip_qrcode_ID))
 						.setImageBitmap(bitmap);
 		}
+		
+		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, true);
+		
+		
 		mPlayer = Player.getInstance();
 		mPlayer.setContext(getApplicationContext());
 		mPlayer.setHandler(mHandler);
+		
 		// 根据是否是服务器，执行不同的操作
 		if (isServer) {
 			Log.i(TAG, strIp);
 			mServer = Server.getInstance();
 			mServer.setHandler(mHandler);
+			if( isUseWifi ){
+				mServer.setNetworkManager(ServerManager.getInstance());
+			}
+			else {
+				mServer.setNetworkManager(BluetoothServerManager.getInstance());
+			}
+			
 			mServer.startListen();
+			
+			//设置本地玩家
+			if( isUseWifi ){
+				mPlayer.setNetworkManager(ClientManager.getInstance());
+			}
+			else {
+				mPlayer.setNetworkManager(BluetoothLocalClient.getInstance());
+			}
 			mPlayer.startPlay(strIp, mName);
 		} else {
 			String ipAddr = intent.getStringExtra("IP");
+			//设置本地玩家
+			if( isUseWifi ){
+				mPlayer.setNetworkManager(ClientManager.getInstance());
+			}
+			else {
+				mPlayer.setNetworkManager(BluetoothClientManager.getInstance());
+			}
 			mPlayer.startPlay(ipAddr, mName);
 		}
 		// new Handler().postDelayed(new Runnable() {

@@ -16,4 +16,6 @@ public class SharePerferenceCommon {
 	//用户名历史记录表
 	public static final String TABLE_HISTORY="history";
 	public static final String FIELD_HISTORY="history";
+	
+	public static final String CONNECT_WAY = "isUseWIFI";
 }
