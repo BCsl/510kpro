@@ -16,8 +16,8 @@ import org.apache.http.util.EncodingUtils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
@@ -160,7 +160,7 @@ public class Player implements PlayerContext {
 	// 设置规则
 	private void setRule(String ruleName) {
 		mRule = new RuleManager().getRule(ruleName);
-		Log.i(this.getClass().getName()+": setRule", mRule.getRuleName());
+		Log.i(this.getClass().getName() + ": setRule", mRule.getRuleName());
 	}
 
 	// 启动网络模块
@@ -213,11 +213,11 @@ public class Player implements PlayerContext {
 			cardList.add(new Card(tCard[i]));
 		}
 		mPlayerModel.setCardList(cardList);
-//		List<Integer> number = new ArrayList<Integer>();
-//		number.add(cardList.size());
-//		number.add(cardList.size());
-//		number.add(cardList.size());
-//		viewController.setCardNumber(number);
+		// List<Integer> number = new ArrayList<Integer>();
+		// number.add(cardList.size());
+		// number.add(cardList.size());
+		// number.add(cardList.size());
+		// viewController.setCardNumber(number);
 	}
 
 	/**
@@ -420,47 +420,50 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void reStartGame(String[] str) {
-	    try {
-            addPlayerGameHistory(str);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        mPlayerModel.setCardList(null);
-        mPlayerModel.setScore(0);
-        List<Integer> score = new ArrayList<Integer>();
-        score.add(0);
-        score.add(0);
-        score.add(0);
-        viewController.setScroeList(score);
-        viewController.setMyTurn(false);
-        viewController.setGameScore(0);
-        List<Integer> number = new ArrayList<Integer>();
-        number.add(36);
-        number.add(36);
-        number.add(36);
-        viewController.setCardNumber(number);
+		try {
+			addPlayerGameHistory(str);
+			updatePlayerMoney(str);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		mPlayerModel.setCardList(null);
+		mPlayerModel.setScore(0);
+		List<Integer> score = new ArrayList<Integer>();
+		score.add(0);
+		score.add(0);
+		score.add(0);
+		viewController.setScroeList(score);
+		viewController.setMyTurn(false);
+		viewController.setGameScore(0);
+		List<Integer> number = new ArrayList<Integer>();
+		number.add(36);
+		number.add(36);
+		number.add(36);
+		viewController.setCardNumber(number);
 		// 通知gameViewActivity重绘界面
-		
+
 	}
 
 	@Override
 	public String getPlayerName() {
 		return mPlayerModel.getPlayerName();
 	}
+
 	@Override
 	public ICommonMsgDecoder getICommomDecoder() {
 		return this.mICommonMsgDecoder;
 	}
-	
+
 	/**
 	 * 必须是已经存在的路径
+	 * 
 	 * @param path
 	 */
 	public void setHistoryRecordPath(String path) {
 		mHistoryPath = path + "player_history.txt";
 	}
-	
+
 	private void addPlayerGameHistory(String[] str) throws IOException {
 		File file = new File(mHistoryPath);
 		if (!file.exists())
@@ -491,36 +494,7 @@ public class Player implements PlayerContext {
 		// PlayerMoney[2]+=money[2];
 	}
 
-	public List<String> getPlayerGameHistory() {
-		String record = null;
-		try {
-			FileInputStream fis = new FileInputStream(mHistoryPath);
-			int length = fis.available();
-			byte[] buffer = new byte[length];
-			fis.read(buffer);
-			record = EncodingUtils.getString(buffer, "UTF-8");
-			Log.i("Player", "getPlayerGameHistory: " + record);
-			fis.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(record == null)
-			return null;
-		StringBuffer sb = new StringBuffer(record);
-		sb.deleteCharAt(sb.length() - 1);
-		record = new String(sb);
-		String[] resultStrs = record.split(",");
-		List<String> result = new ArrayList<String>();
-		for(String str:resultStrs)
-			result.add(str);
-		return result;
-	}
-
-	public List<String> getPlayerMoney(String[] str) {
+	private void updatePlayerMoney(String[] str) {
 		int[] money = new int[3];
 		int[] score = new int[3];
 		score[0] = Integer.valueOf(str[1]);
@@ -540,6 +514,8 @@ public class Player implements PlayerContext {
 						return (o2.getValue() - o1.getValue());
 					}
 				});
+
+		// 当出现相同分数时，需判断具体排名
 		if (infoIds.get(0).getValue() == infoIds.get(1).getValue()
 				&& infoIds.get(2).getValue() == infoIds.get(1).getValue()) {
 			money[infoIds.get(0).getKey()] = money[infoIds.get(1).getKey()] = money[infoIds
@@ -557,37 +533,87 @@ public class Player implements PlayerContext {
 			money[infoIds.get(1).getKey()] = 0;
 			money[infoIds.get(2).getKey()] = -1;
 		}
-		
+
+		int[] historyMoney = new int[3];
+		Editor editor = mApplicationContext.getSharedPreferences(
+				SharePreferenceCommon.MONEY_RECORD,
+				mApplicationContext.MODE_PRIVATE).edit();
+		SharedPreferences sp = mApplicationContext.getSharedPreferences(
+				SharePreferenceCommon.MONEY_RECORD,
+				mApplicationContext.MODE_PRIVATE);
+		for (int i = 0; i < 3; i++)
+			historyMoney[i] = sp.getInt(String.valueOf(i), 0);
+		for (int i = 0; i < 3; i++) {
+			editor.putInt(String.valueOf(i), historyMoney[i] + money[i]);
+		}
+	}
+
+	public List<String> getPlayerGameHistory() {
+		String record = null;
+		try {
+			FileInputStream fis = new FileInputStream(mHistoryPath);
+			int length = fis.available();
+			byte[] buffer = new byte[length];
+			fis.read(buffer);
+			record = EncodingUtils.getString(buffer, "UTF-8");
+			Log.i("Player", "getPlayerGameHistory: " + record);
+			fis.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (record == null)
+			return null;
+		StringBuffer sb = new StringBuffer(record);
+		sb.deleteCharAt(sb.length() - 1);
+		record = new String(sb);
+		String[] resultStrs = record.split(",");
+		List<String> result = new ArrayList<String>();
+		for (String str : resultStrs)
+			result.add(str);
+		return result;
+	}
+
+	public List<String> getPlayerMoney() {
+		SharedPreferences sp = mApplicationContext.getSharedPreferences(
+				SharePreferenceCommon.MONEY_RECORD,
+				mApplicationContext.MODE_PRIVATE);
 		List<String> list = new ArrayList<String>();
-		list.add(String.valueOf(money[0]));
-		list.add(String.valueOf(money[1]));
-		list.add(String.valueOf(money[2]));
+		for (int i = 0; i < 3; i++) {
+			list.add(String.valueOf(sp.getInt(String.valueOf(i), 0)));
+		}
 		return list;
 	}
 
 	public void setContext(Context context) {
-		mApplicationContext=context;
+		mApplicationContext = context;
 
 	}
+
 	@Override
 	public void setPlayersName(String[] playerNames) {
-		Editor editor=mApplicationContext.getSharedPreferences(SharePreferenceCommon.TABLE_PLAYERS, mApplicationContext.MODE_PRIVATE).edit();
-				for(int i=0;i<playerNames.length;i++){
-					editor.putString(String.valueOf(i+1), playerNames[i]);
-				}
-	editor.commit();
+		Editor editor = mApplicationContext.getSharedPreferences(
+				SharePreferenceCommon.TABLE_PLAYERS,
+				mApplicationContext.MODE_PRIVATE).edit();
+		for (int i = 0; i < playerNames.length; i++) {
+			editor.putString(String.valueOf(i + 1), playerNames[i]);
+		}
+		editor.commit();
 	}
-	
+
 	@Override
 	public void setRestart(boolean isRestart) {
-        this.isRestart = isRestart;
-    }
-    
-	@Override
-    public boolean isRestart() {
-        return isRestart;
-    }
+		this.isRestart = isRestart;
+	}
 
+	@Override
+	public boolean isRestart() {
+		return isRestart;
+	}
+	
 	@Override
 	public void playSound(int soundKey) {
 		((GameApplication)mApplicationContext.getApplicationContext()).playSound(soundKey);
