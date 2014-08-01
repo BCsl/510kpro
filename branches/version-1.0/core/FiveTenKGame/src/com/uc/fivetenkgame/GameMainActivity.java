@@ -7,6 +7,7 @@ import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,7 +44,7 @@ public class GameMainActivity extends Activity {
 	private int EXIT_TIME;
 	private Timer task;
 	private WifiManager wifiManager;
-
+	private BluetoothAdapter mBluetoothAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -83,14 +84,24 @@ public class GameMainActivity extends Activity {
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									if (wifiManager.setWifiEnabled(true))
+									if (wifiManager.setWifiEnabled(true)){
+										getSharedPreferences(SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE)
+										.edit().putBoolean(SharePerferenceCommon.CONNECT_WAY,true).commit();
 										Toast.makeText(getApplicationContext(),
 												"WiFi已开启", Toast.LENGTH_SHORT)
 												.show();
-									else
+									}
+									else{
+										getSharedPreferences(SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE)
+										.edit().putBoolean(SharePerferenceCommon.CONNECT_WAY,false).commit();
 										Toast.makeText(getApplicationContext(),
-												"WiFi打开失败", Toast.LENGTH_SHORT)
+												"WiFi打开失败,将开启蓝牙模式", Toast.LENGTH_SHORT)
 												.show();
+										if(mBluetoothAdapter==null){
+											mBluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
+											mBluetoothAdapter.enable();
+										}
+									}
 								}
 							})
 					.setNegativeButton("取消",

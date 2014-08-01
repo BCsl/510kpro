@@ -69,6 +69,8 @@ public class Card {
 	}
 	@Override
 	public boolean equals(Object o) {
+		if(o!=null)
 		return cardId.equals(((Card)o).getCardId());
+		return false;
 	}
 }

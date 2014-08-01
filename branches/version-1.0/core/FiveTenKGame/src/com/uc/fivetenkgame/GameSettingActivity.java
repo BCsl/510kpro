@@ -4,6 +4,7 @@ import my.example.fivetenkgame.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
@@ -22,44 +23,47 @@ import com.uc.fivetenkgame.common.SharePerferenceCommon;
 
 public class GameSettingActivity extends Activity implements
 		OnCheckedChangeListener {
-	private RadioGroup qrcodeRadioGroup;
-	private RadioGroup musicRadioGroup;
-	private RadioGroup wifiRadioGroup;
-	private RadioButton musicOpen, musicClose;
-	private RadioButton scanOpen, scanClose;
-	private RadioButton wifiOpen, wifiClose;
+	private RadioGroup mQrcodeGroup;
+	private RadioGroup musicGroup;
+	private RadioGroup mConnectionMethodGroup;
+	private RadioButton mMusicOpenButton, mMusicCloseButton;
+	private RadioButton mScanOpenButton, mScanCloseButton;
+	private RadioButton mWifiOpenButton, mBluetoothButton;
 	private WifiManager wifiManager;
-	private TextView nameText;
-	private AlertDialog inputNameDialog;
-	private View inputNameDialogView;
-	private AutoCompleteTextView tvName;
+	private TextView mNameText;
+	private AlertDialog mInputNameDialog;
+	private View mInputNameDialogView;
+	private AutoCompleteTextView mTextViewName;
+	private BluetoothAdapter mBluetoothAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
+		mQrcodeGroup = (RadioGroup) findViewById(R.id.qrcode_radiogroup_id);
+		mScanOpenButton = (RadioButton) findViewById(R.id.open_qrcode_id);
+		mScanCloseButton = (RadioButton) findViewById(R.id.close_qrcode_id);
 
-		musicOpen = (RadioButton) findViewById(R.id.open_radio_id);
-		musicClose = (RadioButton) findViewById(R.id.close_radio_id);
-		scanOpen = (RadioButton) findViewById(R.id.open_qrcode_id);
-		scanClose = (RadioButton) findViewById(R.id.close_qrcode_id);
-		wifiOpen = (RadioButton) findViewById(R.id.open_wifi_id);
-		wifiClose = (RadioButton) findViewById(R.id.close_wifi_id);
-		qrcodeRadioGroup = (RadioGroup) findViewById(R.id.qrcode_radiogroup_id);
-		musicRadioGroup = (RadioGroup) findViewById(R.id.music_radiogroup_id);
-		wifiRadioGroup = (RadioGroup) findViewById(R.id.wifi_radiogroup_id);
-		nameText = (TextView) findViewById(R.id.edit_user_name);
-		qrcodeRadioGroup.setOnCheckedChangeListener(this);
-		musicRadioGroup.setOnCheckedChangeListener(this);
-		wifiRadioGroup.setOnCheckedChangeListener(this);
-		inputNameDialogView = getLayoutInflater().inflate(
+		musicGroup = (RadioGroup) findViewById(R.id.music_radiogroup_id);
+		mMusicOpenButton = (RadioButton) findViewById(R.id.open_radio_id);
+		mMusicCloseButton = (RadioButton) findViewById(R.id.close_radio_id);
+		
+		mConnectionMethodGroup = (RadioGroup) findViewById(R.id.method_radiogroup_id);
+		mWifiOpenButton = (RadioButton) findViewById(R.id.open_wifi_id);
+		mBluetoothButton = (RadioButton) findViewById(R.id.open_bluetooth_id);
+		
+		mNameText = (TextView) findViewById(R.id.edit_user_name);
+		mQrcodeGroup.setOnCheckedChangeListener(this);
+		musicGroup.setOnCheckedChangeListener(this);
+		mConnectionMethodGroup.setOnCheckedChangeListener(this);
+		mInputNameDialogView = getLayoutInflater().inflate(
 				R.layout.dialog_input_name, null);
-		tvName = (AutoCompleteTextView) inputNameDialogView
+		mTextViewName = (AutoCompleteTextView) mInputNameDialogView
 				.findViewById(R.id.name_autotext_ID);
-		initAutoComplete(tvName);
-		inputNameDialog = new AlertDialog.Builder(this)
+		initAutoComplete(mTextViewName);
+		mInputNameDialog = new AlertDialog.Builder(this)
 				.setTitle(getResources().getString(R.string.input_user_name))
-				.setView(inputNameDialogView)
+				.setView(mInputNameDialogView)
 				.setPositiveButton(
 						getResources().getString(R.string.confirm_str),
 						new DialogInterface.OnClickListener() {
@@ -67,17 +71,17 @@ public class GameSettingActivity extends Activity implements
 							public void onClick(DialogInterface dialog,
 									int which) {
 								String name;
-								if ((name = tvName.getText().toString().trim()) != null
+								if ((name = mTextViewName.getText().toString().trim()) != null
 										&& name.length() > 0) {
 									saveHistory(name);
-									nameText.setText(name);
+									mNameText.setText(name);
 									saveUserName(name);
 								}
 							}
 						}).create();
-		inputNameDialog.setCancelable(true);
+		mInputNameDialog.setCancelable(true);
 		initData();
-		nameText.setOnClickListener(new OnClickListener() {
+		mNameText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showInputNameDialog();
@@ -93,37 +97,42 @@ public class GameSettingActivity extends Activity implements
 	}
 
 	private void showInputNameDialog() {
-		if (inputNameDialog != null)
-			inputNameDialog.show();
+		if (mInputNameDialog != null)
+			mInputNameDialog.show();
 	}
 
 	private void initData() {
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
 				SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 		if (sp.getBoolean(SharePerferenceCommon.FIELD_QRCODE_FLAG, false))
-			scanOpen.setChecked(true);
+			mScanOpenButton.setChecked(true);
 		else
-			scanClose.setChecked(true);
+			mScanCloseButton.setChecked(true);
 
 		if (sp.getBoolean(SharePerferenceCommon.FIELD_MUSIC_FLAG, true))
-			musicOpen.setChecked(true);
+			mMusicOpenButton.setChecked(true);
 		else
-			musicClose.setChecked(true);
+			mMusicCloseButton.setChecked(true);
 
 		if (wifiManager == null)
 			wifiManager = (WifiManager) getSystemService(Service.WIFI_SERVICE);
-		if (wifiManager.isWifiEnabled())
-			wifiOpen.setChecked(true);
-		else
-			wifiClose.setChecked(true);
-		nameText.setText(sp.getString(SharePerferenceCommon.FIELD_MY_NAME,
+			mBluetoothAdapter= BluetoothAdapter.getDefaultAdapter();
+		
+		if (sp.getBoolean(SharePerferenceCommon.CONNECT_WAY,true)&&wifiManager.isWifiEnabled()){
+			mWifiOpenButton.setChecked(true);
+		}
+		else{
+			mBluetoothButton.setChecked(true);
+		}
+		mNameText.setText(sp.getString(SharePerferenceCommon.FIELD_MY_NAME,
 				"player"));
 	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		boolean flag = false;
-		if (group == musicRadioGroup) {
+		
+		if (group == musicGroup) {
 			SharedPreferences sp = getApplicationContext()
 					.getSharedPreferences(SharePerferenceCommon.TABLE_SETTING,
 							MODE_PRIVATE);
@@ -134,13 +143,12 @@ public class GameSettingActivity extends Activity implements
 			case R.id.close_radio_id:
 				flag = false;
 				break;
-			default:
-				new IllegalArgumentException("checkedId not find!");
+			default:break;
 			}
 			sp.edit().putBoolean(SharePerferenceCommon.FIELD_MUSIC_FLAG, flag)
 					.commit();
 
-		} else if (group == qrcodeRadioGroup) {
+		} else if (group == mQrcodeGroup) {
 			SharedPreferences sp = getApplicationContext()
 					.getSharedPreferences(SharePerferenceCommon.TABLE_SETTING,
 							MODE_PRIVATE);
@@ -157,13 +165,18 @@ public class GameSettingActivity extends Activity implements
 			sp.edit().putBoolean(SharePerferenceCommon.FIELD_QRCODE_FLAG, flag)
 					.commit();
 
-		} else if (group == wifiRadioGroup) {
+		} else if (group == mConnectionMethodGroup) {
+			SharedPreferences sp = getApplicationContext()
+					.getSharedPreferences(SharePerferenceCommon.TABLE_SETTING,
+							MODE_PRIVATE);
 			switch (checkedId) {
 			case R.id.open_wifi_id:
 				wifiManager.setWifiEnabled(true);
+				sp.edit().putBoolean(SharePerferenceCommon.CONNECT_WAY, true).commit();
 				break;
-			case R.id.close_wifi_id:
-				wifiManager.setWifiEnabled(false);
+			case R.id.open_bluetooth_id:
+				mBluetoothAdapter.enable();
+				sp.edit().putBoolean(SharePerferenceCommon.CONNECT_WAY, false).commit();
 				break;
 			default:
 				new IllegalArgumentException("checkedId not find!");

@@ -55,12 +55,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/wifi_setting_str"
+            android:text="@string/connection_method_setting_str"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
 
         <RadioGroup
-            android:id="@+id/wifi_radiogroup_id"
+            android:id="@+id/method_radiogroup_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="50dp"
@@ -73,16 +73,17 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:paddingRight="30dp"
-                android:text="@string/open_str"
+                android:text="@string/connection_method_wifi_str"
                 android:textColor="@android:color/black" />
 
             <RadioButton
-                android:id="@+id/close_wifi_id"
+                android:id="@+id/open_bluetooth_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/close_str"
+                android:text="@string/connection_method_bluetooth_str"
                 android:textColor="@android:color/black" />
         </RadioGroup>
+        
 
         <TextView
             android:id="@+id/music_volume_text_id"

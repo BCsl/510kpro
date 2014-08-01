@@ -369,11 +369,10 @@ public class GameViewActivity extends Activity {
 			if (position == getCount()) {
 
 				vh.tv_round.setText(mContext.getResources().getString(
-						R.string.histor_final));
+						R.string.history_final));
 			} else {
-
 				vh.tv_round.setText(mContext.getResources()
-						.getString(R.string.histor_rounds)
+						.getString(R.string.history_rounds)
 						.replace("#", String.valueOf(position)));
 			}
 			vh.tv_player1.setText(mScores.get((position - 1) * 3));
@@ -385,7 +384,7 @@ public class GameViewActivity extends Activity {
 
 		public void initView(ViewHolder vh) {
 			vh.tv_round
-					.setText(getResources().getString(R.string.histor_round));
+					.setText(getResources().getString(R.string.history_name));
 			vh.tv_player1.setText(mSharedPreferences.getString(
 					SharePerferenceCommon.FIELD_PAAYER1,
 					SharePerferenceCommon.FIELD_PAAYER1));
