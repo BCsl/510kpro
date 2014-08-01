@@ -4,6 +4,7 @@ import my.example.fivetenkgame.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -70,13 +71,26 @@ public class WaitingGameActivity extends Activity {
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
 				SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 		mName = sp.getString(SharePerferenceCommon.FIELD_MY_NAME, "Player");
-		// 获取并显示wifi地址
-		WifiManager wifiService = (WifiManager) getSystemService(WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiService.getConnectionInfo();
-		int ip = wifiInfo.getIpAddress();
-		String strIp = "" + (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "."
-				+ ((ip >> 16) & 0xFF) + "." + ((ip >> 24) & 0xFF);
+
+		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, false);		
+
+		String strIp = null;
+		
+		if( isUseWifi ){
+			// 获取并显示wifi地址
+			WifiManager wifiService = (WifiManager) getSystemService(WIFI_SERVICE);
+			WifiInfo wifiInfo = wifiService.getConnectionInfo();
+			int ip = wifiInfo.getIpAddress();
+			strIp = "" + (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "."
+					+ ((ip >> 16) & 0xFF) + "." + ((ip >> 24) & 0xFF);
+		}
+		else{
+			//蓝牙地址
+			strIp = BluetoothAdapter.getDefaultAdapter().getAddress();
+		}
+		
 		mIpAddress.setText(mIpAddress.getText() + strIp);
+		
 		if (isServer) {
 			Bitmap bitmap = QRcodeGenerator.createImage(strIp, (int) QR_WIDTH,
 					(int) QR_HEIGHT);
@@ -84,9 +98,6 @@ public class WaitingGameActivity extends Activity {
 				((ImageView) findViewById(R.id.ip_qrcode_ID))
 						.setImageBitmap(bitmap);
 		}
-		
-		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, false);
-		
 		
 		mPlayer = Player.getInstance();
 		mPlayer.setContext(getApplicationContext());
