@@ -39,7 +39,9 @@ public class GameOverState extends PlayerState {
             //mPlayerContext.recordHistory(mNewRecord);
             mPlayerContext.gameOver(msgs);
             str = msgs;
+            mPlayerContext.setRestart(false);
         } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_AGAIN)) { //жиЭц
+            mPlayerContext.setRestart(true);
             mPlayerContext.reStartGame(str);
             mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
             mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);

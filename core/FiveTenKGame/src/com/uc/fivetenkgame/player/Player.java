@@ -47,6 +47,7 @@ public class Player implements PlayerContext {
 	private Rule mRule;
 	private State mState;
 	private boolean doneHandCard = false;
+	private boolean isRestart = false;
 	private IViewControler viewController;
 	private OnReceiveMessageListener mReceiveMessage = new OnReceiveMessageListener() {
 
@@ -203,11 +204,11 @@ public class Player implements PlayerContext {
 			cardList.add(new Card(tCard[i]));
 		}
 		mPlayerModel.setCardList(cardList);
-		List<Integer> number = new ArrayList<Integer>();
-		number.add(cardList.size());
-		number.add(cardList.size());
-		number.add(cardList.size());
-		viewController.setCardNumber(number);
+//		List<Integer> number = new ArrayList<Integer>();
+//		number.add(cardList.size());
+//		number.add(cardList.size());
+//		number.add(cardList.size());
+//		viewController.setCardNumber(number);
 	}
 
 	/**
@@ -309,6 +310,7 @@ public class Player implements PlayerContext {
 		viewController.setEventListener(mEventListener);
 	}
 
+	@Override
 	/**
 	 * 初始化游戏界面
 	 * 
@@ -424,6 +426,11 @@ public class Player implements PlayerContext {
         viewController.setScroeList(score);
         viewController.setMyTurn(false);
         viewController.setGameScore(0);
+        List<Integer> number = new ArrayList<Integer>();
+        number.add(36);
+        number.add(36);
+        number.add(36);
+        viewController.setCardNumber(number);
 		// 通知gameViewActivity重绘界面
 		
 	}
@@ -541,4 +548,14 @@ public class Player implements PlayerContext {
 		}
 		return money;
 	}
+	
+	@Override
+	public void setRestart(boolean isRestart) {
+        this.isRestart = isRestart;
+    }
+    
+	@Override
+    public boolean isRestart() {
+        return isRestart;
+    }
 }
