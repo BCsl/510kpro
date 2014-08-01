@@ -15,10 +15,7 @@ public class FirstPlayCardsRule implements RuleUnit {
 			cardType cType2, List<Card> cardList2) {
 		if (cType2 != null || cardList2 != null)
 			return 0;
-		Log.i(this.getClass().getName(), this.getClass().getMethods()
-				.toString());
-		Log.i(this.getClass().getMethods().toString(),
-				"牌型（第一个打牌）：" + cType.toString());
+		Log.i(this.getClass().getName(), "牌型（第一个打牌）：" + cType.toString());
 		if (cType != CardType.cardType.c0) {
 			return 1;
 		}

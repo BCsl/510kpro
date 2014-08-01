@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +15,7 @@ import java.util.TreeMap;
 
 import org.apache.http.util.EncodingUtils;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -145,6 +147,7 @@ public class Player implements PlayerContext {
 	};
 	private String mHistoryPath;
 	private String mRuleName;
+	int[] historyMoney = new int[3];
 
 	public void startPlay(String addr, String name) {
 		mPlayerModel.setPlayerName(name);
@@ -307,12 +310,6 @@ public class Player implements PlayerContext {
 	public void gameOver(String[] str) {
 		// viewController.gameOver(playerId);
 		mHandler.obtainMessage(NetworkCommon.END_GAME, str).sendToTarget();
-		try {
-			addPlayerGameHistory(str);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void setEventListener() {
@@ -470,8 +467,8 @@ public class Player implements PlayerContext {
 			file.createNewFile();
 		FileOutputStream fos = new FileOutputStream(file, true);
 		byte[] bytes;
-		for (String record : str) {
-			bytes = (record + ",").getBytes();
+		for (int i = 1, count = str.length; i < count; i++) {
+			bytes = (str[i] + ",").getBytes();
 			try {
 				fos.write(bytes);
 			} catch (IOException e) {
@@ -534,17 +531,8 @@ public class Player implements PlayerContext {
 			money[infoIds.get(2).getKey()] = -1;
 		}
 
-		int[] historyMoney = new int[3];
-		Editor editor = mApplicationContext.getSharedPreferences(
-				SharePerferenceCommon.MONEY_RECORD,
-				mApplicationContext.MODE_PRIVATE).edit();
-		SharedPreferences sp = mApplicationContext.getSharedPreferences(
-				SharePerferenceCommon.MONEY_RECORD,
-				mApplicationContext.MODE_PRIVATE);
-		for (int i = 0; i < 3; i++)
-			historyMoney[i] = sp.getInt(String.valueOf(i), 0);
-		for (int i = 0; i < 3; i++) {
-			editor.putInt(String.valueOf(i), historyMoney[i] + money[i]);
+		for (int i = 0, count = historyMoney.length; i < count; i++) {
+			historyMoney[i]+=money[i];
 		}
 	}
 
@@ -556,7 +544,7 @@ public class Player implements PlayerContext {
 			byte[] buffer = new byte[length];
 			fis.read(buffer);
 			record = EncodingUtils.getString(buffer, "UTF-8");
-			Log.i("Player", "getPlayerGameHistory: " + record);
+			// Log.i("Player", "getPlayerGameHistory: " + record);
 			fis.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -565,8 +553,11 @@ public class Player implements PlayerContext {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (record == null)
+		if (record == null || record.length() == 0) {
+			Log.i(this.getClass().getName(),
+					"getPlayerGameHistory: record == null!");
 			return null;
+		}
 		StringBuffer sb = new StringBuffer(record);
 		sb.deleteCharAt(sb.length() - 1);
 		record = new String(sb);
@@ -574,17 +565,18 @@ public class Player implements PlayerContext {
 		List<String> result = new ArrayList<String>();
 		for (String str : resultStrs)
 			result.add(str);
+		Log.i(this.getClass().getName(), "getPlayerGameHistory(), record is "
+				+ result.toString());
 		return result;
 	}
 
 	public List<String> getPlayerMoney() {
-		SharedPreferences sp = mApplicationContext.getSharedPreferences(
-				SharePerferenceCommon.MONEY_RECORD,
-				mApplicationContext.MODE_PRIVATE);
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < 3; i++) {
-			list.add(String.valueOf(sp.getInt(String.valueOf(i), 0)));
+			list.add(String.valueOf(historyMoney[i]));
 		}
+		Log.i(this.getClass().getName(), "getPlayerGameHistory(), money is "
+				+ list.toString());
 		return list;
 	}
 
@@ -613,9 +605,20 @@ public class Player implements PlayerContext {
 	public boolean isRestart() {
 		return isRestart;
 	}
-	
+
 	@Override
 	public void playSound(int soundKey) {
-		((GameApplication)mApplicationContext.getApplicationContext()).playSound(soundKey);
+		((GameApplication) mApplicationContext.getApplicationContext())
+				.playSound(soundKey);
+	}
+
+	public void clearHistoryFile() throws IOException {
+		File file = new File(mHistoryPath);
+		if (!file.exists()) {
+			Log.i(this.getClass().getName(),
+					"clearHistoryFile: File don't exist!");
+			return;
+		}
+		file.delete();
 	}
 }
