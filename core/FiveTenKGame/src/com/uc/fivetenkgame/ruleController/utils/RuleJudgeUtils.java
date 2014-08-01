@@ -180,7 +180,7 @@ public class RuleJudgeUtils {
 	// ·µ»ØÖµ
 	public static int getValue(Card card) {
 		String cardName = RuleJudgeUtils.cardResourceName(card.getCardId());
-		Log.i("getValue", cardName);
+//		Log.i("getValue", cardName);
 		int i = Integer.parseInt(cardName.substring(3, cardName.length()));
 		// Log.i(cardName, String.valueOf(i));
 		return i;
@@ -285,25 +285,23 @@ public class RuleJudgeUtils {
 	private static String cardResourceName(String cardId) {
 		StringBuilder prefix = new StringBuilder();
 		int cardNO = Integer.valueOf(cardId.trim());
-		if (cardNO == 0)
-			return "cardbg1";
 		if (cardNO == 53)
-			return "a5_16";
+			return CardCommon.LITTLE_JOKER;
 		if (cardNO == 54)
-			return "a5_17";
+			return CardCommon.BIG_JOKER;
 
 		switch ((cardNO - 1) / 13) {
 		case 0:
-			prefix.append("a2_");
+			prefix.append(CardCommon.DIAMOND_PREFIX);
 			break;
 		case 1:
-			prefix.append("a1_");
+			prefix.append(CardCommon.CLUBS_PREFIX);
 			break;
 		case 2:
-			prefix.append("a3_");
+			prefix.append(CardCommon.HEARTS_PREFIX);
 			break;
 		case 3:
-			prefix.append("a4_");
+			prefix.append(CardCommon.SPADE_PREFIX);
 			break;
 		default:
 			new IllegalArgumentException(cardNO + "is not defined!");
