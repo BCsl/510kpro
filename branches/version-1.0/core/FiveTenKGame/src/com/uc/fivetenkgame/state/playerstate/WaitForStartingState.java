@@ -48,6 +48,9 @@ public class WaitForStartingState extends PlayerState {
 				mPlayerContext
 						.setInitPlayerCards(cards.toString());
 				Log.i("≥ı º ÷≈∆£∫", cards.toString());
+				if (mPlayerContext.isRestart()){
+				    mPlayerContext.initView();
+				}
 				mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
 				mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
 			}

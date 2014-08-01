@@ -157,4 +157,10 @@ public interface PlayerContext {
 	public void setPlayersName(int playerId,String playerName);
 	
 	public ICommonMsgDecoder getICommomDecoder();
+
+    void setRestart(boolean isRestart);
+
+    boolean isRestart();
+
+    void initView();
 }	
