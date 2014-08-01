@@ -42,7 +42,7 @@ public class Server implements ServerContext{
 	}
 	
 	private Server(){
-		mNetworkManager = ServerManager.getInstance();
+		//mNetworkManager = ServerManager.getInstance();
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		
 		mClientNum = 0;
@@ -71,6 +71,9 @@ public class Server implements ServerContext{
 		mNetworkManager.initNetwork(null);
 	}
 
+	public void setNetworkManager(NetworkInterface networkInterface){
+		mNetworkManager = networkInterface;
+	}
 	
 	public NetworkInterface getNetworkManager() {
 		return mNetworkManager;
