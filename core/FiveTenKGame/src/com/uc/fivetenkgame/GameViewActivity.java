@@ -1,5 +1,6 @@
 package com.uc.fivetenkgame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -305,6 +306,12 @@ public class GameViewActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		Player.getInstance().resetPlayer();
+		try {
+			Player.getInstance().clearHistoryFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		super.onDestroy();
 	}
 

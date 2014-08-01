@@ -16,7 +16,4 @@ public class SharePerferenceCommon {
 	//用户名历史记录表
 	public static final String TABLE_HISTORY="history";
 	public static final String FIELD_HISTORY="history";
-	//各玩家输赢记录
-		public static final String MONEY_RECORD="money";
-
 }
