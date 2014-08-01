@@ -17,6 +17,7 @@ import org.apache.http.util.EncodingUtils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
@@ -450,11 +451,15 @@ public class Player implements PlayerContext {
 	public ICommonMsgDecoder getICommomDecoder() {
 		return this.mICommonMsgDecoder;
 	}
-
+	
+	/**
+	 * 必须是已经存在的路径
+	 * @param path
+	 */
 	public void setHistoryRecordPath(String path) {
-		mHistoryPath = path + "/record/player_history.txt";
+		mHistoryPath = path + "player_history.txt";
 	}
-
+	
 	private void addPlayerGameHistory(String[] str) throws IOException {
 		File file = new File(mHistoryPath);
 		if (!file.exists())
@@ -485,7 +490,7 @@ public class Player implements PlayerContext {
 		// PlayerMoney[2]+=money[2];
 	}
 
-	public String[] getPlayerGameHistory() {
+	public List<String> getPlayerGameHistory() {
 		String record = null;
 		try {
 			FileInputStream fis = new FileInputStream(mHistoryPath);
@@ -502,10 +507,15 @@ public class Player implements PlayerContext {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(record == null)
+			return null;
 		StringBuffer sb = new StringBuffer(record);
 		sb.deleteCharAt(sb.length() - 1);
 		record = new String(sb);
-		String[] result = record.split(",");
+		String[] resultStrs = record.split(",");
+		List<String> result = new ArrayList<String>();
+		for(String str:resultStrs)
+			result.add(str);
 		return result;
 	}
 
@@ -549,7 +559,6 @@ public class Player implements PlayerContext {
 		return money;
 	}
 
-	@Override
 	public void setContext(Context context) {
 		mApplicationContext=context;
 
