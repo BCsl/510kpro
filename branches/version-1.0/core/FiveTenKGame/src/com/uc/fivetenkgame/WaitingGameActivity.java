@@ -81,6 +81,7 @@ public class WaitingGameActivity extends Activity {
 						.setImageBitmap(bitmap);
 		}
 		mPlayer = Player.getInstance();
+		mPlayer.setContext(getApplicationContext());
 		mPlayer.setHandler(mHandler);
 		// 根据是否是服务器，执行不同的操作
 		if (isServer) {

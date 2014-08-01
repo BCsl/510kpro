@@ -11,17 +11,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Map.Entry;
-
 import org.apache.http.util.EncodingUtils;
-
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.util.Log;
 
 import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.ICommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
+import com.uc.fivetenkgame.common.SharePreferenceCommon;
 import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
 import com.uc.fivetenkgame.network.OnReceiveMessageListener;
@@ -49,6 +49,7 @@ public class Player implements PlayerContext {
 	private boolean doneHandCard = false;
 	private boolean isRestart = false;
 	private IViewControler viewController;
+	private Context mApplicationContext;
 	private OnReceiveMessageListener mReceiveMessage = new OnReceiveMessageListener() {
 
 		@Override
@@ -439,13 +440,6 @@ public class Player implements PlayerContext {
 	public String getPlayerName() {
 		return mPlayerModel.getPlayerName();
 	}
-
-	@Override
-	public void setPlayersName(int playerId, String playerName) {
-
-		// À¢ΩÁ√Ê
-	}
-
 	@Override
 	public ICommonMsgDecoder getICommomDecoder() {
 		return this.mICommonMsgDecoder;
@@ -547,6 +541,20 @@ public class Player implements PlayerContext {
 			money[infoIds.get(2).getKey()] = -1;
 		}
 		return money;
+	}
+
+	@Override
+	public void setContext(Context context) {
+		mApplicationContext=context;
+
+	}
+	@Override
+	public void setPlayersName(String[] playerNames) {
+		Editor editor=mApplicationContext.getSharedPreferences(SharePreferenceCommon.TABLE_PLAYERS, mApplicationContext.MODE_PRIVATE).edit();
+				for(int i=0;i<playerNames.length;i++){
+					editor.putString(String.valueOf(i+1), playerNames[i]);
+				}
+	editor.commit();
 	}
 	
 	@Override

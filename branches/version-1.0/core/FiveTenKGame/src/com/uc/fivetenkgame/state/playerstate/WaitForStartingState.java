@@ -13,7 +13,7 @@ import com.uc.fivetenkgame.player.PlayerContext;
  */
 public class WaitForStartingState extends PlayerState {
 
-    String tag = "waitForStartingState";
+    String TAG = "waitForStartingState";
     
 	public WaitForStartingState(PlayerContext context) {
 		super(context);
@@ -26,14 +26,16 @@ public class WaitForStartingState extends PlayerState {
 	 */
 	@Override
 	public void handle(String msg) {
-	    Log.i(tag,"msg is " + msg);
+	    Log.i(TAG,"msg is " + msg);
 		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {// 有上一状态（ConnectState或GameOverState)跳转而来，暂不处理
 
 		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NAME)) {
 		    String[] playerNames = mCommonMsgDecoder.getPlayerNames(msg);
-		    for (int i=1;i<=NetworkCommon.TOTAL_PLAYER_NUM;i++){
-		        mPlayerContext.setPlayersName(i, playerNames[i-1]);
-		    }
+		    mPlayerContext.setPlayersName(playerNames);
+//		    for (int i=1;i<=NetworkCommon.TOTAL_PLAYER_NUM;i++){
+////		        mPlayerContext.setPlayersName(i, playerNames[i-1]);
+//		    
+//		    }
 		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.BEGIN_GAME)) {
 			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
 			if (mPlayerContext.getPlayerNumber() == playerNumber) {// 是自己的手牌,跳转到下一个状态waitForMsg

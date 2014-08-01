@@ -17,6 +17,7 @@ import java.util.Vector;
 import my.example.fivetenkgame.R;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -187,6 +188,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			mOutList.get(playerId - 1).clear();
 	}
 
+
 	private void init() {
 		startDraw = true;
 		isMyTurn = false;
@@ -226,12 +228,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			mLeftPlayerId = 2;
 			break;
 		}
-		mPlayerName = sp.getString(String.valueOf(playerId), mContext
-				.getResources().getString(R.string.player) + playerId);
-		mRightPlayerName = sp.getString(String.valueOf(mRightPlayeId), mContext
-				.getResources().getString(R.string.player) + mRightPlayeId);
-		mLeftPlayerName = sp.getString(String.valueOf(mLeftPlayerId), mContext
-				.getResources().getString(R.string.player) + mLeftPlayerId);
+		mPlayerName=sp.getString(String.valueOf(playerId), String.valueOf(playerId));
+		mRightPlayerName=sp.getString(String.valueOf(mRightPlayeId), String.valueOf(mRightPlayeId));
+		mLeftPlayerName=sp.getString(String.valueOf(mLeftPlayerId), String.valueOf(mLeftPlayerId));
 	}
 
 	public IViewControler getViewControler() {
@@ -444,4 +443,5 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			return "CardWidth=" + width + ",CardHeight=" + height;
 		}
 	}
+
 }

@@ -54,25 +54,25 @@ public class ButtonHandCard implements IButton {
 	}
 	
 	public void onClick() {
-		new Thread(){
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				super.run();
-				if(mCanvas!=null)
-					mCanvas.drawBitmap(
-							CardUtil.getBitmap(mContext,
-									CardUtil.BUTTON_HANDCARD_PRESSED_NAME),x,y- CardUtil.getBitmap(mContext,
-											CardUtil.BUTTON_HANDCARD_PRESSED_NAME)
-											.getHeight(), null);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				doDraw();
-			}
-		}.start();
+//		new Thread(){
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				super.run();
+//				if(mCanvas!=null)
+//					mCanvas.drawBitmap(
+//							CardUtil.getBitmap(mContext,
+//									CardUtil.BUTTON_HANDCARD_PRESSED_NAME),x,y- CardUtil.getBitmap(mContext,
+//											CardUtil.BUTTON_HANDCARD_PRESSED_NAME)
+//											.getHeight(), null);
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//				doDraw();
+//			}
+//		}.start();
 	}
 	public boolean isClicked(float x,float y){
 		if(this.x< x && x< this.x+CardUtil.getBitmap(mContext,

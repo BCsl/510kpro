@@ -1,5 +1,6 @@
 package com.uc.fivetenkgame.player;
 
+import android.content.Context;
 import android.os.Handler;
 
 import com.uc.fivetenkgame.common.ICommonMsgDecoder;
@@ -148,15 +149,13 @@ public interface PlayerContext {
 	 * @return 玩家名
 	 */
 	public String getPlayerName();
-	
-	/**
-	 * 设置玩家名
-	 * @param playerId
-	 * @param playerName
-	 */
-	public void setPlayersName(int playerId,String playerName);
-	
 	public ICommonMsgDecoder getICommomDecoder();
+	public void setContext(Context context);
+/**
+ * 设置玩家名
+ * @param playerNames
+ */
+	void setPlayersName(String[] playerNames);
 
     void setRestart(boolean isRestart);
 
