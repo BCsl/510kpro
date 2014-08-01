@@ -105,6 +105,6 @@ public abstract class AbsDrawer {
 	protected  void drawTime(String timeRemind,Paint paint, float x, float y){
 		paint.setTextSize(TEXT_SIZE);
 		paint.setColor(Color.rgb(255, 246, 143));
-		mCanvas.drawText(timeRemind, x, y, paint);
+		mCanvas.drawText(timeRemind, x-paint.measureText(timeRemind)/2, y, paint);
 	}
 }

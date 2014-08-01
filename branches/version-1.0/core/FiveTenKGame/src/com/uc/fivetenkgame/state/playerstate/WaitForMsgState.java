@@ -3,6 +3,7 @@ package com.uc.fivetenkgame.state.playerstate;
 import android.util.Log;
 
 import com.uc.fivetenkgame.common.NetworkCommon;
+import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.player.PlayerContext;
 
 /**
@@ -40,8 +41,10 @@ public class WaitForMsgState extends PlayerState {
                 String cards = mPlayerContext.getCardsToBePlayed();
                 Log.i(tag, "¿Í»§¶Ë³öÅÆ£º" + cards);
                 if (cards == null) {
+                	mPlayerContext.playSound(SoundPoolCommon.SOUND_PASS);
                     mPlayerContext.sendMsg(NetworkCommon.GIVE_UP);
                 } else {
+                	mPlayerContext.playSound(SoundPoolCommon.SOUND_OUTPUT_CARDS);
                     mPlayerContext.sendMsg(NetworkCommon.PLAY_CARDS + cards);
                 }
                 mPlayerContext.setMyTurn(false);

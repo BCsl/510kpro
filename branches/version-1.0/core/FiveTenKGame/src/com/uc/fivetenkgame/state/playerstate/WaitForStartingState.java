@@ -32,10 +32,6 @@ public class WaitForStartingState extends PlayerState {
 		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NAME)) {
 		    String[] playerNames = mCommonMsgDecoder.getPlayerNames(msg);
 		    mPlayerContext.setPlayersName(playerNames);
-//		    for (int i=1;i<=NetworkCommon.TOTAL_PLAYER_NUM;i++){
-////		        mPlayerContext.setPlayersName(i, playerNames[i-1]);
-//		    
-//		    }
 		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.BEGIN_GAME)) {
 			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
 			if (mPlayerContext.getPlayerNumber() == playerNumber) {// 是自己的手牌,跳转到下一个状态waitForMsg

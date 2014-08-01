@@ -27,8 +27,8 @@ public class CardUtil {
 	public static String BUTTON_HANDCARD_PRESSED_NAME="button_handcard_pressed";
 	public static String BUTTON_GIVEUP_NORMAL_NAME="button_giveup_normal";
 	public static String BUTTON_GIVEUP_PRESSED_NAME="button_giveup_pressed";
-	public static String BUTTON_HISTORY_NORMAL_NAME="score_history_normal";
-	public static String BUTTON_HISTORY_PRESSED_NAME="score_history_pressed";
+	public static String BUTTON_HISTORY_NORMAL_NAME="button_history_normal";
+	public static String BUTTON_HISTORY_PRESSED_NAME="button_history_pressed";
 	/**
 	 * 
 	 * @param Id  ¿¨Æ¬id

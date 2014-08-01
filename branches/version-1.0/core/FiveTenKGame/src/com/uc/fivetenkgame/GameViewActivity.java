@@ -46,6 +46,7 @@ public class GameViewActivity extends Activity {
 	private View mWinningView;
 	private View mHistoryView;
 	private ListView mListView;
+	private ArrayList<String> mHistoryList;
 	private GameView mView;
 	private GameApplication mGameApplication;
 	private HistoryAdapter mHistoryAdapter;
@@ -66,6 +67,7 @@ public class GameViewActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		mView = new GameView(getApplicationContext(), Player.getInstance()
 				.getPlayerNumber(),mHandler);
+		mHistoryList=new ArrayList<String>();
 		Player.getInstance().setViewControler(mView.getViewControler());
 		Player.getInstance().setEventListener();
 		Player.getInstance().setHandler(mHandler);
@@ -78,16 +80,23 @@ public class GameViewActivity extends Activity {
 					R.layout.dialog_winning, null);
 		mHistoryView =LayoutInflater.from(this).inflate(R.layout.dialog_history, null);
 		mListView =(ListView) mHistoryView.findViewById(R.id.history_score_list);
-		mHistoryAdapter=new HistoryAdapter(this, makeList());
+		mHistoryAdapter=new HistoryAdapter(this, mHistoryList);
 		mListView.setAdapter(mHistoryAdapter);
 		initDialog();
 	}
 
-	private List<String> makeList() {
-		List<String> temp=new ArrayList<String>();
-		for(int i=0;i<21;i++)
-			temp.add(String.valueOf(i));
-		return temp;
+	private void UpdateHistoryList() {
+//		List<String> temp=new ArrayList<String>();
+//		for(int i=0;i<21;i++)
+//			temp.add(String.valueOf(i));
+//		return temp;
+		List temp;
+		if((temp=Player.getInstance().getPlayerGameHistory())!=null&&temp.size()>0){
+			mHistoryList.clear();
+			mHistoryList.addAll(temp);
+		}
+		if(temp!=null && temp.size()>0)
+			temp.clear();
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -256,6 +265,7 @@ public class GameViewActivity extends Activity {
 		waitForRestartDialog.show();
 	}
 	protected void showHistoryScoreDialog(){
+		UpdateHistoryList();
 		if(mHistoryScoreDialog !=null){
 			mHistoryAdapter.notifyDataSetChanged();
 			mHistoryScoreDialog.show();

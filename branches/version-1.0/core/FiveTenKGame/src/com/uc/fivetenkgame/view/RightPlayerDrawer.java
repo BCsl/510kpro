@@ -56,11 +56,6 @@ public class RightPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 		nameLength=paint.measureText(name);
 		drawPlayer(name, paint, mScreenHolder.width - nameLength-10,
 				TEXT_SIZE);
-//		drawScore(score, paint, mScreenHolder.width - paint.measureText(mContext.getString(R.string.score)+String.valueOf(score)) - 20,
-//				2 * TEXT_SIZE);
-//		drawCardsNumber(cardNumber, paint, mScreenHolder.width
-//				- paint.measureText(name) - paint.measureText(mContext.getString(R.string.cards_number)+String.valueOf(cardNumber)) - 20, TEXT_SIZE,
-//				RIGHT_CARDS_BASEX);
 		drawCardsNumber(cardNumber, paint, mScreenHolder.width - paint.measureText(mContext.getString(R.string.cards_number)+String.valueOf(cardNumber)) - 20,
 				2 * TEXT_SIZE,RIGHT_CARDS_BASEX);
 		drawScore(score, paint, mScreenHolder.width

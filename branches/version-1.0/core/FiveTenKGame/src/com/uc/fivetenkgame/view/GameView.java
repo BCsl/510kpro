@@ -328,7 +328,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	private void drawHositoryButton(Canvas canvas) {
-		ButtonHistory.getInstance(mContext, canvas, mScreenHolder.width/2, mScreenHolder.height/2).doDraw();
+		ButtonHistory.getInstance(mContext, canvas, mScreenHolder.width/2, mScreenHolder.height/4).doDraw();
 		
 	}
 

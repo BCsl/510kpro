@@ -39,7 +39,7 @@ public class LeftPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 	protected void doDraw(Paint paint,String name,boolean isMyTurn,int timeRemind,int cardNumber,int score,List<Card> outList){
 		if (isMyTurn) {
 			drawTime(String.valueOf(timeRemind), paint,
-					LEFT_CARDS_BASEX + mCardSizeHolder.width + 10,
+					LEFT_CARDS_BASEX + 2*mCardSizeHolder.width ,
 					mScreenHolder.height / 2);
 			drawHandCardFlag(LEFT_CARDS_BASEX
 					+ mCardSizeHolder.width + 10);
@@ -51,12 +51,7 @@ public class LeftPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 		drawCardsNumber(cardNumber, paint,
 				10, 2 * TEXT_SIZE,LEFT_CARDS_BASEX);
 		drawScore(score,
-				paint, paint.measureText(name) + 10, TEXT_SIZE);
-//		drawScore(score, paint,
-//				10, 2 * TEXT_SIZE);
-//		drawCardsNumber(cardNumber,
-//				paint, paint.measureText(name) + 10, TEXT_SIZE, LEFT_CARDS_BASEX);
-		
+				paint, paint.measureText(name) + 20, TEXT_SIZE);
 	}
 
 }
