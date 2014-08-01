@@ -9,7 +9,6 @@ package com.uc.fivetenkgame.view.entity;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.uc.fivetenkgame.view.util.CardUtil;
 
@@ -18,77 +17,33 @@ import com.uc.fivetenkgame.view.util.CardUtil;
  * 
  *         ÏÂÎç3:58:39 2014-7-31
  */
-public class ButtonHandCard implements IButton {
-	private final String TAG="HandCardButton";
-	private static ButtonHandCard mHandCardButton;
-	private Context mContext;
-	private Canvas mCanvas;
-	private float x;
-	private float y;
-
-	private ButtonHandCard(Context con, Canvas can, float x, float y) {
-		mContext = con;
-		mCanvas = can;
-		this.x = x;
-		this.y = y;
+public class ButtonHandCard extends AbsButton {
+	private static AbsButton mHandCardButton;
+	public ButtonHandCard(Context con, Canvas can, float x, float y) {
+		super(con, can, x, y);
+		HALF_OF_WIDTH=CardUtil.getBitmap(mContext,CardUtil.BUTTON_HANDCARD_NORMAL_NAME).getWidth()/2;
+		HALF_OF_HEIGHT= CardUtil.getBitmap(mContext,CardUtil.BUTTON_HANDCARD_NORMAL_NAME).getHeight()/2;
 	}
-	public static IButton getInstance(){
+	public static AbsButton getInstance(){
 		if (mHandCardButton == null)
-				new IllegalArgumentException("init first!!!");
+				throw new IllegalArgumentException("init button first!!!");
 			return mHandCardButton;
 	}
-	public static IButton getInstance(Context con, Canvas can, float x,
+	public static AbsButton getInstance(Context con, Canvas can, float x,
 			float y) {
 		if (mHandCardButton == null)
 			mHandCardButton = new ButtonHandCard(con, can, x, y);
 		return mHandCardButton;
 	}
-	public void doDraw() {
-		if(mCanvas!=null)
-		mCanvas.drawBitmap(
-				CardUtil.getBitmap(mContext,
-						CardUtil.BUTTON_HANDCARD_NORMAL_NAME),x,y- CardUtil.getBitmap(mContext,
-								CardUtil.BUTTON_HANDCARD_NORMAL_NAME)
-								.getHeight(), null);
-
+	@Override
+	protected void drawButtonOnPressedState() {
+		// TODO Auto-generated method stub
+		draw(CardUtil.getBitmap(mContext,CardUtil.BUTTON_HANDCARD_PRESSED_NAME));
 	}
-	
-	public void onClick() {
-//		new Thread(){
-//			@Override
-//			public void run() {
-//				// TODO Auto-generated method stub
-//				super.run();
-//				if(mCanvas!=null)
-//					mCanvas.drawBitmap(
-//							CardUtil.getBitmap(mContext,
-//									CardUtil.BUTTON_HANDCARD_PRESSED_NAME),x,y- CardUtil.getBitmap(mContext,
-//											CardUtil.BUTTON_HANDCARD_PRESSED_NAME)
-//											.getHeight(), null);
-//				try {
-//					Thread.sleep(1000);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//				doDraw();
-//			}
-//		}.start();
-	}
-	public boolean isClicked(float x,float y){
-		if(this.x< x && x< this.x+CardUtil.getBitmap(mContext,
-				CardUtil.BUTTON_HANDCARD_NORMAL_NAME).getWidth())
-		{
-			if(this.y>y&&y>this.y-CardUtil.getBitmap(mContext,
-					CardUtil.BUTTON_HANDCARD_NORMAL_NAME).getHeight())
-			{
-				Log.i(TAG, "isClicked");
-				return true;
-			}
-		}
-		
-		return false;
-		
-		
+	@Override
+	protected void drawButtonOnNormalState() {
+		// TODO Auto-generated method stub
+		draw(CardUtil.getBitmap(mContext,CardUtil.BUTTON_HANDCARD_NORMAL_NAME));
 	}
 
 }

@@ -182,6 +182,10 @@ public interface PlayerContext {
 	 */
 	public ICommonMsgDecoder getICommomDecoder();
 	
+	public void setContext(Context context);
+	
+	public void playSound(int soundId);
+	
 	/**
 	 * …Ë÷√ÕÊº“√˚
 	 * 

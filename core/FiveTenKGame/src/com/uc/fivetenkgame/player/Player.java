@@ -21,6 +21,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
+import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.ICommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
@@ -519,7 +520,7 @@ public class Player implements PlayerContext {
 		return result;
 	}
 
-	public int[] getPlayerMoney(String[] str) {
+	public List<String> getPlayerMoney(String[] str) {
 		int[] money = new int[3];
 		int[] score = new int[3];
 		score[0] = Integer.valueOf(str[1]);
@@ -556,7 +557,12 @@ public class Player implements PlayerContext {
 			money[infoIds.get(1).getKey()] = 0;
 			money[infoIds.get(2).getKey()] = -1;
 		}
-		return money;
+		
+		List<String> list = new ArrayList<String>();
+		list.add(String.valueOf(money[0]));
+		list.add(String.valueOf(money[1]));
+		list.add(String.valueOf(money[2]));
+		return list;
 	}
 
 	public void setContext(Context context) {
@@ -581,4 +587,9 @@ public class Player implements PlayerContext {
     public boolean isRestart() {
         return isRestart;
     }
+
+	@Override
+	public void playSound(int soundKey) {
+		((GameApplication)mApplicationContext.getApplicationContext()).playSound(soundKey);
+	}
 }

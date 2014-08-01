@@ -77,6 +77,7 @@ public final class EventHandler {
 		if (view.isMyTurn()
 				&& ButtonHandCard.getInstance().isClicked(rawX, rawY)
 				&& mCardListToHand.size() >= 0) {
+			mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "出牌：" + mCardListToHand.toString());
 			if (mEventListener.handCard(mCardListToHand, false)) {
 				// // 出牌成功
@@ -89,6 +90,7 @@ public final class EventHandler {
 			//放弃按钮
 			if (view.isMyTurn()
 				&& ButtonGiveUp.getInstance().isClicked(rawX, rawY)) {
+				mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "放弃出牌");
 			for (Card temp : mCardListToHand) {
 				temp.setClick(false);
@@ -99,6 +101,7 @@ public final class EventHandler {
 		} else
 			//历史按钮
 			if (ButtonHistory.getInstance().isClicked(rawX, rawY)) {
+				mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 				view.openHistoryDialog();
 		}
 

@@ -4,64 +4,41 @@ import com.uc.fivetenkgame.view.util.CardUtil;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 
-public class ButtonGiveUp implements IButton{
-	private String TAG=" ButtonGiveUp";
-	private static ButtonGiveUp mGiveUpButton;
-	private Context mContext;
-	private Canvas mCanvas;
-	private float x;
-	private float y;
+public class ButtonGiveUp extends AbsButton {
+	private static AbsButton mGiveUpButton;
 
-	private ButtonGiveUp(Context con, Canvas can, float x, float y) {
-		mContext = con;
-		mCanvas = can;
-		this.x = x;
-		this.y = y;
+	public ButtonGiveUp(Context con, Canvas can, float x, float y) {
+		super(con, can, x, y);
+		HALF_OF_HEIGHT = CardUtil.getBitmap(mContext,
+				CardUtil.BUTTON_GIVEUP_NORMAL_NAME).getHeight() / 2;
+		HALF_OF_WIDTH = CardUtil.getBitmap(mContext,
+				CardUtil.BUTTON_GIVEUP_NORMAL_NAME).getWidth() / 2;
 	}
-	public static IButton getInstance(){
+
+	public static AbsButton getInstance() {
 		if (mGiveUpButton == null)
-				new IllegalArgumentException("init first!!!");
-			return mGiveUpButton;
+			new IllegalArgumentException("init first!!!");
+		return mGiveUpButton;
 	}
-	public static IButton getInstance(Context con, Canvas can, float x,
+
+	public static AbsButton getInstance(Context con, Canvas can, float x,
 			float y) {
 		if (mGiveUpButton == null)
 			mGiveUpButton = new ButtonGiveUp(con, can, x, y);
 		return mGiveUpButton;
 	}
+
 	@Override
-	public void doDraw() {
-		mCanvas.drawBitmap(
-				CardUtil.getBitmap(mContext,
-						CardUtil.BUTTON_GIVEUP_NORMAL_NAME),x,y- CardUtil.getBitmap(mContext,
-								CardUtil.BUTTON_GIVEUP_NORMAL_NAME)
-								.getHeight(), null);
-	}
-	@Override
-	public void onClick() {
-		mCanvas.drawBitmap(
-				CardUtil.getBitmap(mContext,
-						CardUtil.BUTTON_GIVEUP_PRESSED_NAME),x,y- CardUtil.getBitmap(mContext,
-								CardUtil.BUTTON_GIVEUP_PRESSED_NAME)
-								.getHeight(), null);
+	protected void drawButtonOnPressedState() {
+		draw(CardUtil.getBitmap(mContext, CardUtil.BUTTON_GIVEUP_PRESSED_NAME));
 
 	}
+
 	@Override
-	public boolean isClicked(float x, float y) {
-		if(this.x< x && x< this.x+CardUtil.getBitmap(mContext,
-				CardUtil.BUTTON_GIVEUP_NORMAL_NAME).getWidth())
-		{
-			if(this.y>y&&y>this.y-CardUtil.getBitmap(mContext,
-					CardUtil.BUTTON_GIVEUP_NORMAL_NAME).getHeight())
-			{
-				Log.i(TAG, "isClicked");
-				return true;
-			}
-		}
-		
-		return false;
+	protected void drawButtonOnNormalState() {
+		draw(CardUtil.getBitmap(mContext, CardUtil.BUTTON_GIVEUP_NORMAL_NAME));
+
 	}
 
 }
