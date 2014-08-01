@@ -13,9 +13,10 @@ public class SharePerferenceCommon {
 	public static final String FIELD_QRCODE_FLAG="qrcode";
 	public static final String FIELD_MUSIC_FLAG="music";
 	public static final String FIELD_FIRST_TIME="first";
+	public static final String CONNECT_WAY = "isUseWIFI";
 	//用户名历史记录表
 	public static final String TABLE_HISTORY="history";
 	public static final String FIELD_HISTORY="history";
-	
-	public static final String CONNECT_WAY = "isUseWIFI";
+	//各玩家输赢记录
+		public static final String MONEY_RECORD="money";
 }

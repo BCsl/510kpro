@@ -350,8 +350,6 @@ public class Player implements PlayerContext {
 	@Override
 	public void setMyTurn(boolean flag) {
 		Log.i("setMyTurn", String.valueOf(flag));
-		while (viewController == null) {
-		}
 		viewController.setMyTurn(flag);
 	}
 

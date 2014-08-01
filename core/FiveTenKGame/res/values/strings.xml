@@ -49,7 +49,9 @@
     <string name="setting_str">设置</string>
     <string name="scan_qrcode_str">二维码扫描</string>
     <string name="music_volume_str">音效开关</string>
-    <string name="wifi_setting_str">wifi开关</string>
+    <string name="connection_method_setting_str">连接方式</string>
+    <string name="connection_method_wifi_str">wifi</string>
+    <string name="connection_method_bluetooth_str">蓝牙</string>
     <string name="open_str">开</string>
     <string name="close_str">关</string>
 	<string  name ="INPUT_USER_NAME">请输入用户名，最大长度为5。</string>
@@ -69,8 +71,8 @@
 	<string name="score_text_length">分数分数分</string>
 	
 	<!-- 历史对话框 -->
-	<string name="histor_round">回合</string>
-	<string name="histor_rounds">第#回合</string>
-	<string name="histor_final">总分</string>
+	<string name="history_name">用户名</string>
+	<string name="history_rounds">第#回合</string>
+	<string name="history_final">总分</string>
 	
 </resources>
