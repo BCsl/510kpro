@@ -12,7 +12,6 @@ import com.uc.fivetenkgame.state.State;
 public class ServerState implements State{
 
 	protected ServerContext mServerContext;
-	
 	/**
 	 * 根据不同的消息进行状态跳转
 	 * 

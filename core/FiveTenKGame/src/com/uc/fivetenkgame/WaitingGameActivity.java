@@ -118,13 +118,18 @@ public class WaitingGameActivity extends Activity {
 			//设置本地玩家
 			if( isUseWifi ){
 				mPlayer.setNetworkManager(ClientManager.getInstance());
+				
 			}
 			else {
 				mPlayer.setNetworkManager(BluetoothLocalClient.getInstance());
 			}
-			mPlayer.startPlay(strIp, mName);
-			
 			mServer.startListen();
+			try{
+			    Thread.sleep(500);
+			}catch (Exception e){
+			    
+			}
+			mPlayer.startPlay(strIp, mName);
 		} else {
 			String ipAddr = intent.getStringExtra("IP");
 			//设置本地玩家

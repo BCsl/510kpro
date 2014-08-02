@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,25 +14,20 @@ import java.util.TreeMap;
 
 import org.apache.http.util.EncodingUtils;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.util.Log;
 
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.CommonMsgDecoder;
-import com.uc.fivetenkgame.common.ICommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.common.SharePerferenceCommon;
-import com.uc.fivetenkgame.network.ClientManager;
 import com.uc.fivetenkgame.network.NetworkInterface;
 import com.uc.fivetenkgame.network.OnReceiveMessageListener;
 import com.uc.fivetenkgame.ruleController.Rule;
 import com.uc.fivetenkgame.ruleController.RuleManager;
-import com.uc.fivetenkgame.ruleController.ruleSet.BasicRule;
 import com.uc.fivetenkgame.state.State;
 import com.uc.fivetenkgame.state.playerstate.InitState;
 import com.uc.fivetenkgame.state.playerstate.PlayerState;
@@ -62,9 +56,9 @@ public class Player implements PlayerContext {
 		@Override
 		public void reveiveMessage(String msg) {
 			Log.i("player receive msg", msg);
-			if (msg.startsWith(NetworkCommon.GAME_PAUSE)
-					|| msg.startsWith(NetworkCommon.GAME_RESUME)
-					|| msg.startsWith(NetworkCommon.GAME_EXIT)) {
+			if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_PAUSE)
+					|| CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_RESUME)
+					|| CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_EXIT)) {
 				mHandler.obtainMessage(NetworkCommon.GAME_STATE_CHANGE, msg)
 						.sendToTarget(); // ”…activity¥¶¿Ì
 				Log.i("!!!player", "msg sent to target");
@@ -76,7 +70,6 @@ public class Player implements PlayerContext {
 	private int currentPlayer;
 	private PlayerModel mPlayerModel;
 	private NetworkInterface mNetworkManager;
-	private ICommonMsgDecoder mICommonMsgDecoder;
 	private Handler mHandler;
 	private List<Card> formerCardList;
 	private List<Card> mHandList;
@@ -152,7 +145,7 @@ public class Player implements PlayerContext {
 	public void startPlay(String addr, String name) {
 		mPlayerModel.setPlayerName(name);
 		Log.i("start play", "player name: " + mPlayerModel.getPlayerName());
-		setState(new InitState(gInstance));
+		setState(new InitState(this));
 		handle(addr);
 	}
 
@@ -192,17 +185,16 @@ public class Player implements PlayerContext {
 
 	public void setState(PlayerState state) {
 		mState = state;
-		// mState.handle();
 	}
 
 	private Player() {
 		//mNetworkManager = ClientManager.getInstance();
 		//mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
-		mICommonMsgDecoder = new CommonMsgDecoder();
 		mRuleName = "BasicRule";
 
 		setRule(mRuleName);
+		setState(new InitState(this));
 		// mPlayerModel.setCardList(null);
 		// mPlayerModel.setPlayerNumber(-1);
 		// mPlayerModel.setScore(0);
@@ -448,11 +440,6 @@ public class Player implements PlayerContext {
 	@Override
 	public String getPlayerName() {
 		return mPlayerModel.getPlayerName();
-	}
-
-	@Override
-	public ICommonMsgDecoder getICommomDecoder() {
-		return this.mICommonMsgDecoder;
 	}
 
 	/**

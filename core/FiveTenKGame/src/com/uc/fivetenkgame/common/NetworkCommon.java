@@ -25,7 +25,7 @@ public class NetworkCommon {
 	public static final String PLAYER_ACCEPTED = "1#";// 连接成功信号：1#+当前玩家序号
 	public static final String YOUR_TURN = "4#";// 提醒玩家出牌信号：4#+玩家序号
 	//只包含牌号
-	public static final String PLAY_CARDS = "9#";// 自己出牌：9#牌号 + , +.....
+	public static final String PLAY_CARDS = "9#";// 自己出牌：9#+牌号 + , +.....
 	//包含玩家序号和牌号
 	public static final String BEGIN_GAME = "3#";// 游戏开始信号：3#+玩家序号+牌号+ ，+牌号....
 	//包含玩家号和玩家名字
@@ -33,7 +33,7 @@ public class NetworkCommon {
 	//包含各玩家分数
 	public static final String ROUND_END = "6#";// 回合结束信号，更新玩家的分数：6#+玩家1分数+玩家2分数+玩家3分数
 	//包含赢家号，各玩家分数
-	public static final String GAME_OVER = "7#";// 游戏结束信号：7#+胜利者+玩家1分数+玩家2分数+玩家3分数
+	public static final String GAME_OVER = "7#";// 1.游戏结束信号：7#+胜利者+玩家1分数+玩家2分数+玩家3分数  2.游戏未开始退出信号:7#+退出玩家序号
 	//包含等待玩家人数
 	public static final String PLAYER_NUMBER_UPDATE = "8#";// 更新等待玩家人数：8#+等待玩家人数
 	//包含玩家号，牌号，桌面分数，玩家剩余牌数

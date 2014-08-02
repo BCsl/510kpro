@@ -51,6 +51,7 @@ public class GameViewActivity extends Activity {
 	private GameView mView;
 	private GameApplication mGameApplication;
 	private HistoryAdapter mHistoryAdapter;
+	private boolean exitMyself;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class GameViewActivity extends Activity {
 				.findViewById(R.id.history_score_list);
 		mHistoryAdapter = new HistoryAdapter(this, mHistoryList);
 		mListView.setAdapter(mHistoryAdapter);
+		mListView.setHorizontalScrollBarEnabled(false);
 		initDialog();
 	}
 
@@ -150,8 +152,9 @@ public class GameViewActivity extends Activity {
 							GameViewActivity.this.finish();
 						}
 					}, 1000);
-					Toast.makeText(getApplicationContext(), "其他玩家退出游戏",
-							Toast.LENGTH_LONG).show();
+					if (!exitMyself)
+					    Toast.makeText(getApplicationContext(), "其他玩家退出游戏",
+					            Toast.LENGTH_LONG).show();
 				}
 				break;
 
@@ -177,10 +180,6 @@ public class GameViewActivity extends Activity {
 				.setNegativeButton("退出", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Player.getInstance().sendMsg(
-								NetworkCommon.GAME_EXIT
-										+ Player.getInstance()
-												.getPlayerNumber());
 						GameViewActivity.this.finish();// 退出游戏
 					}
 				}).create();
@@ -201,8 +200,6 @@ public class GameViewActivity extends Activity {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								Player.getInstance().sendMsg(
-										NetworkCommon.GAME_EXIT);
 								GameViewActivity.this.finish();
 							}
 						}).create();
@@ -214,8 +211,7 @@ public class GameViewActivity extends Activity {
 				.setNegativeButton("退出", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-					    Player.getInstance().sendMsg(NetworkCommon.GAME_EXIT);
-						finish();
+					    GameViewActivity.this.finish();
 					}
 				})
 				.setPositiveButton("重玩", new DialogInterface.OnClickListener() {
@@ -306,14 +302,16 @@ public class GameViewActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
+	    exitMyself = true;
+	    Player.getInstance().sendMsg(NetworkCommon.GAME_EXIT);
 		Player.getInstance().resetPlayer();
 		try {
 			Player.getInstance().clearHistoryFile();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		super.onDestroy();
+		Log.i("GameViewActivity","onDestroy");
 	}
 
 	private class HistoryAdapter extends BaseAdapter {
@@ -367,7 +365,7 @@ public class GameViewActivity extends Activity {
 				view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
 				return view;
 			}
-			if (position == getCount()) {
+			if (position == getCount()-1) {
 
 				vh.tv_round.setText(mContext.getResources().getString(
 						R.string.history_final));

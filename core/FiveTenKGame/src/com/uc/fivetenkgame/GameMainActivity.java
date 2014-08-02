@@ -193,19 +193,19 @@ public class GameMainActivity extends Activity {
 				if (bundle != null) {
 					String ipAddr = bundle.getString("result");
 					Log.i(TAG, "É¨Ãè½á¹û£º" + ipAddr);
-					if (IPMatcherUtil.isIPAddress(ipAddr)) {
+					//if (IPMatcherUtil.isIPAddress(ipAddr)) {
 						Intent intent = new Intent();
 						intent.putExtra("isServer", false);
 						intent.putExtra("IP", ipAddr);
 						intent.setClass(GameMainActivity.this,
 								WaitingGameActivity.class);
 						startActivity(intent);
-					} else
-						Toast.makeText(
-								GameMainActivity.this,
-								getResources().getString(
-										R.string.ip_scan_error_str).replace(
-										"#", ipAddr), Toast.LENGTH_LONG).show();
+//					} else
+//						Toast.makeText(
+//								GameMainActivity.this,
+//								getResources().getString(
+//										R.string.ip_scan_error_str).replace(
+//										"#", ipAddr), Toast.LENGTH_LONG).show();
 				}
 			}
 		}// REQUEST_SCAN_IP

@@ -2,6 +2,7 @@ package com.uc.fivetenkgame.state.serverstate;
 
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.server.ServerContext;
 
@@ -23,13 +24,14 @@ public class ListeningState extends ServerState {
 
 	@Override
 	public void handle(String msg) {
-		// 玩家链接成功
-		if (msg.startsWith(NetworkCommon.GIVE_UP)) {
+		
+		if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.GIVE_UP)) {//有玩家退出
 			Log.i("send game over in listeningState", msg);
+			int playerNumber = CommonMsgDecoder.getPlayerNumber(msg);
 			mServerContext.getNetworkManager().sendMessage(
-					NetworkCommon.GAME_OVER + msg.substring(2, 3).trim());
+					NetworkCommon.GAME_OVER + playerNumber);
 			mServerContext.resetServer();
-		} else if (msg.startsWith(NetworkCommon.PLAYER_NAME)) {
+		} else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NAME)) {// 玩家链接成功
 			// 保存玩家名字
 		    int clientNum = mServerContext.getClientNum();
 		    
@@ -41,10 +43,11 @@ public class ListeningState extends ServerState {
                         NetworkCommon.PLAYER_NUMBER_UPDATE + clientNum);
             }
             
-			int playerNumber = Integer.valueOf(msg.substring(3, 4));
-			playerNames[playerNumber - 1] = msg.substring(5).trim();
+			int playerNumber = CommonMsgDecoder.getPlayerNumber(msg);
+			String playerName = CommonMsgDecoder.getPlayerNames(msg)[0];
+			playerNames[playerNumber - 1] = playerName;
 			Log.i("add player name", "player name is: "
-					+ playerNames[playerNumber - 1]);
+					+ playerName);
 			Log.i("游戏人数",mServerContext.getClientNum()+"");
 			// 达到所需的玩家人数开始游戏
 			if (mServerContext.getClientNum() == NetworkCommon.TOTAL_PLAYER_NUM) {

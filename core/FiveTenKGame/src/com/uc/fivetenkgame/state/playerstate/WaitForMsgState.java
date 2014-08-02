@@ -2,8 +2,8 @@ package com.uc.fivetenkgame.state.playerstate;
 
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
-import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.player.PlayerContext;
 
 /**
@@ -22,10 +22,10 @@ public class WaitForMsgState extends PlayerState {
 	@Override
 	public void handle(String msg) {
 	    Log.i(tag,"msg is " + msg);
-		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {//由上一状态跳转而来 
+		if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {//由上一状态跳转而来 
 			
-		}else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.YOUR_TURN)) {//轮到某个玩家
-		    int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
+		}else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.YOUR_TURN)) {//轮到某个玩家
+		    int playerNumber = CommonMsgDecoder.getPlayerNumber(msg);
             mPlayerContext.setCurrentPlayer(playerNumber);
             // 自己出牌
             if (playerNumber == mPlayerContext.getPlayerNumber()) {
@@ -34,18 +34,18 @@ public class WaitForMsgState extends PlayerState {
                 mPlayerContext.setState(new PlayCardState(mPlayerContext));
                 mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
             }
-        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GIVE_UP)) {//其他玩家放弃出牌
-            mPlayerContext.playerGiveUp(mCommonMsgDecoder.getPlayerNumber(msg));
+        } else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.GIVE_UP)) {//其他玩家放弃出牌
+            mPlayerContext.playerGiveUp(CommonMsgDecoder.getPlayerNumber(msg));
 
-        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_END)) {//其他玩家成功出牌
+        } else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_END)) {//其他玩家成功出牌
             mPlayerContext.playCardsEndAction(
-                    mCommonMsgDecoder.getCards(msg),
-                    String.valueOf(mCommonMsgDecoder.getPlayerNumber(msg)),
-                    String.valueOf(mCommonMsgDecoder.getTableScore(msg)),
-                    mCommonMsgDecoder.getRemainCardNumbers(msg));
-        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.ROUND_END)) {// 得到回合结束信息
-            mPlayerContext.roundEndAction(mCommonMsgDecoder.getPlayerScores(msg));
-        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) { // 得到游戏结束信息
+                    CommonMsgDecoder.getCards(msg),
+                    String.valueOf(CommonMsgDecoder.getPlayerNumber(msg)),
+                    String.valueOf(CommonMsgDecoder.getTableScore(msg)),
+                    CommonMsgDecoder.getRemainCardNumbers(msg));
+        } else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.ROUND_END)) {// 得到回合结束信息
+            mPlayerContext.roundEndAction(CommonMsgDecoder.getPlayerScores(msg));
+        } else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) { // 得到游戏结束信息
             mPlayerContext.setState(new GameOverState(mPlayerContext));
             mPlayerContext.handle(msg);
         } 

@@ -2,6 +2,7 @@ package com.uc.fivetenkgame.state.playerstate;
 
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerContext;
 
@@ -28,10 +29,10 @@ public class GameOverState extends PlayerState {
     @Override
     public void handle(String msg) {
         Log.i(tag,"msg is " + msg);
-        if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) { // 有上一状态（WaitForMsg）跳转而来，让玩家选择退出或重玩
-            String[] scores = mCommonMsgDecoder.getPlayerScores(msg);
+        if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) { // 有上一状态（WaitForMsg）跳转而来，让玩家选择退出或重玩
+            String[] scores = CommonMsgDecoder.getPlayerScores(msg);
             String[] msgs = new String[scores.length + 1];
-            msgs[0] = String.valueOf(mCommonMsgDecoder.getWinnerNumber(msg));
+            msgs[0] = String.valueOf(CommonMsgDecoder.getWinnerNumber(msg));
             for (int i = 0; i < scores.length; i++) {
                 msgs[i + 1] = scores[i];
             }
@@ -40,7 +41,7 @@ public class GameOverState extends PlayerState {
             mPlayerContext.gameOver(msgs);
             str = msgs;
             mPlayerContext.setRestart(false);
-        } else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_AGAIN)) { //重玩
+        } else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_AGAIN)) { //重玩
             mPlayerContext.setRestart(true);
             mPlayerContext.reStartGame(str);
             mPlayerContext.setState(new WaitForStartingState(mPlayerContext));
