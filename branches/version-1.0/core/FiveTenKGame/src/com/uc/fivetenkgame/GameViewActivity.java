@@ -39,10 +39,10 @@ import com.uc.fivetenkgame.view.GameView;
 
 public class GameViewActivity extends Activity {
 
-	private AlertDialog backPressDialog;// 本玩家按返回键出现的dialog
-	private AlertDialog pauseDialog;// 其他玩家暂停时本玩家出现的dialog
-	private AlertDialog winningDialog;// 游戏结束时出现的dialog
-	private AlertDialog waitForRestartDialog;// 重玩时等待其他玩家的dialog
+	private AlertDialog mBackPressDialog;// 本玩家按返回键出现的dialog
+	private AlertDialog mPauseDialog;// 其他玩家暂停时本玩家出现的dialog
+	private AlertDialog mWinningDialog;// 游戏结束时出现的dialog
+	private AlertDialog mWaitForRestartDialog;// 重玩时等待其他玩家的dialog
 	private AlertDialog mHistoryScoreDialog;// 重玩时等待其他玩家的dialog
 	private View mWinningView;
 	private View mHistoryView;
@@ -119,11 +119,11 @@ public class GameViewActivity extends Activity {
 				else
 					((GameApplication) getApplication())
 							.playSound(SoundPoolCommon.SOUND_FAILD);
-				showWinningDialog(res);
+				showmWinningDialog(res);
 				break;
 
 			case NetworkCommon.PLAY_RESTART:
-				waitForRestartDialog.cancel();
+				mWaitForRestartDialog.cancel();
 				break;
 
 			case NetworkCommon.GAME_STATE_CHANGE:
@@ -131,15 +131,15 @@ public class GameViewActivity extends Activity {
 				Log.i("objMsg is ", objMsg.length() + "");
 				if (objMsg.startsWith(NetworkCommon.GAME_PAUSE)) {
 					if (!mGameApplication.isPause()) {
-						pauseDialog.show();// 其他玩家通知
+						mPauseDialog.show();// 其他玩家通知
 						mGameApplication.setPause(true);
-						Log.i("pauseDialog", "show");
+						Log.i("mPauseDialog", "show");
 					}
 				} else if (objMsg.startsWith(NetworkCommon.GAME_RESUME)) {
 					if (mGameApplication.isPause()) {
-						pauseDialog.cancel();// 其他玩家通知
+						mPauseDialog.cancel();// 其他玩家通知
 						mGameApplication.setPause(false);
-						Log.i("pauseDialog", "cancel");
+						Log.i("mPauseDialog", "cancel");
 					}
 				} else if (objMsg.startsWith(NetworkCommon.GAME_EXIT)) {
 					Timer mTimer = new Timer();
@@ -164,8 +164,8 @@ public class GameViewActivity extends Activity {
 	};
 
 	private void initDialog() {
-		// 设置backPressDialog
-		backPressDialog = new AlertDialog.Builder(this)
+		// 设置mBackPressDialog
+		mBackPressDialog = new AlertDialog.Builder(this)
 				.setTitle("暂停")
 				.setPositiveButton("返回", new DialogInterface.OnClickListener() {
 					@Override
@@ -184,8 +184,8 @@ public class GameViewActivity extends Activity {
 						GameViewActivity.this.finish();// 退出游戏
 					}
 				}).create();
-		backPressDialog.setCanceledOnTouchOutside(false);
-		backPressDialog.setOnCancelListener(new OnCancelListener() {
+		mBackPressDialog.setCanceledOnTouchOutside(false);
+		mBackPressDialog.setOnCancelListener(new OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {
 				mGameApplication.setPause(false);
@@ -193,8 +193,8 @@ public class GameViewActivity extends Activity {
 			}
 		});
 
-		// 设置pauseDialog
-		pauseDialog = new AlertDialog.Builder(this)
+		// 设置mPauseDialog
+		mPauseDialog = new AlertDialog.Builder(this)
 				.setTitle("其他玩家暂停游戏")
 				.setPositiveButton("不想等了，退出本次游戏",
 						new DialogInterface.OnClickListener() {
@@ -206,14 +206,15 @@ public class GameViewActivity extends Activity {
 								GameViewActivity.this.finish();
 							}
 						}).create();
-		pauseDialog.setCancelable(false);// 除了退出游戏外，只能等待其他玩家
+		mPauseDialog.setCancelable(false);// 除了退出游戏外，只能等待其他玩家
 
-		winningDialog = new AlertDialog.Builder(this)
+		mWinningDialog = new AlertDialog.Builder(this)
 				.setTitle(getResources().getString(R.string.game_over))
 				.setView(mWinningView)
 				.setNegativeButton("退出", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+					    Player.getInstance().sendMsg(NetworkCommon.GAME_EXIT);
 						finish();
 					}
 				})
@@ -221,7 +222,7 @@ public class GameViewActivity extends Activity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Player.getInstance().sendMsg(NetworkCommon.PLAY_AGAIN);
-						showWaitForRestartDialog();
+						showmWaitForRestartDialog();
 					}
 				}).setCancelable(false).create();
 
@@ -239,7 +240,7 @@ public class GameViewActivity extends Activity {
 						}).setCancelable(true).create();
 	}
 
-	protected void showWinningDialog(String[] res) {
+	protected void showmWinningDialog(String[] res) {
 		((TextView) mWinningView.findViewById(R.id.text_winning_player))
 				.setText(getResources().getString(R.string.winner).replace("#",
 						res[0]));
@@ -252,18 +253,18 @@ public class GameViewActivity extends Activity {
 		((TextView) mWinningView.findViewById(R.id.text_score_player3))
 				.setText(getResources().getString(R.string.player3_score)
 						.replace("#", res[3]));
-		winningDialog.show();
+		mWinningDialog.show();
 	}
 
-	protected void showWaitForRestartDialog() {
-		if (waitForRestartDialog == null) {
+	protected void showmWaitForRestartDialog() {
+		if (mWaitForRestartDialog == null) {
 			View waitForRestartView = LayoutInflater.from(this).inflate(
 					R.layout.dialog_wait_restart, null);
-			waitForRestartDialog = new AlertDialog.Builder(this)
+			mWaitForRestartDialog = new AlertDialog.Builder(this)
 					.setTitle(R.string.game_restart)
 					.setView(waitForRestartView).setCancelable(false).create();
 		}
-		waitForRestartDialog.show();
+		mWaitForRestartDialog.show();
 	}
 
 	protected void showHistoryScoreDialog() {
@@ -277,7 +278,7 @@ public class GameViewActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		backPressDialog.show();
+		mBackPressDialog.show();
 		mGameApplication.setPause(true);
 		Player.getInstance().sendMsg(NetworkCommon.GAME_PAUSE);// 暂停游戏
 	}

@@ -21,12 +21,13 @@ public class NetworkCommon {
 	public static final String GAME_EXIT = "12#";// 某个玩家退出游戏，所有玩家退出
 	public static final String PLAY_AGAIN = "14#"; // 重玩消息
 	//只包含玩家序号
-	public static final String GIVE_UP = "0#";// 自己放弃出牌0#+玩家号
+	public static final String GIVE_UP = "0#";// 自己放弃出牌0#玩家序号
 	public static final String PLAYER_ACCEPTED = "1#";// 连接成功信号：1#+当前玩家序号
 	public static final String YOUR_TURN = "4#";// 提醒玩家出牌信号：4#+玩家序号
+	//只包含牌号
+	public static final String PLAY_CARDS = "9#";// 自己出牌：9#牌号 + , +.....
 	//包含玩家序号和牌号
 	public static final String BEGIN_GAME = "3#";// 游戏开始信号：3#+玩家序号+牌号+ ，+牌号....
-	public static final String PLAY_CARDS = "9#";// 自己出牌：9#+玩家号+牌号 + , +.....
 	//包含玩家号和玩家名字
 	public static final String PLAYER_NAME = "13#";// 1.server接收：13#+玩家序号+玩家名字 2.player接收：13#玩家1名字+玩家2名字+玩家3名字
 	//包含各玩家分数
