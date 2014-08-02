@@ -11,13 +11,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
 
     @Override
     public int getPlayerNumber(String sourceMsg) {
-        if (checkMessage(sourceMsg, NetworkCommon.GIVE_UP)
-                || checkMessage(sourceMsg, NetworkCommon.PLAYER_ACCEPTED)
+        if (checkMessage(sourceMsg, NetworkCommon.PLAYER_ACCEPTED)
+                || checkMessage(sourceMsg, NetworkCommon.GIVE_UP)
                 || checkMessage(sourceMsg, NetworkCommon.YOUR_TURN)) {
             return Integer.parseInt(sourceMsg.substring(
                     sourceMsg.indexOf('#') + 1).trim());
         } else if (checkMessage(sourceMsg, NetworkCommon.BEGIN_GAME)
-                || checkMessage(sourceMsg, NetworkCommon.PLAY_CARDS)
                 || checkMessage(sourceMsg, NetworkCommon.PLAY_END)) {
             return Integer.parseInt(sourceMsg.substring(
                     sourceMsg.indexOf('#') + 1, sourceMsg.indexOf(',')).trim());
@@ -40,10 +39,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
     }
 
     @Override
-    public String[] getCardsNumber(String sourceMsg) {
-        if (checkMessage(sourceMsg, NetworkCommon.BEGIN_GAME)
-                || checkMessage(sourceMsg, NetworkCommon.PLAY_CARDS)) {
+    public String[] getCards(String sourceMsg) {
+        if (checkMessage(sourceMsg, NetworkCommon.BEGIN_GAME)) {
             return sourceMsg.substring(sourceMsg.indexOf(',') + 1).trim()
+                    .split(",");
+        } else if (checkMessage(sourceMsg, NetworkCommon.PLAY_CARDS)) {
+            return sourceMsg.substring(sourceMsg.indexOf('#') + 1).trim()
                     .split(",");
         } else if (checkMessage(sourceMsg, NetworkCommon.PLAY_END)) {
             String msg = sourceMsg.substring(sourceMsg.indexOf('#') + 1).trim();
@@ -119,7 +120,7 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
     }
 
     @Override
-    public String[] getRemainCards(String sourceMsg) {
+    public String[] getRemainCardNumbers(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.PLAY_END)) {
             String str[] = sourceMsg.substring(sourceMsg.indexOf('#') + 1)
                     .trim().split(",");

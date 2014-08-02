@@ -37,10 +37,10 @@ public class WaitForStartingState extends PlayerState {
 			if (mPlayerContext.getPlayerNumber() == playerNumber) {// 是自己的手牌,跳转到下一个状态waitForMsg
 				mPlayerContext.getHandler().obtainMessage(NetworkCommon.START_GAME)
 						.sendToTarget();
-				String[] initCards = mCommonMsgDecoder.getCardsNumber(msg);
+				String[] initCards = mCommonMsgDecoder.getCards(msg);
                 StringBuilder cards = new StringBuilder();
                 for (String card : initCards) {
-                    cards.append(card+",");
+                    cards.append(card).append(',');
 				}
                 cards.deleteCharAt(cards.length()-1);
 				mPlayerContext

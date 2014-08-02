@@ -86,9 +86,10 @@ public class Player implements PlayerContext {
 			if (timeOut) {
 				if (currentPlayer == mPlayerModel.getPlayerNumber()) {
 					outTimeAction();
-					return true;
+				} else {
+				    return false;
 				}
-				return false;
+				
 			}
 			mHandList = new ArrayList<Card>();
 			if (formerCardList == null) {
@@ -99,12 +100,10 @@ public class Player implements PlayerContext {
 					return false;
 				} else if (mRule.firstPlayCards(handList) == 1) {
 					mHandList.addAll(handList);
-					// mPlayerModel.getCardList().removeAll(handList);
 					CardUtil.removeCards(mPlayerModel.getCardList(), handList);
 					setDoneHandCards(true);
 					Log.i("当前手牌数",
 							String.valueOf(mPlayerModel.getRemainCardsNum()));
-					return true;
 				} else {
 					// 不能什么牌都不点就出牌
 					viewController.handCardFailed();
@@ -117,32 +116,33 @@ public class Player implements PlayerContext {
 					setDoneHandCards(true);
 					Log.i("当前手牌数",
 							String.valueOf(mPlayerModel.getRemainCardsNum()));
-					return true;
 				} else if (handList.size() == 0) {
 					viewController.handCardFailed();
 					return false;
 				} else if (mRule.checkCards(handList, formerCardList) == 1) {
 					mHandList.addAll(handList);
 
-					// mPlayerModel.getCardList().removeAll(handList);
 					CardUtil.removeCards(mPlayerModel.getCardList(), handList);
 					OredrUtil.setOrder(mHandList);
 
 					setDoneHandCards(true);
 					Log.i("当前手牌数",
 							String.valueOf(mPlayerModel.getRemainCardsNum()));
-					return true;
 				} else {
 					// 不能什么牌都不点就出牌
 					viewController.handCardFailed();
 					return false;
 				}
 			}
-			// else{
-			// //选牌大不过上家
-			// viewController.handCardFailed();
-			// return true;
-			// }
+			//出牌成功，将牌交给状态机处理
+			String cardString = getCardsToBePlayed();
+			if (cardString == null) {//放弃
+			    handle(NetworkCommon.GIVE_UP + getPlayerNumber());
+			} else {//选完牌
+			    handle(NetworkCommon.PLAY_CARDS + cardString);
+			}
+			
+			return true;
 		}
 	};
 	private String mHistoryPath;
