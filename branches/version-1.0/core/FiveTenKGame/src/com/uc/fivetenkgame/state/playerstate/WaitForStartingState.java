@@ -2,6 +2,7 @@ package com.uc.fivetenkgame.state.playerstate;
 
 import android.util.Log;
 
+import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerContext;
 
@@ -27,17 +28,18 @@ public class WaitForStartingState extends PlayerState {
 	@Override
 	public void handle(String msg) {
 	    Log.i(TAG,"msg is " + msg);
-		if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {// 有上一状态（ConnectState或GameOverState)跳转而来，暂不处理
+		if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_STATE_CHANGE)) {// 有上一状态（ConnectState或GameOverState)跳转而来，暂不处理
 
-		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NAME)) {
-		    String[] playerNames = mCommonMsgDecoder.getPlayerNames(msg);
+		} else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NAME)) {
+		    String[] playerNames = CommonMsgDecoder.getPlayerNames(msg);
 		    mPlayerContext.setPlayersName(playerNames);
-		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.BEGIN_GAME)) {
-			int playerNumber = mCommonMsgDecoder.getPlayerNumber(msg);
+		    
+		} else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.BEGIN_GAME)) {
+			int playerNumber = CommonMsgDecoder.getPlayerNumber(msg);
 			if (mPlayerContext.getPlayerNumber() == playerNumber) {// 是自己的手牌,跳转到下一个状态waitForMsg
 				mPlayerContext.getHandler().obtainMessage(NetworkCommon.START_GAME)
 						.sendToTarget();
-				String[] initCards = mCommonMsgDecoder.getCards(msg);
+				String[] initCards = CommonMsgDecoder.getCards(msg);
                 StringBuilder cards = new StringBuilder();
                 for (String card : initCards) {
                     cards.append(card).append(',');
@@ -52,14 +54,14 @@ public class WaitForStartingState extends PlayerState {
 				mPlayerContext.setState(new WaitForMsgState(mPlayerContext));
 				mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
 			}
-		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NUMBER_UPDATE)) {
-			int playerNumber = mCommonMsgDecoder.getUpdatePlayerNumber(msg);
+		} else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAYER_NUMBER_UPDATE)) {
+			int playerNumber = CommonMsgDecoder.getUpdatePlayerNumber(msg);
 			mPlayerContext
 					.getHandler()
 					.obtainMessage(NetworkCommon.UPDATE_WAITING_PLAYER_NUM,
 							playerNumber).sendToTarget();
-		} else if (mCommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) {
-			int number = mCommonMsgDecoder.getPlayerNumber(msg);
+		} else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_OVER)) {
+			int number = CommonMsgDecoder.getPlayerNumber(msg);
 			if (number != mPlayerContext.getPlayerNumber())
 				mPlayerContext.getHandler()
 						.obtainMessage(NetworkCommon.PLAYER_LEFT, number)

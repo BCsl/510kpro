@@ -1,5 +1,6 @@
 package com.uc.fivetenkgame.state.serverstate;
 
+import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.server.ServerContext;
 
@@ -18,7 +19,7 @@ public class InitState extends ServerState {
 	@Override
 	public void handle(String msg) {
 		
-		if( msg.startsWith(NetworkCommon.SERVER_LISTENING) ){
+		if(CommonMsgDecoder.checkMessage(msg, NetworkCommon.SERVER_LISTENING)){
 			mServerContext.setState(new ListeningState(mServerContext));
 		}
 	}

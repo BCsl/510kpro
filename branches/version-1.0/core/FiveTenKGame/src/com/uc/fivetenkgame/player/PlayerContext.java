@@ -3,7 +3,6 @@ package com.uc.fivetenkgame.player;
 import android.content.Context;
 import android.os.Handler;
 
-import com.uc.fivetenkgame.common.ICommonMsgDecoder;
 import com.uc.fivetenkgame.state.playerstate.PlayerState;
 
 /**
@@ -180,7 +179,6 @@ public interface PlayerContext {
 	 * 获得网络消息解码器接口
 	 * @return
 	 */
-	public ICommonMsgDecoder getICommomDecoder();
 	
 	public void setContext(Context context);
 	

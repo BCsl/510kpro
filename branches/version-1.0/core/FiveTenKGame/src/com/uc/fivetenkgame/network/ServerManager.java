@@ -67,12 +67,12 @@ public class ServerManager extends NetworkManager {
 					TCPServer player = new TCPServer(ServerManager.this,
 							socket, i);
 					flag[i - 1] = true;
+					mClientPlayers.add(player);
+                    InetAddress ip = socket.getInetAddress();
+                    mPlayerIPs.add(ip.toString());
 					player.sendMessage(NetworkCommon.PLAYER_ACCEPTED + i);
 					Thread.sleep(20);
-					mClientPlayers.add(player);
-
-					InetAddress ip = socket.getInetAddress();
-					mPlayerIPs.add(ip.toString());
+					
 //					receiveMessage(NetworkCommon.PLAYER_ACCEPTED);
 				}
 

@@ -1,16 +1,25 @@
 package com.uc.fivetenkgame.common;
 
-public class CommonMsgDecoder implements ICommonMsgDecoder {
+public class CommonMsgDecoder{
 
-    private int playerCount = 3;
+    private static int playerCount = 3;
 
-    @Override
-    public boolean checkMessage(String sourceMsg, String commonMsg) {
+    /**
+     * 判断信号的标志是否一样
+     * @param sourceMsg 想要判断的信息，源信息
+     * @param commonMsg 消息标志
+     * @return sourceMsg属于commonMsg标志，返回true，否则false
+     */
+    public static boolean checkMessage(String sourceMsg, String commonMsg) {
         return sourceMsg.startsWith(commonMsg);
     }
 
-    @Override
-    public int getPlayerNumber(String sourceMsg) {
+    /**
+     * 获得玩家序号
+     * @param sourceMsg 源信息
+     * @return 玩家序号,若不包含序号，返回-1
+     */
+    public static int getPlayerNumber(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.PLAYER_ACCEPTED)
                 || checkMessage(sourceMsg, NetworkCommon.GIVE_UP)
                 || checkMessage(sourceMsg, NetworkCommon.YOUR_TURN)) {
@@ -38,8 +47,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
         return -1;
     }
 
-    @Override
-    public String[] getCards(String sourceMsg) {
+    /**
+     * 获得牌号
+     * @param sourceMsg 源信息
+     * @return 牌号（玩家出的牌，初始牌等），若不包含，返回null
+     */
+    public static String[] getCards(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.BEGIN_GAME)) {
             return sourceMsg.substring(sourceMsg.indexOf(',') + 1).trim()
                     .split(",");
@@ -62,8 +75,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
         return null;
     }
 
-    @Override
-    public String[] getPlayerNames(String sourceMsg) {
+    /**
+     * 获得玩家名字
+     * @param sourceMsg 源信息
+     * @return 玩家名字（1个或多个），若不包含，返回null
+     */
+    public static String[] getPlayerNames(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.PLAYER_NAME)) {
             String[] names = sourceMsg.substring(sourceMsg.indexOf('#') + 1)
                     .trim().split(",");
@@ -78,8 +95,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
         return null;
     }
 
-    @Override
-    public String[] getPlayerScores(String sourceMsg) {
+    /**
+     * 获得各玩家分数
+     * @param sourceMsg 源信息
+     * @return 玩家分数（回合结束或游戏结束），若不包含，返回null
+     */
+    public static String[] getPlayerScores(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.ROUND_END)) {
             return sourceMsg.substring(sourceMsg.indexOf('#') + 1).trim()
                     .split(",");
@@ -90,8 +111,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
         return null;
     }
 
-    @Override
-    public int getWinnerNumber(String sourceMsg) {
+    /**
+     * 获得赢家序号
+     * @param sourceMsg 源信息
+     * @return 游戏结束时的赢家序号，只有GAME_OVER信号支持，其他信号则返回-1
+     */
+    public static int getWinnerNumber(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.GAME_OVER)) {
             return Integer.parseInt(sourceMsg.substring(
                     sourceMsg.indexOf('#') + 1, sourceMsg.indexOf(',')).trim());
@@ -99,8 +124,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
         return -1;
     }
 
-    @Override
-    public int getUpdatePlayerNumber(String sourceMsg) {
+    /**
+     * 获得当前已加入的玩家数
+     * @param sourceMsg 源信息
+     * @return 目前已加入游戏的玩家数，只有PLAYER_NUMBER_UPDATE信号支持，其他信号返回-1
+     */
+    public static int getUpdatePlayerNumber(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.PLAYER_NUMBER_UPDATE)) {
             return Integer.parseInt(sourceMsg.substring(
                     sourceMsg.indexOf('#') + 1).trim());
@@ -108,8 +137,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
         return -1;
     }
 
-    @Override
-    public int getTableScore(String sourceMsg) {
+    /**
+     * 获得桌面分数
+     * @param sourceMsg 源信息
+     * @return 目前一轮的桌面分数，只有PLAY_END信号支持，其他信号返回-1
+     */
+    public static int getTableScore(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.PLAY_END)) {
             String str[] = sourceMsg.substring(sourceMsg.indexOf('#') + 1)
                     .trim().split(",");
@@ -119,8 +152,12 @@ public class CommonMsgDecoder implements ICommonMsgDecoder {
         return -1;
     }
 
-    @Override
-    public String[] getRemainCardNumbers(String sourceMsg) {
+    /**
+     * 获得各玩家剩余牌数
+     * @param sourceMsg 源信息
+     * @return 各玩家剩余的牌数，只有PLAY_END信号支持，其他信号返回null
+     */
+    public static String[] getRemainCardNumbers(String sourceMsg) {
         if (checkMessage(sourceMsg, NetworkCommon.PLAY_END)) {
             String str[] = sourceMsg.substring(sourceMsg.indexOf('#') + 1)
                     .trim().split(",");
