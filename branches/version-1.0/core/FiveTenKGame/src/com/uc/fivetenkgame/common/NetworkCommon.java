@@ -51,6 +51,9 @@ public class NetworkCommon {
 	public static final int PLAY_RESTART = 8;
 	public static final int SHOW_HISTORY = 9;
 	
+	//acitviy跳转消息
+	public static final String PLAYER_MODE = "isServer";
+	public static final String IP_ADDRESS = "IP";
 
 	//player状态改变内部消息
 	public static final String PLAYER_STATE_CHANGE = "0@";
@@ -64,4 +67,5 @@ public class NetworkCommon {
 	// 消息数据尾
 	public static final String MESSAGE_END = "#@";
 
+	
 }

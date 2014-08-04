@@ -67,7 +67,7 @@ public class WaitingGameActivity extends Activity {
 		mIpAddress = (TextView) findViewById(R.id.ip_addr_text_ID);
 		mReadyPlayer = (TextView) findViewById(R.id.ready_player_text_ID);
 		Intent intent = getIntent();
-		isServer = intent.getBooleanExtra("isServer", false);
+		isServer = intent.getBooleanExtra(NetworkCommon.PLAYER_MODE, false);
 		SharedPreferences sp = getApplicationContext().getSharedPreferences(
 				SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 		mName = sp.getString(SharePerferenceCommon.FIELD_MY_NAME, "Player");
@@ -111,8 +111,14 @@ public class WaitingGameActivity extends Activity {
 				mServer.setNetworkManager(ServerManager.getInstance());
 			}
 			else {
-				if( !BluetoothAdapter.getDefaultAdapter().isEnabled() )
+				//未打开蓝牙，打开后重新进入本界面
+				if( !BluetoothAdapter.getDefaultAdapter().isEnabled() ){
 					BluetoothAdapter.getDefaultAdapter().enable();
+					Toast.makeText(this, getResources()
+							.getString(R.string.open_bluetooth), Toast.LENGTH_SHORT).show();
+					finish();
+					return;
+				}
 				mServer.setNetworkManager(BluetoothServerManager.getInstance());
 			}
 			
@@ -131,7 +137,7 @@ public class WaitingGameActivity extends Activity {
 			}
 			
 		} else {
-			String ipAddr = intent.getStringExtra("IP");
+			String ipAddr = intent.getStringExtra(NetworkCommon.IP_ADDRESS);
 			//设置本地玩家
 			if( isUseWifi ){
 				mPlayer.setNetworkManager(ClientManager.getInstance());
@@ -171,7 +177,7 @@ public class WaitingGameActivity extends Activity {
 						getResources().getString(R.string.start_game_str),
 						Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent();
-				intent.putExtra("isServer", isServer);
+				intent.putExtra(NetworkCommon.PLAYER_MODE, isServer);
 				intent.setClass(WaitingGameActivity.this,
 						GameViewActivity.class);
 				startActivity(intent);

@@ -23,9 +23,10 @@ import android.widget.Toast;
 
 import com.google.zxing.qr_codescan.MipcaActivityCapture;
 import com.uc.fivetenkgame.application.GameApplication;
+import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.common.SharePerferenceCommon;
 import com.uc.fivetenkgame.common.SoundPoolCommon;
-import com.uc.fivetenkgame.util.IPMatcherUtil;
+import com.uc.fivetenkgame.util.MatcherUtil;
 
 /**
  * 游戏主界面，界面有四个按钮,点击后分别跳转到相应的界面
@@ -124,7 +125,7 @@ public class GameMainActivity extends Activity {
 			if (v == mNewGameButton) {
 				if (wifiManager.isWifiEnabled()) {
 					Intent intent = new Intent();
-					intent.putExtra("isServer", true);
+					intent.putExtra(NetworkCommon.PLAYER_MODE, true);
 					intent.setClass(GameMainActivity.this,
 							WaitingGameActivity.class);
 					startActivity(intent);
@@ -176,10 +177,10 @@ public class GameMainActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				Bundle bundle = data.getExtras();
 				if (bundle != null) {
-					String ipAddr = bundle.getString("IP");
+					String ipAddr = bundle.getString(NetworkCommon.IP_ADDRESS);
 					Intent intent = new Intent();
-					intent.putExtra("isServer", false);
-					intent.putExtra("IP", ipAddr);
+					intent.putExtra(NetworkCommon.PLAYER_MODE, false);
+					intent.putExtra(NetworkCommon.IP_ADDRESS, ipAddr);
 					intent.setClass(GameMainActivity.this,
 							WaitingGameActivity.class);
 					startActivity(intent);
@@ -193,19 +194,25 @@ public class GameMainActivity extends Activity {
 				if (bundle != null) {
 					String ipAddr = bundle.getString("result");
 					Log.i(TAG, "扫描结果：" + ipAddr);
-					//if (IPMatcherUtil.isIPAddress(ipAddr)) {
+					SharedPreferences sp = getApplicationContext().getSharedPreferences(
+							SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
+					boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, true);
+					if ( ( isUseWifi && MatcherUtil.isIPAddress(ipAddr) ) 
+							|| ( !isUseWifi && MatcherUtil.isMacAddress(ipAddr) ) ) {
 						Intent intent = new Intent();
-						intent.putExtra("isServer", false);
-						intent.putExtra("IP", ipAddr);
+						intent.putExtra(NetworkCommon.PLAYER_MODE, false);
+						intent.putExtra(NetworkCommon.IP_ADDRESS, ipAddr);
 						intent.setClass(GameMainActivity.this,
 								WaitingGameActivity.class);
 						startActivity(intent);
-//					} else
-//						Toast.makeText(
-//								GameMainActivity.this,
-//								getResources().getString(
-//										R.string.ip_scan_error_str).replace(
-//										"#", ipAddr), Toast.LENGTH_LONG).show();
+					}
+					else {
+						Toast.makeText(
+								GameMainActivity.this,
+								getResources().getString(
+										R.string.ip_scan_error_str).replace(
+										"#", ipAddr), Toast.LENGTH_LONG).show();
+					}
 				}
 			}
 		}// REQUEST_SCAN_IP

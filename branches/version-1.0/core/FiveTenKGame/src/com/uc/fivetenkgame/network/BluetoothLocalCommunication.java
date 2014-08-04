@@ -1,5 +1,11 @@
 package com.uc.fivetenkgame.network;
 
+/**
+ * 蓝牙本地收发数据类
+ * 
+ * @author liuzd
+ *
+ */
 public class BluetoothLocalCommunication implements IBasicNetwork{
 
 	private BluetoothManager mBluetoothManager = null;
