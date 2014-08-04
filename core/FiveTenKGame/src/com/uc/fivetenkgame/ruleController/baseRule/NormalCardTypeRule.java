@@ -14,8 +14,8 @@ public class NormalCardTypeRule implements RuleUnit {
 	@Override
 	public int checkCards(cardType cType, List<Card> cardList1,
 			cardType cType2, List<Card> cardList2) {
-		Log.i(this.getClass().getName(), this.getClass().getMethods()
-				.toString());
+		Log.i(this.getClass().getName(), "NormalCardTypeRule");
+		// 如果张数不同直接过滤
 		if (cType != CardType.cardType.c4 && cType != CardType.cardType.c510k
 				&& cType != CardType.cardType.c510K
 				&& cardList1.size() != cardList2.size())

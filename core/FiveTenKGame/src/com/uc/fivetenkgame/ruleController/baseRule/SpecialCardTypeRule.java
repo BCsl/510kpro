@@ -26,34 +26,39 @@ public class SpecialCardTypeRule implements RuleUnit {
 			return 0;
 		// 如果张数不同直接过滤
 		if (cType != CardType.cardType.c4 && cType != CardType.cardType.c510k
-				&& cType != CardType.cardType.c510K
-				&& cardList1.size() != cardList2.size())
+				&& cType != CardType.cardType.c510K)
 			return 0;
-		// 比较我的出牌类型
-		if (cType != CardType.cardType.c4 && cType != CardType.cardType.c510k
-				&& cType != CardType.cardType.c510K && cType != cType2) {
-			return 0;
-		}
-
-		// 张数大于4的炸弹
-		if (cType == CardType.cardType.c4 && cType2 != CardType.cardType.c4) {
-			if (cardList1.size() > 4)
+		Log.i(this.getClass().getName(), "存在特殊牌");
+		/*
+		 * // 张数大于4的炸弹 if (cType == CardType.cardType.c4 && cType2 !=
+		 * CardType.cardType.c4) { if (cardList1.size() > 4) return 1; } if
+		 * (cType2 == CardType.cardType.c4 && cType != CardType.cardType.c4) {
+		 * if (cardList2.size() > 4) return 0; } if (cType ==
+		 * CardType.cardType.c4 && cType2 == CardType.cardType.c4) { if
+		 * (cardList1.size() > cardList2.size()) { return 1; } else if
+		 * (cardList1.size() == cardList2.size()) { if
+		 * (RuleJudgeUtils.getValue(cardList1.get(0)) > RuleJudgeUtils
+		 * .getValue(cardList2.get(0))) return 1; return 0; } return 0; }
+		 */
+		if (cType == CardType.cardType.c4 && cardList1.size() > 4) {
+			Log.i(this.getClass().getName(), "张数大于4的炸弹");
+			if (cType2 != CardType.cardType.c4)
 				return 1;
-		}
-		if (cType2 == CardType.cardType.c4 && cType != CardType.cardType.c4) {
-			if (cardList2.size() > 4)
-				return 0;
-		}
-		if (cType == CardType.cardType.c4 && cType2 == CardType.cardType.c4) {
-			if (cardList1.size() > cardList2.size()) {
-				return 1;
-			} else if (cardList1.size() == cardList2.size()) {
-				if (RuleJudgeUtils.getValue(cardList1.get(0)) > RuleJudgeUtils
-						.getValue(cardList2.get(0)))
+			if (cType2 == CardType.cardType.c4) {
+				if (cardList1.size() > cardList2.size()) {
 					return 1;
-				return 0;
+				} else if (cardList1.size() == cardList2.size()) {
+					if (RuleJudgeUtils.getValue(cardList1.get(0)) > RuleJudgeUtils
+							.getValue(cardList2.get(0)))
+						return 1;
+					return 0;
+				} else {
+					return 0;
+				}
 			}
-			return 0;
+		}
+		if (cType2 == CardType.cardType.c4 && cardList2.size() > 4) {
+				return 0;
 		}
 
 		// 比较出的牌是否要大
@@ -73,15 +78,17 @@ public class SpecialCardTypeRule implements RuleUnit {
 		}
 
 		if (cType2 == CardType.cardType.c510K
-				|| cType2 == CardType.cardType.c510k)
+				|| cType2 == CardType.cardType.c510k){
+//			Log.i(this.getClass().getName(), "返回标志1");
 			return 0;
+		}
 
 		// 张数等于4的炸弹
 		if (cType == CardType.cardType.c4)
 			return 1;
 		if (cType2 == CardType.cardType.c4)
 			return 0;
-		return 0;
+		Log.i(this.getClass().getName(), "返回-1，需要继续判断");
+		return -1;
 	}
-
 }
