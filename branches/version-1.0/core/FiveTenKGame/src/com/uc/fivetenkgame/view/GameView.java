@@ -71,7 +71,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	
 	private Bitmap mBackgroudBitmap;
 	private int mCurrentPlayerId;
-	private Timer mtimer;
+	private Timer mTimer;
 	private int mTimeRemind;
 	private int TEXT_SIZE_BIG;
 	private boolean isFirst;
@@ -146,7 +146,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	@Override
-	public void gameOver(int playId) {
+	public void gameOver() {
+		mCurrentPlayerId =-1;
+		if(mTimer!=null){
+			mTimer.cancel();
+		}
 	}
 
 	@Override
@@ -168,22 +172,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	@Override
 	public void setCurrentPlayer(int playerId) {
 		mTimeRemind = 30;
-		mtimer.cancel();
-		mtimer = new Timer();
-		mtimer.schedule(new TimerTask() {
+		mTimer.cancel();
+		mTimer = new Timer();
+		mTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				if (!((GameApplication) mContext.getApplicationContext())
 						.isPause()) {
 					mTimeRemind -= 1;
 					if (mEventHandler.checkForTimeOut(mTimeRemind))
-						mtimer.cancel();
+						mTimer.cancel();
 				}
 			}
 		}, 1000, 1300);
 		mCurrentPlayerId = playerId;
-		if (mOutList.get(playerId - 1) != null)
-			mOutList.get(playerId - 1).clear();
+			if (playerId>0&&mOutList.get(playerId - 1) != null)
+				mOutList.get(playerId - 1).clear();
 	}
 
 
@@ -205,7 +209,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		mBackgroudBitmap = BitmapFactory.decodeResource(getResources(),
 				R.drawable.bg);
 		mCurrentPlayerId = -1;
-		mtimer = new Timer();
+		mTimer = new Timer();
 		isFirst = true;
 	}
 
@@ -283,8 +287,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		Log.i(TAG, " surfaceDestroyed");
 		boolean reatry = true;
 		startDraw = false;
-		if (mtimer != null)
-			mtimer.cancel();
+		if (mTimer != null)
+			mTimer.cancel();
 		while (reatry) {
 			try {
 				mDrawThread.join();

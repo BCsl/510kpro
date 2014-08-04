@@ -39,6 +39,7 @@ public class GameOverState extends PlayerState {
             //String mNewRecord;
             //mPlayerContext.recordHistory(mNewRecord);
             mPlayerContext.gameOver(msgs);
+            
             str = msgs;
             mPlayerContext.setRestart(false);
         } else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.PLAY_AGAIN)) { //жиЭц

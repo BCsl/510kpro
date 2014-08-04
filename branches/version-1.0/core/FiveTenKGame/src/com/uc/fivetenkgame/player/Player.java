@@ -305,7 +305,7 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void gameOver(String[] str) {
-		// viewController.gameOver(playerId);
+		 viewController.gameOver();
 		mHandler.obtainMessage(NetworkCommon.END_GAME, str).sendToTarget();
 	}
 
