@@ -28,7 +28,7 @@ public class ButtonHistory extends AbsButton {
 	 * @param y
 	 */
 	public ButtonHistory(Context con, Canvas can, float x, float y) {
-		super(con, can, x, y);
+		super(con, x, y);
 		HALF_OF_WIDTH = CardUtil.getBitmap(mContext,
 				ResourseCommon.BUTTON_HISTORY_NORMAL).getWidth() / 2;
 		HALF_OF_HEIGHT = CardUtil.getBitmap(mContext,
@@ -51,16 +51,16 @@ public class ButtonHistory extends AbsButton {
 	}
 
 	@Override
-	protected void drawButtonOnPressedState() {
+	protected void drawButtonOnPressedState(Canvas canvas) {
 		// TODO Auto-generated method stub
-		draw(CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_HISTORY_PRESSED));
+		draw(canvas,CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_HISTORY_PRESSED));
 
 	}
 
 	@Override
-	protected void drawButtonOnNormalState() {
+	protected void drawButtonOnNormalState(Canvas canvas) {
 		// TODO Auto-generated method stub
-		draw(CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_HISTORY_NORMAL));
+		draw(canvas,CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_HISTORY_NORMAL));
 
 	}
 }

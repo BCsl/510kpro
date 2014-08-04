@@ -22,47 +22,57 @@ import android.util.Log;
 public abstract class AbsButton {
 	private final String TAG = getClass().getSimpleName();
 	protected Context mContext;
-	protected Canvas mCanvas;
 	protected float x;
 	protected float y;
 	protected boolean isClick;
 	private Timer timer;
-	protected float HALF_OF_WIDTH;
-	protected float HALF_OF_HEIGHT;
+	protected  float HALF_OF_WIDTH;
+	protected  float HALF_OF_HEIGHT;
 
-	protected AbsButton(Context con, Canvas can, float x, float y) {
+	/**
+	 * 
+	 * @param con
+	 * @param can
+	 * @param x
+	 * @param y
+	 * @param halfWidth
+	 *            资源宽度一半的大小
+	 * @param halfHeight
+	 *            资源高度一半的大小
+	 */
+	protected AbsButton(Context con, float x, float y) {
 		mContext = con;
-		mCanvas = can;
 		this.x = x;
 		this.y = y;
 		timer = new Timer();
-		HALF_OF_WIDTH=0;
-		HALF_OF_HEIGHT=0;
+		HALF_OF_WIDTH = 0;
+		HALF_OF_HEIGHT = 0;
 	}
+
 	/**
 	 * 根据isClick的状态来画
 	 */
-	public  void doDraw(){
-		if(mCanvas == null)
+	public  void doDraw(Canvas canvas){
+		if(canvas == null)
 			return ;
 		if(!isClick){
-			drawButtonOnNormalState();
+			drawButtonOnNormalState( canvas);
 		}
 		else{
-			drawButtonOnPressedState();
+			drawButtonOnPressedState( canvas);
 		}
 			
 	}
 
 	/**
 	 * 根据已有参数（位置，大小）画bitmap
+	 * 
 	 * @param bitmap
 	 */
-	protected final void draw(Bitmap bitmap) {
-		if(mCanvas==null)
-			return ;
-			mCanvas.drawBitmap(bitmap, x - HALF_OF_WIDTH, y - HALF_OF_HEIGHT,
-					null);
+	protected final void draw(Canvas canvas, Bitmap bitmap) {
+		if (canvas == null)
+			return;
+		canvas.drawBitmap(bitmap, x - HALF_OF_WIDTH, y - HALF_OF_HEIGHT, null);
 	}
 
 	private final void onClick() {
@@ -94,15 +104,15 @@ public abstract class AbsButton {
 		}
 		return false;
 	}
-	
-	
+
 	/**
 	 * 画点击状态下的Button
 	 */
-	protected abstract void drawButtonOnPressedState() ;
+	protected abstract void drawButtonOnPressedState(Canvas canvas);
+
 	/**
 	 * 画正常状态下的Button
 	 */
-	protected abstract void drawButtonOnNormalState() ;
+	protected abstract void drawButtonOnNormalState(Canvas canvas);
 
 }

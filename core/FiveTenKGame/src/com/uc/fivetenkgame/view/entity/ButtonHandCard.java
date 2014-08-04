@@ -20,7 +20,7 @@ import com.uc.fivetenkgame.view.util.CardUtil;
 public class ButtonHandCard extends AbsButton {
 	private static AbsButton mHandCardButton;
 	public ButtonHandCard(Context con, Canvas can, float x, float y) {
-		super(con, can, x, y);
+		super(con, x, y);
 		HALF_OF_WIDTH=CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_NORMAL).getWidth()/2;
 		HALF_OF_HEIGHT= CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_NORMAL).getHeight()/2;
 	}
@@ -36,15 +36,15 @@ public class ButtonHandCard extends AbsButton {
 		return mHandCardButton;
 	}
 	@Override
-	protected void drawButtonOnPressedState() {
+	protected void drawButtonOnPressedState(Canvas canvas) {
 		// TODO Auto-generated method stub
-		draw(CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_PRESSED));
+		draw(canvas,CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_PRESSED));
 	}
 
 	@Override
-	protected void drawButtonOnNormalState() {
+	protected void drawButtonOnNormalState(Canvas canvas) {
 		// TODO Auto-generated method stub
-		draw(CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_NORMAL));
+		draw(canvas,CardUtil.getBitmap(mContext,ResourseCommon.BUTTON_HANDCARD_NORMAL));
 	}
 
 }

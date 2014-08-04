@@ -81,8 +81,8 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 				* mCardSizeHolder.width;
 		float rightButtonX = mScreenHolder.width / 2 + 2
 				* mCardSizeHolder.width;
-		ButtonHandCard.getInstance(mContext, mCanvas, leftButtonX, baseY).doDraw();
-		ButtonGiveUp.getInstance(mContext, mCanvas, rightButtonX, baseY).doDraw();
+		ButtonHandCard.getInstance(mContext, mCanvas, leftButtonX, baseY).doDraw(mCanvas);
+		ButtonGiveUp.getInstance(mContext, mCanvas, rightButtonX, baseY).doDraw(mCanvas);
 
 	}
 

@@ -10,7 +10,7 @@ public class ButtonGiveUp extends AbsButton {
 	private static AbsButton mGiveUpButton;
 
 	public ButtonGiveUp(Context con, Canvas can, float x, float y) {
-		super(con, can, x, y);
+		super(con, x, y);
 		HALF_OF_HEIGHT = CardUtil.getBitmap(mContext,
 				ResourseCommon.BUTTON_GIVEUP_NORMAL).getHeight() / 2;
 		HALF_OF_WIDTH = CardUtil.getBitmap(mContext,
@@ -31,14 +31,14 @@ public class ButtonGiveUp extends AbsButton {
 	}
 
 	@Override
-	protected void drawButtonOnPressedState() {
-		draw(CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_GIVEUP_PRESSED));
+	protected void drawButtonOnPressedState(Canvas canvas) {
+		draw(canvas,CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_GIVEUP_PRESSED));
 
 	}
 
 	@Override
-	protected void drawButtonOnNormalState() {
-		draw(CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_GIVEUP_NORMAL));
+	protected void drawButtonOnNormalState(Canvas canvas) {
+		draw(canvas,CardUtil.getBitmap(mContext, ResourseCommon.BUTTON_GIVEUP_NORMAL));
 
 	}
 
