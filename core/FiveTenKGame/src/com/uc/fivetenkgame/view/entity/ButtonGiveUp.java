@@ -19,7 +19,7 @@ public class ButtonGiveUp extends AbsButton {
 
 	public static AbsButton getInstance() {
 		if (mGiveUpButton == null)
-			new IllegalArgumentException("init first!!!");
+			throw new IllegalArgumentException("init first!!!");
 		return mGiveUpButton;
 	}
 

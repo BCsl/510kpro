@@ -64,7 +64,7 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 				card.setLocation((int) (baseX + i * space),
 						(int) (baseY - cardIntent));
 			temp = CardUtil.getBitmap(mContext,
-					CardUtil.ResourceName(card.getCardId()));
+					CardUtil.getResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 		card = null;
@@ -115,7 +115,7 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 			card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
 			card.setLocation((int) (baseX + i * space), (int) baseY);
 			temp = CardUtil.getBitmap(mContext,
-					CardUtil.ResourceName(card.getCardId()));
+					CardUtil.getResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 	}

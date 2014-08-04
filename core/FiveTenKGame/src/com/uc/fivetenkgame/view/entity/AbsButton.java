@@ -30,7 +30,7 @@ public abstract class AbsButton {
 	protected float HALF_OF_WIDTH;
 	protected float HALF_OF_HEIGHT;
 
-	public AbsButton(Context con, Canvas can, float x, float y) {
+	protected AbsButton(Context con, Canvas can, float x, float y) {
 		mContext = con;
 		mCanvas = can;
 		this.x = x;

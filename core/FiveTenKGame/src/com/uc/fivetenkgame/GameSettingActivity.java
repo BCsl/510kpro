@@ -160,7 +160,7 @@ public class GameSettingActivity extends Activity implements
 				flag = false;
 				break;
 			default:
-				new IllegalArgumentException("checkedId not find!");
+				throw new IllegalArgumentException("checkedId not find!");
 			}
 			sp.edit().putBoolean(SharePerferenceCommon.FIELD_QRCODE_FLAG, flag)
 					.commit();

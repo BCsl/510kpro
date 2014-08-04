@@ -169,15 +169,17 @@ public class GameViewActivity extends Activity {
 	private void initDialog() {
 		// 设置mBackPressDialog
 		mBackPressDialog = new AlertDialog.Builder(this)
-				.setTitle("暂停")
-				.setPositiveButton("返回", new DialogInterface.OnClickListener() {
+				.setTitle(getResources().getString(R.string.pause))
+				.setPositiveButton(getResources().getString(R.string.back),
+						new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						mGameApplication.setPause(false);
 						Player.getInstance().sendMsg(NetworkCommon.GAME_RESUME);// 恢复游戏
 					}
 				})
-				.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+				.setNegativeButton(getResources().getString(R.string.exit),
+						new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						GameViewActivity.this.finish();// 退出游戏
@@ -194,8 +196,8 @@ public class GameViewActivity extends Activity {
 
 		// 设置mPauseDialog
 		mPauseDialog = new AlertDialog.Builder(this)
-				.setTitle("其他玩家暂停游戏")
-				.setPositiveButton("不想等了，退出本次游戏",
+				.setTitle(getResources().getString(R.string.someone_exit))
+				.setPositiveButton(getResources().getString(R.string.exit),
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
@@ -208,13 +210,15 @@ public class GameViewActivity extends Activity {
 		mWinningDialog = new AlertDialog.Builder(this)
 				.setTitle(getResources().getString(R.string.game_over))
 				.setView(mWinningView)
-				.setNegativeButton("退出", new DialogInterface.OnClickListener() {
+				.setNegativeButton(getResources().getString(R.string.exit),
+						new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 					    GameViewActivity.this.finish();
 					}
 				})
-				.setPositiveButton("重玩", new DialogInterface.OnClickListener() {
+				.setPositiveButton(getResources().getString(R.string.replay),
+						new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						Player.getInstance().sendMsg(NetworkCommon.PLAY_AGAIN);
@@ -237,18 +241,22 @@ public class GameViewActivity extends Activity {
 	}
 
 	protected void showmWinningDialog(String[] res) {
+		 SharedPreferences mSharedPreferences= getApplicationContext().getSharedPreferences(
+				SharePerferenceCommon.TABLE_PLAYERS, MODE_PRIVATE);
 		((TextView) mWinningView.findViewById(R.id.text_winning_player))
-				.setText(getResources().getString(R.string.winner).replace("#",
-						res[0]));
+				.setText(mSharedPreferences.getString(res[0],res[0])+getResources().getString(R.string.winner));
 		((TextView) mWinningView.findViewById(R.id.text_score_player1))
-				.setText(getResources().getString(R.string.player1_score)
-						.replace("#", res[1]));
+				.setText(mSharedPreferences.getString(SharePerferenceCommon.FIELD_PAAYER1,
+						SharePerferenceCommon.FIELD_PAAYER1)+getResources().getString(R.string.score)
+						+res[1]);
 		((TextView) mWinningView.findViewById(R.id.text_score_player2))
-				.setText(getResources().getString(R.string.player2_score)
-						.replace("#", res[2]));
+				.setText(mSharedPreferences.getString(SharePerferenceCommon.FIELD_PAAYER2,
+						SharePerferenceCommon.FIELD_PAAYER2)+getResources().getString(R.string.score)
+						+res[2]);
 		((TextView) mWinningView.findViewById(R.id.text_score_player3))
-				.setText(getResources().getString(R.string.player3_score)
-						.replace("#", res[3]));
+				.setText(mSharedPreferences.getString(SharePerferenceCommon.FIELD_PAAYER3,
+						SharePerferenceCommon.FIELD_PAAYER3)+getResources().getString(R.string.score)
+						+res[3]);
 		mWinningDialog.show();
 	}
 

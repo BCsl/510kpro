@@ -304,8 +304,7 @@ public class RuleJudgeUtils {
 			prefix.append(ResourseCommon.SPADE_PREFIX);
 			break;
 		default:
-			new IllegalArgumentException(cardNO + "is not defined!");
-			break;
+		 throw	new IllegalArgumentException(cardNO + "is not defined!");
 		}
 		cardNO %= 13;
 		if (cardNO < 3)

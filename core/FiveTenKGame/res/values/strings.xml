@@ -34,7 +34,7 @@
     <string name="history_score">回合记录</string>
     <string name="game_restart">等待其他玩家重玩</string>
     <string name="input_user_name">输入用户名</string>
-	<string name="winner">玩家#胜利</string>
+	<string name="winner">胜利</string>
 	<string name="player1_score">玩家1分数：#</string>
 	<string name="player2_score">玩家2分数：#</string>
 	<string name="player3_score">玩家3分数：#</string>
@@ -62,13 +62,20 @@
 	<string name="hand_cards">出牌</string>
 	<string name="give_up">放弃</string>
 	<string name="cards_number">牌数：</string>
-	<string name="score">分数：</string>
+	<string name="score"> 分数：</string>
 	<string name="players">玩家：</string>
 	<string name="player">玩家</string>
 	<string name="game_score">本轮分数：</string>
 	<string name="please_base_on_rule">请按规则出牌喔</string>
 	<string name="tips">为了能有更好的体验，请用分辨率跟高的手机进行游戏!</string>
 	<string name="score_text_length">分数分数分</string>
+	<string name="pause">暂停</string>
+	<string name="back">返回</string>
+	<string name="exit">退出</string>
+	<string name="replay">重玩</string>
+	<string name="someone_exit">其他玩家暂停游戏</string>
+	
+	
 	
 	<!-- 历史对话框 -->
 	<string name="history_name">用户名</string>
