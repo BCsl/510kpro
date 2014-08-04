@@ -52,15 +52,17 @@ public class NormalCardTypeRule implements RuleUnit {
 				|| cType == CardType.cardType.c422
 				|| cType == CardType.cardType.c11122234
 				|| cType == CardType.cardType.c1112223344) {
-			List<Card> a1 = RuleJudgeUtils.getOrder2(cardList1); // 我出的牌
-			List<Card> a2 = RuleJudgeUtils.getOrder2(cardList2);// 当前最大牌
-			Log.i(this.getClass().getMethods().toString(), "a1.get(0)="
-					+ a1.get(0).getCardId());
-			Log.i(this.getClass().getMethods().toString(), "a2.get(0)="
-					+ a2.get(0).getCardId());
-			if (RuleJudgeUtils.getValue(a1.get(0)) <= RuleJudgeUtils.getValue(a2
+			List<Card> list1 = RuleJudgeUtils.getOrder2(cardList1); // 我出的牌
+			List<Card> list2 = RuleJudgeUtils.getOrder2(cardList2);// 当前最大牌
+			Log.i(this.getClass().getName(), "list1.get(0)="
+					+ list1.get(0).getCardId());
+			Log.i(this.getClass().getName(), "list2.get(0)="
+					+ list2.get(0).getCardId());
+			if (RuleJudgeUtils.getValue(list1.get(0)) <= RuleJudgeUtils.getValue(list2
 					.get(0)))
 				return 0;
+			else
+				return 1;
 		}
 		return 1;
 	}

@@ -14,9 +14,7 @@ public class SpecialCardTypeRule implements RuleUnit {
 	@Override
 	public int checkCards(cardType cType, List<Card> cardList1,
 			cardType cType2, List<Card> cardList2) {
-		Log.i("basic rule", "非第一个打牌");
-		Log.i("cardList1", cType.toString());
-		Log.i("cardList2", cType2.toString());
+		Log.i(this.getClass().getName(), "NormalCardTypeRule");
 
 		if (cType == CardType.cardType.c0)
 			return 0;
@@ -26,8 +24,10 @@ public class SpecialCardTypeRule implements RuleUnit {
 			return 0;
 		// 如果张数不同直接过滤
 		if (cType != CardType.cardType.c4 && cType != CardType.cardType.c510k
-				&& cType != CardType.cardType.c510K)
-			return 0;
+				&& cType != CardType.cardType.c510K){
+			Log.i(this.getClass().getName(), "张数不同直接过滤,返回-1，需要继续判断");
+			return -1;
+		}
 		Log.i(this.getClass().getName(), "存在特殊牌");
 		/*
 		 * // 张数大于4的炸弹 if (cType == CardType.cardType.c4 && cType2 !=
@@ -88,7 +88,7 @@ public class SpecialCardTypeRule implements RuleUnit {
 			return 1;
 		if (cType2 == CardType.cardType.c4)
 			return 0;
-		Log.i(this.getClass().getName(), "返回-1，需要继续判断");
+		Log.i(this.getClass().getName(), "规则底部，返回-1，需要继续判断");
 		return -1;
 	}
 }

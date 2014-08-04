@@ -30,6 +30,7 @@ public class BasicRule implements IRule {
 	public int checkCards(List<Card> cardList1, List<Card> cardList2) {
 		cardType cType = RuleJudgeUtils.judgeType(cardList1);
 		cardType cType2 = RuleJudgeUtils.judgeType(cardList2);
+		Log.i(this.getClass().getName(), "非第一个打牌");
 		Log.i(this.getClass().getName(), "card list 1 type:" + cType.toString());
 		Log.i(this.getClass().getName(),
 				"card list 2 type:" + cType2.toString());
