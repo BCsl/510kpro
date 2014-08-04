@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  *
  * 上午10:01:09 2014-7-30
  */
-public class IPMatcherUtil {
+public class MatcherUtil {
 
 	/**
 	 * 检查IP是否有效
@@ -32,5 +32,19 @@ public class IPMatcherUtil {
 		Matcher m = pattern.matcher(ipaddr);
 		flag = m.matches();
 		return flag;
-		}
+	}
+	
+	/**
+	 * 检查mac地址是否有效
+	 * 
+	 * @param addr 输入的mac字符串
+	 * @return 是否有效
+	 */
+	public static boolean isMacAddress(String addr){
+		boolean flag = false;
+		Pattern pattern = Pattern.compile("([0-9A-F]{2})(:[0-9A-F]{2}){5}");
+		Matcher matcher = pattern.matcher(addr);
+		flag = matcher.matches();
+		return flag;
+	}
 }

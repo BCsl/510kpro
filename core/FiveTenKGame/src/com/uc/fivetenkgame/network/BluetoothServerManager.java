@@ -9,9 +9,16 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+/**
+ * 服务器蓝牙网络管理类
+ * 
+ * @author liuzd
+ *
+ */
 public class BluetoothServerManager extends BluetoothManager {
 
 	private static final String LOG_SERVER_MANAGER = "BluetoothServerManager :";
+	//SDP服务名称
 	private static final String SDP_RECORD_NAME = "Bluetooth Network";
 	
 	private BluetoothServerSocket mBluetoothServerSocket = null;
@@ -77,6 +84,10 @@ public class BluetoothServerManager extends BluetoothManager {
 		
 	}
 
+	/**
+	 * 监听蓝牙网络
+	 * 
+	 */
 	@Override
 	public void initNetwork(String addr) {
 		
@@ -91,7 +102,6 @@ public class BluetoothServerManager extends BluetoothManager {
 		
 		mThread = new ListenThread();
 		mThread.start();
-		
 	}
 
 	@Override

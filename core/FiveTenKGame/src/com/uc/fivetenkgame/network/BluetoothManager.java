@@ -4,6 +4,12 @@ import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
 
+/**
+ * 蓝牙网络管理抽象类
+ * 
+ * @author liuzd
+ *
+ */
 abstract class BluetoothManager implements NetworkInterface {
 	//指定某一ID的蓝牙服务
 	protected static final UUID BLUETOOTH_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");

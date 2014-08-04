@@ -6,6 +6,12 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
+/**
+ * 客户端蓝牙网络管理类
+ * 
+ * @author liuzd
+ *
+ */
 public class BluetoothClientManager extends BluetoothManager {
 
 	private static final String LOG_CLIENT_MANAGER = "BluetoothClientManager :";
@@ -30,8 +36,10 @@ public class BluetoothClientManager extends BluetoothManager {
 	public void initNetwork(final String addr) {
 		Thread thread = new Thread(){
 							public void run(){
+								//利用服务器蓝牙设备的地址获得该远程蓝牙设备
 								mRemoteDevice = mBluetoothAdapter.getRemoteDevice(addr);
 								try {
+									//创建与服务器设备连接的socket
 									BluetoothSocket socket = mRemoteDevice.createRfcommSocketToServiceRecord(BLUETOOTH_UUID);
 									
 									mBluetoothAdapter.cancelDiscovery();

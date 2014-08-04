@@ -1,5 +1,11 @@
 package com.uc.fivetenkgame.network;
 
+/**
+ * 本地客户端蓝牙网络管理类, 收发消息通过直接函数调用实现
+ * 
+ * @author liuzd
+ *
+ */
 public class BluetoothLocalClient extends BluetoothManager{
 
 	private static BluetoothLocalClient gInstance = null;
@@ -23,7 +29,7 @@ public class BluetoothLocalClient extends BluetoothManager{
 
 	@Override
 	public void initNetwork(String addr) {
-		
+		//BluetoothServerManager.getInstance().addLocalPlayer();
 	}
 
 	@Override
