@@ -37,7 +37,7 @@ public class BasicRule implements IRule {
 		int result;
 		for (RuleUnit ruleUnit : mRuleSet) {
 			result = ruleUnit.checkCards(cType, cardList1, cType2, cardList2);
-			if (result == 1)
+			if (result != -1)
 				return result;
 		}
 		return 0;
