@@ -72,7 +72,7 @@ public class WaitingGameActivity extends Activity {
 				SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 		mName = sp.getString(SharePerferenceCommon.FIELD_MY_NAME, "Player");
 
-		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, false);		
+		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, true);		
 
 		String strIp = null;
 		
@@ -111,24 +111,25 @@ public class WaitingGameActivity extends Activity {
 				mServer.setNetworkManager(ServerManager.getInstance());
 			}
 			else {
+				if( !BluetoothAdapter.getDefaultAdapter().isEnabled() )
+					BluetoothAdapter.getDefaultAdapter().enable();
 				mServer.setNetworkManager(BluetoothServerManager.getInstance());
 			}
 			
 			//设置本地玩家
 			if( isUseWifi ){
 				mPlayer.setNetworkManager(ClientManager.getInstance());
-				
+				mServer.startListen();
+				mPlayer.startPlay(strIp, mName);
 			}
 			else {
+				
 				mPlayer.setNetworkManager(BluetoothLocalClient.getInstance());
+				mPlayer.startPlay(strIp, mName);
+				//蓝牙本地玩家直接通过函数调用实现，需先设置玩家，再开监听器
+				mServer.startListen();
 			}
-			mServer.startListen();
-			try{
-			    Thread.sleep(500);
-			}catch (Exception e){
-			    
-			}
-			mPlayer.startPlay(strIp, mName);
+			
 		} else {
 			String ipAddr = intent.getStringExtra("IP");
 			//设置本地玩家
