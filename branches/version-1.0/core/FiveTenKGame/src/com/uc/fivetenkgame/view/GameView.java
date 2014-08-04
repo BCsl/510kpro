@@ -55,7 +55,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private Thread mDrawThread;
 	private boolean startDraw;
 	private AbsDrawer mRightPlayerDarwer, mLeftPlayerDrawer, mMainPlayerDrawer;
-	
+
 	private List<Card> mCardList;
 	private int mPlayerId, mRightPlayeId = -1, mLeftPlayerId = -1;
 	private String mPlayerName, mRightPlayerName, mLeftPlayerName;
@@ -330,8 +330,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	private void drawHositoryButton(Canvas canvas) {
-		ButtonHistory.getInstance(mContext, canvas, mScreenHolder.width/2, mScreenHolder.height/4).doDraw();
-		
+		ButtonHistory.getInstance(mContext, canvas, mScreenHolder.width/2, mScreenHolder.height/4).doDraw(canvas);
 	}
 
 	private void drawMeFirst(Canvas canvas, Paint paint) {
