@@ -17,6 +17,7 @@ import com.uc.fivetenkgame.view.entity.Card;
 public class BasicRule implements IRule {
 	private List<RuleUnit> mRuleSet;
 	private final String mRuleName = "BasicRule";
+	private final int mCardPackNumber = 2;
 
 	public BasicRule() {
 		mRuleSet = new ArrayList<RuleUnit>();
@@ -60,5 +61,10 @@ public class BasicRule implements IRule {
 				|| (cType == cardType.c510K) || (cType == cardType.ckk))
 			return true;
 		return false;
+	}
+
+	@Override
+	public int getCardPackNumber() {
+		return mCardPackNumber;
 	}
 }

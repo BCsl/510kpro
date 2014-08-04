@@ -27,5 +27,7 @@ public interface IRule {
 	String getRuleName();
 	
 	boolean isBoom(List<Card> cardList);
+	
+	int getCardPackNumber();
 }
 
