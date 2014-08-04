@@ -6,11 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.http.util.EncodingUtils;
 
@@ -58,8 +54,10 @@ public class Player implements PlayerContext {
 		public void reveiveMessage(String msg) {
 			Log.i("player receive msg", msg);
 			if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_PAUSE)
-					|| CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_RESUME)
-					|| CommonMsgDecoder.checkMessage(msg, NetworkCommon.GAME_EXIT)) {
+					|| CommonMsgDecoder.checkMessage(msg,
+							NetworkCommon.GAME_RESUME)
+					|| CommonMsgDecoder.checkMessage(msg,
+							NetworkCommon.GAME_EXIT)) {
 				mHandler.obtainMessage(NetworkCommon.GAME_STATE_CHANGE, msg)
 						.sendToTarget(); // 由activity处理
 				Log.i("!!!player", "msg sent to target");
@@ -81,9 +79,9 @@ public class Player implements PlayerContext {
 				if (currentPlayer == mPlayerModel.getPlayerNumber()) {
 					outTimeAction();
 				} else {
-				    return false;
+					return false;
 				}
-				
+
 			}
 			mHandList = new ArrayList<Card>();
 			if (formerCardList == null) {
@@ -128,20 +126,20 @@ public class Player implements PlayerContext {
 					return false;
 				}
 			}
-			//出牌成功，将牌交给状态机处理
+			// 出牌成功，将牌交给状态机处理
 			String cardString = getCardsToBePlayed();
-			if (cardString == null) {//放弃
-			    handle(NetworkCommon.GIVE_UP + getPlayerNumber());
-			} else {//选完牌
-			    handle(NetworkCommon.PLAY_CARDS + cardString);
+			if (cardString == null) {// 放弃
+				handle(NetworkCommon.GIVE_UP + getPlayerNumber());
+			} else {// 选完牌
+				handle(NetworkCommon.PLAY_CARDS + cardString);
 			}
-			
+
 			return true;
 		}
 	};
 	private String mHistoryPath;
 	private String mRuleName;
-	int[] historyMoney = new int[3];
+	int[] historyMoney = null;
 
 	public void startPlay(String addr, String name) {
 		mPlayerModel.setPlayerName(name);
@@ -189,8 +187,8 @@ public class Player implements PlayerContext {
 	}
 
 	private Player() {
-		//mNetworkManager = ClientManager.getInstance();
-		//mNetworkManager.setOnReceiveMessage(mReceiveMessage);
+		// mNetworkManager = ClientManager.getInstance();
+		// mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 		mPlayerModel = new PlayerModel();
 		mRuleName = "BasicRule";
 
@@ -201,11 +199,11 @@ public class Player implements PlayerContext {
 		// mPlayerModel.setScore(0);
 	}
 
-	public void setNetworkManager(NetworkInterface networkInterface){
+	public void setNetworkManager(NetworkInterface networkInterface) {
 		mNetworkManager = networkInterface;
 		mNetworkManager.setOnReceiveMessage(mReceiveMessage);
 	}
-	
+
 	public void setInitPlayerCards(String cards) {
 		Log.i("初始手牌:", cards);
 		String[] tCard = cards.split(",");
@@ -311,7 +309,7 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void gameOver(String[] str) {
-		viewController.gameOver(Integer.valueOf(str[0]));
+		viewController.gameOver();
 		mHandler.obtainMessage(NetworkCommon.END_GAME, str).sendToTarget();
 	}
 
@@ -488,47 +486,19 @@ public class Player implements PlayerContext {
 	}
 
 	private void updatePlayerMoney(String[] str) {
-		int[] money = new int[3];
+		if (historyMoney == null) {
+			historyMoney = new int[3];
+			historyMoney[0] = 0;
+			historyMoney[1] = 0;
+			historyMoney[2] = 0;
+		}
 		int[] score = new int[3];
 		score[0] = Integer.valueOf(str[1]);
 		score[1] = Integer.valueOf(str[2]);
 		score[2] = Integer.valueOf(str[3]);
-
-		Map<Integer, Integer> map = new TreeMap<Integer, Integer>();
-		map.put(0, score[0]);
-		map.put(1, score[1]);
-		map.put(2, score[2]);
-		List<Map.Entry<Integer, Integer>> infoIds = new ArrayList<Map.Entry<Integer, Integer>>(
-				map.entrySet());
-		Collections.sort(infoIds,
-				new Comparator<Map.Entry<Integer, Integer>>() {
-					public int compare(Map.Entry<Integer, Integer> o1,
-							Map.Entry<Integer, Integer> o2) {
-						return (o2.getValue() - o1.getValue());
-					}
-				});
-
-		// 当出现相同分数时，需判断具体排名
-		if (infoIds.get(0).getValue() == infoIds.get(1).getValue()
-				&& infoIds.get(2).getValue() == infoIds.get(1).getValue()) {
-			money[infoIds.get(0).getKey()] = money[infoIds.get(1).getKey()] = money[infoIds
-					.get(2).getKey()] = 0;
-		} else if (infoIds.get(0).getValue() == infoIds.get(1).getValue()
-				&& infoIds.get(2).getValue() != infoIds.get(1).getValue()) {
-			money[infoIds.get(2).getKey()] = -2;
-			money[infoIds.get(0).getKey()] = money[infoIds.get(1).getKey()] = 1;
-		} else if (infoIds.get(0).getValue() != infoIds.get(1).getValue()
-				&& infoIds.get(2).getValue() == infoIds.get(1).getValue()) {
-			money[infoIds.get(0).getKey()] = 2;
-			money[infoIds.get(1).getKey()] = money[infoIds.get(2).getKey()] = -1;
-		} else {
-			money[infoIds.get(0).getKey()] = 1;
-			money[infoIds.get(1).getKey()] = 0;
-			money[infoIds.get(2).getKey()] = -1;
-		}
-
+		int avgScore = (score[0] + score[1] + score[2]) / 3;
 		for (int i = 0, count = historyMoney.length; i < count; i++) {
-			historyMoney[i]+=money[i];
+			historyMoney[i] += (score[i] - avgScore);
 		}
 	}
 

@@ -5,8 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 
-import android.util.Log;
-
 import com.uc.fivetenkgame.common.ResourseCommon;
 import com.uc.fivetenkgame.ruleController.utils.CardType.cardType;
 import com.uc.fivetenkgame.view.entity.Card;
@@ -250,7 +248,7 @@ public class RuleJudgeUtils {
 		int index = ResourseCommon.MIN_SUFFIX;// 数量最多的有相同后缀的牌的位置
 		for (int i = 0; i < 20; i++) {
 			index = ResourseCommon.MIN_SUFFIX;
-			for (int j = 19; j >= 0; j--) {
+			for (int j = ResourseCommon.MAX_SUFFIX; j >= ResourseCommon.MIN_SUFFIX; j--) {
 				if (number[j] > number[index])
 					index = j;
 			}
@@ -304,7 +302,7 @@ public class RuleJudgeUtils {
 			prefix.append(ResourseCommon.SPADE_PREFIX);
 			break;
 		default:
-		 throw	new IllegalArgumentException(cardNO + "is not defined!");
+			throw new IllegalArgumentException(cardNO + "is not defined!");
 		}
 		cardNO %= 13;
 		if (cardNO < 3)
