@@ -24,9 +24,10 @@ import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.common.SharePerferenceCommon;
+import com.uc.fivetenkgame.common.SoundPoolCommon;
 import com.uc.fivetenkgame.network.NetworkInterface;
 import com.uc.fivetenkgame.network.OnReceiveMessageListener;
-import com.uc.fivetenkgame.ruleController.Rule;
+import com.uc.fivetenkgame.ruleController.IRule;
 import com.uc.fivetenkgame.ruleController.RuleManager;
 import com.uc.fivetenkgame.state.State;
 import com.uc.fivetenkgame.state.playerstate.InitState;
@@ -45,7 +46,7 @@ import com.uc.fivetenkgame.view.util.CardUtil;
  */
 @SuppressLint("UseValueOf")
 public class Player implements PlayerContext {
-	private Rule mRule;
+	private IRule mRule;
 	private State mState;
 	private boolean doneHandCard = false;
 	private boolean isRestart = false;
@@ -271,6 +272,11 @@ public class Player implements PlayerContext {
 		for (int i = 0, count = outList.length; i < count; i++) {
 			cardList.add(new Card(outList[i]));
 		}
+		if (mRule.isBoom(cardList))
+			((GameApplication) mApplicationContext.getApplicationContext())
+					.playSound(SoundPoolCommon.SOUND_BOOM);
+		viewController.setPlayersOutList(Integer.parseInt(playerNumber),
+				cardList);
 		viewController.setPlayersOutList(Integer.parseInt(playerNumber),
 				cardList);
 		if (cardList != null)
@@ -305,7 +311,7 @@ public class Player implements PlayerContext {
 
 	@Override
 	public void gameOver(String[] str) {
-		 viewController.gameOver();
+		viewController.gameOver(Integer.valueOf(str[0]));
 		mHandler.obtainMessage(NetworkCommon.END_GAME, str).sendToTarget();
 	}
 

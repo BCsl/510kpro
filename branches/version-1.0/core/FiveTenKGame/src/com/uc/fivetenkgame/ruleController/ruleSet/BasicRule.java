@@ -5,7 +5,7 @@ import java.util.List;
 
 import android.util.Log;
 
-import com.uc.fivetenkgame.ruleController.Rule;
+import com.uc.fivetenkgame.ruleController.IRule;
 import com.uc.fivetenkgame.ruleController.baseRule.FirstPlayCardsRule;
 import com.uc.fivetenkgame.ruleController.baseRule.NormalCardTypeRule;
 import com.uc.fivetenkgame.ruleController.baseRule.RuleUnit;
@@ -14,7 +14,7 @@ import com.uc.fivetenkgame.ruleController.utils.CardType.cardType;
 import com.uc.fivetenkgame.ruleController.utils.RuleJudgeUtils;
 import com.uc.fivetenkgame.view.entity.Card;
 
-public class BasicRule implements Rule {
+public class BasicRule implements IRule {
 	private List<RuleUnit> mRuleSet;
 	private final String mRuleName = "BasicRule";
 
@@ -51,5 +51,14 @@ public class BasicRule implements Rule {
 	@Override
 	public String getRuleName() {
 		return mRuleName;
+	}
+
+	@Override
+	public boolean isBoom(List<Card> cardList) {
+		cardType cType = RuleJudgeUtils.judgeType(cardList);
+		if ((cType == cardType.c4) || (cType == cardType.c510k)
+				|| (cType == cardType.c510K) || (cType == cardType.ckk))
+			return true;
+		return false;
 	}
 }
