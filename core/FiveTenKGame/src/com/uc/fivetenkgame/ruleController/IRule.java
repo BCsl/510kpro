@@ -9,7 +9,7 @@ import com.uc.fivetenkgame.view.entity.Card;
  * @author fuyx
  *
  */
-public interface Rule {
+public interface IRule {
 	/**  
 	 * @return 0 if cardList1 is illegal, 1 if it is legal
 	 * @param cardList1 the cards to be played
@@ -25,5 +25,7 @@ public interface Rule {
 	int firstPlayCards(List<Card> cardList);
 	
 	String getRuleName();
+	
+	boolean isBoom(List<Card> cardList);
 }
 
