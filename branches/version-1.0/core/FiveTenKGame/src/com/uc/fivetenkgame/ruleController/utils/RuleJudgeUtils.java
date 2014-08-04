@@ -233,6 +233,7 @@ public class RuleJudgeUtils {
 		}
 	}
 
+	/*
 	// 按照重复次数排序
 	public static List<Card> getOrder2(List<Card> list) {
 		List<Card> list2 = new Vector<Card>(list);
@@ -261,6 +262,38 @@ public class RuleJudgeUtils {
 			number[index] = 0;
 		}
 		return temp;
+	} 
+	 */
+
+	// 按照重复次数排序
+	public static List getOrder2(List<Card> list) {
+		List<Card> list2 = new Vector<Card>(list);
+		List<Card> list3 = new Vector<Card>();
+		List<Integer> list4 = new Vector<Integer>();
+		int len = list2.size();
+		int a[] = new int[20];
+		for (int i = 0; i < 20; i++)
+			a[i] = 0;
+		for (int i = 0; i < len; i++) {
+			a[RuleJudgeUtils.getValue(list2.get(i))]++;
+		}
+		int max = 0;
+		for (int i = 0; i < 20; i++) {
+			max = 0;
+			for (int j = 19; j >= 0; j--) {
+				if (a[j] > a[max])
+					max = j;
+			}
+
+			for (int k = 0; k < len; k++) {
+				if (RuleJudgeUtils.getValue(list2.get(k)) == max) {
+					list3.add(list2.get(k));
+				}
+			}
+			list2.remove(list3);
+			a[max] = 0;
+		}
+		return list3;
 	}
 
 	// 判断牌型用的内部类
