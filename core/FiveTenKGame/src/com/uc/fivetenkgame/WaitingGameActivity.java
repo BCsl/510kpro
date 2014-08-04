@@ -88,7 +88,6 @@ public class WaitingGameActivity extends Activity {
 			//¿∂—¿µÿ÷∑
 			strIp = BluetoothAdapter.getDefaultAdapter().getAddress();
 		}
-		
 		mIpAddress.setText(mIpAddress.getText() + strIp);
 		
 		if (isServer) {

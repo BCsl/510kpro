@@ -76,7 +76,7 @@ public interface IViewControler {
 	/**
 	 * 游戏结束操作
 	 */
-	public void gameOver(int playId);
+	public void gameOver();
 	/**
 	 * 出牌没按照规则
 	 */
