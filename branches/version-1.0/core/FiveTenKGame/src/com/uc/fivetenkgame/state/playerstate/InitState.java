@@ -9,30 +9,26 @@ import com.uc.fivetenkgame.player.PlayerContext;
  * player初始化状态,向server发起连接
  * 
  * @author lm
- *
+ * 
  */
 public class InitState extends PlayerState {
-	String tag = "InitState";
+    String tag = "player InitState";
 
-	public InitState(PlayerContext context) {
-		super(context);
-	}
+    public InitState(PlayerContext context) {
+        super(context);
+    }
 
-	/**
-	 * 
-	 * @param msg
-	 * 				server ip
-	 */
-	@Override
-	public void handle(String msg) {
-	    Log.i(tag, "msg is " + msg);
-		if(msg==null){//记录日志，此状态下不能为null
-			Log.i("开始状态", "msg(ip)为null");
-		}else{
-			mPlayerContext.initNetwork(msg);//连接到server
-			mPlayerContext.setState(new ConnectState(mPlayerContext));
-			mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
-		}
-	}
+    @Override
+    public void handle(String msg) {
+        Log.i(tag, "msg is " + msg);
+        if (msg == null) {// 记录日志，此状态下不能为null
+            Log.i(tag, "msg(ip)为null");
+
+        } else {// 根据ip(msg)连接到server
+            mPlayerContext.initNetwork(msg);
+            mPlayerContext.setState(new ConnectState(mPlayerContext));
+            mPlayerContext.handle(NetworkCommon.PLAYER_STATE_CHANGE);
+        }
+    }
 
 }

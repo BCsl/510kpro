@@ -1,5 +1,9 @@
 package com.uc.fivetenkgame.common;
-
+/**
+ * 用来匹配和解析Common信息
+ * @author lm
+ *
+ */
 public class CommonMsgDecoder{
 
     private static int playerCount = 3;
