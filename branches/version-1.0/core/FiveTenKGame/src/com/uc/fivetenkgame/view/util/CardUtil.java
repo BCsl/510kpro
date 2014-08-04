@@ -27,7 +27,7 @@ public class CardUtil {
 	 * @param Id  ¿¨Æ¬id
 	 * @return
 	 */
-	public static String ResourceName(String Id) {
+	public static String getResourceName(String Id) {
 		StringBuilder prefix = new StringBuilder();
 		int cardNO = Integer.valueOf(Id.trim());
 		if (cardNO == 0)
@@ -52,8 +52,7 @@ public class CardUtil {
 			prefix.append(ResourseCommon.SPADE_PREFIX);
 			break;
 		default:
-			new IllegalArgumentException(cardNO + "is not defined!");
-			break;
+		throw new IllegalArgumentException(cardNO + "is not defined!");
 		}
 		cardNO %= 13;
 		if (cardNO < 3)

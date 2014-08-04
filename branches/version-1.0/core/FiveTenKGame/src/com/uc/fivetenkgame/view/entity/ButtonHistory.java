@@ -39,7 +39,7 @@ public class ButtonHistory extends AbsButton {
 
 	public static AbsButton getInstance() {
 		if (mButtonHistory == null)
-			new IllegalArgumentException("init first!!!");
+			throw new IllegalArgumentException("init first!!!");
 		return mButtonHistory;
 	}
 

@@ -55,7 +55,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private Thread mDrawThread;
 	private boolean startDraw;
 	private AbsDrawer mRightPlayerDarwer, mLeftPlayerDrawer, mMainPlayerDrawer;
-
+	
 	private List<Card> mCardList;
 	private int mPlayerId, mRightPlayeId = -1, mLeftPlayerId = -1;
 	private String mPlayerName, mRightPlayerName, mLeftPlayerName;
