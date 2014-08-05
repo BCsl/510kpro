@@ -18,8 +18,6 @@ import android.widget.Toast;
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
-import com.uc.fivetenkgame.view.entity.ButtonGiveUp;
-import com.uc.fivetenkgame.view.entity.ButtonHandCard;
 import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
@@ -68,22 +66,6 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 		card = null;
-	}
-
-	/**
-	 * 以baseY为基准，水平方向上画按钮
-	 * 
-	 * @param paint
-	 * @param baseY
-	 */
-	protected void drawButton(Paint paint, float baseY) {
-		float leftButtonX = mScreenHolder.width / 2 - 2
-				* mCardSizeHolder.width;
-		float rightButtonX = mScreenHolder.width / 2 + 2
-				* mCardSizeHolder.width;
-		ButtonHandCard.getInstance(mContext, mCanvas, leftButtonX, baseY).doDraw(mCanvas);
-		ButtonGiveUp.getInstance(mContext, mCanvas, rightButtonX, baseY).doDraw(mCanvas);
-
 	}
 
 	/**

@@ -14,9 +14,11 @@ import my.example.fivetenkgame.R;
 import android.content.Context;
 import android.graphics.Paint;
 
+import com.uc.fivetenkgame.common.ResourseCommon;
 import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
 import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
 import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
  * @author chensl@ucweb.com
@@ -41,7 +43,6 @@ public class RightPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 		RIGHT_OUTCARDS_BASEX = mScreenHolder.width - 4 * mCardSizeHolder.width;
 		RIGHT_CARDS_BASEX = mScreenHolder.width - 2 * mCardSizeHolder.width;
 	}
-
 	@Override
 	protected void doDraw(Paint paint, String name, boolean isMyTurn,
 			int timeRemind, int cardNumber, int score, List<Card> outList) {
@@ -51,16 +52,15 @@ public class RightPlayerDrawer extends AbsOtherPlayerInfoDrawer {
 					- mCardSizeHolder.width + 10, mScreenHolder.height / 2);
 			drawHandCardFlag(RIGHT_CARDS_BASEX - mCardSizeHolder.width + 10);
 		}
-		drawOutList(outList, RIGHT_OUTCARDS_BASEX);
 		paint.setTextSize(TEXT_SIZE_SMALL);
 		nameLength=paint.measureText(name);
-		drawPlayer(name, paint, mScreenHolder.width - nameLength-10,
-				TEXT_SIZE);
-		drawCardsNumber(cardNumber, paint, mScreenHolder.width - paint.measureText(mContext.getString(R.string.cards_number)+String.valueOf(cardNumber)) - 20,
-				2 * TEXT_SIZE,RIGHT_CARDS_BASEX);
+		drawPlayer(name, paint, mScreenHolder.width - nameLength-20);
+		drawIcon(CardUtil.getBitmap(mContext, ResourseCommon.ICON_USRE1),mScreenHolder.width-2*mCardSizeHolder.width);
 		drawScore(score, paint, mScreenHolder.width
-				- nameLength -paint.measureText(mContext.getString(R.string.score)+String.valueOf(score)) - 20, TEXT_SIZE);
-
+				 -paint.measureText(mContext.getString(R.string.score)+String.valueOf(score)) -10 );
+		drawCardsNumber(cardNumber, paint, 
+				mScreenHolder.width - paint.measureText(mContext.getString(R.string.cards_number)+String.valueOf(cardNumber)) - 10);
+		drawOutList(outList, RIGHT_OUTCARDS_BASEX);
 	}
 
 }

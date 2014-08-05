@@ -21,7 +21,7 @@ import com.uc.fivetenkgame.view.entity.Card;
  */
 public class CardUtil {
 	private  static String TAG="CardUtil";
-	private static Map<String, Bitmap> CARDS_BITMAP = new HashMap<String, Bitmap>(73);//54+2+6+1
+	private static Map<String, Bitmap> CARDS_BITMAP = new HashMap<String, Bitmap>(75);//54+2+6+1+2
 	/**
 	 * 
 	 * @param Id  ¿¨Æ¬id

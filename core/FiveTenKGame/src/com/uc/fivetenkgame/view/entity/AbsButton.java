@@ -26,8 +26,8 @@ public abstract class AbsButton {
 	protected float y;
 	protected boolean isClick;
 	private Timer timer;
-	protected  float HALF_OF_WIDTH;
-	protected  float HALF_OF_HEIGHT;
+	protected final float HALF_OF_WIDTH;
+	protected final float HALF_OF_HEIGHT;
 
 	/**
 	 * 
@@ -40,13 +40,13 @@ public abstract class AbsButton {
 	 * @param halfHeight
 	 *            资源高度一半的大小
 	 */
-	protected AbsButton(Context con, float x, float y) {
+	public AbsButton(Context con, float x, float y,float halfOfWidth,float halfOfHeight) {
 		mContext = con;
 		this.x = x;
 		this.y = y;
 		timer = new Timer();
-		HALF_OF_WIDTH = 0;
-		HALF_OF_HEIGHT = 0;
+		HALF_OF_WIDTH = halfOfWidth;
+		HALF_OF_HEIGHT =halfOfHeight;
 	}
 
 	/**
@@ -56,10 +56,10 @@ public abstract class AbsButton {
 		if(canvas == null)
 			return ;
 		if(!isClick){
-			drawButtonOnNormalState( canvas);
+			drawButtonOnNormalState( canvas, x - HALF_OF_WIDTH,y - HALF_OF_HEIGHT);
 		}
 		else{
-			drawButtonOnPressedState( canvas);
+			drawButtonOnPressedState( canvas,x - HALF_OF_WIDTH,y - HALF_OF_HEIGHT);
 		}
 			
 	}
@@ -69,7 +69,7 @@ public abstract class AbsButton {
 	 * 
 	 * @param bitmap
 	 */
-	protected final void draw(Canvas canvas, Bitmap bitmap) {
+	public final void draw(Canvas canvas, Bitmap bitmap) {
 		if (canvas == null)
 			return;
 		canvas.drawBitmap(bitmap, x - HALF_OF_WIDTH, y - HALF_OF_HEIGHT, null);
@@ -108,11 +108,11 @@ public abstract class AbsButton {
 	/**
 	 * 画点击状态下的Button
 	 */
-	protected abstract void drawButtonOnPressedState(Canvas canvas);
+	public abstract void drawButtonOnPressedState(Canvas canvas,float x,float y);
 
 	/**
 	 * 画正常状态下的Button
 	 */
-	protected abstract void drawButtonOnNormalState(Canvas canvas);
+	public abstract void drawButtonOnNormalState(Canvas canvas,float x,float y);
 
 }
