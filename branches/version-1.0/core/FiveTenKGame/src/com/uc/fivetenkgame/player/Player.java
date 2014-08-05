@@ -498,10 +498,13 @@ public class Player implements PlayerContext {
 		score[0] = Integer.valueOf(str[1]);
 		score[1] = Integer.valueOf(str[2]);
 		score[2] = Integer.valueOf(str[3]);
+		int MoneyWithoutTheLast = 0; //除了最后一个玩家的钱
 		int avgScore = (score[0] + score[1] + score[2]) / 3;
-		for (int i = 0, count = historyMoney.length; i < count; i++) {
+		for (int i = 0, count = historyMoney.length-1; i < count; i++) {
 			historyMoney[i] += (score[i] - avgScore);
+			MoneyWithoutTheLast += historyMoney[i];
 		}
+		historyMoney[historyMoney.length-1] = -MoneyWithoutTheLast;
 	}
 
 	public List<String> getPlayerGameHistory() {
@@ -588,5 +591,10 @@ public class Player implements PlayerContext {
 			return;
 		}
 		file.delete();
+		
+		historyMoney = new int[3];
+		historyMoney[0] = 0;
+		historyMoney[1] = 0;
+		historyMoney[2] = 0;
 	}
 }
