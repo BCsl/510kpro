@@ -17,7 +17,8 @@ public class ResourseCommon {
 	public static final String BUTTON_HISTORY_NORMAL = "button_history_normal";
 	public static final String BUTTON_HISTORY_PRESSED = "button_history_pressed";
 	public static final String HANDCARD_FLAG = "chupai";
-
+	public static final String ICON_USRE1="user_1";
+	public static final String ICON_USRE2="user_2";
 	// 牌的后缀最大的数字
 	public static final int MAX_SUFFIX = 17;
 	// 牌的后缀最小的数字

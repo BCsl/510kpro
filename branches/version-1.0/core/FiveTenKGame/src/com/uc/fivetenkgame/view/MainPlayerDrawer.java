@@ -54,7 +54,6 @@ public class MainPlayerDrawer extends AbsMainPlayerInfoDrawer {
 	@Override
 	protected void doDraw(Paint paint,boolean ismyTurn,int TimeRemind,String name,int cardNumber,int score,List<Card> cardList,List<Card> outList) {
 		if (ismyTurn) {
-			drawButton(paint, BUTTON_BASE_HEIGHT);
 			drawTime(String.valueOf(TimeRemind), paint,
 					mScreenHolder.width / 2, BUTTON_BASE_HEIGHT);
 		}

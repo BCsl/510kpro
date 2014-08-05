@@ -62,7 +62,6 @@ public class ServerManager extends NetworkManager {
 //						mServerSocket = new ServerSocket(NETWORK_PORT);
 					// return;
 					Socket socket = mServerSocket.accept();
-
 					Log.i(LOG_SERVER_TAG, "accept player :" + i);
 					TCPServer player = new TCPServer(ServerManager.this,
 							socket, i);

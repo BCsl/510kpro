@@ -34,36 +34,41 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 	}
 
 	/**
-	 * 根据(X,Y)画剩余牌数，同时以baseX为基准，画垂直方向上的只显示背面的牌
+	 * 重载drawPlayer，设定Y为同一高度
+	 * @param playerName
+	 * @param paint
+	 * @param x
+	 */
+	protected void drawPlayer(String playerName, Paint paint, float x) {
+		super.drawPlayer(playerName, paint, x, TEXT_SIZE);
+	}
+	/**
 	 * 
+	 * @param bitmap
+	 * @param x
+	 * @param y
+	 */
+	protected void drawIcon(Bitmap bitmap,float x){
+		mCanvas.drawBitmap(bitmap,x,TEXT_SIZE+10,null);
+	}
+	/**
+	 * 重载drawScore,设定Y为用以高度
+	 * @param score
+	 * @param paint
+	 * @param x
+	 */
+	protected void drawScore(int score, Paint paint, float x) {
+		super.drawScore(score, paint, x, 3*mCardSizeHolder.width+ 10 );
+	}
+	/**
+	 * 重载drawCardsNumber，设定Y为用以高度
 	 * @param cardsNumber
 	 * @param paint
 	 * @param x
-	 * @param y
-	 * @param baseX
-	 *            所有背景牌，都应该排列在的X坐标
 	 */
-	protected final void drawCardsNumber(int cardsNumber, Paint paint, float x, float y,
-			float baseX) {
-		super.drawCardsNumber(cardsNumber, paint, x, y);
-		if (cardsNumber == 0)
-			return;
-		cardsNumber = cardsNumber > 14 ? 14 : cardsNumber;// 最多只画15张背面的牌
-		float factor = (float) (mScreenHolder.height / 2 - mCardSizeHolder.height - mCardSizeHolder.width)
-				/ (float) (cardsNumber / 2 * mCardSizeHolder.height * 1 / 3);
-		float baseSpace = (float) factor > 1 ? mCardSizeHolder.height * 1 / 3
-				: mCardSizeHolder.height * 1 / 3 * factor;
-		Card card = new Card(Card.CARD_BG_ID);
-		card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
-		Bitmap temp = null;
-		for (int i = 0; i < cardsNumber; i++) {
-			card.setLocation((int) baseX, (int) (i * baseSpace +  mCardSizeHolder.width+TEXT_SIZE_SMALL));
-			temp = CardUtil.getBitmap(mContext,
-					CardUtil.getResourceName(card.getCardId()));
-			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
-		}
+	protected void drawCardsNumber(int cardsNumber, Paint paint, float x) {
+		super.drawCardsNumber(cardsNumber, paint, x,  3*mCardSizeHolder.width + TEXT_SIZE+10);
 	}
-	
 	/**
 	 * 以baseX为基准，画垂直方向上已出的牌
 	 * 
@@ -80,7 +85,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 						/ 4;
 		float baseSpace = (float) mCardSizeHolder.height / 4 * factor;
 		float baseY = (float) mScreenHolder.height / 2 - outList.size() / 2
-				* baseSpace;
+				* baseSpace-mCardSizeHolder.width;
 		Bitmap temp = null;
 		Card card = null;
 		for (int i = 0; i < outList.size(); i++) {
@@ -101,7 +106,6 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 		mCanvas.drawBitmap(CardUtil.getBitmap(mContext, ResourseCommon.HANDCARD_FLAG), baseX,
 				 mCardSizeHolder.width+TEXT_SIZE_SMALL, null);
 	}
-	
 	/**
 	 * 画全部信息
 	 * @param paint

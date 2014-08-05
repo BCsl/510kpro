@@ -32,9 +32,12 @@ import android.widget.Toast;
 
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.NetworkCommon;
+import com.uc.fivetenkgame.common.ResourseCommon;
 import com.uc.fivetenkgame.common.SharePerferenceCommon;
-import com.uc.fivetenkgame.view.entity.ButtonHistory;
+import com.uc.fivetenkgame.view.EventHandler.IViewInfoAccess;
+import com.uc.fivetenkgame.view.entity.AbsButton;
 import com.uc.fivetenkgame.view.entity.Card;
+import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
  * 游戏界面类
@@ -44,7 +47,7 @@ import com.uc.fivetenkgame.view.entity.Card;
  *         上午11:28:20 2014-7-9
  */
 public class GameView extends SurfaceView implements SurfaceHolder.Callback,
-		Runnable, IViewControler {
+		Runnable, IViewControler, IViewInfoAccess {
 	private String TAG = "GameView";
 
 	private ScreenSizeHolder mScreenHolder;
@@ -55,6 +58,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private Thread mDrawThread;
 	private boolean startDraw;
 	private AbsDrawer mRightPlayerDarwer, mLeftPlayerDrawer, mMainPlayerDrawer;
+	private AbsButton mGiveUpButton, mHistoryButton, mHandCardButton;
 
 	private List<Card> mCardList;
 	private int mPlayerId, mRightPlayeId = -1, mLeftPlayerId = -1;
@@ -68,38 +72,53 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private EventListener mEventListener;
 	private EventHandler mEventHandler;
 	private Handler mHandler;
-	
+
 	private Bitmap mBackgroudBitmap;
 	private int mCurrentPlayerId;
 	private Timer mTimer;
 	private int mTimeRemind;
-	private int TEXT_SIZE_BIG;
 	private boolean isFirst;
-	private boolean  myTurn;
-	
+	private boolean myTurn;
 
-	public GameView(Context context, int playerId ,Handler handler) {
+	private int mTextSizeBig;
+	private float mLeftButtonX;
+	private float mRightButtonX;
+	private float mButtonY;
+
+	public GameView(Context context, int playerId, Handler handler) {
 		super(context);
 		this.mContext = context;
 		this.mPlayerId = playerId;
-		this.mHandler=handler;
+		this.mHandler = handler;
 		initPlayersInfos(mPlayerId);
 		init();
 	}
-
-	public ScreenSizeHolder getScreenHolder() {
-		return mScreenHolder;
-	}
-
-	public CardSizeHolder getCardSizeHolder() {
-		return mCardSizeHolder;
-	}
-
 	public void initHolder() {
 		mHolder = this.getHolder();
 		mHolder.addCallback(this); // 设置Surface生命周期回调
 	}
 
+	private void init() {
+		startDraw = true;
+		isMyTurn = false;
+		mGameScore = 0;
+		mCardNumber = new Vector<Integer>();
+		mCardNumber.add(0);
+		mCardNumber.add(0);
+		mCardNumber.add(0);
+
+		mScroeList = new Vector<Integer>();
+		mScroeList.add(0);
+		mScroeList.add(0);
+		mScroeList.add(0);
+		mCardList = new Vector<Card>();
+		mOutList = new HashMap<Integer, List<Card>>();
+		mBackgroudBitmap = BitmapFactory.decodeResource(getResources(),
+				R.drawable.bg);
+		mCurrentPlayerId = -1;
+		mTimer = new Timer();
+		isFirst = true;
+	}
 	@Override
 	public void setGameScore(int score) {
 		mGameScore = score;
@@ -109,13 +128,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	@Override
 	public void setCardNumber(List<Integer> cardNumberList) {
 		mCardNumber = cardNumberList;
-		Log.i(TAG, "set CardNumber"+mCardNumber);
+		Log.i(TAG, "set CardNumber" + mCardNumber);
 	}
 
 	@Override
 	public void setScroeList(List<Integer> playersScroeList) {
 		mScroeList = playersScroeList;
-		Log.i(TAG, "set scoreList"+mScroeList);
+		Log.i(TAG, "set scoreList" + mScroeList);
 	}
 
 	@Override
@@ -147,8 +166,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	@Override
 	public void gameOver() {
-		mCurrentPlayerId =-1;
-		if(mTimer!=null){
+		mCurrentPlayerId = -1;
+		if (mTimer != null) {
 			mTimer.cancel();
 		}
 	}
@@ -186,31 +205,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			}
 		}, 1000, 1300);
 		mCurrentPlayerId = playerId;
-			if (playerId>0&&mOutList.get(playerId - 1) != null)
-				mOutList.get(playerId - 1).clear();
-	}
-
-
-	private void init() {
-		startDraw = true;
-		isMyTurn = false;
-		mGameScore = 0;
-		mCardNumber = new Vector<Integer>();
-		mCardNumber.add(0);
-		mCardNumber.add(0);
-		mCardNumber.add(0);
-
-		mScroeList = new Vector<Integer>();
-		mScroeList.add(0);
-		mScroeList.add(0);
-		mScroeList.add(0);
-		mCardList = new Vector<Card>();
-		mOutList = new HashMap<Integer, List<Card>>();
-		mBackgroudBitmap = BitmapFactory.decodeResource(getResources(),
-				R.drawable.bg);
-		mCurrentPlayerId = -1;
-		mTimer = new Timer();
-		isFirst = true;
+		if (playerId > 0 && mOutList.get(playerId - 1) != null)
+			mOutList.get(playerId - 1).clear();
 	}
 
 	private void initPlayersInfos(int playerId) {
@@ -230,13 +226,50 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			mLeftPlayerId = 2;
 			break;
 		}
-		mPlayerName=sp.getString(String.valueOf(playerId), String.valueOf(playerId));
-		mRightPlayerName=sp.getString(String.valueOf(mRightPlayeId), String.valueOf(mRightPlayeId));
-		mLeftPlayerName=sp.getString(String.valueOf(mLeftPlayerId), String.valueOf(mLeftPlayerId));
+		mPlayerName = sp.getString(String.valueOf(playerId),
+				String.valueOf(playerId));
+		mRightPlayerName = sp.getString(String.valueOf(mRightPlayeId),
+				String.valueOf(mRightPlayeId));
+		mLeftPlayerName = sp.getString(String.valueOf(mLeftPlayerId),
+				String.valueOf(mLeftPlayerId));
 	}
-
+	@Override
 	public IViewControler getViewControler() {
 		return this;
+	}
+	@Override
+	public AbsButton getGiveUpButton() {
+		return mGiveUpButton;
+	}
+	@Override
+	public AbsButton getHistoryButton() {
+		return mHistoryButton;
+	}
+	@Override
+	public AbsButton getHandCardButton() {
+		return mHandCardButton;
+	}
+
+	@Override
+	public ScreenSizeHolder getScreenSizeHolder() {
+		return mScreenHolder;
+	}
+	@Override
+	public CardSizeHolder getCardSizeHolder() {
+		return mCardSizeHolder;
+	}
+	@Override
+	public List<Card> getCardList() {
+		return mCardList;
+	}
+
+	@Override
+	public void openHistoryInfo() {
+		mHandler.obtainMessage(NetworkCommon.SHOW_HISTORY).sendToTarget();
+	}
+	@Override
+	public boolean isMyturn() {
+		return isMyTurn;
 	}
 
 	// 屏幕尺寸的获取需要在surfaceView创建之后才能获取
@@ -250,7 +283,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 				R.drawable.cardbg1);
 		mCardSizeHolder.height = temp.getHeight();
 		mCardSizeHolder.width = temp.getWidth();
-		TEXT_SIZE_BIG = mCardSizeHolder.width * 3 / 4;
+		mTextSizeBig = mCardSizeHolder.width * 3 / 4;
+		mLeftButtonX = (float) mScreenHolder.width / 2 - 2
+				* mCardSizeHolder.width;
+		mRightButtonX = (float) mScreenHolder.width / 2 + 2
+				* mCardSizeHolder.width;
+		mButtonY = (float) mScreenHolder.height - mCardSizeHolder.width * 3;
+
 		mRightPlayerDarwer = new RightPlayerDrawer(mContext, mScreenHolder,
 				mCardSizeHolder);
 		mLeftPlayerDrawer = new LeftPlayerDrawer(mContext, mScreenHolder,
@@ -316,9 +355,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 					drawMeFirst(canvas, paint);
 				else
 					drawOtherFirst(canvas, paint);
-
 				drawGameScore(canvas, paint);
-				drawHositoryButton(canvas);
+				drawButton(canvas);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -329,8 +367,82 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	}
 
-	private void drawHositoryButton(Canvas canvas) {
-		ButtonHistory.getInstance(mContext, canvas, mScreenHolder.width/2, mScreenHolder.height/4).doDraw(canvas);
+	private void drawButton(Canvas canvas) {
+		if (mHistoryButton == null) {
+			mHistoryButton = new AbsButton(
+					mContext,
+					mScreenHolder.width / 2,
+					mScreenHolder.height / 4,
+					CardUtil.getBitmap(mContext,
+							ResourseCommon.BUTTON_HISTORY_NORMAL).getWidth() / 2,
+					CardUtil.getBitmap(mContext,
+							ResourseCommon.BUTTON_HISTORY_NORMAL).getHeight() / 2) {
+				@Override
+				public void drawButtonOnPressedState(Canvas canvas, float x,
+						float y) {
+					draw(canvas, CardUtil.getBitmap(mContext,
+							ResourseCommon.BUTTON_HISTORY_PRESSED));
+				}
+
+				@Override
+				public void drawButtonOnNormalState(Canvas canvas, float x,
+						float y) {
+					draw(canvas, CardUtil.getBitmap(mContext,
+							ResourseCommon.BUTTON_HISTORY_NORMAL));
+				}
+			};
+		} // end if mHistoryButton
+		mHistoryButton.doDraw(canvas);
+		if (isMyTurn) {
+			if (mGiveUpButton == null) {
+				mGiveUpButton = new AbsButton(
+						mContext,
+						mRightButtonX,
+						mButtonY,
+						CardUtil.getBitmap(mContext,
+								ResourseCommon.BUTTON_GIVEUP_NORMAL).getWidth() / 2,
+						CardUtil.getBitmap(mContext,
+								ResourseCommon.BUTTON_GIVEUP_NORMAL)
+								.getHeight() / 2) {
+					@Override
+					public void drawButtonOnPressedState(Canvas canvas,
+							float x, float y) {
+						draw(canvas, CardUtil.getBitmap(mContext,
+								ResourseCommon.BUTTON_GIVEUP_PRESSED));
+					}
+					@Override
+					public void drawButtonOnNormalState(Canvas canvas, float x,
+							float y) {
+						draw(canvas, CardUtil.getBitmap(mContext,
+								ResourseCommon.BUTTON_GIVEUP_NORMAL));
+					}
+				};
+			}// end if mGiveUpButton
+			if (mHandCardButton == null) {
+				mHandCardButton = new AbsButton(mContext, mLeftButtonX,
+						mButtonY, CardUtil.getBitmap(mContext,
+								ResourseCommon.BUTTON_HANDCARD_NORMAL)
+								.getWidth() / 2, CardUtil.getBitmap(mContext,
+								ResourseCommon.BUTTON_HANDCARD_NORMAL)
+								.getHeight() / 2) {
+					@Override
+					public void drawButtonOnPressedState(Canvas canvas,
+							float x, float y) {
+						draw(canvas, CardUtil.getBitmap(mContext,
+								ResourseCommon.BUTTON_HANDCARD_PRESSED));
+					}
+
+					@Override
+					public void drawButtonOnNormalState(Canvas canvas, float x,
+							float y) {
+						draw(canvas, CardUtil.getBitmap(mContext,
+								ResourseCommon.BUTTON_HANDCARD_NORMAL));
+					}
+				};
+			}// end if mHandCardButton
+			mHandCardButton.doDraw(canvas);
+			mGiveUpButton.doDraw(canvas);
+		}// end if myTurn
 	}
 
 	private void drawMeFirst(Canvas canvas, Paint paint) {
@@ -346,16 +458,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	private void drawGameScore(Canvas canvas, Paint paint) {
-		paint.setTextSize(TEXT_SIZE_BIG);
+		paint.setTextSize(mTextSizeBig);
 		paint.setColor(Color.rgb(255, 184, 15));
 		canvas.drawText(mContext.getResources().getString(R.string.game_score)
-				+ mGameScore, mScreenHolder.width / 2 - 3 * TEXT_SIZE_BIG,
-				TEXT_SIZE_BIG, paint);
+				+ mGameScore, mScreenHolder.width / 2 - 3 * mTextSizeBig,
+				mTextSizeBig, paint);
 	}
 
 	private void drawRightPlayer(Canvas canvas, Paint paint) {
 		mRightPlayerDarwer.initCanvas(canvas);
-		 myTurn = (mCurrentPlayerId == mRightPlayeId && !isMyTurn) ? true
+		myTurn = (mCurrentPlayerId == mRightPlayeId && !isMyTurn) ? true
 				: false;
 		((RightPlayerDrawer) mRightPlayerDarwer).doDraw(paint,
 				mRightPlayerName, myTurn, mTimeRemind,
@@ -401,11 +513,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 			Sleep(33);
 		}
 	}
-	public void openHistoryDialog(){
-		mHandler.obtainMessage(NetworkCommon.SHOW_HISTORY).sendToTarget();
-		
-	}
-
 	private void Sleep(int time) {
 		try {
 			Thread.sleep(time);
@@ -421,14 +528,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		if (mEventHandler == null)
 			throw new IllegalArgumentException(
 					"EventHandler should not be null!!!");
-		mEventHandler.handleTouchEvent(event, this, mCardList);
+		mEventHandler.handleTouchEvent(event, this);
 		return super.onTouchEvent(event);
 	}
 
 	public class ScreenSizeHolder {
 		public int width;
 		public int height;
-
 		@Override
 		public String toString() {
 			return "ScreenWidth=" + width + ",ScreenHeight=" + height;
@@ -438,11 +544,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	public class CardSizeHolder {
 		public int width;
 		public int height;
-
 		@Override
 		public String toString() {
 			return "CardWidth=" + width + ",CardHeight=" + height;
 		}
 	}
+
+
 
 }

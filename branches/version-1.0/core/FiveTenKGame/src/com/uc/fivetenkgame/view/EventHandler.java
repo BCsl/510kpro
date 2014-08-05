@@ -6,19 +6,17 @@
  *@version 
  */
 package com.uc.fivetenkgame.view;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.MotionEvent;
 import com.uc.fivetenkgame.application.GameApplication;
 import com.uc.fivetenkgame.common.SoundPoolCommon;
-import com.uc.fivetenkgame.view.entity.ButtonGiveUp;
-import com.uc.fivetenkgame.view.entity.ButtonHandCard;
-import com.uc.fivetenkgame.view.entity.ButtonHistory;
+import com.uc.fivetenkgame.view.GameView.CardSizeHolder;
+import com.uc.fivetenkgame.view.GameView.ScreenSizeHolder;
+import com.uc.fivetenkgame.view.entity.AbsButton;
 import com.uc.fivetenkgame.view.entity.Card;
 
 /**
@@ -33,32 +31,29 @@ public final class EventHandler {
 	private List<Card> mCardListToHand;
 	private EventListener mEventListener;
 	private GameApplication mApplication;
-
 	public EventHandler(EventListener eventListener, Context context) {
 		mCardListToHand = new Vector<Card>();
 		mApplication = (GameApplication) context.getApplicationContext();
 		this.mEventListener = eventListener;
 	}
-
 	/**
 	 * @param event
 	 *            需要處理的事件
 	 * @param view
 	 *            被處理的View
 	 */
-	protected void handleTouchEvent(MotionEvent event, GameView view,
-			List<Card> cardList) {
+	protected void handleTouchEvent(MotionEvent event, IViewInfoAccess infoAccess) {
 		// 只接受按下事件
 		if (event.getAction() != MotionEvent.ACTION_DOWN)
 			return;
 		float rawX = event.getRawX();
 		float rawY = event.getRawY();
-		int CARD_WIDTH = view.getCardSizeHolder().width;
-		int CARD_HEIGHT = view.getCardSizeHolder().height;
-		int SCREEN_HEIGHT = view.getScreenHolder().height;
+		int CARD_WIDTH = infoAccess.getCardSizeHolder().width;
+		int CARD_HEIGHT = infoAccess.getCardSizeHolder().height;
+		int SCREEN_HEIGHT = infoAccess.getScreenSizeHolder().height;
 		int CARD_INTENT = CARD_HEIGHT / 2;
 		Card card = getCard(SCREEN_HEIGHT, CARD_WIDTH, CARD_HEIGHT,
-				CARD_INTENT, rawX, rawY, cardList);
+				CARD_INTENT, rawX, rawY, infoAccess.getCardList());
 		// 卡牌被点击
 		if (card != null) {
 			mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
@@ -69,27 +64,26 @@ public final class EventHandler {
 			} else {
 				card.setClick(true);
 				mCardListToHand.add(card);
-
 			}
 			return;
 		}
 		// 出牌按钮被点击
-		if (view.isMyTurn()
-				&& ButtonHandCard.getInstance().isClicked(rawX, rawY)
+		if (infoAccess.isMyturn()
+				&& infoAccess.getHandCardButton().isClicked(rawX, rawY)
 				&& mCardListToHand.size() >= 0) {
 			mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "出牌：" + mCardListToHand.toString());
 			if (mEventListener.handCard(mCardListToHand, false)) {
 				// // 出牌成功
-				view.getViewControler().setPlayersOutList(-1,
+				infoAccess.getViewControler().setPlayersOutList(-1,
 						new ArrayList<Card>(mCardListToHand));
 				mCardListToHand.clear();
 			}
 			return;
 		} else
 			//放弃按钮
-			if (view.isMyTurn()
-				&& ButtonGiveUp.getInstance().isClicked(rawX, rawY)) {
+			if (infoAccess.isMyturn()
+				&& infoAccess.getGiveUpButton().isClicked(rawX, rawY)) {
 				mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "放弃出牌");
 			for (Card temp : mCardListToHand) {
@@ -100,9 +94,9 @@ public final class EventHandler {
 			return;
 		} else
 			//历史按钮
-			if (ButtonHistory.getInstance().isClicked(rawX, rawY)) {
+			if (infoAccess.getHistoryButton().isClicked(rawX, rawY)) {
 				mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
-				view.openHistoryDialog();
+				infoAccess.getViewControler().openHistoryInfo();
 		}
 
 	}
@@ -138,7 +132,6 @@ public final class EventHandler {
 		}
 		return null;
 	}
-
 	/**
 	 * 检查是否超过出牌的有效时间
 	 * 
@@ -158,7 +151,15 @@ public final class EventHandler {
 				return true;
 			}
 		return false;
-
 	}
-
+	 interface IViewInfoAccess{
+		 CardSizeHolder getCardSizeHolder();
+		 ScreenSizeHolder getScreenSizeHolder();
+		 List<Card> getCardList();
+		 AbsButton getHandCardButton();
+		 AbsButton getGiveUpButton();
+		 AbsButton getHistoryButton();
+		 boolean isMyturn();
+		 IViewControler getViewControler();
+	}
 }

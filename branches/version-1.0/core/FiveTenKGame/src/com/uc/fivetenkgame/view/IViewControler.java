@@ -89,4 +89,9 @@ public interface IViewControler {
 	 * 设置当前出牌玩家
 	 */
 	public void setCurrentPlayer(int playerId);
+	/**
+	 * 打开回合记录框
+	 */
+	public void openHistoryInfo();
+	
 }
