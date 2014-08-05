@@ -61,7 +61,7 @@ public class Card {
 	}
 	@Override
 	public String toString() {
-		return "cardId="+cardId+",width="+width+",height="+height+";x="+x+";y="+y;
+		return "<cardId="+cardId+">";
 	}
 	@Override
 	public int hashCode() {

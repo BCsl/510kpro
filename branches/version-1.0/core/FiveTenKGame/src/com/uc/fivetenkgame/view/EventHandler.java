@@ -75,8 +75,8 @@ public final class EventHandler {
 			Log.e(TAG, "出牌：" + mCardListToHand.toString());
 			if (mEventListener.handCard(mCardListToHand, false)) {
 				// // 出牌成功
-				infoAccess.getViewControler().setPlayersOutList(-1,
-						new ArrayList<Card>(mCardListToHand));
+//				infoAccess.getViewControler().setPlayersOutList(-1,
+//						new ArrayList<Card>(mCardListToHand));
 				mCardListToHand.clear();
 			}
 			return;
