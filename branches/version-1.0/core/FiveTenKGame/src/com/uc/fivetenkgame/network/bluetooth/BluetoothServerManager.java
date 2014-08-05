@@ -1,4 +1,4 @@
-package com.uc.fivetenkgame.network;
+package com.uc.fivetenkgame.network.bluetooth;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,8 @@
-package com.uc.fivetenkgame.network;
+package com.uc.fivetenkgame.network.wifi;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 
 /**
@@ -9,7 +13,7 @@ package com.uc.fivetenkgame.network;
  */
 public class ClientManager extends NetworkManager{
 
-	private TCPClient mTCPToServer;
+	private SocketCommunicationThread mTCPToServer;
 
 	private static ClientManager gInstance;
 	public static ClientManager getInstance(){
@@ -21,20 +25,28 @@ public class ClientManager extends NetworkManager{
 	}
 	
 	private ClientManager(){
-		mTCPToServer = new TCPClient(this);
 	}
 	
 	public void initNetwork(final String addr){
 		new Thread(){
 			public void run(){
-				mTCPToServer.initNetwork(addr, NETWORK_PORT);
+				try {
+					Socket socket = new Socket(addr, NETWORK_PORT);
+					mTCPToServer = new SocketCommunicationThread(ClientManager.this, socket);
+					mTCPToServer.start();
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}.start();
 	}
 	
 	@Override
 	public void sendMessage(String msg) {
-		mTCPToServer.sendMessage(msg);
+		if( mTCPToServer != null )
+			mTCPToServer.sendMessage(msg);
 	}
 
 	@Override
@@ -44,8 +56,8 @@ public class ClientManager extends NetworkManager{
 
 	@Override
 	public void reset() {
-		mTCPToServer.setFlag(false);
-		mTCPToServer = new TCPClient(this);
+		mTCPToServer.release();
+		mTCPToServer = null;
 	}
 
 	

@@ -1,4 +1,4 @@
-package com.uc.fivetenkgame.network;
+package com.uc.fivetenkgame.network.bluetooth;
 
 /**
  * 本地客户端蓝牙网络管理类, 收发消息通过直接函数调用实现

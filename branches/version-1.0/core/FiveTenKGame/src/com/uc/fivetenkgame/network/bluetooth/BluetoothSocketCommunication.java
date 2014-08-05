@@ -1,4 +1,4 @@
-package com.uc.fivetenkgame.network;
+package com.uc.fivetenkgame.network.bluetooth;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,18 +8,26 @@ import java.net.SocketException;
 import android.bluetooth.BluetoothSocket;
 
 import com.uc.fivetenkgame.common.NetworkCommon;
+import com.uc.fivetenkgame.network.NetworkInterface;
 
+/**
+ * 蓝牙底层Socket通信类
+ * 实现网络数据的读写
+ * 
+ * @author liuzd
+ *
+ */
 class BluetoothSocketCommunication extends Thread implements IBasicNetwork{
 	//缓存大小
 	private static final int BUFFER_SIZE = 1024;
 	
-	private BluetoothManager mBluetoothManager = null;
+	private NetworkInterface mBluetoothManager = null;
 	private BluetoothSocket mBluetoothSocket = null;
 	private OutputStream mOutputStream = null;
 	private InputStream mInputStream = null;
 	private byte[] mBuffer = null;
 	
-	public BluetoothSocketCommunication(BluetoothManager manager, BluetoothSocket socket){
+	public BluetoothSocketCommunication(NetworkInterface manager, BluetoothSocket socket){
 		mBluetoothManager = manager;
 		mBluetoothSocket = socket;
 		
@@ -68,7 +76,7 @@ class BluetoothSocketCommunication extends Thread implements IBasicNetwork{
 	}
 
 	public void sendMessage(String msg){
-		if( mOutputStream == null )
+		if( mOutputStream == null || !mBluetoothSocket.isConnected())
 			return ;
 		
 		try {
@@ -81,7 +89,7 @@ class BluetoothSocketCommunication extends Thread implements IBasicNetwork{
 		}
 	}
 	
-	private void receiveMessage(String msg){
+	public void receiveMessage(String msg){
 		mBluetoothManager.receiveMessage(msg);
 	}
 	
