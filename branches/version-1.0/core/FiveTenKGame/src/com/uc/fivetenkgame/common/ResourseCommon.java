@@ -23,4 +23,10 @@ public class ResourseCommon {
 	public static final int MAX_SUFFIX = 17;
 	// 牌的后缀最小的数字
 	public static final int MIN_SUFFIX = 17;
+
+	// 花色
+	public static final int DIAMOND = 1;
+	public static final int CLUBS = 2;
+	public static final int HEARTS = 3;
+	public static final int SPADE = 4;
 }

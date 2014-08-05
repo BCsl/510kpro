@@ -34,7 +34,10 @@ public class BasicRule implements IRule {
 		Log.i(this.getClass().getName(), "card list 1 type:" + cType.toString());
 		Log.i(this.getClass().getName(),
 				"card list 2 type:" + cType2.toString());
-
+//		Log.i(this.getClass().getName(),
+//				"card list 1 is " + cardList1.toString());
+//		Log.i(this.getClass().getName(),
+//				"card list 2 is " + cardList2.toString());
 		int result;
 		for (RuleUnit ruleUnit : mRuleSet) {
 			result = ruleUnit.checkCards(cType, cardList1, cType2, cardList2);
