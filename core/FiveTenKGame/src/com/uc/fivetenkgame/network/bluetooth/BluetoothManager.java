@@ -1,6 +1,9 @@
-package com.uc.fivetenkgame.network;
+package com.uc.fivetenkgame.network.bluetooth;
 
 import java.util.UUID;
+
+import com.uc.fivetenkgame.network.NetworkInterface;
+import com.uc.fivetenkgame.network.OnReceiveMessageListener;
 
 import android.bluetooth.BluetoothAdapter;
 

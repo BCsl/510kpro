@@ -1,4 +1,6 @@
-package com.uc.fivetenkgame.network;
+package com.uc.fivetenkgame.network.bluetooth;
+
+import com.uc.fivetenkgame.network.NetworkInterface;
 
 /**
  * 蓝牙本地收发数据类
@@ -6,16 +8,16 @@ package com.uc.fivetenkgame.network;
  * @author liuzd
  *
  */
-public class BluetoothLocalCommunication implements IBasicNetwork{
+class BluetoothLocalCommunication implements IBasicNetwork{
 
-	private BluetoothManager mBluetoothManager = null;
+	private NetworkInterface mBluetoothManager = null;
 	
 	private static BluetoothLocalCommunication gInstance;
 	public static BluetoothLocalCommunication getInstance(){
 		return gInstance;
 	}
 	
-	public BluetoothLocalCommunication(BluetoothManager manager){
+	public BluetoothLocalCommunication(NetworkInterface manager){
 		mBluetoothManager = manager;
 		gInstance = this;
 	}

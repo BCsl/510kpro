@@ -1,6 +1,7 @@
-package com.uc.fivetenkgame.network;
+package com.uc.fivetenkgame.network.wifi;
 
-
+import com.uc.fivetenkgame.network.NetworkInterface;
+import com.uc.fivetenkgame.network.OnReceiveMessageListener;
 
 
 /**

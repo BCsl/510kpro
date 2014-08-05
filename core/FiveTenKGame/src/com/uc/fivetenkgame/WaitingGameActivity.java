@@ -24,11 +24,11 @@ import android.widget.Toast;
 
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.common.SharePerferenceCommon;
-import com.uc.fivetenkgame.network.BluetoothClientManager;
-import com.uc.fivetenkgame.network.BluetoothLocalClient;
-import com.uc.fivetenkgame.network.BluetoothServerManager;
-import com.uc.fivetenkgame.network.ClientManager;
-import com.uc.fivetenkgame.network.ServerManager;
+import com.uc.fivetenkgame.network.bluetooth.BluetoothClientManager;
+import com.uc.fivetenkgame.network.bluetooth.BluetoothLocalClient;
+import com.uc.fivetenkgame.network.bluetooth.BluetoothServerManager;
+import com.uc.fivetenkgame.network.wifi.ClientManager;
+import com.uc.fivetenkgame.network.wifi.ServerManager;
 import com.uc.fivetenkgame.player.Player;
 import com.uc.fivetenkgame.qrcode.util.QRcodeGenerator;
 import com.uc.fivetenkgame.server.Server;
