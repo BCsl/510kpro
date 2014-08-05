@@ -310,6 +310,7 @@ public class Player implements PlayerContext {
 	@Override
 	public void gameOver(String[] str) {
 		viewController.gameOver();
+		formerCardList = null;
 		mHandler.obtainMessage(NetworkCommon.END_GAME, str).sendToTarget();
 	}
 
@@ -388,6 +389,7 @@ public class Player implements PlayerContext {
 	@Override
 	public void resetPlayer() {
 		mPlayerModel = new PlayerModel();
+		formerCardList = null;
 		mNetworkManager.reset();
 		Log.i("Player", "reset player");
 	}
