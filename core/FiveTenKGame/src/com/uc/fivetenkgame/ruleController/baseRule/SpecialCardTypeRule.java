@@ -72,9 +72,8 @@ public class SpecialCardTypeRule implements RuleUnit {
 			}
 			return 1;
 		} else if (cType == CardType.cardType.c510k) {
-			if (cType2 == CardType.cardType.c510K)
+			if (cType2 == CardType.cardType.c510K || cType2 == CardType.cardType.c510k)
 				return 0;
-			else
 				return 1;
 		}
 
