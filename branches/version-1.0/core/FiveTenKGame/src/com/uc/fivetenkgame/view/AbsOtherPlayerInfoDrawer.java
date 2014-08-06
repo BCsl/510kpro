@@ -35,6 +35,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 
 	/**
 	 * 重载drawPlayer，设定Y为同一高度
+	 * 
 	 * @param playerName
 	 * @param paint
 	 * @param x
@@ -42,33 +43,40 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 	protected void drawPlayer(String playerName, Paint paint, float x) {
 		super.drawPlayer(playerName, paint, x, TEXT_SIZE);
 	}
+
 	/**
 	 * 
 	 * @param bitmap
 	 * @param x
 	 * @param y
 	 */
-	protected void drawIcon(Bitmap bitmap,float x){
-		mCanvas.drawBitmap(bitmap,x,TEXT_SIZE+10,null);
+	protected void drawIcon(Bitmap bitmap, float x) {
+		mCanvas.drawBitmap(bitmap, x, TEXT_SIZE + 10, null);
 	}
+
 	/**
 	 * 重载drawScore,设定Y为用以高度
+	 * 
 	 * @param score
 	 * @param paint
 	 * @param x
 	 */
 	protected void drawScore(int score, Paint paint, float x) {
-		super.drawScore(score, paint, x, 3*mCardSizeHolder.width+ 10 );
+		super.drawScore(score, paint, x, 3 * mCardSizeHolder.width + 10);
 	}
+
 	/**
 	 * 重载drawCardsNumber，设定Y为用以高度
+	 * 
 	 * @param cardsNumber
 	 * @param paint
 	 * @param x
 	 */
 	protected void drawCardsNumber(int cardsNumber, Paint paint, float x) {
-		super.drawCardsNumber(cardsNumber, paint, x,  3*mCardSizeHolder.width + TEXT_SIZE+10);
+		super.drawCardsNumber(cardsNumber, paint, x, 3 * mCardSizeHolder.width
+				+ TEXT_SIZE + 10);
 	}
+
 	/**
 	 * 以baseX为基准，画垂直方向上已出的牌
 	 * 
@@ -85,7 +93,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 						/ 4;
 		float baseSpace = (float) mCardSizeHolder.height / 4 * factor;
 		float baseY = (float) mScreenHolder.height / 2 - outList.size() / 2
-				* baseSpace-mCardSizeHolder.width;
+				* baseSpace - mCardSizeHolder.width;
 		Bitmap temp = null;
 		Card card = null;
 		for (int i = 0; i < outList.size(); i++) {
@@ -98,16 +106,21 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 		}
 		card = null;
 	}
-/**
- * 画出牌标志
- * @param baseX
- */
+
+	/**
+	 * 画出牌标志
+	 * 
+	 * @param baseX
+	 */
 	protected void drawHandCardFlag(float baseX) {
-		mCanvas.drawBitmap(CardUtil.getBitmap(mContext, ResourseCommon.HANDCARD_FLAG), baseX,
-				 mCardSizeHolder.width+TEXT_SIZE_SMALL, null);
+		mCanvas.drawBitmap(
+				CardUtil.getBitmap(mContext, ResourseCommon.HANDCARD_FLAG),
+				baseX, mCardSizeHolder.width + TEXT_SIZE_SMALL, null);
 	}
+
 	/**
 	 * 画全部信息
+	 * 
 	 * @param paint
 	 * @param name
 	 * @param isMyTurn
@@ -116,6 +129,7 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 	 * @param score
 	 * @param outList
 	 */
-	protected abstract void doDraw(Paint paint,String name,boolean isMyTurn,int timeRemind,int cardNumber,int score,List<Card> outList);
+	protected abstract void doDraw(Paint paint, String name, boolean isMyTurn,
+			int timeRemind, int cardNumber, int score, List<Card> outList);
 
 }
