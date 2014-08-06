@@ -199,18 +199,18 @@ public class GameSettingActivity extends Activity implements
 				"nothing");
 		String[] hisArrays = longhistory.split(",");
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_dropdown_item_1line, hisArrays);
+				R.layout.dropdown_item, hisArrays);
 		// 只保留最近的10条的记录
 		if (hisArrays.length > 10) {
 			String[] newArrays = new String[10];
 			System.arraycopy(hisArrays, 0, newArrays, 0, 10);
 			adapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_dropdown_item_1line, newArrays);
+					R.layout.dropdown_item, newArrays);
 		}
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		auto.setAdapter(adapter);
-		auto.setDropDownHeight((int) ((float) dm.widthPixels / 1.5f));
+		auto.setDropDownHeight((int) ((float) dm.widthPixels / 2.0f));
 		auto.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {

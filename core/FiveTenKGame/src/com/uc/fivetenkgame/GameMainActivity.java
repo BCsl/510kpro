@@ -63,8 +63,8 @@ public class GameMainActivity extends Activity {
 				SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 		if (temp.getBoolean(SharePerferenceCommon.FIELD_FIRST_TIME, true)) {
 			Build build = new Build();
-			String deviceName = build.MODEL.trim().length() > 6 ? build.MODEL
-					.substring(0, 5) : build.MODEL;
+			String deviceName = build.MODEL.trim().length() > 7 ? build.MODEL
+					.substring(0, 6) : build.MODEL;
 			temp.edit()
 					.putString(SharePerferenceCommon.FIELD_MY_NAME, deviceName)
 					.putBoolean(SharePerferenceCommon.FIELD_FIRST_TIME, false)
