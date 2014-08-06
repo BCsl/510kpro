@@ -45,10 +45,16 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 	protected void drawCards(List<Card> cardList, float baseY, float cardIntent) {
 		if (cardList == null || cardList.size() == 0)
 			return;
-		float space = (mScreenHolder.width )
-				/ (cardList.size() * TEXT_SIZE) > 1 ? TEXT_SIZE
-				: (mScreenHolder.width ) / (cardList.size() * TEXT_SIZE)
+		float space = (mScreenHolder.width)
+				/ (float) (cardList.size() * TEXT_SIZE) >= 1 ? TEXT_SIZE
+				: (mScreenHolder.width) / (float) (cardList.size() * TEXT_SIZE)
 						* TEXT_SIZE;
+		if (space < (float) mCardSizeHolder.width / 3 && isFirst) {
+			isFirst = false;
+			Toast.makeText(mContext,
+					mContext.getResources().getString(R.string.tips),
+					Toast.LENGTH_LONG).show();
+		}
 		float baseX = (float) mScreenHolder.width / 2 - cardList.size() / 2
 				* space;
 		Card card = null;
@@ -81,12 +87,6 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 				/ (outList.size() * TEXT_SIZE_SMALL) > 1 ? TEXT_SIZE_SMALL
 				: (mScreenHolder.width - 10)
 						/ (outList.size() * TEXT_SIZE_SMALL) * TEXT_SIZE_SMALL;
-		if (space < (float) mCardSizeHolder.width / 3 && isFirst) {
-			isFirst = false;
-			Toast.makeText(mContext,
-					mContext.getResources().getString(R.string.tips),
-					Toast.LENGTH_LONG).show();
-		}
 
 		float baseX = (float) mScreenHolder.width / 2 - outList.size() / 2
 				* space;
@@ -101,17 +101,21 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
 		}
 	}
+
 	/**
 	 * 画整体信息
+	 * 
 	 * @param paint
-	 * @param ismyTurn	
+	 * @param ismyTurn
 	 * @param TimeRemind
-	 * @param name					
+	 * @param name
 	 * @param cardNumber
 	 * @param score
 	 * @param cardList
 	 * @param outList
 	 */
-	protected  abstract void doDraw(Paint paint,boolean ismyTurn,int TimeRemind,String name,int cardNumber,int score,List<Card> cardList,List<Card> outList); 
+	protected abstract void doDraw(Paint paint, boolean ismyTurn,
+			int TimeRemind, String name, int cardNumber, int score,
+			List<Card> cardList, List<Card> outList);
 
 }
