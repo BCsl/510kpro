@@ -21,13 +21,13 @@ import android.util.Log;
  */
 public abstract class AbsButton {
 	private final String TAG = getClass().getSimpleName();
-	protected Context mContext;
-	protected float x;
-	protected float y;
-	protected boolean isClick;
+	private Context mContext;
+	private float x;
+	private float y;
+	private boolean isClick;
 	private Timer timer;
-	protected final float HALF_OF_WIDTH;
-	protected final float HALF_OF_HEIGHT;
+	private final float HALF_OF_WIDTH;
+	private final float HALF_OF_HEIGHT;
 
 	/**
 	 * 

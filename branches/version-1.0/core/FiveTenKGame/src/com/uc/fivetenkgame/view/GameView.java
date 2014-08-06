@@ -69,7 +69,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private List<Integer> mScroeList;
 	private Map<Integer, List<Card>> mOutList;
 
-	private EventListener mEventListener;
 	private EventHandler mEventHandler;
 	private Handler mHandler;
 
@@ -159,8 +158,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	@Override
 	public void setEventListener(EventListener listener) {
-		mEventListener = listener;
-		mEventHandler = new EventHandler(mEventListener, mContext);
+		mEventHandler = new EventHandler(listener, mContext);
 	}
 
 	@Override
