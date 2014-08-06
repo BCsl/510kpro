@@ -8,6 +8,11 @@ import com.uc.fivetenkgame.ruleController.utils.CardType;
 import com.uc.fivetenkgame.ruleController.utils.CardType.cardType;
 import com.uc.fivetenkgame.view.entity.Card;
 
+/**
+ * 用于第一个打牌的规则
+ * @author fuyx
+ *
+ */
 public class FirstPlayCardsRule implements RuleUnit {
 
 	@Override

@@ -14,6 +14,11 @@ import com.uc.fivetenkgame.ruleController.utils.CardType.cardType;
 import com.uc.fivetenkgame.ruleController.utils.RuleJudgeUtils;
 import com.uc.fivetenkgame.view.entity.Card;
 
+/**
+ * 基本规则类，继承IRule接口，成员包括几个不同的规则单元
+ * @author fuyx
+ *
+ */
 public class BasicRule implements IRule {
 	private List<RuleUnit> mRuleSet;
 	private final String mRuleName = "BasicRule";

@@ -6,7 +6,7 @@ import com.uc.fivetenkgame.ruleController.utils.CardType.cardType;
 import com.uc.fivetenkgame.view.entity.Card;
 
 /**
- * 
+ * 规则单元接口
  * @author fuyx
  *
  */

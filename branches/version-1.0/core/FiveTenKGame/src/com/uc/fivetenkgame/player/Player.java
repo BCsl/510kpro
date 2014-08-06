@@ -35,7 +35,7 @@ import com.uc.fivetenkgame.view.entity.Card;
 import com.uc.fivetenkgame.view.util.CardUtil;
 
 /**
- * 玩家类, 修改：player类不再作为抽象类，与clientplayer类合并
+ * 玩家类，接收网络消息，刷新UI
  * 
  * @author fuyx
  * 
