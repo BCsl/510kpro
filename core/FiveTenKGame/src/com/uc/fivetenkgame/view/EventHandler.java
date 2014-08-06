@@ -6,6 +6,7 @@
  *@version 
  */
 package com.uc.fivetenkgame.view;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -31,18 +32,21 @@ public final class EventHandler {
 	private List<Card> mCardListToHand;
 	private EventListener mEventListener;
 	private GameApplication mApplication;
+
 	public EventHandler(EventListener eventListener, Context context) {
 		mCardListToHand = new Vector<Card>();
 		mApplication = (GameApplication) context.getApplicationContext();
 		this.mEventListener = eventListener;
 	}
+
 	/**
 	 * @param event
 	 *            需要處理的事件
 	 * @param view
 	 *            被處理的View
 	 */
-	protected void handleTouchEvent(MotionEvent event, IViewInfoAccess infoAccess) {
+	protected void handleTouchEvent(MotionEvent event,
+			IViewInfoAccess infoAccess) {
 		// 只接受按下事件
 		if (event.getAction() != MotionEvent.ACTION_DOWN)
 			return;
@@ -75,16 +79,17 @@ public final class EventHandler {
 			Log.e(TAG, "出牌：" + mCardListToHand.toString());
 			if (mEventListener.handCard(mCardListToHand, false)) {
 				// // 出牌成功
+				initCardState(infoAccess.getCardList());
 				infoAccess.getViewControler().setPlayersOutList(-1,
 						new ArrayList<Card>(mCardListToHand));
 				mCardListToHand.clear();
 			}
 			return;
 		} else
-			//放弃按钮
-			if (infoAccess.isMyturn()
+		// 放弃按钮
+		if (infoAccess.isMyturn()
 				&& infoAccess.getGiveUpButton().isClicked(rawX, rawY)) {
-				mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
+			mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
 			Log.e(TAG, "放弃出牌");
 			for (Card temp : mCardListToHand) {
 				temp.setClick(false);
@@ -93,14 +98,26 @@ public final class EventHandler {
 			mEventListener.handCard(null, false);
 			return;
 		} else
-			//历史按钮
-			if (infoAccess.getHistoryButton().isClicked(rawX, rawY)) {
-				mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
-				infoAccess.getViewControler().openHistoryInfo();
+		// 历史按钮
+		if (infoAccess.getHistoryButton().isClicked(rawX, rawY)) {
+			mApplication.playSound(SoundPoolCommon.SOUND_BUTTON_PRESS);
+			infoAccess.getViewControler().openHistoryInfo();
 		}
 
 	}
-	
+
+	private void initCardState(List<Card> cardList) {
+		if (cardList == null || cardList.size() == 0) {
+			return;
+		}
+		for (Card temp : cardList) {
+			if (temp.isClicked()) {
+
+				temp.setClick(false);
+			}
+		}
+
+	}
 
 	/**
 	 * 根据坐标，获取被点击的卡牌
@@ -132,6 +149,7 @@ public final class EventHandler {
 		}
 		return null;
 	}
+
 	/**
 	 * 检查是否超过出牌的有效时间
 	 * 
@@ -152,14 +170,22 @@ public final class EventHandler {
 			}
 		return false;
 	}
-	 interface IViewInfoAccess{
-		 CardSizeHolder getCardSizeHolder();
-		 ScreenSizeHolder getScreenSizeHolder();
-		 List<Card> getCardList();
-		 AbsButton getHandCardButton();
-		 AbsButton getGiveUpButton();
-		 AbsButton getHistoryButton();
-		 boolean isMyturn();
-		 IViewControler getViewControler();
+
+	interface IViewInfoAccess {
+		CardSizeHolder getCardSizeHolder();
+
+		ScreenSizeHolder getScreenSizeHolder();
+
+		List<Card> getCardList();
+
+		AbsButton getHandCardButton();
+
+		AbsButton getGiveUpButton();
+
+		AbsButton getHistoryButton();
+
+		boolean isMyturn();
+
+		IViewControler getViewControler();
 	}
 }
