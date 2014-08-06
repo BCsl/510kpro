@@ -99,7 +99,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	private void init() {
-		startDraw = true;
 		isMyTurn = false;
 		mGameScore = 0;
 		mCardNumber = new Vector<Integer>();
@@ -191,6 +190,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	@Override
 	public void setCurrentPlayer(int playerId) {
 		mTimeRemind = 30;
+		calculateTime();
+		mCurrentPlayerId = playerId;
+		if (playerId > 0 && mOutList.get(playerId - 1) != null)
+			mOutList.get(playerId - 1).clear();
+	}
+	private void calculateTime(){
 		mTimer.cancel();
 		mTimer = new Timer();
 		mTimer.schedule(new TimerTask() {
@@ -204,9 +209,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 				}
 			}
 		}, 1000, 1300);
-		mCurrentPlayerId = playerId;
-		if (playerId > 0 && mOutList.get(playerId - 1) != null)
-			mOutList.get(playerId - 1).clear();
 	}
 
 	private void initPlayersInfos(int playerId) {
@@ -303,16 +305,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	public void surfaceCreated(SurfaceHolder holder) {
 		Log.i(TAG, " surfaceCreated");
-		// 开始绘图进程
-		// if (mDrawThread == null) {
-		// initBeforeCreateView();
-		// mDrawThread = new Thread(this);
-		// mDrawThread.start();
-		// }
 		if (isFirst) {
 			initBeforeCreateView();
 			isFirst = false;
 		}
+		if(mTimeRemind>0)
+			calculateTime();
+		startDraw = true;
 		mDrawThread = new Thread(this);
 		mDrawThread.start();
 	}
@@ -336,11 +335,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 				e.printStackTrace();
 			}
 		}
-
-	}
-
-	public boolean isMyTurn() {
-		return isMyTurn;
+		mDrawThread=null;
 	}
 
 	// 重绘
