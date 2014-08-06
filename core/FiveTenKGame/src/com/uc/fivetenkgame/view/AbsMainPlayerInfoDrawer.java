@@ -57,6 +57,7 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 		}
 		float baseX = (float) mScreenHolder.width  - cardList.size() 
 				* space;
+		baseX/=2;
 		Card card = null;
 		Bitmap temp = null;
 		for (int i = 0; i < cardList.size(); i++) {

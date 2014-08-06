@@ -42,7 +42,7 @@ public abstract class AbsDrawer {
 		this.mScreenHolder = screenHolder;
 		this.mCardSizeHolder = cardSizeHolder;
 		TEXT_SIZE = (float) cardSizeHolder.width * 2 / 3;
-		TEXT_SIZE_SMALL = (float) cardSizeHolder.width / 2;
+		TEXT_SIZE_SMALL = (float) cardSizeHolder.width *2/5 ;
 	}
 
 	/**
