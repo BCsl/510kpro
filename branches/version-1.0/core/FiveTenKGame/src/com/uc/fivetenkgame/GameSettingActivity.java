@@ -180,7 +180,7 @@ public class GameSettingActivity extends Activity implements
 				sp.edit().putBoolean(SharePerferenceCommon.CONNECT_WAY, false).commit();
 				break;
 			default:
-				new IllegalArgumentException("checkedId not find!");
+				throw new IllegalArgumentException("checkedId not find!");
 			}
 		}
 	}
