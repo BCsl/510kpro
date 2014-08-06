@@ -3,6 +3,7 @@ package com.uc.fivetenkgame.state.serverstate;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.util.Log;
 
 import com.uc.fivetenkgame.common.CommonMsgDecoder;
@@ -22,11 +23,16 @@ public class WaitingState extends ServerState {
     private String TAG = "WaitingState";
     private int giveUpTimes;
     private int GIAVE_UP_TIME_LIMITE; // 本轮的结束位,如当前玩家还有3人，连续结束2次则本轮结束。
-
+    
+    private int[] noCardsPlayerNumbers;
+    //缴纳分数值
+    private static final int GIVE_SCORE = 30;
+    
     public WaitingState(ServerContext context) {
         mServerContext = context;
         giveUpTimes = 0;
         GIAVE_UP_TIME_LIMITE = NetworkCommon.TOTAL_PLAYER_NUM - 1;
+        noCardsPlayerNumbers = new int[NetworkCommon.TOTAL_PLAYER_NUM];
     }
 
     @Override
@@ -42,6 +48,7 @@ public class WaitingState extends ServerState {
             if (isCurrentPlayerHasNoCards())
                 playerFinalRoundOver();
             if (gameIsOver()) {
+            	giveScoreToFirstPlayer();
                 GameEndState state = new GameEndState(mServerContext);
                 mServerContext.setState(state);
                 state.handle(NetworkCommon.GAME_END);
@@ -75,6 +82,9 @@ public class WaitingState extends ServerState {
         if (mServerContext.getPlayerModel()
                 .get(mServerContext.getCurrentPlayerNumber() - 1)
                 .getRemainCardsNum() == 0) {
+        	//记录没牌的玩家号
+        	noCardsPlayerNumbers[NetworkCommon.TOTAL_PLAYER_NUM - GIAVE_UP_TIME_LIMITE - 1]
+        					= mServerContext.getCurrentPlayerNumber();
             GIAVE_UP_TIME_LIMITE--;
             return true;
         }
@@ -235,6 +245,28 @@ public class WaitingState extends ServerState {
                     .getRemainCardsNum() != 0 ? 3 : 1;
         Log.i(TAG, "转发下一个玩家：" + nextPlayer);
         return nextPlayer;
+    }
+    
+    /**
+     * 最后一名玩家给第一名玩家缴分
+     * 
+     */
+    private void giveScoreToFirstPlayer(){
+    	
+    	int firstPlayer = noCardsPlayerNumbers[0];
+    	int secondPlayer = noCardsPlayerNumbers[1];
+    	ArrayList<PlayerModel> playerModels = mServerContext.getPlayerModel();
+    	for (PlayerModel model : playerModels){
+    		//最后一名玩家扣除相应分数
+    		if( model.getPlayerNumber() != firstPlayer 
+    				&& model.getPlayerNumber() != secondPlayer ){
+    			model.setScore(model.getScore() - GIVE_SCORE);
+    		}
+    		//第一名增加相应分数
+    		if( model.getPlayerNumber() == firstPlayer ){
+    			model.setScore(model.getScore() - GIVE_SCORE);
+    		}
+    	}
     }
 
 }
