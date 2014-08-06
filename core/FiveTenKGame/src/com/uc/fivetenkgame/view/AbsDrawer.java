@@ -78,7 +78,7 @@ public abstract class AbsDrawer {
 	protected  void drawCardsNumber(int cardsNumber, Paint paint, float x,
 			float y) {
 		paint.setTextSize(TEXT_SIZE_SMALL);
-		paint.setColor(Color.rgb(255, 184, 15));
+		paint.setColor(Color.rgb(255, 246, 143));
 		mCanvas.drawText(mContext.getResources().getString(R.string.cards_number) + cardsNumber, x, y, paint);
 	}
 

@@ -2,10 +2,7 @@ package com.uc.fivetenkgame.state.serverstate;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import android.R.integer;
 import android.util.Log;
-
 import com.uc.fivetenkgame.common.CommonMsgDecoder;
 import com.uc.fivetenkgame.common.NetworkCommon;
 import com.uc.fivetenkgame.player.PlayerModel;
