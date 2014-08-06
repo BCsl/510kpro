@@ -57,6 +57,11 @@
 	<string  name ="USER_NAME">用户名:</string>
 	<string  name ="completion_hint">最近记录</string>
 	
+	<!-- 等待界面 -->
+	<string name ="full">人数已满</string>
+	<string name ="confirm_back">点击确定返回上一页</string>
+	<string name ="connect_exception">连接异常</string>
+	
 	
 	<!-- 游戏界面相关 -->
 	<string name="hand_cards">出牌</string>

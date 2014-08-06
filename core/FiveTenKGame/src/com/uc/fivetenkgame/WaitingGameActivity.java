@@ -43,8 +43,8 @@ public class WaitingGameActivity extends Activity {
 	private String TAG = "WaitingGameActivity";
 	private Player mPlayer;
 	private Server mServer;
-	private float QR_WIDTH;
-	private float QR_HEIGHT;
+	private float qrcodeWidth;
+	private float qrcodeHeight;
 	private TextView mIpAddress;
 	private TextView mReadyPlayer;
 	private boolean isServer;
@@ -62,8 +62,8 @@ public class WaitingGameActivity extends Activity {
 		setFinishOnTouchOutside(false);
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
-		QR_WIDTH = dm.widthPixels / 3.0f;
-		QR_HEIGHT = QR_WIDTH;
+		qrcodeWidth = dm.widthPixels / 3.0f;
+		qrcodeHeight = qrcodeWidth;
 		mIpAddress = (TextView) findViewById(R.id.ip_addr_text_ID);
 		mReadyPlayer = (TextView) findViewById(R.id.ready_player_text_ID);
 		Intent intent = getIntent();
@@ -72,91 +72,79 @@ public class WaitingGameActivity extends Activity {
 				SharePerferenceCommon.TABLE_SETTING, MODE_PRIVATE);
 		mName = sp.getString(SharePerferenceCommon.FIELD_MY_NAME, "Player");
 
-		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY, true);		
+		boolean isUseWifi = sp.getBoolean(SharePerferenceCommon.CONNECT_WAY,
+				true);
 
 		String strIp = null;
-		
-		if( isUseWifi ){
+
+		if (isUseWifi) {
 			// 获取并显示wifi地址
 			WifiManager wifiService = (WifiManager) getSystemService(WIFI_SERVICE);
 			WifiInfo wifiInfo = wifiService.getConnectionInfo();
 			int ip = wifiInfo.getIpAddress();
 			strIp = "" + (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "."
 					+ ((ip >> 16) & 0xFF) + "." + ((ip >> 24) & 0xFF);
-		}
-		else{
-			//蓝牙地址
+		} else {
+			// 蓝牙地址
 			strIp = BluetoothAdapter.getDefaultAdapter().getAddress();
 		}
 		mIpAddress.setText(mIpAddress.getText() + strIp);
-		
+
 		if (isServer) {
-			Bitmap bitmap = QRcodeGenerator.createImage(strIp, (int) QR_WIDTH,
-					(int) QR_HEIGHT);
+			Bitmap bitmap = QRcodeGenerator.createImage(strIp, (int) qrcodeWidth,
+					(int) qrcodeHeight);
 			if (bitmap != null)
 				((ImageView) findViewById(R.id.ip_qrcode_ID))
 						.setImageBitmap(bitmap);
 		}
-		
+
 		mPlayer = Player.getInstance();
 		mPlayer.setContext(getApplicationContext());
 		mPlayer.setHandler(mHandler);
-		
+
 		// 根据是否是服务器，执行不同的操作
 		if (isServer) {
 			Log.i(TAG, strIp);
 			mServer = Server.getInstance();
 			mServer.setHandler(mHandler);
-			if( isUseWifi ){
+			if (isUseWifi) {
 				mServer.setNetworkManager(ServerManager.getInstance());
-			}
-			else {
-				//未打开蓝牙，打开后重新进入本界面
-				if( !BluetoothAdapter.getDefaultAdapter().isEnabled() ){
+			} else {
+				// 未打开蓝牙，打开后重新进入本界面
+				if (!BluetoothAdapter.getDefaultAdapter().isEnabled()) {
 					BluetoothAdapter.getDefaultAdapter().enable();
-					Toast.makeText(this, getResources()
-							.getString(R.string.open_bluetooth), Toast.LENGTH_SHORT).show();
+					Toast.makeText(this,
+							getResources().getString(R.string.open_bluetooth),
+							Toast.LENGTH_SHORT).show();
 					finish();
 					return;
 				}
 				mServer.setNetworkManager(BluetoothServerManager.getInstance());
 			}
-			
-			//设置本地玩家
-			if( isUseWifi ){
+
+			// 设置本地玩家
+			if (isUseWifi) {
 				mPlayer.setNetworkManager(ClientManager.getInstance());
 				mServer.startListen();
 				mPlayer.startPlay(strIp, mName);
-			}
-			else {
-				
+			} else {
+
 				mPlayer.setNetworkManager(BluetoothLocalClient.getInstance());
 				mPlayer.startPlay(strIp, mName);
-				//蓝牙本地玩家直接通过函数调用实现，需先设置玩家，再开监听器
+				// 蓝牙本地玩家直接通过函数调用实现，需先设置玩家，再开监听器
 				mServer.startListen();
 			}
-			
+
 		} else {
 			String ipAddr = intent.getStringExtra(NetworkCommon.IP_ADDRESS);
-			//设置本地玩家
-			if( isUseWifi ){
+			// 设置本地玩家
+			if (isUseWifi) {
 				mPlayer.setNetworkManager(ClientManager.getInstance());
-			}
-			else {
+			} else {
 				mPlayer.setNetworkManager(BluetoothClientManager.getInstance());
 			}
 			mPlayer.startPlay(ipAddr, mName);
 		}
-		// new Handler().postDelayed(new Runnable() {
-		// public void run() {
-		// Log.i(TAG, "延迟检查连接情况");
-		// if (!isConnect) {
-		// finish();
-		// Toast.makeText(WaitingGameActivity.this, "连接异常",
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// }
-		// }, 2000);
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -170,7 +158,7 @@ public class WaitingGameActivity extends Activity {
 				Integer num = (Integer) (msg.obj);
 				mReadyPlayer.setText(getResources().getString(
 						R.string.ready_player_str)
-						+ num + "人");
+						+ num);
 				break;
 			case NetworkCommon.START_GAME:
 				Toast.makeText(WaitingGameActivity.this,
@@ -185,9 +173,11 @@ public class WaitingGameActivity extends Activity {
 				break;
 			case NetworkCommon.HOST_FULL:
 				new AlertDialog.Builder(WaitingGameActivity.this)
-						.setTitle("人数已满")
-						.setMessage("点击确定返回上一页")
-						.setPositiveButton("确定",
+						.setTitle(getResources().getString(R.string.full))
+						.setMessage(
+								getResources().getString(R.string.confirm_back))
+						.setPositiveButton(
+								getResources().getString(R.string.confirm_str),
 								new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog,
@@ -201,8 +191,10 @@ public class WaitingGameActivity extends Activity {
 					break;
 				new AlertDialog.Builder(WaitingGameActivity.this)
 						.setTitle(R.string.time_out_str)
-						.setMessage("点击确定返回")
-						.setPositiveButton("确定",
+						.setMessage(
+								getResources().getString(R.string.confirm_back))
+						.setPositiveButton(
+								getResources().getString(R.string.confirm_str),
 								new DialogInterface.OnClickListener() {
 									@Override
 									public void onClick(DialogInterface dialog,
@@ -214,7 +206,8 @@ public class WaitingGameActivity extends Activity {
 			case NetworkCommon.PLAYER_LEFT:
 				Integer number = (Integer) (msg.obj);
 				Log.i("PLAYER_LEFT:", String.valueOf(number));
-				Toast.makeText(WaitingGameActivity.this, "连接异常",
+				Toast.makeText(WaitingGameActivity.this,
+						getResources().getString(R.string.connect_exception),
 						Toast.LENGTH_SHORT).show();
 				finish();
 				break;
