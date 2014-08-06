@@ -80,6 +80,7 @@ public class GameSettingActivity extends Activity implements
 							}
 						}).create();
 		mInputNameDialog.setCancelable(true);
+		mInputNameDialog.setCanceledOnTouchOutside(true);
 		initData();
 		mNameText.setOnClickListener(new OnClickListener() {
 			@Override
@@ -210,7 +211,8 @@ public class GameSettingActivity extends Activity implements
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		auto.setAdapter(adapter);
-		auto.setDropDownHeight((int) ((float) dm.widthPixels / 2.0f));
+		auto.setCompletionHint(getResources().getString(R.string.completion_hint));
+//		auto.setDropDownHeight((int) ((float) dm.widthPixels / 2.0f));
 		auto.setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
