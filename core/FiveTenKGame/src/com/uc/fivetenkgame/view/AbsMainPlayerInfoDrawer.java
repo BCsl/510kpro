@@ -55,7 +55,7 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 					mContext.getResources().getString(R.string.tips),
 					Toast.LENGTH_LONG).show();
 		}
-		float baseX = (float) mScreenHolder.width / 2 - cardList.size() / 2
+		float baseX = (float) mScreenHolder.width  - cardList.size() 
 				* space;
 		Card card = null;
 		Bitmap temp = null;

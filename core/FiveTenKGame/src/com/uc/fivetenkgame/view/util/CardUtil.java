@@ -92,7 +92,24 @@ public class CardUtil {
 					 	cards.remove(index);
 				 }
 			}
-		
+	}
+	/**
+	 * 
+	 * @param cards
+	 * @param cardToRemove
+	 */
+	public static void  removeCardsClicked(List<Card> cards,List<Card> cardToRemove){
+		int index;	
+		Log.i(TAG, "ÅÆ£º"+cards.toString());
+		Log.i(TAG, "remove:"+cardToRemove.toString());
+		for(Card temp:cardToRemove){
+				 if((index=cards.indexOf(temp))!=-1){
+					 Log.i(TAG, "remove index:" + index);
+					if( cards.get(index).isClicked()){
+						cards.remove(index);
+					}
+				 }
+			}
 	}
 
 }
