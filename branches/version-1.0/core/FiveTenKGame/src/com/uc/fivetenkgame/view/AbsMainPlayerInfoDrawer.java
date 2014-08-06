@@ -45,9 +45,9 @@ public abstract class AbsMainPlayerInfoDrawer extends AbsDrawer {
 	protected void drawCards(List<Card> cardList, float baseY, float cardIntent) {
 		if (cardList == null || cardList.size() == 0)
 			return;
-		float space = (mScreenHolder.width - 10)
+		float space = (mScreenHolder.width )
 				/ (cardList.size() * TEXT_SIZE) > 1 ? TEXT_SIZE
-				: (mScreenHolder.width - 10) / (cardList.size() * TEXT_SIZE)
+				: (mScreenHolder.width ) / (cardList.size() * TEXT_SIZE)
 						* TEXT_SIZE;
 		float baseX = (float) mScreenHolder.width / 2 - cardList.size() / 2
 				* space;
