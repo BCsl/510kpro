@@ -139,7 +139,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	public void setPlayersOutList(int number, List<Card> list) {
 		if (number == -1) // 设置的是当前Player
 		{
-			CardUtil.removeCards(mCardList,list);
+			CardUtil.removeCardsClicked(mCardList,list);
 			mOutList.put(mPlayerId - 1, list);
 		} else
 			mOutList.put(number - 1, list);
