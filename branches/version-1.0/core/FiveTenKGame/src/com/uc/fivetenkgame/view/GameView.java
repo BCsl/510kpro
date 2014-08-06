@@ -79,7 +79,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private boolean isFirst;
 	private boolean myTurn;
 
-	private int mTextSizeBig;
+	private int mTextSize;
 	private float mLeftButtonX;
 	private float mRightButtonX;
 	private float mButtonY;
@@ -283,7 +283,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 				R.drawable.cardbg1);
 		mCardSizeHolder.height = temp.getHeight();
 		mCardSizeHolder.width = temp.getWidth();
-		mTextSizeBig = mCardSizeHolder.width * 3 / 4;
+		mTextSize = mCardSizeHolder.width * 2 /3 ;
 		mLeftButtonX = (float) mScreenHolder.width / 2 - 2
 				* mCardSizeHolder.width;
 		mRightButtonX = (float) mScreenHolder.width / 2 + 2
@@ -451,11 +451,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	}
 
 	private void drawGameScore(Canvas canvas, Paint paint) {
-		paint.setTextSize(mTextSizeBig);
+		paint.setTextSize(mTextSize);
 		paint.setColor(Color.rgb(255, 184, 15));
 		canvas.drawText(mContext.getResources().getString(R.string.game_score)
-				+ mGameScore, mScreenHolder.width / 2 - 3 * mTextSizeBig,
-				mTextSizeBig, paint);
+				+ mGameScore, mScreenHolder.width / 2 - 3 * mTextSize,
+				mTextSize, paint);
 	}
 
 	private void drawRightPlayer(Canvas canvas, Paint paint) {
