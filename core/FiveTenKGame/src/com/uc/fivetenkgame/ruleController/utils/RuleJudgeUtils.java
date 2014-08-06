@@ -9,6 +9,11 @@ import com.uc.fivetenkgame.common.ResourseCommon;
 import com.uc.fivetenkgame.ruleController.utils.CardType.cardType;
 import com.uc.fivetenkgame.view.entity.Card;
 
+/**
+ * 规则判定工具类
+ * @author fuyx
+ *
+ */
 public class RuleJudgeUtils {
 	// 判断牌型
 	public static cardType judgeType(List<Card> list) {
@@ -76,22 +81,26 @@ public class RuleJudgeUtils {
 				return CardType.cardType.c32;
 
 			// 4带2(单,双)
-			if (card_index.numberList[3].size() == 1 && len == 6)
+			if ((card_index.numberList[3].size() == 1 && len == 6)
+					|| (card_index.numberList[4].size() == 1 && len == 6))
 				return CardType.cardType.c411;
 			if (card_index.numberList[3].size() == 1
 					&& card_index.numberList[1].size() == 2 && len == 8)
 				return CardType.cardType.c422;
-			if (card_index.numberList[4].size() == 1 && len == 7)
+			if ((card_index.numberList[4].size() == 1 && len == 7)
+					|| (card_index.numberList[5].size() == 1 && len == 7))
 				return CardType.cardType.c411;
 			if (card_index.numberList[4].size() == 1
 					&& card_index.numberList[1].size() == 2 && len == 9)
 				return CardType.cardType.c422;
-			if (card_index.numberList[5].size() == 1 && len == 8)
+			if ((card_index.numberList[5].size() == 1 && len == 8)
+					|| (card_index.numberList[6].size() == 1 && len == 8))
 				return CardType.cardType.c411;
 			if (card_index.numberList[5].size() == 1
 					&& card_index.numberList[1].size() == 2 && len == 10)
 				return CardType.cardType.c422;
-			if (card_index.numberList[6].size() == 1 && len == 9)
+			if ((card_index.numberList[6].size() == 1 && len == 9)
+					|| (card_index.numberList[7].size() == 1 && len == 9))
 				return CardType.cardType.c411;
 			if (card_index.numberList[6].size() == 1
 					&& card_index.numberList[1].size() == 2 && len == 11)

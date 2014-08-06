@@ -9,6 +9,11 @@ import com.uc.fivetenkgame.ruleController.utils.RuleJudgeUtils;
 import com.uc.fivetenkgame.ruleController.utils.CardType.cardType;
 import com.uc.fivetenkgame.view.entity.Card;
 
+/**
+ * 处理含有特殊牌的规则
+ * @author fuyx
+ *
+ */
 public class SpecialCardTypeRule implements RuleUnit {
 
 	@Override

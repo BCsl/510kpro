@@ -4,6 +4,11 @@ import com.uc.fivetenkgame.ruleController.ruleSet.BasicRule;
 
 import android.util.Log;
 
+/**
+ * 规则管理器，管理静态规则对象
+ * @author fuyx
+ *
+ */
 public class RuleManager {
 	private static BasicRule mBasicRule = new BasicRule();
 	

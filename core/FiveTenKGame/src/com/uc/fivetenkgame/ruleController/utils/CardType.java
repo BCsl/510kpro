@@ -1,5 +1,10 @@
 package com.uc.fivetenkgame.ruleController.utils;
 
+/**
+ * 牌型定义
+ * @author fuyx
+ *
+ */
 public class CardType {
 	// 牌型定义
 	public static enum cardType {
