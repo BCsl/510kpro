@@ -35,9 +35,6 @@
     <string name="game_restart">等待其他玩家重玩</string>
     <string name="input_user_name">输入用户名</string>
 	<string name="winner">胜利</string>
-	<string name="player1_score">玩家1分数：#</string>
-	<string name="player2_score">玩家2分数：#</string>
-	<string name="player3_score">玩家3分数：#</string>
 	<string name="open_bluetooth">打开蓝牙</string>
 	<!-- 二维码 -->
     <string name="scan_text">对准房主二维码, 即可自动扫描</string>
@@ -55,7 +52,7 @@
     <string name="connection_method_bluetooth_str">蓝牙</string>
     <string name="open_str">开</string>
     <string name="close_str">关</string>
-	<string  name ="INPUT_USER_NAME">请输入用户名，最大长度为5。</string>
+	<string  name ="INPUT_USER_NAME">请输入用户名，最大长度为7</string>
 	<string  name ="COMPLETION_HINT">最近3条记录</string>
 	<string  name ="USER_NAME">用户名:</string>
 	
