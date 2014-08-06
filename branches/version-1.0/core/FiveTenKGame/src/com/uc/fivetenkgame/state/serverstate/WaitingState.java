@@ -264,7 +264,7 @@ public class WaitingState extends ServerState {
     		}
     		//第一名增加相应分数
     		if( model.getPlayerNumber() == firstPlayer ){
-    			model.setScore(model.getScore() - GIVE_SCORE);
+    			model.setScore(model.getScore() + GIVE_SCORE);
     		}
     	}
     }
