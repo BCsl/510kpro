@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:singleLine="true"
     android:ellipsize="end" 
-    android:textSize="17sp"
+    android:textSize="18sp"
+    android:textStyle="bold"
     android:gravity="left|center_vertical"
     />
 
