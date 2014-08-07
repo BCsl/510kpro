@@ -50,11 +50,6 @@ public class ClientManager extends NetworkManager{
 	}
 
 	@Override
-	public void sendMessage(String msg, int num) {
-		
-	}
-
-	@Override
 	public void reset() {
 		mTCPToServer.release();
 		mTCPToServer = null;

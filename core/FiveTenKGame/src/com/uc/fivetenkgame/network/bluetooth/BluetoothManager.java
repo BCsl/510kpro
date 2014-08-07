@@ -36,8 +36,5 @@ abstract class BluetoothManager implements NetworkInterface {
 	public abstract void initNetwork(String addr);
 
 	@Override
-	public void sendMessage(String msg, int num) {}
-
-	@Override
 	public abstract void reset();
 }

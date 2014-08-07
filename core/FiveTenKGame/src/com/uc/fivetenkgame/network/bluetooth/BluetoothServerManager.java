@@ -76,7 +76,6 @@ public class BluetoothServerManager extends BluetoothManager {
 		
 	}
 
-	@Override
 	public void sendMessage(String msg, int playerNum) {
 		
 		Log.i(LOG_SERVER_MANAGER, "send to " + playerNum + " :" + msg);
@@ -104,6 +103,10 @@ public class BluetoothServerManager extends BluetoothManager {
 		mThread.start();
 	}
 
+	/**
+	 * 重设服务器
+	 * 
+	 */
 	@Override
 	public void reset() {
 		try {
