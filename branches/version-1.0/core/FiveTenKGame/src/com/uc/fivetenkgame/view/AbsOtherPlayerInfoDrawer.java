@@ -87,19 +87,19 @@ public abstract class AbsOtherPlayerInfoDrawer extends AbsDrawer {
 	protected void drawOutList(List<Card> outList, float baseX) {
 		if (outList == null || outList.size() == 0)
 			return;
-		float factor = (float) mScreenHolder.height
-				/ (float) mCardSizeHolder.height / 4 > 1 ? 1
-				: (float) mScreenHolder.height / (float) mCardSizeHolder.height
-						/ 4;
-		float baseSpace = (float) mCardSizeHolder.height / 4 * factor;
-		float baseY = (float) mScreenHolder.height / 2 - outList.size() / 2
-				* baseSpace - mCardSizeHolder.width;
+		float factor =  mScreenHolder.height
+				/ ((float) mCardSizeHolder.height /4 *outList.size()) > 1 ? 1
+				:  mScreenHolder.height / ((float) mCardSizeHolder.height /4 *outList.size());
+		float space = (float) mCardSizeHolder.height /4 * factor;
+		float baseY = (float) mScreenHolder.height - outList.size() 
+				* space;
+		baseY=baseY/2-mCardSizeHolder.width;
 		Bitmap temp = null;
 		Card card = null;
 		for (int i = 0; i < outList.size(); i++) {
 			card = outList.get(i);
 			card.setSize(mCardSizeHolder.width, mCardSizeHolder.height);
-			card.setLocation((int) baseX, (int) (i * baseSpace + baseY));
+			card.setLocation((int) baseX, (int) (i * space + baseY));
 			temp = CardUtil.getBitmap(mContext,
 					CardUtil.getResourceName(card.getCardId()));
 			mCanvas.drawBitmap(temp, card.getSRC(), card.getDST(), null);
