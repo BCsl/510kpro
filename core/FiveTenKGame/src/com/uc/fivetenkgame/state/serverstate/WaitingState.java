@@ -145,28 +145,39 @@ public class WaitingState extends ServerState {
      * @param cardList
      */
     private void updateRoundScore(List<Card> cardList) {
-        int add = 0;
-        for (Card temp : cardList) {
-            int id = Integer.valueOf(temp.getCardId());
-            if (id > 52)
-                continue;
-            switch (id % 13) {
-            case 5:
-                add += 5;
-                break;
-            case 10:
-            case 0:
-                add += 10;
-                break;
-            default:
-                add += 0;
-                break;
-            }
-        }
+       int add= countScore(cardList);
         mServerContext.setRoundScore(mServerContext.getRoundScore() + add);
     }
-
+    
+    
     /**
+     * 获取对象牌中的分数
+     * @param cardList
+     * @return
+     */
+    private int countScore(List<Card> cardList) {
+    	int res=0;
+      for (Card temp : cardList) {
+      int id = Integer.valueOf(temp.getCardId());
+      if (id > 52)
+          continue;
+      switch (id % 13) {
+      case 5:
+    	  res += 5;
+          break;
+      case 10:
+      case 0:
+    	  res += 10;
+          break;
+      default:
+    	  res += 0;
+          break;
+      }
+  }
+		return res;
+	}
+
+	/**
      * 判断游戏是否结束
      * 
      * @return
@@ -253,15 +264,13 @@ public class WaitingState extends ServerState {
     	int firstPlayer = noCardsPlayerNumbers[0];
     	int secondPlayer = noCardsPlayerNumbers[1];
     	ArrayList<PlayerModel> playerModels = mServerContext.getPlayerModel();
+    	PlayerModel firstPlayerModle=playerModels.get(firstPlayer-1);
     	for (PlayerModel model : playerModels){
     		//最后一名玩家扣除相应分数
     		if( model.getPlayerNumber() != firstPlayer 
     				&& model.getPlayerNumber() != secondPlayer ){
-    			model.setScore(model.getScore() - GIVE_SCORE);
-    		}
-    		//第一名增加相应分数
-    		if( model.getPlayerNumber() == firstPlayer ){
-    			model.setScore(model.getScore() + GIVE_SCORE);
+    			//获取最后一个玩家手头上的牌的分数并附加到第一个玩家上
+    			firstPlayerModle.setScore(firstPlayerModle.getScore() + countScore(model.getCardList()));
     		}
     	}
     }

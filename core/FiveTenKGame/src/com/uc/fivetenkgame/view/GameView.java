@@ -179,8 +179,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	@Override
 	public void roundOver() {
-		for (Map.Entry<Integer, List<Card>> temp : mOutList.entrySet())
-			temp.getValue().clear();
+//		for (Map.Entry<Integer, List<Card>> temp : mOutList.entrySet())
+//			temp.getValue().clear();
 		mGameScore = 0;
 
 	}
