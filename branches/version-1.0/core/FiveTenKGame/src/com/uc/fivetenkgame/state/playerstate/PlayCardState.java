@@ -32,13 +32,11 @@ public class PlayCardState extends PlayerState {
 
             mPlayerContext.playSound(SoundPoolCommon.SOUND_OUTPUT_CARDS);
             mPlayerContext.setMyTurn(false);
-            mPlayerContext.setDoneHandCards(false);
             mPlayerContext.setState(new WaitForMsgState(mPlayerContext));// 在发信息之前切换状态
             mPlayerContext.sendMsg(msg);
         } else if (CommonMsgDecoder.checkMessage(msg, NetworkCommon.GIVE_UP)) {// 自己放弃出牌
             mPlayerContext.playSound(SoundPoolCommon.SOUND_PASS);
             mPlayerContext.setMyTurn(false);
-            mPlayerContext.setDoneHandCards(false);
             mPlayerContext.setState(new WaitForMsgState(mPlayerContext));// 在发信息之前切换状态
             mPlayerContext.sendMsg(msg);
         }
