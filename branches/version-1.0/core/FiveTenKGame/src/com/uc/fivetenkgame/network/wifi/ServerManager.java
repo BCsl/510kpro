@@ -122,10 +122,10 @@ public class ServerManager extends NetworkManager {
 		startListen();
 	}
 
-//	public void removePlayer(TCPServer player) {
-//		mClientPlayers.remove(player);
-//	}
-
+	/**
+	 * 重设服务器
+	 * 
+	 */
 	@Override
 	public void reset() {
 

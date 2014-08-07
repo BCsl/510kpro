@@ -45,7 +45,7 @@ class SocketCommunicationThread extends Thread {
 				if( mInputStream != null  ){
 					int len = mInputStream.read(mBuffer);
 					//读到数据
-					if( len > 1 ){
+					if( len > 1 && mBuffer != null ){
 						String data = new String(mBuffer, 0, len);
 						//拆分消息
 						String []msgs = data.split(NetworkCommon.MESSAGE_END);
