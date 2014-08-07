@@ -44,7 +44,6 @@ import com.uc.fivetenkgame.view.util.CardUtil;
 public class Player implements PlayerContext {
 	private IRule mRule;
 	private State mState;
-	private boolean doneHandCard = false;
 	private boolean isRestart = false;
 	private IViewControler viewController;
 	private Context mApplicationContext;
@@ -93,7 +92,6 @@ public class Player implements PlayerContext {
 				} else if (mRule.firstPlayCards(handList) == 1) {
 					mHandList.addAll(handList);
 					CardUtil.removeCards(mPlayerModel.getCardList(), handList);
-					setDoneHandCards(true);
 					Log.i("当前手牌数",
 							String.valueOf(mPlayerModel.getRemainCardsNum()));
 				} else {
@@ -105,7 +103,6 @@ public class Player implements PlayerContext {
 				Log.i("formerCardList", formerCardList.toString());
 				if (handList == null) {
 					mHandList = null;
-					setDoneHandCards(true);
 					Log.i("当前手牌数",
 							String.valueOf(mPlayerModel.getRemainCardsNum()));
 				} else if (handList.size() == 0) {
@@ -116,8 +113,6 @@ public class Player implements PlayerContext {
 
 					CardUtil.removeCards(mPlayerModel.getCardList(), handList);
 					OredrUtil.setOrder(mHandList);
-
-					setDoneHandCards(true);
 					Log.i("当前手牌数",
 							String.valueOf(mPlayerModel.getRemainCardsNum()));
 				} else {
@@ -275,8 +270,6 @@ public class Player implements PlayerContext {
 					.playSound(SoundPoolCommon.SOUND_BOOM);
 		viewController.setPlayersOutList(Integer.parseInt(playerNumber),
 				cardList);
-		viewController.setPlayersOutList(Integer.parseInt(playerNumber),
-				cardList);
 		if (cardList != null)
 			formerCardList = cardList;
 
@@ -331,17 +324,6 @@ public class Player implements PlayerContext {
 		leftCardsNum.add(new Integer(36));
 		leftCardsNum.add(new Integer(36));
 		viewController.setCardNumber(leftCardsNum);
-	}
-
-	@Override
-	public boolean doneHandCards() {
-		return doneHandCard;
-	}
-
-	@Override
-	public void setDoneHandCards(boolean flag) {
-		// TODO Auto-generated method stub
-		doneHandCard = flag;
 	}
 
 	@Override
@@ -406,13 +388,11 @@ public class Player implements PlayerContext {
 			Log.i("选牌超时(第一个打牌)",
 					"当前手牌数: "
 							+ String.valueOf(mPlayerModel.getRemainCardsNum()));
-			setDoneHandCards(true);
 		} else {
 			mHandList = null;
 			Log.i("选牌超时(不是第一个打)",
 					"当前手牌数: "
 							+ String.valueOf(mPlayerModel.getRemainCardsNum()));
-			setDoneHandCards(true);
 		}
 	}
 

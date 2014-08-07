@@ -111,20 +111,6 @@ public interface PlayerContext {
 	public Handler getHandler();
 
 	/**
-	 * 获得doneHandCards的值，判断出牌是否结束
-	 * 
-	 * @return
-	 */
-	public boolean doneHandCards();
-
-	/**
-	 * 设置doneHandCards
-	 * 
-	 * @param flag
-	 */
-	public void setDoneHandCards(boolean flag);
-
-	/**
 	 * 设置myTurn
 	 * 
 	 * @param flag
