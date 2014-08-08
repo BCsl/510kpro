@@ -7,9 +7,7 @@
  */
 package com.uc.fivetenkgame.view;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -25,6 +23,8 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.Log;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -67,7 +67,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 	private int mGameScore;
 	private List<Integer> mCardNumber;
 	private List<Integer> mScroeList;
-	private Map<Integer, List<Card>> mOutList;
+	private SparseArray<List<Card>> mOutList;
 
 	private EventHandler mEventHandler;
 	private Handler mHandler;
@@ -110,7 +110,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 		mScroeList.add(0);
 		mScroeList.add(0);
 		mCardList = new Vector<Card>();
-		mOutList = new HashMap<Integer, List<Card>>();
+//		mOutList = new HashMap<Integer, List<Card>>();
+		mOutList = new SparseArray<List<Card>>();
 		mBackgroudBitmap = BitmapFactory.decodeResource(getResources(),
 				R.drawable.bg);
 		mCurrentPlayerId = -1;
@@ -516,8 +517,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback,
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// if (!isMyTrun)
-		// return super.onTouchEvent(event);
 		if (mEventHandler == null)
 			throw new IllegalArgumentException(
 					"EventHandler should not be null!!!");

@@ -41,15 +41,10 @@ import android.view.SurfaceHolder;
 public final class CameraManager {
 
   private static final String TAG = CameraManager.class.getSimpleName();
-//
   private static  int MIN_FRAME_WIDTH ;
   private static  int MIN_FRAME_HEIGHT ;
   private static  int MAX_FRAME_WIDTH ;
   private static  int MAX_FRAME_HEIGHT ;
-//  private static final int MIN_FRAME_WIDTH = 240;
-//  private static final int MIN_FRAME_HEIGHT = 240;
-//  private static final int MAX_FRAME_WIDTH = 1200;
-//  private static final int MAX_FRAME_HEIGHT = 675;
 
   private static CameraManager cameraManager;
 

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
+    android:layout_height="match_parent" >
 
     <AutoCompleteTextView
         android:id="@+id/name_autotext_ID"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:completionHint="@string/COMPLETION_HINT"
+        android:completionThreshold="1"
+        android:focusableInTouchMode="true"
         android:gravity="center_horizontal"
         android:hint="@string/INPUT_USER_NAME"
-        android:maxLength="7" 
-        android:completionHint="@string/COMPLETION_HINT"
-       android:inputType="text"
-       android:focusableInTouchMode="true"
-       android:completionThreshold="1"
-       android:shadowRadius="40"
-        />
-    <LinearLayout 
+        android:inputType="text"
+        android:maxLength="7"
+        android:shadowRadius="40" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></LinearLayout>
+        android:layout_height="match_parent" >
+    </LinearLayout>
 
 </RelativeLayout>
